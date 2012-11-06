@@ -1,0 +1,205 @@
+<?php
+/***************************************************************************\
+ *  Associaspip, extension de SPIP pour gestion d'associations
+ *
+ * @copyright Copyright (c) 2007 (v1) Bernard Blazin & Francois de Montlivault
+ * @copyright Copyright (c) 2010--2011 (v2) Emmanuel Saint-James & Jeannot Lapin
+ *
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+\***************************************************************************/
+
+if (!defined('_ECRIRE_INC_VERSION'))
+	return;
+
+function exec_adherent() {
+	include_spip('inc/navigation_modules');
+	$id_auteur = association_passeparam_id('auteur');
+	$full = autoriser('editer_membres', 'association');
+	if (!autoriser('voir_membres', 'association', $id_auteur)) {
+		include_spip('inc/minipres');
+		echo minipres();
+	} else {
+		$data = sql_fetsel('m.sexe, m.nom_famille, m.prenom, m.date_validite, m.id_asso, c.libelle','spip_asso_membres as m LEFT JOIN spip_asso_categories as c ON m.id_categorie=c.id_categorie', "m.id_auteur=$id_auteur");
+		include_spip('inc/association_comptabilite');
+		$nom_membre = association_formater_nom($data['sexe'], $data['prenom'], $data['nom_famille']);
+		$validite = $data['date_validite'];
+		$adresses = association_formater_adresses(array($id_auteur));
+		$emails = association_formater_emails(array($id_auteur));
+		$telephones = association_formater_telephones(array($id_auteur));
+		$sites = association_formater_urls(array($id_auteur));
+		$categorie = $data['libelle']?$data['libelle']:_T('asso:pas_de_categorie_attribuee');
+		$statut = sql_getfetsel('statut', 'spip_auteurs', 'id_auteur='.$id_auteur);
+		switch($statut)	{
+			case '0minirezo':
+				$statut='auteur'; break;
+			case '1comite':
+				$statut='auteur'; break;
+			default :
+				$statut='visiteur'; break;
+		}
+		onglets_association('titre_onglet_membres', 'adherents');
+		// INFOS
+		if ($full) {
+			$infos['adherent_libelle_categorie'] = $categorie;
+		}
+		$infos['adherent_libelle_validite'] = association_formater_date($data['date_validite']);
+		if ($GLOBALS['association_metas']['id_asso']) {
+			$infos['adherent_libelle_reference_interne'] = ($data['id_asso']?$data['id_asso']:_T('asso:pas_de_reference_interne_attribuee')) ;
+		}
+		if ($adresses[$id_auteur])
+			$infos['coordonnees:adresses'] = $adresses[$id_auteur];
+		if ($emails[$id_auteur])
+			$infos['coordonnees:emails'] = $emails[$id_auteur];
+		if ($telephones[$id_auteur])
+			$infos['coordonnees:numeros'] =  $telephones[$id_auteur];
+		if ($sites[$id_auteur])
+			$infos['coordonnees:pages'] =  $sites[$id_auteur];
+		echo '<div class="vcard">'. association_totauxinfos_intro('<span class="fn">'.htmlspecialchars($nom_membre).'</span>', $statut, $id_auteur, $infos, 'asso_membre') .'</div>';
+		// datation et raccourcis
+		raccourcis_association('', array(
+			'adherent_label_modifier_membre' => array('edit-24.gif', array('edit_adherent', "id=$id_auteur"), $full),
+			"adherent_label_modifier_$statut" => array('membre_infos.png', array('auteur_infos', "id_auteur=$id_auteur"), ),
+		));
+		debut_cadre_association('annonce.gif', 'membre');
+		if ( autoriser('voir_groupes', 'association') )
+			echo propre($data['commentaire']);
+		$query_groupes = sql_select('g.*, fonction', 'spip_asso_groupes g LEFT JOIN spip_asso_groupes_liaisons l ON g.id_groupe=l.id_groupe', 'g.id_groupe>=100 AND l.id_auteur='.$id_auteur, '', 'g.nom'); // Liste des groupes (on ignore les groupes d'id <100 qui sont dedies a la gestion des autorisations)
+		if (sql_count($query_groupes)) {
+			echo debut_cadre_relief('', TRUE, '', _T('asso:groupes_membre') );
+			echo association_bloc_listehtml(
+				$query_groupes, // requete
+				array(
+					'id_groupe' => array('asso:entete_id', 'entier'),
+					'nom' => array('asso:groupe', 'texte'),
+					'fonction' => array('asso:fonction', 'texte'),
+				), // entetes et formats des donnees
+				array(
+					array('list', 'membres_groupe', 'id=$$')
+				), // boutons d'action
+				'id_groupe' // champ portant la cle des lignes et des boutons
+			);
+			echo fin_cadre_relief(TRUE);
+		}
+		if (test_plugin_actif('fpdf') AND $GLOBALS['association_metas']['recufiscal']) { // JUSTIFICATIFS : afficher le lien vers les justificatifs seulemeunt si active en configuration et si FPDF est actif
+			echo debut_cadre_relief('', TRUE, '', _T('asso:liens_vers_les_justificatifs') );
+			$data = array_map('array_shift', sql_allfetsel("DATE_FORMAT(date_operation, '%Y')  AS annee", 'spip_asso_comptes', "id_journal=$id_auteur", 'annee', 'annee ASC') );
+			foreach($data as $k => $annee) {
+				echo '<a href="'. generer_url_ecrire('pdf_fiscal', "id=$id_auteur&annee=$annee") .'">'.$annee.'</a> ';
+			}
+			echo fin_cadre_relief(TRUE);
+		}
+		if ($GLOBALS['association_metas']['pc_cotisations']) { // HISTORIQUE COTISATIONS
+			echo debut_cadre_relief('', TRUE, '', _T('asso:adherent_titre_historique_cotisations') );
+			if ($full) { // si on a l'autorisation admin, on ajoute un bouton pour ajouter une cotisation
+				echo '<p> <a href="' .generer_url_ecrire('ajout_cotisation', "id=$id_auteur").'">' . _T('asso:adherent_label_ajouter_cotisation') .'</a> '. association_bouton_paye('ajout_cotisation','id='.$id_auteur, '') .' </p>';
+			}
+			$association_imputation = charger_fonction('association_imputation', 'inc');
+			echo voir_adherent_paiements(
+				array('id_compte, recette AS montant, date_operation, justification, journal', 'spip_asso_comptes', $association_imputation('pc_cotisations', $id_auteur), '', 'date_operation DESC, id_compte DESC', '0,10' ),
+				$full,
+				'cotisation'
+			);
+			echo fin_cadre_relief(TRUE);
+		}
+		if ($GLOBALS['association_metas']['activites']) { // HISTORIQUE ACTIVITES
+			echo debut_cadre_relief('', TRUE, '', _T('asso:adherent_titre_historique_activites') );
+			echo association_bloc_listehtml(
+				array('*', 'spip_asso_activites As a INNER JOIN spip_evenements AS e ON a.id_evenement=e.id_evenement', "id_auteur=$id_auteur", '', 'date_debut DESC, date_fin DESC', '0,10'), // requete
+				array(
+					'id_activite' => array('asso:entete_id', 'entier'),
+					'date_debut' => array('asso:entete_date', 'date'),
+					'titre' => array('asso:adherent_entete_activite', 'texte', $full?'propre':'nettoyer_raccourcis_typo', ),
+					'quantite' => array('asso:entete_quantite', 'entier'),
+					'prix_activite' => array('asso:entete_montant', 'prix'),
+				), // entetes et formats des donnees
+				autoriser('editer_activites', 'association') ? array(
+					array('edit', 'activite', 'id=$$'),
+				) : array(), // boutons d'action
+				'id_activite' // champ portant la cle des lignes et des boutons
+			);
+			echo fin_cadre_relief(TRUE);
+		}
+		if ($GLOBALS['association_metas']['ventes']) { // HISTORIQUE VENTES
+			echo debut_cadre_relief('', TRUE, '', _T('asso:adherent_titre_historique_ventes') );
+			echo association_bloc_listehtml(
+				array('*', 'spip_asso_ventes', "id_auteur=$id_auteur", '', 'date_vente DESC', '0,10'), // requete
+				array(
+					'id_vente' => array('asso:entete_id', 'entier'),
+					'date_vente' => array('asso:ventes_entete_date_vente', 'date'),
+					'article' => array('asso:entete_article', 'texte', $full?'propre':'nettoyer_raccourcis_typo', ),
+					'quantite' => array('asso:entete_quantite', 'nombre'),
+					'date_envoie' => array('asso:ventes_entete_date_envoi', 'date'),
+				), // entetes et formats des donnees
+				autoriser('voir_ventes', 'association') ? array(
+					array('list', 'ventes', 'id=$$')
+				) : array(), // boutons d'action
+				'id_vente' // champ portant la cle des lignes et des boutons
+			);
+			echo fin_cadre_relief(TRUE);
+		}
+		if ($GLOBALS['association_metas']['dons']) { // HISTORIQUE DONS
+			echo debut_cadre_relief('', TRUE, '', _T('asso:adherent_titre_historique_dons') );
+			echo association_bloc_listehtml(
+				array('*', 'spip_asso_dons', "id_auteur=$id_auteur", '', 'date_don DESC', '0,10'), // requete
+				array(
+					'id_don' => array('asso:entete_id', 'entier'),
+					'date_don' => array('asso:entete_date', 'date'),
+					'argent' => array('asso:entete_montant', 'prix'),
+					'colis' => array('asso:colis', 'texte', $full?'propre':'nettoyer_raccourcis_typo', ),
+				), // entetes et formats des donnees
+				autoriser('voir_dons', 'association') ? array(
+					array('list', 'dons', 'id=$$')
+				) : array(), // boutons d'action
+				'id_don' // champ portant la cle des lignes et des boutons
+			);
+/*
+			$association_imputation = charger_fonction('association_imputation', 'inc');
+			$critere = $association_imputation('pc_dons');
+			echo voir_adherent_paiements(
+				array('D.id_don AS id, D.argent AS montant, D.date_don AS date, justification, journal, id_compte', 'spip_asso_dons AS D LEFT JOIN spip_asso_comptes AS C ON C.id_journal=D.id_don', "$critere AND id_auteur=$id_auteur",'D.date_don DESC', '0,10'),
+				$full,
+				'don'
+			);
+*/
+			echo fin_cadre_relief(TRUE);
+		}
+		if ($GLOBALS['association_metas']['prets']) { // HISTORIQUE PRETS
+			echo debut_cadre_relief('', TRUE, '', _T('asso:adherent_titre_historique_prets') );
+			echo association_bloc_listehtml(
+				array('*', 'spip_asso_prets AS P LEFT JOIN spip_asso_ressources AS R ON P.id_ressource=R.id_ressource', "id_auteur=$id_auteur", '', 'id_pret DESC', '0,10'), // requete
+				array(
+					'id_pret' => array('asso:entete_id', 'entier'),
+					'date_sortie' => array('asso:prets_entete_date_sortie', 'date', 'dtstart'),
+					'intitule' => array('asso:entete_article', 'texte', $full?'propre':'nettoyer_raccourcis_typo', ),
+#					'duree' => array('asso:entete_duree', 'duree'),
+					'date_retour' => array('asso:prets_entete_date_retour', 'date', 'dtend'),
+				), // entetes et formats des donnees
+				autoriser('voir_prets', 'association') ? array(
+					array('list', 'prets', 'id=$$')
+				) : array(), // boutons d'action
+				'id_pret' // champ portant la cle des lignes et des boutons
+			);
+			echo fin_cadre_relief(TRUE);
+		}
+		fin_page_association();
+	}
+}
+
+function voir_adherent_paiements($data, $lien) {
+	return association_bloc_listehtml(
+		$data, // requete
+		array(
+			'id_compte' => array('asso:entete_id', 'entier'),
+			'date' => array('asso:entete_date', 'date'),
+			'journal' => array('asso:adherent_entete_journal', 'texte'),
+			'justification' => array('asso:adherent_entete_justification', 'texte', $lien?'propre':'nettoyer_raccourcis_typo', ),
+			'montant' => array('asso:entete_montant', 'prix'),
+		),
+		autoriser('voir_compta', 'association') ? array(
+			array('list', 'comptes', 'id_compte=$$')
+		) : array(), // boutons d'action : voir l'operation dans le journal comptable
+		'id_compte' // champ portant la cle des lignes et des boutons
+	);
+}
+
+?>

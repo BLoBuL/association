@@ -1,0 +1,76 @@
+<plugin>
+	<nom>Associaspip</nom>
+	<auteur>
+	Bernard Blazin - Fran&#231;ois de Montlivault
+	Emmanuel Saint-James - Jeannolapin
+	</auteur>
+	<version>2.2.0</version>
+	<version_base>67500</version_base>
+	<meta>association_metas</meta>
+	<etat>dev</etat>
+	<slogan>Gestion d'associations</slogan>
+	<description>Gestion d'associations</description>
+	<prefix>association</prefix>
+	<install>base/association_gestion.php</install>
+	<lien>http://www.spip-contrib.net/Associaspip</lien>
+	<icon>img_pack/annonce.gif</icon>
+
+	<options>association_options.php</options>
+
+	<pipeline><nom>header_prive</nom></pipeline>
+	<pipeline><nom>delete_tables</nom></pipeline>
+
+	<pipeline>
+		<nom>declarer_tables_principales</nom>
+		<inclure>base/association.php</inclure>
+	</pipeline>
+	<pipeline>
+		<nom>declarer_tables_auxiliaires</nom>
+		<inclure>base/association.php</inclure>
+	</pipeline>
+	<pipeline>
+        	<nom>declarer_tables_interfaces</nom>
+        	<inclure>base/association.php</inclure>
+	</pipeline>
+
+	<!-- Ajout automatique de l'auteur edité comme membre -->
+	<pipeline>
+		<nom>post_edition</nom>
+		<inclure>inc/post_edition.php</inclure>
+	</pipeline>
+
+	<!-- Interface avec la page auteur infos-->
+	<pipeline>
+		<nom>affiche_gauche</nom>
+		<inclure>inc/lien_page_auteur.php</inclure>
+	</pipeline>
+
+	<!-- Interface avec plugin champs extras 2 -->
+	<pipeline>
+		<nom>objets_extensibles</nom>
+		<inclure>inc/association_cextras.php</inclure>
+	</pipeline>
+
+	<!-- Autorisations -->
+	<pipeline>
+		<nom>autoriser</nom>
+		<inclure>association_autorisations.php</inclure>
+	</pipeline>
+
+	<bouton id="association_bando" parent="bando_reactions">
+		<icone>img_pack/annonce.gif</icone>
+		<titre>Associaspip</titre>
+		<url>association</url>
+	</bouton>
+
+	<bouton id="association" parent="naviguer">
+		<icone>img_pack/annonce.gif</icone>
+		<titre>Associaspip</titre>
+	</bouton>
+
+	<categorie>divers</categorie>
+	<necessite id="SPIP" version="[2.1.8;2.1.99]" />
+	<utilise id="fpdf" version="[0.0.1;0.1.99]" />
+	<utilise id="coordonnees" version="[1.4.5;1.5.99]" />
+	<utilise id="cextras" version="[0.8;1.99]" />
+</plugin>
