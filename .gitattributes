@@ -28,6 +28,11 @@ action/export_soldescomptes_latex.php -text
 action/export_soldescomptes_tsv.php -text
 action/export_soldescomptes_xml.php -text
 action/export_soldescomptes_yaml.php -text
+action/pdf_activite.php -text
+action/pdf_comptesbilan.php -text
+action/pdf_comptesresultat.php -text
+action/pdf_fiscal.php -text
+action/pdf_membres.php -text
 action/relancer_adherents.php -text
 action/supprimer_activites.php -text
 action/supprimer_adherents.php -text
@@ -94,11 +99,6 @@ exec/exercices.php -text
 exec/groupes.php -text
 exec/inscrits_activite.php -text
 exec/membres_groupe.php -text
-exec/pdf_activite.php -text
-exec/pdf_comptesbilan.php -text
-exec/pdf_comptesresultat.php -text
-exec/pdf_fiscal.php -text
-exec/pdf_membres.php -text
 exec/plan_comptable.php -text
 exec/prets.php -text
 exec/relance_adherents.php -text
