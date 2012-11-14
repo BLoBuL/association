@@ -203,6 +203,7 @@ img_pack/suppr-12.gif -text
 img_pack/ventes.gif -text
 img_pack/visit-12.gif -text
 img_pack/voir-12.png -text
+inc/adherent.php -text
 inc/association_cextras.php -text
 inc/association_comptabilite.php -text
 inc/association_plan_comptable.php -text
