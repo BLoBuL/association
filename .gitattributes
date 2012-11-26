@@ -225,6 +225,7 @@ lang/asso_fr.php -text
 lang/asso_gl.php -text
 modeles/asso_comptes.html -text
 modeles/asso_membres.html -text
+modeles/asso_profil.html -text
 modeles/asso_ressources.html -text
 modeles/coordonnees_adresse.html -text
 modeles/coordonnees_telephone.html -text
