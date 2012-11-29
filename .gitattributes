@@ -122,10 +122,6 @@ formulaires/ajouter_membres_groupe.html -text
 formulaires/ajouter_membres_groupe.php -text
 formulaires/configurer_association.html -text
 formulaires/configurer_association.php -text
-formulaires/configurer_association_compta.html -text
-formulaires/configurer_association_informations.html -text
-formulaires/configurer_association_membres.html -text
-formulaires/configurer_association_pdf.html -text
 formulaires/configurer_metas.php -text
 formulaires/editer_asso_activites.html -text
 formulaires/editer_asso_activites.php -text
@@ -210,6 +206,10 @@ inc/association_plan_comptable.php -text
 inc/association_spipal.php -text
 inc/bouton_validation.html -text
 inc/choisir_mbr_nom.html -text
+inc/configurer_association_compta.html -text
+inc/configurer_association_informations.html -text
+inc/configurer_association_membres.html -text
+inc/configurer_association_pdf.html -text
 inc/generer_plan_js.php -text
 inc/lien_page_auteur.php -text
 inc/navigation_modules.php -text
