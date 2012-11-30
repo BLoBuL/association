@@ -210,7 +210,6 @@ inc/configurer_association_compta.html -text
 inc/configurer_association_informations.html -text
 inc/configurer_association_membres.html -text
 inc/configurer_association_pdf.html -text
-inc/generer_plan_js.php -text
 inc/lien_page_auteur.php -text
 inc/navigation_modules.php -text
 inc/post_edition.php -text
