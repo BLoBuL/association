@@ -28,12 +28,12 @@ action/export_soldescomptes_latex.php -text
 action/export_soldescomptes_tsv.php -text
 action/export_soldescomptes_xml.php -text
 action/export_soldescomptes_yaml.php -text
+action/mailing_membres.php -text
 action/pdf_activite.php -text
 action/pdf_comptesbilan.php -text
 action/pdf_comptesresultat.php -text
 action/pdf_fiscal.php -text
 action/pdf_membres.php -text
-action/relancer_adherents.php -text
 action/supprimer_activites.php -text
 action/supprimer_adherents.php -text
 action/supprimer_categories.php -text
@@ -91,7 +91,6 @@ exec/edit_groupe.php -text
 exec/edit_groupe_autorisations.php -text
 exec/edit_plan.php -text
 exec/edit_pret.php -text
-exec/edit_relances.php -text
 exec/edit_ressource.php -text
 exec/edit_vente.php -text
 exec/encaisse.php -text
@@ -101,7 +100,6 @@ exec/inscrits_activite.php -text
 exec/membres_groupe.php -text
 exec/plan_comptable.php -text
 exec/prets.php -text
-exec/relance_adherents.php -text
 exec/ressources.php -text
 exec/suppr_activite.php -text
 exec/suppr_categorie.php -text
@@ -151,13 +149,12 @@ formulaires/editer_asso_ventes.html -text
 formulaires/editer_asso_ventes.php -text
 formulaires/editer_membres_groupe.html -text
 formulaires/editer_membres_groupe.php -text
-formulaires/editer_relance.html -text
 formulaires/imprimer_etiquettes.html -text
 formulaires/imprimer_etiquettes.php -text
+formulaires/mailing_membres.html -text
+formulaires/mailing_membres.php -text
 formulaires/parametrer_etiquettes.html -text
 formulaires/parametrer_etiquettes.php -text
-formulaires/relancer_adherents.html -text
-formulaires/relancer_adherents.php -text
 formulaires/synchroniser_asso_activites.html -text
 formulaires/synchroniser_asso_activites.php -text
 formulaires/synchroniser_asso_membres.html -text
@@ -180,6 +177,7 @@ img_pack/euro-39.gif -text
 img_pack/export-24.png -text
 img_pack/finances-24.png -text
 img_pack/finances-32.jpg -text
+img_pack/mail-24.png -text
 img_pack/membre-60.gif -text
 img_pack/membre_infos.png -text
 img_pack/panier_in.gif -text
@@ -192,7 +190,6 @@ img_pack/puce-poubelle.gif -text
 img_pack/puce-rouge.gif -text
 img_pack/puce-verte.gif -text
 img_pack/redac-12.gif -text
-img_pack/relance-24.png -text
 img_pack/reload-32.png -text
 img_pack/retour-24.png -text
 img_pack/suppr-12.gif -text
@@ -202,6 +199,7 @@ img_pack/voir-12.png -text
 inc/adherent.php -text
 inc/association_cextras.php -text
 inc/association_comptabilite.php -text
+inc/association_coordonnees.php -text
 inc/association_plan_comptable.php -text
 inc/association_spipal.php -text
 inc/bouton_validation.html -text
@@ -258,11 +256,11 @@ prive/editer/editer_asso_prets.html -text
 prive/editer/editer_asso_ressources.html -text
 prive/editer/editer_asso_ventes.html -text
 prive/editer/imprimer_etiquettes.html -text
-prive/editer/relancer_adherents.html -text
 prive/editer/synchroniser_asso_activites.html -text
 prive/exec/configurer_association.html -text
 prive/exec/editer_asso_meta_utilisateur.html -text
 prive/exec/editer_asso_metas_utilisateur.html -text
+prive/exec/mailing.html -text
 prive/exec/parametrer_etiquettes.html -text
 prive/exec/supprimer_asso_meta_utilisateur.html -text
 prive/exec/synchroniser_asso_membres.html -text
