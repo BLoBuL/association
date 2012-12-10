@@ -213,6 +213,9 @@ inc/navigation_modules.php -text
 inc/post_edition.php -text
 inc/saisir_categorie.html -text
 inc/saisir_commentaires.html -text
+inc/saisir_config_cc.html -text
+inc/saisir_config_dc.html -text
+inc/saisir_config_rc.html -text
 inc/saisir_membre.html -text
 inc/saisir_paiement.html -text
 javascript/association.js -text
