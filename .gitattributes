@@ -29,6 +29,7 @@ action/supprimer_ventes.php -text
 action/synchroniser_asso_membres.php -text
 action/valider_comptes.php -text
 /association.css -text
+/association_administrations.php -text
 /association_options.php -text
 balise/configurer_metas.php -text
 balise/editeur_destinations.php -text
