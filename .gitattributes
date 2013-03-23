@@ -32,6 +32,7 @@ action/mailing_membres.php -text
 action/pdf_activite.php -text
 action/pdf_comptesbilan.php -text
 action/pdf_comptesresultat.php -text
+action/pdf_etiquettes.php -text
 action/pdf_fiscal.php -text
 action/pdf_membres.php -text
 action/supprimer_activites.php -text
@@ -149,8 +150,6 @@ formulaires/editer_asso_ventes.html -text
 formulaires/editer_asso_ventes.php -text
 formulaires/editer_membres_groupe.html -text
 formulaires/editer_membres_groupe.php -text
-formulaires/imprimer_etiquettes.html -text
-formulaires/imprimer_etiquettes.php -text
 formulaires/mailing_membres.html -text
 formulaires/mailing_membres.php -text
 formulaires/parametrer_etiquettes.html -text
@@ -258,7 +257,6 @@ prive/editer/editer_asso_plan.html -text
 prive/editer/editer_asso_prets.html -text
 prive/editer/editer_asso_ressources.html -text
 prive/editer/editer_asso_ventes.html -text
-prive/editer/imprimer_etiquettes.html -text
 prive/editer/synchroniser_asso_activites.html -text
 prive/exec/configurer_association.html -text
 prive/exec/editer_asso_meta_utilisateur.html -text
