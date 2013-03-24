@@ -37,6 +37,7 @@ balise/formulaire_inscription_activite.php -text
 balise/meta.php -text
 balise/onglets_association.php -text
 base/association.php -text
+base/association_gestion.php -text
 exec/action_activites.php -text
 exec/action_adherents.php -text
 exec/action_categorie.php -text
