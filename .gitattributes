@@ -80,7 +80,7 @@ exec/categories.php -text
 exec/compte_bilan.php -text
 exec/compte_resultat.php -text
 exec/comptes.php -text
-exec/destination.php -text
+exec/destination_comptable.php -text
 exec/dons.php -text
 exec/edit_activite.php -text
 exec/edit_adherent.php -text
