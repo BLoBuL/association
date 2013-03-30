@@ -53,6 +53,7 @@ action/synchroniser_asso_membres.php -text
 action/valider_comptes.php -text
 /association.css -text
 /association_autorisations.php -text
+/association_modules.php -text
 /association_options.php -text
 balise/configurer_metas.php -text
 balise/editeur_destinations.php -text
@@ -95,7 +96,7 @@ exec/edit_pret.php -text
 exec/edit_ressource.php -text
 exec/edit_vente.php -text
 exec/encaisse.php -text
-exec/exercices.php -text
+exec/exercice_comptable.php -text
 exec/groupes.php -text
 exec/inscrits_activite.php -text
 exec/membres_groupe.php -text
@@ -210,7 +211,6 @@ inc/configurer_association_informations.html -text
 inc/configurer_association_membres.html -text
 inc/configurer_association_pdf.html -text
 inc/lien_page_auteur.php -text
-inc/navigation_modules.php -text
 inc/post_edition.php -text
 inc/saisir_categorie.html -text
 inc/saisir_commentaires.html -text
