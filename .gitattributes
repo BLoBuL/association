@@ -72,11 +72,11 @@ exec/adherents.php -text
 exec/ajout_cotisation.php -text
 exec/ajout_inscription.php -text
 exec/ajout_participation.php -text
-exec/annexe.php -text
 exec/association.php -text
 exec/association_autorisations.php -text
 exec/bilan.php -text
 exec/categories.php -text
+exec/compte_annexe.php -text
 exec/compte_bilan.php -text
 exec/compte_resultat.php -text
 exec/comptes.php -text
