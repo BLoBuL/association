@@ -57,7 +57,7 @@ exec/association.php -text
 exec/bilan.php -text
 exec/categories.php -text
 exec/comptes.php -text
-exec/destination.php -text
+exec/destination_comptable.php -text
 exec/dons.php -text
 exec/edit_activite.php -text
 exec/edit_adherent.php -text
@@ -74,7 +74,7 @@ exec/edit_vente.php -text
 exec/pdf_activite.php -text
 exec/pdf_adherents.php -text
 exec/pdf_fiscal.php -text
-exec/plan.php -text
+exec/plan_comptable.php -text
 exec/prets.php -text
 exec/ressources.php -text
 exec/ventes.php -text
