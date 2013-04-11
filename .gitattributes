@@ -207,10 +207,6 @@ inc/association_plan_comptable.php -text
 inc/association_spipal.php -text
 inc/bouton_validation.html -text
 inc/choisir_mbr_nom.html -text
-inc/configurer_association_compta.html -text
-inc/configurer_association_informations.html -text
-inc/configurer_association_membres.html -text
-inc/configurer_association_pdf.html -text
 inc/lien_page_auteur.php -text
 inc/post_edition.php -text
 inc/saisir_categorie.html -text
@@ -249,6 +245,10 @@ prive/contenu/voir_groupes_autorisations.html -text
 prive/editer/ajouter_cotisation.html -text
 prive/editer/ajouter_inscription.html -text
 prive/editer/ajouter_participation.html -text
+prive/editer/configurer_compta.html -text
+prive/editer/configurer_infos.html -text
+prive/editer/configurer_membres.html -text
+prive/editer/configurer_pdf -text
 prive/editer/editer_asso_activites.html -text
 prive/editer/editer_asso_categories.html -text
 prive/editer/editer_asso_comptes.html -text
