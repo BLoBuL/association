@@ -225,6 +225,7 @@ javascript/jquery.destinations_form.js -text
 lang/asso_en.php -text
 lang/asso_fr.php -text
 lang/asso_gl.php -text
+lang/cerfa11580_fr.php -text
 modeles/asso_comptes.html -text
 modeles/asso_profil.html -text
 modeles/asso_ressources.html -text
