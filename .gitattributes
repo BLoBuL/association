@@ -248,7 +248,7 @@ prive/editer/ajouter_participation.html -text
 prive/editer/configurer_compta.html -text
 prive/editer/configurer_infos.html -text
 prive/editer/configurer_membres.html -text
-prive/editer/configurer_pdf -text
+prive/editer/configurer_pdf.html -text
 prive/editer/editer_asso_activites.html -text
 prive/editer/editer_asso_categories.html -text
 prive/editer/editer_asso_comptes.html -text
