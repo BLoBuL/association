@@ -231,7 +231,6 @@ pdf/pdf_parser.php -text
 pdf/recu_fiscal.pdf -text
 /plugin.xml -text
 prive/boite/lien_page_auteur.html -text
-prive/contenu/editer_asso_metas_utilisateur.html -text
 prive/contenu/voir_groupes_autorisations.html -text
 prive/editer/ajouter_cotisation.html -text
 prive/editer/ajouter_inscription.html -text
