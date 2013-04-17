@@ -32,7 +32,6 @@ action/pdf_activite.php -text
 action/pdf_comptesbilan.php -text
 action/pdf_comptesresultat.php -text
 action/pdf_etiquettes.php -text
-action/pdf_fiscal.php -text
 action/pdf_membres.php -text
 action/supprimer_asso_activite.php -text
 action/supprimer_asso_categorie.php -text
@@ -210,7 +209,6 @@ javascript/jquery.destinations_form.js -text
 lang/asso_en.php -text
 lang/asso_fr.php -text
 lang/asso_gl.php -text
-lang/cerfa11580_fr.php -text
 modeles/asso_comptes.html -text
 modeles/asso_profil.html -text
 modeles/asso_ressources.html -text
@@ -219,14 +217,10 @@ modeles/coordonnees_telephone.html -text
 modeles/histofinan.html -text
 modeles/membres_groupe.html -text
 pdf/extends.php -text
-pdf/fpdf_tpl.php -text
-pdf/fpdi.php -text
 pdf/fpdi2tcpdf_bridge.php -text
-pdf/fpdi_pdf_parser.php -text
 pdf/pdf_context.php -text
 pdf/pdf_label.php -text
 pdf/pdf_parser.php -text
-pdf/recu_fiscal.pdf -text
 /plugin.xml -text
 prive/boite/lien_page_auteur.html -text
 prive/contenu/voir_groupes_autorisations.html -text
