@@ -70,6 +70,7 @@ exec/activites.php -text
 exec/adherent.php -text
 exec/adherents.php -text
 exec/ajout_cotisation.php -text
+exec/ajout_don.php -text
 exec/ajout_inscription.php -text
 exec/ajout_participation.php -text
 exec/association.php -text
