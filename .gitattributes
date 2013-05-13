@@ -50,7 +50,6 @@ action/supprimer_meta_utilisateur.php -text
 action/synchroniser_asso_activites.php -text
 action/synchroniser_asso_membres.php -text
 action/valider_asso_comptes.php -text
-/association.css -text
 /association_administrations.php -text
 /association_autorisations.php -text
 /association_modules.php -text
@@ -261,3 +260,4 @@ prive/exec/mailing.html -text
 prive/exec/parametrer_etiquettes.html -text
 prive/exec/supprimer_asso_meta_utilisateur.html -text
 prive/exec/synchroniser_asso_membres.html -text
+prive/style_prive_plugin_association.html -text
