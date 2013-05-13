@@ -160,7 +160,6 @@ formulaires/synchroniser_asso_activites.php -text
 formulaires/synchroniser_asso_membres.html -text
 formulaires/synchroniser_asso_membres.php -text
 img_pack/activites.gif -text
-img_pack/admin-12.gif -text svneol=unset#unset
 img_pack/ajout-24.png -text
 img_pack/annonce.gif -text
 img_pack/asso-24.png -text
@@ -185,18 +184,15 @@ img_pack/membre-60.gif -text
 img_pack/membre_infos.png -text
 img_pack/panier_in.gif -text
 img_pack/plan_compte.png -text
-img_pack/poubelle.gif -text
 img_pack/pret-24.gif -text
 img_pack/print-24.png -text
 img_pack/puce-orange.gif -text
 img_pack/puce-poubelle.gif -text
 img_pack/puce-rouge.gif -text
 img_pack/puce-verte.gif -text
-img_pack/redac-12.gif -text
 img_pack/reload-32.png -text
 img_pack/suppr-12.gif -text
 img_pack/ventes.gif -text
-img_pack/visit-12.gif -text
 img_pack/voir-12.png -text
 inc/adherent.php -text
 inc/association_comptabilite.php -text
