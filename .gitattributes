@@ -28,7 +28,6 @@ action/supprimer_ressources.php -text
 action/supprimer_ventes.php -text
 action/synchroniser_asso_membres.php -text
 action/valider_comptes.php -text
-/association.css -text
 /association_administrations.php -text
 /association_options.php -text
 balise/configurer_metas.php -text
@@ -227,4 +226,5 @@ prive/editer/editer_asso_ventes.html -text
 prive/editer/editer_cotisations.html -text
 prive/exec/configurer_association.html -text
 prive/exec/synchroniser_asso_membres.html -text
+prive/style_prive_plugin_association.html -text
 /recu_fiscal.pdf -text
