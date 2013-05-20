@@ -194,7 +194,6 @@ img_pack/reload-32.png -text
 img_pack/suppr-12.gif -text
 img_pack/ventes.gif -text
 img_pack/voir-12.png -text
-inc/adherent.php -text
 inc/association_comptabilite.php -text
 inc/association_coordonnees.php -text
 inc/association_plan_comptable.php -text
@@ -255,4 +254,9 @@ prive/exec/mailing.html -text
 prive/exec/parametrer_etiquettes.html -text
 prive/exec/supprimer_asso_meta_utilisateur.html -text
 prive/exec/synchroniser_asso_membres.html -text
+prive/logasso_1.html -text
+prive/logasso_2.html -text
+prive/logasso_3.html -text
+prive/logasso_4.html -text
+prive/logasso_5.html -text
 prive/style_prive_plugin_association.html -text
