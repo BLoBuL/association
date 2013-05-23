@@ -47,7 +47,7 @@ action/supprimer_asso_pret.php -text
 action/supprimer_asso_ressource.php -text
 action/supprimer_asso_vente.php -text
 action/supprimer_meta_utilisateur.php -text
-action/synchroniser_asso_activites.php -text
+action/synchroniser_asso_activite.php -text
 action/synchroniser_asso_groupe.php -text
 action/synchroniser_asso_membres.php -text
 action/valider_asso_comptes.php -text
@@ -157,8 +157,8 @@ formulaires/mailing_membres.html -text
 formulaires/mailing_membres.php -text
 formulaires/parametrer_etiquettes.html -text
 formulaires/parametrer_etiquettes.php -text
-formulaires/synchroniser_asso_activites.html -text
-formulaires/synchroniser_asso_activites.php -text
+formulaires/synchroniser_asso_activite.html -text
+formulaires/synchroniser_asso_activite.php -text
 formulaires/synchroniser_asso_groupe.html -text
 formulaires/synchroniser_asso_groupe.php -text
 formulaires/synchroniser_asso_membres.html -text
@@ -250,7 +250,7 @@ prive/editer/saisir_config_dc.html -text
 prive/editer/saisir_config_rc.html -text
 prive/editer/saisir_membre.html -text
 prive/editer/saisir_paiement.html -text
-prive/editer/synchroniser_asso_activites.html -text
+prive/editer/synchroniser_asso_activite.html -text
 prive/editer/synchroniser_asso_groupe.html -text
 prive/exec/configurer_association.html -text
 prive/exec/editer_asso_meta_utilisateur.html -text
