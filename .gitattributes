@@ -11,6 +11,7 @@ action/editer_asso_compte.php -text
 action/editer_asso_destination.php -text
 action/editer_asso_don.php -text
 action/editer_asso_exercice.php -text
+action/editer_asso_fonctions.php -text
 action/editer_asso_groupe.php -text
 action/editer_asso_membre.php -text
 action/editer_asso_plan.php -text
@@ -18,7 +19,6 @@ action/editer_asso_pret.php -text
 action/editer_asso_ressource.php -text
 action/editer_asso_vente.php -text
 action/editer_membre_groupes.php -text
-action/editer_membres_groupe.php -text
 action/export_soldescomptes_csv.php -text
 action/export_soldescomptes_ctx.php -text
 action/export_soldescomptes_dbk.php -text
@@ -115,7 +115,7 @@ exec/suppr_plan.php -text
 exec/suppr_pret.php -text
 exec/suppr_ressource.php -text
 exec/suppr_vente.php -text
-exec/synchronis_activites.php -text
+exec/synchronis_activite.php -text
 exec/synchronis_groupe.php -text
 exec/ventes.php -text
 formulaires/ajouter_cotisation.html -text
@@ -137,6 +137,8 @@ formulaires/editer_asso_don.html -text
 formulaires/editer_asso_don.php -text
 formulaires/editer_asso_exercice.html -text
 formulaires/editer_asso_exercice.php -text
+formulaires/editer_asso_fonctions.html -text
+formulaires/editer_asso_fonctions.php -text
 formulaires/editer_asso_groupe.html -text
 formulaires/editer_asso_groupe.php -text
 formulaires/editer_asso_membre.html -text
@@ -151,8 +153,6 @@ formulaires/editer_asso_ressource.html -text
 formulaires/editer_asso_ressource.php -text
 formulaires/editer_asso_vente.html -text
 formulaires/editer_asso_vente.php -text
-formulaires/editer_membres_groupe.html -text
-formulaires/editer_membres_groupe.php -text
 formulaires/mailing_membres.html -text
 formulaires/mailing_membres.php -text
 formulaires/parametrer_etiquettes.html -text
