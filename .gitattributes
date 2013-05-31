@@ -207,7 +207,10 @@ lang/asso_en.php -text
 lang/asso_fr.php -text
 lang/asso_gl.php -text
 lang/pcg2be_fr.php -text
+lang/pcg2ca_en.php -text
+lang/pcg2ca_fr.php -text
 lang/pcg2ch_fr.php -text
+lang/pcg2es_es.php -text
 lang/pcg2fr_fr.php -text
 lang/pcg2ma_fr.php -text
 lang/pcg2ohada_fr.php -text
