@@ -60,7 +60,6 @@ balise/configurer_metas.php -text
 balise/editeur_destinations.php -text
 balise/meta.php -text
 balise/onglets_association.php -text
-balise/selecteur_classe_comptable.php -text
 balise/selecteur_code_comptable.php -text
 balise/selecteur_imputation.php -text
 base/association.php -text
@@ -206,6 +205,7 @@ javascript/jquery.destinations_form.js -text
 lang/asso_en.php -text
 lang/asso_fr.php -text
 lang/asso_gl.php -text
+lang/compta_fr.php -text
 lang/pcg2be_fr.php -text
 lang/pcg2ca_en.php -text
 lang/pcg2ca_fr.php -text
