@@ -60,7 +60,6 @@ balise/configurer_metas.php -text
 balise/editeur_destinations.php -text
 balise/meta.php -text
 balise/onglets_association.php -text
-balise/selecteur_code_comptable.php -text
 balise/selecteur_imputation.php -text
 base/association.php -text
 exec/action_adherents.php -text
