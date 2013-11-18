@@ -199,6 +199,13 @@ img_pack/voir-12.png -text
 inc/association_comptabilite.php -text
 inc/association_coordonnees.php -text
 inc/association_spipal.php -text
+inc/pcg2be.php -text
+inc/pcg2ca.php -text
+inc/pcg2ch.php -text
+inc/pcg2es.php -text
+inc/pcg2fr.php -text
+inc/pcg2ma.php -text
+inc/pcg2syscoa.php -text
 javascript/association.js -text
 javascript/jquery.destinations_form.js -text
 lang/asso_en.php -text
