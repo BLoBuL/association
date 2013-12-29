@@ -234,7 +234,6 @@ pdf/pdf_label.php -text
 pdf/pdf_parser.php -text
 /plugin.xml -text
 prive/boite/lien_page_auteur.html -text
-prive/contenu/voir_groupes_autorisations.html -text
 prive/editer/ajouter_cotisation.html -text
 prive/editer/ajouter_inscription.html -text
 prive/editer/ajouter_participation.html -text
