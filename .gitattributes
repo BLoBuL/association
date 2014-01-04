@@ -1,7 +1,7 @@
 * text=auto !eol
 action/ajouter_cotisation.php -text
+action/ajouter_fonctions2groupe.php -text
 action/ajouter_membre.php -text
-action/ajouter_membre_groupes.php -text
 action/ajouter_membres_groupe.php -text
 action/ajouter_participations.php -text
 action/desactiver_adherents.php -text
@@ -116,10 +116,12 @@ exec/suppr_vente.php -text
 exec/synchronis_activite.php -text
 exec/synchronis_groupe.php -text
 exec/ventes.php -text
+formulaires/ajouter_asso_fonctions2groupe.html -text
+formulaires/ajouter_asso_fonctions2groupe.php -text
+formulaires/ajouter_asso_fonctions2membre.html -text
+formulaires/ajouter_asso_fonctions2membre.php -text
 formulaires/ajouter_cotisation.html -text
 formulaires/ajouter_cotisation.php -text
-formulaires/ajouter_membres_groupe.html -text
-formulaires/ajouter_membres_groupe.php -text
 formulaires/configurer_association.html -text
 formulaires/configurer_association.php -text
 formulaires/configurer_metas.php -text
@@ -135,8 +137,10 @@ formulaires/editer_asso_don.html -text
 formulaires/editer_asso_don.php -text
 formulaires/editer_asso_exercice.html -text
 formulaires/editer_asso_exercice.php -text
-formulaires/editer_asso_fonctions.html -text
-formulaires/editer_asso_fonctions.php -text
+formulaires/editer_asso_fonctions2groupe.html -text
+formulaires/editer_asso_fonctions2groupe.php -text
+formulaires/editer_asso_fonctions2membre.html -text
+formulaires/editer_asso_fonctions2membre.php -text
 formulaires/editer_asso_groupe.html -text
 formulaires/editer_asso_groupe.php -text
 formulaires/editer_asso_membre.html -text
