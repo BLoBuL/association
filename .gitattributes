@@ -18,7 +18,6 @@ action/editer_asso_plan.php -text
 action/editer_asso_pret.php -text
 action/editer_asso_ressource.php -text
 action/editer_asso_vente.php -text
-action/editer_membre_groupes.php -text
 action/export_soldescomptes_csv.php -text
 action/export_soldescomptes_ctx.php -text
 action/export_soldescomptes_dbk.php -text
