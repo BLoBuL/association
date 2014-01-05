@@ -103,7 +103,7 @@ exec/prets.php -text
 exec/ressources.php -text
 exec/suppr_activite.php -text
 exec/suppr_categorie.php -text
-exec/suppr_comptes.php -text
+exec/suppr_compte.php -text
 exec/suppr_destination.php -text
 exec/suppr_don.php -text
 exec/suppr_exercice.php -text
