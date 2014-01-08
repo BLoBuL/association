@@ -1,6 +1,5 @@
 * text=auto !eol
 action/ajouter_cotisation.php -text
-action/ajouter_fonctions2groupe.php -text
 action/ajouter_membre.php -text
 action/ajouter_membres_groupe.php -text
 action/ajouter_participations.php -text
