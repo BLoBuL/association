@@ -39,6 +39,7 @@ action/supprimer_asso_don.php -text
 action/supprimer_asso_exercice.php -text
 action/supprimer_asso_fonctions.php -text
 action/supprimer_asso_groupe.php -text
+action/supprimer_asso_membres.php -text
 action/supprimer_asso_plan.php -text
 action/supprimer_asso_pret.php -text
 action/supprimer_asso_ressource.php -text
