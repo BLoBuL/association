@@ -227,7 +227,6 @@ modeles/asso_profil.html -text
 modeles/asso_ressources.html -text
 modeles/coordonnees_adresse.html -text
 modeles/coordonnees_telephone.html -text
-modeles/histofinan.html -text
 modeles/membres_groupe.html -text
 pdf/extends.php -text
 pdf/fpdi2tcpdf_bridge.php -text
