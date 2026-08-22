@@ -9,6 +9,7 @@ $saisies = array(
         'options' => array(
             'nom' => 'entreprise',
             'afficher_si' => '@type@=="entreprise"',
+            'explication' => '[Consulter le document->doc 2381]',
         ),
         'saisies' => array(
             array(
@@ -33,6 +34,11 @@ $resultat = association_champs_extras_dedoublonner_afficher_si($saisies);
 
 if (($resultat[0]['options']['afficher_si'] ?? '') !== '@type@=="entreprise"') {
     fwrite(STDERR, "La condition du fieldset doit être conservée.\n");
+    exit(1);
+}
+
+if (($resultat[0]['options']['explication'] ?? '') !== '[Consulter le document->doc2381]') {
+    fwrite(STDERR, "Les anciens raccourcis doc avec espace doivent être normalisés.\n");
     exit(1);
 }
 

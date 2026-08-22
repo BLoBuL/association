@@ -93,6 +93,14 @@ function association_champs_extras_dedoublonner_afficher_si($saisies, $condition
             continue;
         }
 
+        // Les anciennes configurations utilisaient parfois `doc 123`.
+        // SPIP 4 attend `doc123` dans un raccourci de lien interne.
+        foreach (($saisie['options'] ?? array()) as $option => $valeur) {
+            if (is_string($valeur) && strpos($valeur, '->doc ') !== false) {
+                $saisies[$cle]['options'][$option] = preg_replace('/->doc\s+(\d+)/', '->doc$1', $valeur);
+            }
+        }
+
         $condition = trim((string) ($saisie['options']['afficher_si'] ?? ''));
         if ($condition_parent !== '' && $condition === $condition_parent) {
             unset($saisies[$cle]['options']['afficher_si']);
