@@ -71,6 +71,16 @@
     --action-reactiver-hover-bg: #f57c00;
 }
 
+/* Le squelette-dist conserve une largeur minimale de 375 px pour `.page`.
+ * Son padding horizontal de 20 px sur body crée sinon un débordement sur les
+ * téléphones de 375 à 414 px. */
+@media (max-width: 415px) {
+    body {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
 /*====================================================================
   HARMONISATION DU BACKOFFICE AVEC LE SITE
   ====================================================================*/
