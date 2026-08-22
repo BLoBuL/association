@@ -22,6 +22,10 @@ function _T($key, $args = array(), $default = '') {
 	return $default !== '' ? $default : $key;
 }
 
+function generer_url_ecrire($exec, $args = '') {
+	return 'ecrire/?exec=' . $exec . ($args !== '' ? '&' . $args : '');
+}
+
 function lire_config($path, $default = null) {
 	return array_key_exists($path, $GLOBALS['association_test_config']) ? $GLOBALS['association_test_config'][$path] : $default;
 }
