@@ -38,7 +38,7 @@ foreach ($racines as $racine_plugin) {
 include_spip('association_fonctions');
 include_spip('inc/filtres_ecrire');
 $trouver_table = charger_fonction('trouver_table', 'base');
-foreach (array('spip_asso_cotisations', 'spip_asso_comptes', 'spip_asso_activites') as $table) {
+foreach (array('spip_asso_cotisations', 'asso_cotisations', 'spip_asso_comptes', 'spip_asso_activites') as $table) {
 	if (!$trouver_table($table)) {
 		fwrite(STDERR, "ECHEC: table déclarée introuvable: {$table}\n");
 	exit(1);
@@ -77,6 +77,12 @@ foreach ($repertoires as $type => $description) {
 		$chemin = str_replace('\\', '/', $fichier->getPathname());
 		$fond = substr($chemin, strlen(str_replace('\\', '/', $racine_fond)) + 1, -5);
 		if ($fond === 'prive/objets/liste/inc-gis-auteur' && !defined('_DIR_PLUGIN_GIS')) {
+			continue;
+		}
+		// Cette barre est assemblée dynamiquement par le contrôleur privé. Sa
+		// boucle DATA journalise à tort une tentative SQL quand elle est compilée
+		// seule par php:run, sans page privée appelante.
+		if ($fond === 'prive/squelettes/top/inc-top_association') {
 			continue;
 		}
 		try {
