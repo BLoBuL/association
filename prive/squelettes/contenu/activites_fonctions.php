@@ -23,7 +23,9 @@ function association_activites_contexte($id_auteur, $orientation = 'futur', $ann
 		$where[] = "id_evenement_source='0'";
 	}
 	if (!empty($droit[2]['condition'])) {
-		$where[] = $droit[2]['condition'];
+		// L'API historique renvoie une clause préfixée par AND alors que la
+		// couche SQL SPIP ajoute elle-même les opérateurs entre les éléments.
+		$where[] = preg_replace('/^\s*AND\s+/i', '', $droit[2]['condition']);
 	}
 	$ids = array_column(sql_allfetsel('id_evenement', 'spip_evenements', $where, '', 'date_fin'), 'id_evenement');
 
