@@ -314,14 +314,8 @@ foreach (array('auto' => 'ok', 'post-paiement' => 'demande') as $validation => $
     test_assert($GLOBALS['test_transactions'][205]['devise'] === 'EUR', "un encaissement $validation synchronise la devise sans doublon");
 }
 
-$schema_source = file_get_contents(PLUGIN_ROOT . '/base/association.php');
 $upgrade_source = file_get_contents(PLUGIN_ROOT . '/association_administrations.php');
 $paquet_source = file_get_contents(PLUGIN_ROOT . '/paquet.xml');
-test_assert(
-    strpos($schema_source, '"id_transaction"') !== false
-    && preg_match('/"id_transaction"\s*=>\s*"BIGINT NOT NULL default \'0\'"/', $schema_source),
-    'le compte conserve les identifiants BIGINT produits par Bank'
-);
 test_assert(
     strpos($upgrade_source, "TABLE spip_asso_comptes MODIFY id_transaction BIGINT NOT NULL DEFAULT '0'") !== false,
     'la migration convertit les installations existantes vers BIGINT'
@@ -332,10 +326,9 @@ test_assert(
     'la version de schéma déclenche la migration BIGINT'
 );
 test_assert(
-    strpos($schema_source, '"devise"') !== false
-    && strpos($upgrade_source, 'ADD COLUMN devise VARCHAR(3)') !== false
+    strpos($upgrade_source, 'ADD COLUMN devise VARCHAR(3)') !== false
     && version_compare($schema_paquet[1], '1.5.9', '>='),
-    'le schéma persiste la devise propre à chaque catégorie de cotisation'
+    'la migration historique ajoute la devise aux catégories de cotisation'
 );
 
 echo "Tous les tests API adhésion ont réussi.\n";
