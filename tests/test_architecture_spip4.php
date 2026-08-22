@@ -21,6 +21,16 @@ $verifier(strpos($paquet, '<necessite nom="association_communication"') !== fals
 $verifier(strpos($paquet, '<necessite nom="bank"') === false, 'Bank doit etre porte par le module Paiements.');
 $verifier(strpos($paquet, '<necessite nom="mailsubscribers"') === false, 'Mailsubscribers doit etre porte par le module Communication.');
 $verifier(strpos($paquet, '<necessite nom="inscription3"') === false, 'Inscription 3 ne doit plus etre une dependance.');
+$verifier(
+	strpos($paquet, 'lib/fontawesome-6.7.2/css/fontawesome.css') !== false,
+	'Le socle doit charger Font Awesome sans dependre de blobul-CORE.'
+);
+foreach (array('fontawesome.css', 'regular.min.css', 'brands.min.css', 'solid.min.css') as $css_fa) {
+	$verifier(is_file($racine . '/lib/fontawesome-6.7.2/css/' . $css_fa), 'Feuille Font Awesome manquante : ' . $css_fa . '.');
+}
+foreach (array('fa-brands-400.woff2', 'fa-regular-400.woff2', 'fa-solid-900.woff2', 'fa-v4compatibility.woff2') as $police_fa) {
+	$verifier(is_file($racine . '/lib/fontawesome-6.7.2/webfonts/' . $police_fa), 'Police Font Awesome manquante : ' . $police_fa . '.');
+}
 $verifier(strpos($schema, "spip_asso_cotisations") === false, 'Le socle ne doit plus posseder la table metier des cotisations.');
 $verifier(strpos($schema, "spip_asso_categories_adherents") === false, 'Le socle ne doit plus posseder les categories d adhesion.');
 $verifier(strpos($schema, "spip_asso_activites") === false, 'Le socle ne doit plus posseder la table des inscriptions aux evenements.');
