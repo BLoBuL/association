@@ -62,5 +62,51 @@ function association_declarer_champs_extras($champs) {
     // Charger le fichier frère explicitement évite de dépendre de ce cache.
     include_once __DIR__ . '/association_champs_extras.php';
     // Appelle la fonction d'implémentation pour ajouter les champs extras de l'association.
-    return association_declarer_champs_extras_impl($champs);
+    $champs = association_declarer_champs_extras_impl($champs);
+
+    // Saisies 6 évalue les enfants d'un fieldset dans leur propre sous-contexte.
+    // Une condition strictement identique à celle du parent est redondante et
+    // provoque alors un faux « Champ ... inexistant » sur les vues CExtras.
+    foreach ($champs as $table => $saisies) {
+        if (is_array($saisies)) {
+            $champs[$table] = association_champs_extras_dedoublonner_afficher_si($saisies);
+        }
+    }
+
+    return $champs;
+}
+
+/**
+ * Supprimer les conditions d'affichage redondantes des enfants d'un fieldset.
+ *
+ * Le parent porte déjà la même contrainte : la retirer de l'enfant ne change
+ * donc pas l'affichage, mais rend la structure compatible avec les vues de
+ * Saisies 6 utilisées par Champs Extras sous SPIP 4.
+ *
+ * @param array $saisies
+ * @param string $condition_parent
+ * @return array
+ */
+function association_champs_extras_dedoublonner_afficher_si($saisies, $condition_parent = '') {
+    foreach ($saisies as $cle => $saisie) {
+        if (!is_array($saisie)) {
+            continue;
+        }
+
+        $condition = trim((string) ($saisie['options']['afficher_si'] ?? ''));
+        if ($condition_parent !== '' && $condition === $condition_parent) {
+            unset($saisies[$cle]['options']['afficher_si']);
+            $condition = '';
+        }
+
+        if (!empty($saisie['saisies']) && is_array($saisie['saisies'])) {
+            $condition_enfants = $condition !== '' ? $condition : $condition_parent;
+            $saisies[$cle]['saisies'] = association_champs_extras_dedoublonner_afficher_si(
+                $saisie['saisies'],
+                $condition_enfants
+            );
+        }
+    }
+
+    return $saisies;
 }
