@@ -1,5 +1,6 @@
 #SET{contexte,#SESSION{id_auteur}|association_activites_contexte{#ENV{orientation},#ENV{annee},#ENV{tripayant}}}
 [(#GET{contexte}|table_valeur{autorise}|sinon_interdire_acces)]
+<h1 class="grostitre"><:association:titre_onglet_activites:></h1>
 [(#BOITE_OUVRIR{<:association:titre_onglet_activites:>,'simple'})]
 <form method="get" action="[(#SELF|attribut_html)]" class="formulaire_spip formulaire_filtrer">
 	<input type="hidden" name="exec" value="activites" />
