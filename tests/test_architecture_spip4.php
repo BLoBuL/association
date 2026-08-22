@@ -41,6 +41,11 @@ $verifier(!is_file($racine . '/inc/navigation_modules.php'), 'L ancienne navigat
 $verifier(!is_file($racine . '/balise/autoriser_page.php'), 'La balise d autorisation des anciens exec doit etre supprimee.');
 $verifier(!is_file($racine . '/squelettes/profil.html'), 'La page profil doit appartenir au module Adhesions.');
 $verifier(!is_file($racine . '/squelettes/evenement.html'), 'La page evenement doit appartenir au module Evenements.');
+$cotisations_prive = file_get_contents($racine . '/prive/squelettes/contenu/cotisations.html');
+$verifier(
+	strpos($cotisations_prive, '#AUTORISER{cotisations_menu}') !== false,
+	'La page privee des cotisations doit appliquer son autorisation SPIP.'
+);
 
 $pages_migrees = array(
 	'action_activites', 'activites', 'adherents', 'bilan', 'comptes',
