@@ -20,6 +20,11 @@ foreach ($fichiers as $fichier) {
 	}
 }
 
+$suppression = file_get_contents($racine . '/prive/squelettes/contenu/cotisation_suppression.html');
+if (!str_contains($suppression, '(ASSO_COTISATIONS)') || str_contains($suppression, '(ASSO_COMPTES)')) {
+	$erreurs[] = 'La page de suppression doit charger la cotisation depuis ASSO_COTISATIONS.';
+}
+
 if ($erreurs) {
 	fwrite(STDERR, implode("\n", $erreurs) . "\n");
 	exit(1);
