@@ -23,6 +23,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 include_spip('inc/actions');
 include_spip('inc/editer');
 include_spip('inc/autoriser');
+include_spip('association_paiements_fonctions');
 
 /**
  * Ramene un message Saisies/CVT a son texte affichable.

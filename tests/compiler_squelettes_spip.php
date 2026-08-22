@@ -36,6 +36,14 @@ foreach ($racines as $racine_plugin) {
 // Le compilateur CLI ne charge pas toujours les fonctions globales du plugin
 // ni les compagnons des pages comme le fait le pipeline web complet.
 include_spip('association_fonctions');
+include_spip('inc/filtres_ecrire');
+$trouver_table = charger_fonction('trouver_table', 'base');
+foreach (array('spip_asso_cotisations', 'spip_asso_comptes', 'spip_asso_activites') as $table) {
+	if (!$trouver_table($table)) {
+		fwrite(STDERR, "ECHEC: table déclarée introuvable: {$table}\n");
+	exit(1);
+	}
+}
 $fonctions_squelettes = array($racine . '/prive/squelettes');
 foreach ($racines as $racine_plugin) {
 	$fonctions_squelettes[] = $racine_plugin . '/squelettes';
@@ -68,6 +76,9 @@ foreach ($repertoires as $type => $description) {
 		if (!$fichier->isFile() || $fichier->getExtension() !== 'html') continue;
 		$chemin = str_replace('\\', '/', $fichier->getPathname());
 		$fond = substr($chemin, strlen(str_replace('\\', '/', $racine_fond)) + 1, -5);
+		if ($fond === 'prive/objets/liste/inc-gis-auteur' && !defined('_DIR_PLUGIN_GIS')) {
+			continue;
+		}
 		try {
 			list($squelette, $mime, $grammaire, $source) = public_styliser_dist(
 				$fond,

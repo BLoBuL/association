@@ -6,11 +6,9 @@ Documenter le volet commandes/factures tel qu'il apparait dans le depot.
 
 ## Etat du code
 
-Le depot contient quelques points d'integration:
+Le dépôt contient quelques points d'intégration facultatifs :
 
-- une miniature d'affichage pour commande;
 - une action de suppression de commande;
-- des references a des objets `COMMANDES` dans les squelettes.
 - une synchronisation comptable des commandes envoyees vers `spip_asso_comptes`.
 
 La logique metier reste plus legere que pour les cotisations, les ventes ou les evenements, mais le flux comptable minimal est maintenant explicite.
@@ -20,7 +18,6 @@ La logique metier reste plus legere que pour les cotisations, les ventes ou les 
 - [`inc/comptes.php`](../inc/comptes.php)
 - [`association_pipelines.php`](../association_pipelines.php)
 - [`action/supprimer_commande.php`](../action/supprimer_commande.php)
-- [`prive/inclure/miniature_commande.html`](../prive/inclure/miniature_commande.html)
 
 ## Observation technique
 
@@ -34,13 +31,10 @@ L'action de suppression:
 
 Cela ressemble davantage a une gestion de transaction bancaire qu'a un vrai sous-systeme commande autonome.
 
-### Affichage
-
-La miniature de commande:
-
-- affiche l'identifiant;
-- affiche le statut;
-- s'appuie sur l'objet `COMMANDES`.
+L'ancienne miniature isolée a été retirée : elle n'avait aucun appelant et
+imposait la table `COMMANDES` à la compilation même lorsque le plugin Commandes
+n'était pas installé. L'intégration restante vérifie l'existence des tables ou
+du plugin avant toute lecture.
 
 ### Comptabilite
 

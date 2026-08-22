@@ -106,7 +106,7 @@
     <//B_info_cotisation>
 <//B_info_activite>
             <td class="mode">
-                [(#MODE|bank_mode_paiement_icone)]
+                [(#MODE|association_paiements_mode_icone)]
             </td>
             [(#REM)<!--<td class="autorisation_id"><abbr title="#AUTORISATION_ID">[(#AUTORISATION_ID|couper{15})]</abbr></td>-->]
             [(#META{/association/meta_cfg_taxe}|ou{#META{/association/meta_cfg_taxe_evenement}}|oui)<td class="montant_ht">[(#MONTANT_HT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</td>]

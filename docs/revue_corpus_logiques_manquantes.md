@@ -230,7 +230,7 @@ Logiques metier a documenter:
 Fichiers a couvrir:
 
 - `prive/objets/liste/item_commande.html` si la logique est integree via commandes;
-- `prive/inclure/miniature_commande.html`;
+- l'ancienne miniature de commande, sans appelant, a été retirée de la suite 4;
 - `action/supprimer_commande.php`;
 - les fonctions qui manipulent les commandes et factures si elles sont presente dans d'autres plugins ou surcharges.
 
