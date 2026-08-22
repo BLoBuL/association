@@ -32,13 +32,22 @@ Notifications et Mailsubscribers.
    d’envoi réel pendant la recette.
 
 Les installateurs des modules adoptent les tables existantes avec
-`maj_tables()`. Leur désinstallation efface seulement la méta de version et ne
-supprime aucune donnée métier.
+`maj_tables()`. Les schémas `association_adhesions` et
+`association_evenements` sont en version `1.1.0` afin d'inclure tous les champs
+nécessaires à une première installation, et pas seulement les colonnes déjà
+présentes sur un site historique. Leur désinstallation efface seulement la
+méta de version et ne supprime aucune donnée métier.
+
+Les colonnes historiques `reinscription`, `statut_cotisation` et
+`id_categorie` peuvent encore exister physiquement dans `spip_asso_comptes`
+après migration. Elles ne sont plus déclarées par le module Comptabilité et ne
+doivent être supprimées qu'après avoir vérifié que chaque ancienne écriture de
+cotisation possède sa ligne correspondante dans `spip_asso_cotisations`.
 
 ## Portes de sortie avant production
 
 - syntaxe PHP 8 et tests métier verts ;
-- compilation des squelettes privés sous SPIP 4 ;
+- compilation des squelettes privés et publics sous SPIP 4 ;
 - installation à blanc et migration d’un jeu de données historique ;
 - volumes de tables identiques avant/après extraction ;
 - aucune dépendance ou copie active d’un plugin Blobul ;
