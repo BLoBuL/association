@@ -1,0 +1,89 @@
+<BOUCLE_activites(AUTEURS){id_auteur}{tout}>
+    <tr class="#STATUT_INTERNE #STATUT">
+        <td class="id">
+            <div class="tooltip">##ID_AUTEUR<span class="tooltiptext">#EN_LIGNE</span></div>
+        </td>
+        <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40}>
+        <B_compte_secondaire>
+            <td class="nom compte-secondaire">
+                <BOUCLE_compte_secondaire(AUTEURS){si #VAL|gestion_comptes_secondaires_active}{auteur_compte_principal = #ID_AUTEUR}{tout}>
+                <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,option=no_td}>
+                </BOUCLE_compte_secondaire>
+            </td>
+        </B_compte_secondaire>
+        [(#VAL|gestion_comptes_secondaires_active|oui) <td class="nom compte-secondaire"></td>]
+    <//B_compte_secondaire>
+        [(#PLUGIN{gis}|oui)
+        [(#INCLURE{fond=prive/objets/liste/inc-gis-auteur, id_auteur})]
+        ]
+        <td class="inscription">
+            [(#INSCRIPTION|!={0000-00-00 00:00:00}|oui)[(#INSCRIPTION|affdate{d/m/y})]]
+        </td>
+        <td class="validite">
+            [(#STATUT_INTERNE|!={prospect}|oui)
+            [(#VALIDITE|affdate{'d/m/y'})]
+            ]
+        </td>
+
+        <BOUCLE_colonnes_dyn(DATA){source table,#ENV**{colonnes_dyn}}>
+        <td class="col-extra col-extra-#CLE">
+            [(#SET{valeur,#ID_AUTEUR|valeur_colonne_dynamique_adherent{#VALEUR{nom}}})]
+            [(#GET{valeur}|formatter_valeur_colonne_dynamique{#VALEUR{options}}|typo)]
+        </td>
+        </BOUCLE_colonnes_dyn>
+         <!-- Afficher d'abord la cotisation correspondant à la période sélectionnée (si présente dans ENV{id_compte}) -->
+        <BOUCLE_cotisation_periode(ASSO_COMPTES){id_auteur}{objet=cotisation}{id_compte IN #ENV{id_compte}}{0,1}{!par date}>
+            <td class="cotisation #STATUT_COTISATION">
+                 <BOUCLE_transaction_ok_periode(TRANSACTIONS){id_transaction}{statut =ok}>
+                       [<div class="tooltip"><i class="fa fa-check-circle" aria-hidden="true"></i>(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
+                            <span class="tooltiptext"><p>
+                                #REINSCRIPTION
+                               Transaction : N°#ID_TRANSACTION
+                                Mode : <small>#MODE</small></p></span>
+                        </div>]
+                  </BOUCLE_transaction_ok_periode>
+                 <BOUCLE_transaction_pas_ok_periode(TRANSACTIONS){id_transaction}{statut IN attente,commande}>
+                    [<a href="(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION&transaction_hash=#TRANSACTION_HASH})" title="En attente de paiement">
+                       [<div class="tooltip"><i class="fa-regular fa-clock" aria-hidden="true"></i> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
+                            <span class="tooltiptext"><p>
+                                #REINSCRIPTION
+                                N°#ID_TRANSACTION
+                            <small>#MODE</small></p></span>
+                        </div>]
+                     </a>]
+                  </BOUCLE_transaction_pas_ok_periode>
+            </td>
+        </BOUCLE_cotisation_periode>
+
+            <td class="cotisation"></td>
+        <//B_cotisation_periode>
+        <td class="actions">
+            <div class="actions_wrap">
+            [(#SET{email_obfusque,[(#EMAIL|md5)@example.org]})]
+            <BOUCLE_mailsubscriber(MAILSUBSCRIBERS){email IN #EMAIL, #GET{email_obfusque}}{tout}>
+               <div class="tooltip statut_mailsubscriber #STATUT">
+                   <a href="[(#URL_ECRIRE{mailsubscriber,id_mailsubscriber=#ID_MAILSUBSCRIBER})]"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                   <span class="tooltiptext">
+                    <B_mailsubscribinglist>
+                    <ul class="liste_diffusion">
+                    <BOUCLE_mailsubscribinglist(MAILSUBSCRIBINGLISTS spip_mailsubscriptions){id_mailsubscriber}{tout}{id_segment=0}>
+                        <BOUCLE_mailsubscriptions(mailsubscriptions){id_mailsubscribinglist=#ID_MAILSUBSCRIBINGLIST}{id_mailsubscriber=#ID_MAILSUBSCRIBER}>#SET{statut_abonnement_liste,#STATUT}</BOUCLE_mailsubscriptions>
+                        [<li class="#GET{statut_abonnement_liste}"><b>#TITRE</b> <small>(#IDENTIFIANT)</small></li>]
+                    </BOUCLE_mailsubscribinglist>
+                    </ul>
+                    </B_mailsubscribinglist>
+                </span></div>
+            </BOUCLE_mailsubscriber>
+            [<div class="tooltip"><i class="fa fa-comment" aria-hidden="true"></i><span class="tooltiptext"><p>(#COMMENTAIRE)</p></span></div>]
+                <a href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]" title="<:association:adherent_label_gerer_membre:>" class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
+                <a href="[(#URL_ECRIRE{auteur,id_auteur=#ID_AUTEUR})]" title="<:association:adherent_label_voir_membre:>" class="lien_fa"><i class="fa-solid fa-user" aria-hidden="true"></i></a>
+            </div>
+        </td>
+        [(#ENV{checkbox_auteurs}|oui)
+        <td class="checkbox">
+            <input id="checkbox_[(#ID_AUTEUR)]" name="selecteur_adherent" type="checkbox" value="[(#ID_AUTEUR)]">
+                <label for="checkbox_[(#ID_AUTEUR)]"></label>
+        </td>
+        ]
+    </tr>
+</BOUCLE_activites>

@@ -1,0 +1,45 @@
+<BOUCLE_activite(ASSO_ACTIVITES){id_activite}>
+<BOUCLE_id_evenement(EVENEMENTS){tout}{id_evenement}>
+    [(#SET{titre_evenement,#TITRE})]
+    [(#SET{date_evenement,[(#DATE_DEBUT|affdate{'d/m'})]})]
+    [(#SET{heure_evenement,[(#DATE_DEBUT|affdate{"H:i"})]})]
+</BOUCLE_id_evenement>	
+<head>
+    <title></title>
+    <intro></intro>
+</head>
+<body>
+	<div style="
+				line-height: 180%;
+				color: white !important;
+				background-color: #38414A !important;
+				padding: 1em;
+				text-align: center;">
+		<h3 style="line-height: 180%;color: white !important;text-align: center;">
+			<:notifications:email_attente_frontend_titre{evenement=#GET{titre_evenement}}:></h3>
+			<p style="font-size: 17px;text-align: center;color: white !important;">
+				<:notifications:email_attente_frontend_texte:>
+			</p>
+		</div>	
+		
+	<!--ICI ON INCLUT LES INFOS A PROPOS DE L'INSCRIPTION-->	
+	<INCLURE{fond=notifications/inc/inc-infos_inscription,env}/>
+	
+	<!--ICI ON INCLUT LES INFOS A PROPOS DE L'EVENEMENT-->
+	<INCLURE{fond=notifications/inc/inc-infos_evenement,env}/>	
+		
+	<B_id_responsable>
+		<p style="line-height: 180%;font-size:15px;color:#555">
+			<b><:notifications:email_modification_inscription:></b>
+			<BOUCLE_id_responsable(DATA){source tableau,#ID_RESPONSABLES_ARRAY}>
+				<INCLURE{fond=emails/inc-email_auteur,id_auteur=#VALEUR,env}>
+			</BOUCLE_id_responsable>
+		</p>
+	</B_id_responsable>
+	
+	<p style="line-height: 180%;font-size:15px;color:#555">
+		<:notifications:email_formule_politesse:><br>
+		<:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+	</p>
+</body>
+</BOUCLE_activite>#FILTRE{facteur_email_wrap_to_html}#FILTRE{emogrifier}</B_activite>    

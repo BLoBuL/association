@@ -1,0 +1,46 @@
+spip_auteurs:
+  -
+    options: { nom: nb_enfants, label: 'Avez-vous des enfants ?', datas: "0|Non\r\n1|1 enfant\r\n2|2 enfants\r\n3|3 enfants\r\n4|4 enfants", defaut: non, afficher_si: '@radio_type_adherent@=="famille"', restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'text DEFAULT '''' NOT NULL' }
+    identifiant: '@5b631135beaaa'
+    verifier: {  }
+    saisie: selection
+  -
+    options: { nom: prenom_enfant_1, label: 'Prénom de votre 1er enfant', type: text, afficher_si: '@nb_enfants@>="1"', size: '40', autocomplete: defaut, restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'text NULL' }
+    identifiant: '@5550adb765d82'
+    verifier: {  }
+    saisie: input
+  -
+    options: { nom: date_naissance_enfant_1, label: 'Date de naissance', afficher_si: '@nb_enfants@>="1"', restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'datetime NULL' }
+    verifier: { type: date, options: { normaliser: datetime, vider_date_nulle: oui } }
+    identifiant: '@5550ae3c8e7ac'
+    saisie: date
+  -
+    options: { nom: prenom_enfant_2, label: 'Prénom de votre 2ème enfant', type: text, afficher_si: '@nb_enfants@>="2"', size: '40', autocomplete: defaut, restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'text DEFAULT '''' NOT NULL' }
+    identifiant: '@5550ade24430c'
+    verifier: {  }
+    saisie: input
+  -
+    options: { nom: date_naissance_enfant_2, label: 'Date de naissance', afficher_si: '@nb_enfants@>="2"', restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'datetime NULL' }
+    verifier: { type: date, options: { normaliser: datetime, vider_date_nulle: oui } }
+    identifiant: '@5550ae646d34a'
+    saisie: date
+  -
+    options: { nom: prenom_enfant_3, label: 'Prénom de votre 3ème enfant', type: text, afficher_si: '@nb_enfants@>="3"', size: '40', autocomplete: defaut, restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'text DEFAULT '''' NOT NULL' }
+    identifiant: '@5550ade85f341'
+    verifier: {  }
+    saisie: input
+  -
+    options: { nom: date_naissance_enfant_3, label: 'Date de naissance', afficher_si: '@nb_enfants@>="3"', restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'datetime NULL' }
+    verifier: { type: date, options: { normaliser: datetime, vider_date_nulle: oui } }
+    identifiant: '@5550ae7ec4cb5'
+    saisie: date
+  -
+    options: { nom: prenom_enfant_4, label: 'Prénom de votre 4ème enfant', type: text, afficher_si: '@nb_enfants@>="4"', size: '40', autocomplete: defaut, restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'text DEFAULT '''' NOT NULL' }
+    identifiant: '@5550adeb1b21d'
+    verifier: {  }
+    saisie: input
+  -
+    options: { nom: date_naissance_enfant_4, label: 'Date de naissance', afficher_si: '@nb_enfants@>="4"', restrictions: { voir: { auteur: '' }, modifier: { auteur: '' } }, sql: 'datetime NULL' }
+    verifier: { type: date, options: { normaliser: datetime, vider_date_nulle: oui } }
+    identifiant: '@5550aea239c81'
+    saisie: date

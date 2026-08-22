@@ -1,0 +1,300 @@
+#CACHE{0}
+<B_CONDITION>
+    <BOUCLE_CONDITION(CONDITION){si #ENV{creation_inscription}|=={oui}|ou{#ENV{modification_inscription}|=={oui}}}>
+    <h2 class="titre-section-petit"><:association:titre_inscription_en_ligne:></h2>
+    <div class="formulaire_spip formulaire_inscription_evenement_public formulaire_#FORM_#ENV{_etape}">
+        <div class="inscription-evenement-public__intro">
+        [(#SESSION{id_auteur}|non|et{#ENV{domaine_site}|non}|oui)
+            <h3 class="spip"><:association:formulaire_inscription_public_titre:></h3>
+            <p class="inscription-evenement-public__intro-text"><:association:formulaire_inscription_public_texte{self=#SELF}:></p>
+        ]
+        [(#SESSION{id_auteur}|non|et{#ENV{domaine_site}|oui}|oui)
+             [(#CHEMIN{img/logo_reseau_fiafe.jpg}|image_reduire{80,80}|image_recadre{80,80}|inserer_attribut{style,float:right})]
+            <h3 class="spip"><:association:formulaire_inscription_reseau_association_titre:></h3>
+            <p class="inscription-evenement-public__intro-text"><:association:formulaire_inscription_reseau_association_texte:></p>
+        ]
+        [(#SESSION{id_auteur}|oui)
+            <h3 class="spip"><:association:formulaire_inscription_titre:></h3>
+            <p class="inscription-evenement-public__intro-text"><:association:formulaire_inscription_connecte_texte:></p>
+        ]
+        </div>
+        <div class="inscription-evenement-public__messages">
+        [<p class='formulaire_message_ok'>(#ENV*{message_ok})</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{message_erreur}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/nb_inscrits}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/categorie}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/nb_accompagnants}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/auteur_inconnu}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/doublon}|ie_message_erreur_texte)</p>]
+        [(#ENV{erreurs}|non)
+            [<p class="formulaire_alerte alerte_message">(#ENV{alerte})</p>]
+        ]
+        </div>
+        <!--[<p class="formulaire_erreur erreur_message">(#ENV{erreurs/email_inscrit})</p>]-->
+
+        <INCLURE{fond=formulaires/inc-saisies-cvt-etapes-#ENV{_saisies/options/etapes_presentation,defaut}, etapes=#ENV{_saisies_par_etapes}, env} />
+        <form action="#ENV{action}" method="post" onsubmit='' class="ajax">
+            #ACTION_FORMULAIRE{#ENV{action}}
+
+            [(#SET{cle_variable,#ENV{date}|affdate{'YmdH'}|md5})]
+            [(#REM) Piege a robots spammeurs made in blobul ]
+            <div class="piege_#GET{cle_variable}">
+                <label for="input_#GET{cle_variable}"><:antispam_champ_vide:></label>
+                <input type="text" class="text" name="input_#GET{cle_variable}" id="input_#GET{cle_variable}" value="#ENV{input_#GET{cle_variable}}" size="10" tabindex="-1" aria-hidden="true" autocomplete="off" />
+            </div>
+            #GENERER_SAISIES{#ENV{_saisies}}
+            [(#REM) Piege a robots spammeurs  made in blobul ]
+                <div class="piege_#GET{cle_variable}">
+                    <label for="checkbox_#GET{cle_variable}"><:antispam_champ_vide:></label>
+                    <input type="checkbox" class="checkbox" name="checkbox_#GET{cle_variable}" id="checkbox_#GET{cle_variable}" value="yes" tabindex="-1" aria-hidden="true" />
+                </div>
+            [(#REM) Piege a robots spammeurs ]
+            <p style="display: none;">
+                <label for="nobot"><:antispam_champ_vide:></label>
+                <input type="text" class="text" name="nobot" id="nobot" value="#ENV{nobot}" size="10" tabindex="-1" aria-hidden="true" autocomplete="off" />
+            </p>
+
+        <BOUCLE_affichage_recapitualif(CONDITION){si #ENV{_etapes}|=={#ENV{_etape}}|oui}>
+            <input type="hidden" name="ie_recapitulatif" value="1" />
+            <div class="inscription-evenement-public__recap">
+                <h3><:association:inscription_evenement_multi_prive_recap_titre:></h3>
+                <p class="inscription-evenement-public__recap-chapo"><strong><:association:inscription_evenement_multi_prive_recap_chapeau:></strong></p>
+                <div class="inscription-evenement-public__recap-table-wrap">
+                <table class="inscription-evenement-public__recap-table">
+                    <tbody>
+                <BOUCLE_recap(DATA){source table, #ENV*|generer_recapitulatif_multi_env{#ENV{id_evenement},public}}>
+                        <tr class="inscription-evenement-public__recap-item">
+                            <th scope="row" class="inscription-evenement-public__recap-label">#VALEUR{label}</th>
+                            <td class="inscription-evenement-public__recap-data">#VALEUR{data}</td>
+                        </tr>
+                </BOUCLE_recap>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+       </BOUCLE_affichage_recapitualif>
+            <BOUCLE_bouton_bottom(CONDITION){si #ENV{_etape}}>
+                <div class="inscription-evenement-public__submit inscription-evenement-public__submit--etapes">
+                    <INCLURE{fond=formulaires/inc-formidable-boutons, id_formulaire=#ENV{id}, env} />
+                    <BOUCLE_annuler_modification(CONDITION){si #ENV{id_activite}|oui}>
+                        <a class="inscription-evenement-public__cancel"
+                           href="[(#URL_PAGE{evenement}|parametre_url{id_evenement,#ENV{id_evenement}})]">
+                            <span aria-hidden="true">&times;</span> <:bouton_annuler:>
+                        </a>
+                    </BOUCLE_annuler_modification>
+                </div>
+            </BOUCLE_bouton_bottom>
+                <p class="boutons inscription-evenement-public__submit">
+                    <input type="submit" name="ok" value="<:association:validation_inscription:>" class="submit" id="envoyer" />
+                </p>
+            <//B_bouton_bottom>
+        </form>
+        [(#ENV{editable}|non)
+            [(#ENV{formidable_afficher_apres}|=={valeurs}|oui)
+                <div class="formulaire_valeurs">#VOIR_SAISIES{#ENV*{_saisies},#ENV**|unserialize}</div>
+            ]
+            [(#ENV{formidable_afficher_apres}|=={rien}|oui)
+            ]
+            [(#ENV{formidable_afficher_apres}|=={stats}|oui)
+                <div class="formulaire_stats">#MODELE{formulaire_analyse,id_formulaire=#ENV{id}}</div>
+            ]
+        ]
+    </div>
+<style>
+    .formulaire_inscription_evenement_public{
+        padding: 1.25rem;
+        border: 1px solid #d9dfd4;
+        border-radius: 12px;
+        background: #fbfcf8;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__intro{
+        margin-bottom: 1rem;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__intro-text{
+        margin: 0.35rem 0 0;
+        color: #324235;
+        line-height: 1.55;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__messages > * + *{
+        margin-top: 0.5rem;
+    }
+    .formulaire_inscription_evenement_public .formulaire_spip__etapes{
+        margin: 1.5rem 0 2rem;
+        padding: 0;
+        overflow: visible;
+    }
+    .formulaire_inscription_evenement_public .etapes__items{
+        display: flex;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        align-items: flex-start;
+    }
+    .formulaire_inscription_evenement_public .etapes__item{
+        display: flex;
+        min-width: 0;
+        padding: 0 0.5rem;
+        flex: 1 1 0;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .formulaire_inscription_evenement_public .etapes__item:not(:first-child)::before{
+        content: "";
+        top: 1rem;
+        left: -50%;
+        right: 50%;
+        height: 2px;
+        background: #d6dde2;
+    }
+    .formulaire_inscription_evenement_public .etapes__item::after{
+        order: -1;
+        width: 2rem;
+        height: 2rem;
+        margin: 0 0 0.65rem;
+        box-sizing: border-box;
+        line-height: calc(2rem - 4px);
+    }
+    .formulaire_inscription_evenement_public .etapes__item:has(button)::before{
+        background: #0878ad;
+    }
+    .formulaire_inscription_evenement_public .etapes__item:has(button)::after{
+        border-color: #0878ad;
+        background: #0878ad;
+        color: #fff;
+    }
+    .formulaire_inscription_evenement_public .etapes__item:has(button) button.submit{
+        color: #0878ad;
+    }
+    .formulaire_inscription_evenement_public .etapes__item[aria-current="step"]{
+        color: #d1343d;
+    }
+    .formulaire_inscription_evenement_public .etapes__item[aria-current="step"]::after{
+        border-color: #d1343d;
+        background: #d1343d;
+        color: #fff;
+    }
+    .formulaire_inscription_evenement_public .etapes__item > button,
+    .formulaire_inscription_evenement_public .etapes__item > em,
+    .formulaire_inscription_evenement_public .etapes__item > span{
+        min-height: 2.4em;
+        margin: 0;
+        padding: 0;
+        line-height: 1.2;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__recap{
+        margin-top: 1.25rem;
+        padding: 1rem;
+        border: 1px solid #d9dfd4;
+        border-radius: 10px;
+        background: #ffffff;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__recap-chapo{
+        margin: 0.4rem 0 0.9rem;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__recap-table-wrap{
+        overflow-x: auto;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__recap-table{
+        width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+        background: #fff;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__recap-item{
+        border-top: 1px solid #e4e9e1;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__recap-item:first-child{
+        border-top: 0;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__recap-label{
+        width: 44%;
+        padding: 0.75rem;
+        text-align: left;
+        vertical-align: top;
+        font-weight: 700;
+        background: #f4f7f2;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__recap-data{
+        padding: 0.75rem;
+        vertical-align: top;
+        color: #243326;
+    }
+    @media (max-width: 560px){
+        .formulaire_inscription_evenement_public .etapes__items{
+            gap: 0.75rem;
+            flex-direction: column;
+        }
+        .formulaire_inscription_evenement_public .etapes__item{
+            display: grid;
+            width: 100%;
+            padding: 0;
+            grid-template-columns: 2rem minmax(0, 1fr);
+            align-items: center;
+            gap: 0.75rem;
+            text-align: left;
+        }
+        .formulaire_inscription_evenement_public .etapes__item::before{
+            display: none;
+        }
+        .formulaire_inscription_evenement_public .etapes__item::after{
+            display: block;
+            margin: 0;
+            grid-column: 1;
+            grid-row: 1;
+        }
+        .formulaire_inscription_evenement_public .etapes__item > button,
+        .formulaire_inscription_evenement_public .etapes__item > em,
+        .formulaire_inscription_evenement_public .etapes__item > span{
+            min-height: 0;
+            grid-column: 2;
+            grid-row: 1;
+        }
+        .formulaire_inscription_evenement_public .inscription-evenement-public__recap-table,
+        .formulaire_inscription_evenement_public .inscription-evenement-public__recap-table tbody,
+        .formulaire_inscription_evenement_public .inscription-evenement-public__recap-item,
+        .formulaire_inscription_evenement_public .inscription-evenement-public__recap-label,
+        .formulaire_inscription_evenement_public .inscription-evenement-public__recap-data{
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .formulaire_inscription_evenement_public .inscription-evenement-public__recap-data{
+            padding-top: 0.55rem;
+        }
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__submit{
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid #d9dfd4;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__submit--etapes{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    form .piege_#GET{cle_variable},
+    form .piege_#GET{cle_variable} input{
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        position: absolute;
+        right: 100000px;
+        opacity: 0;
+    }
+</style>
+    [(#REM) ************** DEBUT DES SCRIPTS **************]
+    [(#REM) -> Script pour empecher le multiclick des adhérents ]
+<!--    <script language="JavaScript">
+        function desactiver(id) {
+            id = document.getElementById('envoyer');
+            id.disabled = "disabled";
+            id.value = "<:association:validation_inscription_en_cours:>";
+            return;
+        }
+    </script>-->
+    </BOUCLE_CONDITION>
+</B_CONDITION>
+<//B_CONDITION>

@@ -1,0 +1,277 @@
+/* Styles généraux pour les tableaux */
+.tableau_comptabilite {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tableau_comptabilite th,
+.tableau_comptabilite td {
+  padding: 0.8em;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+.tableau_comptabilite td.miniature_transaction{
+    min-width: auto;
+}
+.tableau_comptabilite thead tr {
+  /*    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;*/
+}
+
+.tableau_comptabilite .row_odd {
+  background-color: rgba(240, 248, 255, 0.4);
+}
+
+.tableau_comptabilite .row_even {
+  background-color: #fff;
+}
+
+.tableau_comptabilite tr:hover {
+  background-color: #f0f8ff;
+}
+
+/* Styles pour les montants */
+.montant_recette {
+  color: #2573d0;
+  font-weight: bold;
+}
+
+.montant_depense {
+  color: #d02573;
+  font-weight: bold;
+}
+
+/* Styles pour les comptes validés */
+.compte_valide {
+  background-color: #f0fff0 !important;
+}
+
+.compte_valide:hover {
+  background-color: #e0ffe0 !important;
+}
+
+/* Styles pour le tableau récapitulatif */
+.recap_comptabilite {
+  width: 100%;
+  margin-bottom: 1.5em;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.recap_comptabilite td {
+  padding: 0.5em;
+}
+
+.total_recettes {
+  color: #2573d0;
+  font-weight: bold;
+}
+
+.total_depenses {
+  color: #d02573;
+  font-weight: bold;
+}
+
+.total_solde {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.solde_positif {
+  color: #25d073;
+}
+
+.solde_negatif {
+  color: #d02525;
+}
+
+/* Styles pour les actions */
+.action_comptabilite a {
+  color: #666;
+  transition: color 0.2s;
+}
+
+.action_comptabilite a:hover {
+  color: #000;
+}
+
+/* Styles pour les filtres */
+.filtres {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+}
+
+.actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.actions-group select {
+  padding: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Cards layout for activité comptabilité (statistiques) */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #e9eef5;
+  padding: 18px 20px;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+}
+
+.stat-card-title {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.stat-card-main {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.stat-card-sub {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* Bloc de répartitions détaillées */
+.bloc-repartitions {
+  margin: 30px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.repartition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.repartition-section {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.repartition-section h3 {
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e9eef5;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.tableau_repartition {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tableau_repartition thead th {
+  background: #f8f9fa;
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #e9eef5;
+}
+
+.tableau_repartition tbody tr {
+  border-bottom: 1px solid #f1f3f5;
+  transition: background-color 0.2s;
+}
+
+.tableau_repartition tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.tableau_repartition tbody td {
+  padding: 12px 10px;
+  color: #374151;
+}
+
+.tableau_repartition tbody td strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+.tableau_repartition td.center {
+  text-align: center;
+}
+
+.tableau_repartition td.right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Couleurs par statut de transaction */
+.tableau_repartition tr.statut-ok td:first-child strong {
+  color: #2b8a3e;
+}
+
+.tableau_repartition tr.statut-echec td:first-child strong {
+  color: #c62828;
+}
+
+.tableau_repartition tr.statut-abandon td:first-child strong {
+  color: #9e9e9e;
+}
+
+.tableau_repartition tr.statut-attente td:first-child strong {
+  color: #f57c00;
+}
+
+.tableau_repartition tr.statut-commande td:first-child strong {
+  color: #1976d2;
+}
+
+.tableau_repartition tr.statut-inconnu td:first-child strong {
+  color: #757575;
+}
+
+/* Responsive pour les répartitions */
+@media (max-width: 900px) {
+  .repartition-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .repartition-section {
+    padding: 15px;
+  }
+
+  .tableau_repartition {
+    font-size: 13px;
+  }
+
+  .tableau_repartition thead th,
+  .tableau_repartition tbody td {
+    padding: 10px 8px;
+  }
+}

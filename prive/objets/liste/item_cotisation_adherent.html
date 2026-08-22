@@ -1,0 +1,61 @@
+<BOUCLE_activites(ASSO_COTISATIONS){id_compte}>
+<tr class="#STATUT">
+    <td class="date">
+        ##ID_COMPTE
+    </td>
+    <td class="date">
+        [(#DATE_CREATION|affdate{'d/m/y'})]
+    </td>
+    <td class="type-inscription">
+        [(#INSCRIPTION|=={inscription}|oui)
+        <span class="type-inscription-icon premiere" title="<:association:inscription:>" aria-label="<:association:inscription:>">
+            <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+            <span class="type-inscription-label"><:association:inscription:></span>
+        </span>]
+        [(#INSCRIPTION|=={reinscription}|oui)
+        <span class="type-inscription-icon renouvellement" title="<:association:reinscription:>" aria-label="<:association:reinscription:>">
+            <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+            <span class="type-inscription-label"><:association:reinscription:></span>
+        </span>]
+        [(#INSCRIPTION|=={reinscription}|non|et{#INSCRIPTION|=={inscription}|non})
+            #INSCRIPTION
+        ]
+    </td>
+    <BOUCLE_auteur(CONDITION){si #ENV{afficher_auteur}|oui}>
+        <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur=#ID_AUTEUR,hauteur=40,largeur=40}/>
+    </BOUCLE_auteur>
+    <BOUCLE_categorie_cotisation(ASSO_CATEGORIES_ADHERENTS){id_categorie}>
+        <td class="">
+            [(#VALEUR|propre|textebrut)]
+        </td>
+    </BOUCLE_categorie_cotisation>
+        <td class=""></td>
+    <//B_categorie_cotisation>
+    <td class="statut">
+        <div class="cotisation-statut-stack">
+            <BOUCLE_docs_compte(DOCUMENTS spip_documents_liens){objet=compte}{id_objet=#ID_COMPTE}{tout}>
+            </BOUCLE_docs_compte>
+            <BOUCLE_docs_a_controler(DOCUMENTS spip_documents_liens){objet=compte}{id_objet=#ID_COMPTE}{vu!=oui}{tout}>
+            </BOUCLE_docs_a_controler>
+            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="badge notice justificatifs-badge" title="<:association:justificatifs_cotisation_titre:>">
+                <i class="fa-regular fa-id-card" aria-hidden="true"></i>
+                <span>#TOTAL_BOUCLE <:association:justificatif_a_controler:></span>
+            </a>
+            </B_docs_a_controler>
+            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="badge success justificatifs-badge" title="<:association:justificatifs_cotisation_titre:>">
+                <i class="fa-regular fa-id-card" aria-hidden="true"></i>
+                <span><:association:justificatif_controle:></span>
+            </a>
+            <//B_docs_a_controler>
+            </B_docs_compte>
+        </div>
+    </td>
+    <INCLURE{fond=prive/inclure/miniature_transaction,id_transaction,id_compte}/>
+    <td class="actions">
+        <div class="actions_wrap">
+            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="lien_fa action-editer"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
+            <a href="[(#URL_ECRIRE{cotisation_suppression,id_compte=#ID_COMPTE}|parametre_url{url_retour,#SELF})]" class="popin lien_fa action-supprimer"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></a>
+         </div>
+    </td>
+</tr>
+</BOUCLE_activites>

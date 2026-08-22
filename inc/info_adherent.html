@@ -1,0 +1,48 @@
+<BOUCLE_AUTEUR(AUTEURS){id_auteur} {tout}>
+<div class="item article">
+		<div class="aspect_ratio"> </div>
+		<div class="item_content">	
+			[<div class="item_logo">
+				<a href="#URL_AUTEUR" title="#NOM_FAMILLE #PRENOM">
+				(#LOGO_AUTEUR
+					|sinon{#CHEMIN{img/logo_auteur_defaut_#SEXE.png}}
+					|image_passe_partout{215,215}
+					|image_recadre{215,215,top center}
+					|inserer_attribut{'title',#NOM_FAMILLE #PRENOM}
+					|inserer_attribut{'alt',#NOM_FAMILLE #PRENOM}
+					|vider_attribut{style}
+					|vider_attribut{class}
+					|vider_attribut{height}
+					|vider_attribut{width}
+				  )
+				</a>
+			</div>]
+
+			<div class="item_info">		
+					<a href="#URL_AUTEUR">
+						<h3 class="item_info_titre">                            
+							<span class="prenom">#PRENOM</span>
+							<span class="nom_famille">#NOM_FAMILLE</span>
+						</h3>
+					</a>							
+					[<div class="item_info_fonction">(#LISTER_VALEURS{fonction}|sinon{#FONCTION})</div>]	
+				    [<div class="item_info_email"><a href="mailto:#INPUT_EMAIL_MEMBRES_ASSO">(#INPUT_EMAIL_MEMBRES_ASSO)</a></div>]
+					[<div class="item_info_bio #EDIT{bio}">(#BIO)</div>]
+			
+			<BOUCLE_activites_evenements(RUBRIQUES){composition IN activites, evenements}{doublons}><BOUCLE_articles_activites_evenements(ARTICLES){id_secteur}{doublons activites_evenements}></BOUCLE_articles_activites_evenements></BOUCLE_activites_evenements>
+				
+					<B_activite_responsable>
+						<!--<div class="item_info_fonction"><:association:responsable_de:></div>-->
+						<ul class="activite_responsable">
+							<BOUCLE_activite_responsable(ARTICLES){id_auteur}{par titre}{!doublons activites_evenements}>
+								<li><a href="#URL_ARTICLE">[(#TITRE|supprimer_numero)]</a></li>
+							</BOUCLE_activite_responsable>
+						</ul>
+					</B_activite_responsable>
+						
+						
+			</div>
+		</div>
+		<div style="clear:both"></div>
+</div>
+</BOUCLE_AUTEUR>

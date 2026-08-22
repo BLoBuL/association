@@ -1,0 +1,67 @@
+[(#SET{devise,''})]
+<BOUCLE_compte(ASSO_COMPTES){id_compte}>
+<BOUCLE_transaction(TRANSACTIONS){id_transaction}>
+#SET{statut_transaction, #STATUT}
+#SET{devise, #DEVISE}
+</BOUCLE_transaction>
+<BOUCLE_devise_cotisation(ASSO_CATEGORIES_ADHERENTS){id_categorie}{si #OBJET|=={cotisation}}>
+[(#GET{devise}|non)[(#SET{devise,[(#DEVISE|sinon{#CONFIG{intl/devise_defaut}})]})]]
+</BOUCLE_devise_cotisation>
+[(#GET{devise}|non)[(#SET{devise,[(#CONFIG{intl/devise_defaut})]})]]
+<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})] [(#VU|=={1}|?{compte_valide,compte_valide})] [(#RECETTE|>{0}|?{recette,depense})]">
+    <td class="id">
+        <a href="[(#URL_ECRIRE{editer_asso_comptes, id_compte=#ID_COMPTE})]" title="<:association:modifier_operation:>">##ID_COMPTE</a>
+    </td>
+    <td class="transaction">
+        [(#ID_TRANSACTION|?{
+        <a href="[(#URL_ECRIRE{voir_transaction, id_transaction=#ID_TRANSACTION})]" title="<:association:voir_details_transaction:>">##ID_TRANSACTION</a>,
+        <span class="text-muted">-</span>
+        })]
+    </td>
+    <td class="date">[(#DATE|affdate{'d/m/y'})]</td>
+    <td class="imputation left">
+        <strong>#IMPUTATION</strong>
+    </td>
+    <td class="justification left">
+        <BOUCLE_condition_compte(CONDITION){si #OBJET|=={evenement}}{si #ID_OBJET|>{0}}>
+            <a href="[(#URL_ECRIRE{voir_activites,id=#ID_OBJET})]" title="">[(#JUSTIFICATION|couper{100})]</a>
+        </BOUCLE_condition_compte>
+            <BOUCLE_condition_compte2(CONDITION){si #OBJET|=={cotisation}}>
+                <a href="[(#URL_ECRIRE{voir_adherent, id_auteur=#ID_AUTEUR})]" title="">[(#JUSTIFICATION|couper{100})]</a>
+            </BOUCLE_condition_compte2>
+                 [(#JUSTIFICATION|couper{100})]
+            <//B_condition_compte2>
+        <//B_condition_compte>
+    </td>
+    <td class="montant right">
+        [(#RECETTE|>{0}|oui)<span class="montant_recette">+[(#RECETTE|association_nbrefr)] [(#GET{devise})]</span>]
+        [(#DEPENSE|>{0}|oui)<span class="montant_depense">-[(#DEPENSE|association_nbrefr)] [(#GET{devise})]</span>]
+    </td>
+    <td class="action_comptabilite actions">
+        <div class="actions_wrap">
+            <a href="[(#URL_ECRIRE{editer_asso_comptes, id_compte=#ID_COMPTE})]" class="lien_fa action-editer" title="<:association:modifier_operation:>">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </a>
+            [(#VU|=={1}|non)
+            <a href="[(#URL_ACTION_AUTEUR{valider_compte,#ID_COMPTE,#SELF})]" class="lien_fa tooltip action-valider" title="<:association:valider_operation:>">
+                <i class="fa fa-toggle-off"></i>
+                <span class="tooltiptext"><:association:valider_operation:></span>
+            </a>
+            ]
+            [(#VU|=={1}|et{#GET{statut_transaction}|!={ok}}|oui)
+            <a href="[(#URL_ACTION_AUTEUR{invalider_compte,#ID_COMPTE,#SELF})]" class="lien_fa tooltip action-devalider" title="<:association:invalider_operation:>">
+                <i class="fa fa-toggle-on"></i>
+                <span class="tooltiptext"><:association:invalider_operation:></span>
+            </a>
+            ]
+            <a href="[(#URL_ACTION_AUTEUR{supprimer_compte,#ID_COMPTE,#SELF})]" onclick="return confirm('<:association:confirmer_suppression:>');" class="lien_fa action-supprimer" title="<:association:supprimer_operation:>">
+                <i class="fa fa-trash"></i>
+            </a>
+        </div>
+    </td>
+    <td class="checkbox">
+        <input type="checkbox" name="selecteur_comptes[]" value="#ID_COMPTE" id="check_#ID_COMPTE" class="checkbox">
+        <label for="check_#ID_COMPTE"></label>
+    </td>
+</tr>
+</BOUCLE_compte>

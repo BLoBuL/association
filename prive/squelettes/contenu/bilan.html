@@ -1,0 +1,24 @@
+[(#AUTORISER{comptes_menu}|sinon_interdire_acces)]
+#SET{bilan,#VAL{bilan}|association_bilan_contexte}
+[(#BOITE_OUVRIR{<:association:bilans_comptables:>,'simple'})]
+<form method="post" action="[(#SELF|attribut_html)]" class="formulaire_spip formulaire_filtrer">
+	<label for="bilan-annee"><:association:annee:></label><input type="number" id="bilan-annee" name="annee" value="[(#GET{bilan}|table_valeur{annee})]" min="1900" max="2100" />
+	<B_destinations><label for="bilan-destinations"><:association:destination_comptable:></label><select id="bilan-destinations" name="destination[]" multiple="multiple">
+	<option value="0"[(#VAL{0}|in_array{#GET{bilan}|table_valeur{ids}}|oui) selected="selected"]><:association:toutes_destination:></option>
+	<BOUCLE_destinations(DATA){source tableau,#GET{bilan}|table_valeur{destinations}}><option value="#VALEUR{id_destination}"[(#VALEUR{id_destination}|in_array{#GET{bilan}|table_valeur{ids}}|oui) selected="selected"]>#VALEUR{intitule}</option></BOUCLE_destinations>
+	</select></B_destinations>
+	<button type="submit" class="btn btn_secondaire"><:bouton_valider:></button>
+</form>
+<BOUCLE_bilans(DATA){source tableau,#GET{bilan}|table_valeur{bilans}}>
+<fieldset><legend><:association:resultat_courant:> [(#GET{bilan}|table_valeur{annee})] #VALEUR{intitule}</legend>
+	<table class="spip liste"><thead><tr><th><:association:intitule:></th><th><:association:recettes:></th><th><:association:depenses:></th><th><:association:solde:></th></tr></thead><tbody>
+	<BOUCLE_lignes(DATA){source tableau,#VALEUR{lignes}}><tr><td>#VALEUR{intitule}</td><td>[(#VALEUR{recettes}|number_format{2,',',' '})]</td><td>[(#VALEUR{depenses}|number_format{2,',',' '})]</td><td>[(#VALEUR{solde}|number_format{2,',',' '})]</td></tr></BOUCLE_lignes>
+	<tr class="total"><th><:association:resultat_courant:></th><th>[(#VALEUR{totaux/recettes}|number_format{2,',',' '})]</th><th>[(#VALEUR{totaux/depenses}|number_format{2,',',' '})]</th><th>[(#VALEUR{totaux/solde}|number_format{2,',',' '})]</th></tr>
+	</tbody></table>
+</fieldset>
+</BOUCLE_bilans>
+<B_encaisses><fieldset><legend><:association:encaisse:></legend><table class="spip liste"><thead><tr><th><:association:intitule:></th><th><:association:date:></th><th><:association:avoir_initial:></th><th><:association:avoir_actuel:></th></tr></thead><tbody>
+<BOUCLE_encaisses(DATA){source tableau,#GET{bilan}|table_valeur{encaisses}}><tr><td>#VALEUR{intitule}</td><td>[(#VALEUR{date}|affdate)]</td><td>[(#VALEUR{initial}|number_format{2,',',' '})]</td><td>[(#VALEUR{actuel}|number_format{2,',',' '})]</td></tr></BOUCLE_encaisses>
+<tr class="total"><th colspan="2"><:association:encaisse:></th><th>[(#GET{bilan}|table_valeur{total_initial}|number_format{2,',',' '})]</th><th>[(#GET{bilan}|table_valeur{total_actuel}|number_format{2,',',' '})]</th></tr>
+</tbody></table></fieldset></B_encaisses>
+[(#BOITE_FERMER)]

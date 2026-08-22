@@ -1,0 +1,12 @@
+#HTTP_HEADER{Content-Type: text/javascript; charset=#CHARSET}
+(function($){
+	$(document).ready(function(){
+		function addbarre(){
+		$('.formulaire_spip, .relance-content').not('.formulaire_spip_compact')
+			.find('textarea')
+			.barre_outils('edition');
+		}
+		addbarre();
+		onAjaxLoad(addbarre);
+	});
+})(jQuery);

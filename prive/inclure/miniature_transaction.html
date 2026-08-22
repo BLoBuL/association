@@ -1,0 +1,90 @@
+<td class="miniature_transaction">
+    <B_transaction>
+
+        <BOUCLE_transaction(TRANSACTIONS){id_transaction}{tout}>
+            [(#SET{espace_prive,#REM|test_espace_prive})]
+            [(#SET{statut_icone,''})]
+            [(#SET{statut_label,''})]
+            [(#SET{montant_affiche,[(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]})]
+            [(#SET{url_action,''})]
+            [(#SET{titre_action,''})]
+
+            [(#STATUT|in_array{#LISTE{attente,commande}}|oui)
+                [(#SET{statut_icone,fa-regular fa-clock})]
+                [(#SET{statut_label,<:association:activite_content_cotisation_attente:>})]
+            ]
+            [(#STATUT|=={ok}|oui)
+                [(#SET{statut_icone,fa fa-check-circle})]
+                [(#SET{statut_label,<:association:activite_content_cotisation_paye:>})]
+            ]
+            [(#STATUT|=={echec}|oui)
+                [(#SET{statut_icone,fa fa-warning})]
+                [(#SET{statut_label,<:association:activite_content_cotisation_echec:>})]
+            ]
+            [(#STATUT|=={abandon}|oui)
+                [(#SET{statut_icone,fa-regular fa-trash-can})]
+                [(#SET{statut_label,<:association:activite_content_cotisation_abandon:>})]
+            ]
+            [(#STATUT|=={rembourse}|oui)
+                [(#SET{statut_icone,fa fa-undo})]
+                [(#SET{statut_label,<:association:activite_content_cotisation_rembourse:>})]
+            ]
+
+            [(#GET{espace_prive}|non)
+                [(#STATUT|in_array{#LISTE{ok,rembourse}}|oui)
+                    [(#SET{montant_affiche,[(#MONTANT_REGLE|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]})]
+                ]
+            ]
+
+            [(#GET{espace_prive}|oui)
+                [(#STATUT|in_array{#LISTE{attente,commande}}|et{#AUTORISER{transaction_regler,transaction,#ID_TRANSACTION,#SESSION{id_auteur},#ARRAY{}}}|oui)
+                    [(#SET{url_action,[(#URL_ECRIRE{payer}|parametre_url{id_transaction,#ID_TRANSACTION}|parametre_url{transaction_hash,#TRANSACTION_HASH})]})]
+                    [(#SET{titre_action,<:association:activite_content_valider_transaction:>})]
+                ]
+                [(#STATUT|in_array{#LISTE{echec,abandon,ok,rembourse}}|oui)
+                    [(#SET{url_action,[(#URL_ECRIRE{transactions}|parametre_url{id_transaction,#ID_TRANSACTION})]})]
+                    [(#SET{titre_action,<:association:activite_content_voir_transaction:>})]
+                ]
+            ]
+
+            [(#GET{espace_prive}|non)
+                [(#STATUT|in_array{#LISTE{attente,commande}}|et{#STATUT_ACTIVITE|in_array{#LISTE{ok,preinscrit}}}|oui)
+                    [(#SET{url_action,[(#URL_PAGE{paiement}|parametre_url{id_transaction,#ID_TRANSACTION}|parametre_url{transaction_hash,#TRANSACTION_HASH})]})]
+                    [(#SET{titre_action,<:association:activite_content_valider_transaction:>})]
+                ]
+            ]
+
+            <div class="statut_transaction #STATUT">
+                [(#GET{statut_icone}|oui)
+                <div class="tooltip"><span><i class="#GET{statut_icone}"></i></span><span class="tooltiptext"><p>#GET{statut_label}<br>
+                          <small>#MESSAGE</small></p></span></div>
+                ]
+
+                <div class="tooltip"><span>
+                        [(#GET{url_action}|oui)<a href="[(#GET{url_action})]" title="[(#GET{titre_action}|attribut_html)]">#GET{montant_affiche}</a>]
+                        [(#GET{url_action}|non)#GET{montant_affiche}]
+                        </span><span class="tooltiptext">
+                        <p> Transaction : ##ID_TRANSACTION<br>
+                            [(#STATUT|in_array{#LISTE{echec,abandon,ok,rembourse}}|oui)[Autorisation : (#AUTORISATION_ID)]]
+                            </p></span>
+                </div>
+
+                [(#MODE|bank_mode_paiement_icone)]
+            </div>
+        </BOUCLE_transaction>
+
+</B_transaction>
+
+
+    <BOUCLE_activite_sans_transaction(ASSO_ACTIVITES){id_activite}{tout}>
+        <div class="tooltip no_transaction"><span> <a href="[(#URL_ECRIRE{editer_asso_activite,id_activite=#ID_ACTIVITE})]" title="<:association:activite_bouton_modifier_inscription:>"><i class="fa fa-exclamation-triangle"></i></a></span>
+            <span class="tooltiptext">
+                <p>Transaction manquante&nbsp;!<br>Vous devez modifier cette inscription pour générer une transaction.</p>
+           </span>
+        </div>
+    </BOUCLE_activite_sans_transaction>
+
+    <//B_activite_sans_transaction>
+
+<//B_transaction>
+</td>

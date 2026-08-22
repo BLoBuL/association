@@ -1,0 +1,22 @@
+<INCLURE{fond=prive/squelettes/navigation/dist,env}>
+  [(#REM) Bloc d'information sur l'événement ]
+  #BOITE_OUVRIR{'', info}
+    <INCLURE{fond=prive/squelettes/contenu/inc-voir_activites/bloc_info_evenement,
+      id_evenement=#ENV{id},
+      ajax=bloc_info} />
+  #BOITE_FERMER
+
+  [(#REM) Bloc de configuration ]
+  #BOITE_OUVRIR{'', info}
+    <INCLURE{fond=prive/squelettes/contenu/inc-voir_activites/bloc_configuration,
+      id_evenement=#ENV{id},
+      ajax=bloc_config} />
+  #BOITE_FERMER
+
+  [(#REM) Bloc des raccourcis ]
+  #BOITE_OUVRIR{'', raccourcis}
+    <INCLURE{fond=prive/squelettes/contenu/inc-voir_activites/bloc_raccourcis,
+      id_evenement=#ENV{id},
+      ajax=bloc_raccourcis} />
+  #BOITE_FERMER
+

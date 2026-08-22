@@ -1,0 +1,60 @@
+<B_tableau_activites_futur>
+    [(#SET{defaut_tri,#ARRAY{
+    date_debut,1,
+    payant,-1,
+    }})]
+
+    <table class="tableau_listes_activite  tableau_asso tableau_activites_futur">
+        <tr>
+            <th>[(#TRI{id_evenement,'#',ajax})]</th>
+            <th>[(#TRI{date_debut,<:date:>,ajax})]</th>
+            <th><:association:activite_entete_intitule:></th>
+            <th><:association:activite_entete_statut_inscription:></th>
+            <th>[(#TRI{payant,<:association:activite_entete_participations:>,ajax})]</th>
+            <th><:association:activite_entete_type_inscrits:></th>
+            <th><:association:activite_entete_inscrits:></th>
+            <th colspan="4"><:association:adherent_entete_action:></th>
+        </tr>
+        <BOUCLE_tableau_activites_futur(EVENEMENTS)
+        {si #ENV{orientation}|!={passe}}
+        {inscription = 1}
+        {statut = publie}
+        {id_evenement IN #ENV{selection_id_evenements}}
+        {!evenement_passe}
+        {tri date_debut,#GET{defaut_tri}}
+        {par date_debut}>
+        [(#INCLURE{fond=prive/objets/liste/item_activite,id_evenement,env})]
+        </BOUCLE_tableau_activites_futur>
+    </table>
+</B_tableau_activites_futur>
+
+<B_tableau_activites_passe>
+    [(#SET{defaut_tri,#ARRAY{
+    date_debut,-1,
+    payant,-1,
+    }})]
+    <table class="tableau_listes_activite  tableau_asso tableau_activites_passe">
+        <tr>
+            <th>[(#TRI{id_evenement,'#',ajax})]</th>
+            <th>[(#TRI{date_debut,<:date:>,ajax})]</th>
+            <th><:association:activite_entete_intitule:></th>
+            <th><:association:activite_entete_statut_inscription:></th>
+            <th>[(#TRI{payant,<:association:activite_entete_participations:>,ajax})]</th>
+            <th><:association:activite_entete_type_inscrits:></th>
+            <th><:association:activite_entete_inscrits:></th>
+            <th colspan="4"><:association:adherent_entete_action:></th>
+        </tr>
+        <BOUCLE_tableau_activites_passe(EVENEMENTS)
+        {si #ENV{orientation}|=={passe}}
+        {inscription = 1}
+        {statut = publie}
+        {id_evenement IN #ENV{selection_id_evenements}}
+        {date_debut ?>= #ENV{date_debut}}
+        {date_fin ?< #ENV{date_fin}}
+        {!evenement_a_venir}
+        {tri date_debut,#GET{defaut_tri}}
+        {!par date_debut}>
+        [(#INCLURE{fond=prive/objets/liste/item_activite,id_evenement,env})]
+        </BOUCLE_tableau_activites_passe>
+    </table>
+</B_tableau_activites_passe>

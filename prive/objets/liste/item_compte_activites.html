@@ -1,0 +1,47 @@
+<BOUCLE_comptes(ASSO_COMPTES){id_compte}>
+<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})] [(#VU|=={1}|?{compte_valide,compte_invalide})] [(#RECETTE|>{0}|?{recette,depense})]">
+    <td>##ID_COMPTE</td>
+    <td>[(#DATE|affdate{'d/m/y'})]</td>
+
+        <BOUCLE_transaction(TRANSACTIONS){id_transaction}>
+        <INCLURE{fond=prive/inclure/miniature_transaction,id_transaction,id_activite,statut_activite=#GET{statut_activite}}/>
+        </BOUCLE_transaction>
+        <td>N/A</td>
+        <//B_transaction>
+
+    <td>#IMPUTATION</td>
+    <td style="text-align:left;">
+        <BOUCLE_inscrit(ASSO_ACTIVITES){id_transaction}{id_transaction > 1}>
+            [(#NOM_INSCRIT)] [(#PRENOM_INSCRIT)] [(#NOMBRE_INSCRITS|>{1}|oui)+#NOMBRE_INSCRITS]
+        </BOUCLE_inscrit>
+            [(#JUSTIFICATION)]
+        <//B_inscrit>
+    </td>
+    <td style="text-align:right;">
+        [(#RECETTE|>{0}|oui)<span class="montant_recette">[(#RECETTE|association_nbrefr)] [(#GET{devise})]</span>]
+        [(#DEPENSE|>{0}|oui)<span class="montant_depense">[(#DEPENSE|association_nbrefr)] [(#GET{devise})]</span>]
+    </td>
+    <td class="action_comptabilite actions">
+        <div class="actions_wrap">
+            <a href="[(#URL_ECRIRE{editer_asso_comptes, id_compte=#ID_COMPTE})]" class="lien_fa action-editer" title="<:association:modifier_operation:>">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </a>
+            [(#VU|=={1}|non)
+            <a href="[(#URL_ACTION_AUTEUR{valider_compte,#ID_COMPTE,#SELF})]" class="lien_fa tooltip ajax action-valider" title="<:association:valider_operation:>">
+                <i class="fa fa-toggle-off"></i>
+                <span class="tooltiptext"><:association:valider_operation:></span>
+            </a>
+            ]
+            [(#VU|=={1}|et{#GET{statut_transaction}|!={ok}}|oui)
+            <a href="[(#URL_ACTION_AUTEUR{invalider_compte,#ID_COMPTE,#SELF})]" class="lien_fa tooltip ajax action-devalider" title="<:association:invalider_operation:>">
+                <i class="fa fa-toggle-on"></i>
+                <span class="tooltiptext"><:association:invalider_operation:></span>
+            </a>
+            ]
+            <a href="[(#URL_ACTION_AUTEUR{supprimer_compte,#ID_COMPTE,#SELF})]" onclick="return confirm('<:association:confirmer_suppression:>');" class="lien_fa ajax action-supprimer" title="<:association:supprimer_operation:>">
+                <i class="fa fa-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+</BOUCLE_comptes>

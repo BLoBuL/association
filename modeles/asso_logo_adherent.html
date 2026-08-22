@@ -1,0 +1,15 @@
+[(#SET{largeur,[(#ENV{largeur}|sinon{400})]})]
+[(#SET{hauteur,[(#ENV{hauteur}|sinon{400})]})]
+<BOUCLE_logo_adherent(AUTEURS){id_auteur}{tout}>
+    [(#LOGO_AUTEUR
+					|sinon{#CHEMIN{img/logo_auteur_defaut_#SEXE.png}}
+					|image_passe_partout{#GET{largeur,400},#GET{hauteur,400}}
+                    |image_recadre{#GET{largeur,400},#GET{hauteur,400},top center}
+					|inserer_attribut{'title',#NOM_FAMILLE #PRENOM}
+					|inserer_attribut{'alt',#NOM_FAMILLE #PRENOM}
+					|vider_attribut{style}
+					|vider_attribut{class}
+					|vider_attribut{height}
+					|vider_attribut{width}
+    )]
+</BOUCLE_logo_adherent>

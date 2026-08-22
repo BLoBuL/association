@@ -1,0 +1,38 @@
+<BOUCLE_categories_adhesion(ASSO_CATEGORIES_ACTIVITES){id_categorie}{statut != deleted}>
+    <tr class="#STATUT">
+        <td class="">
+        ##ID_CATEGORIE
+    </td>
+        <td class="titre">
+            [(#VALEUR|propre|textebrut)]
+        </td>
+        <td class="">
+            [(#TYPE_INSCRIT|=={adherent}|oui)<:association:participation_adherent:>]
+            [(#TYPE_INSCRIT|=={non_adherent}|oui)<:association:participation_non_adherent:>]
+            [(#TYPE_INSCRIT|=={indifferent}|oui)<:association:participation_indifferent:>]
+            [(#TYPE_INSCRIT|=={special}|oui)<:association:participation_special:>]
+            [(#TYPE_INSCRIT|=={benevole}|oui)<:association:participation_benevole:>]
+        </td>
+        <td class="">
+            [(#QUANTITE)]
+        </td>
+        <td class="message">
+            [<div class="tooltip"><i class="fa fa-comment" aria-hidden="true"></i><span class="tooltiptext"><p>(#COMMENTAIRES|propre|textebrut)</p></span></div>]
+        </td>
+        <td class="">
+            [(#STATUT|=={ok}|oui)Activé]
+            [(#STATUT|=={desactive}|oui)Désactivé]
+        </td>
+        <td class="edit">
+            <a href="[(#URL_ECRIRE{editer_asso_categorie_activite,id_categorie=#ID_CATEGORIE})]"class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
+        </td>
+        <td class="delete">
+            [(#BOUTON_ACTION{
+            <i class="fa-regular fa-trash-can" aria-hidden="true"></i>,
+            #URL_ACTION_AUTEUR{supprimer_categorie_activite, #ID_CATEGORIE, #SELF},
+            'lien_fa ajax',
+            <:association:confirmation_suppression_activite:>
+                })]
+        </td>
+    </tr>
+</BOUCLE_categories_adhesion>

@@ -1,0 +1,44 @@
+[(#REM)
+/*
+ * Paiement Bancaire
+ * module de paiement bancaire multi prestataires
+ * stockage des transactions
+ *
+ * Auteurs :
+ * Cedric Morin, Nursit.com
+ * (c) 2012-2018 - Distribue sous licence GNU/GPL
+ *
+ */
+]
+<div class="formulaire_spip formulaire_#FORM">
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV**{message_erreur})</p>]
+
+	<form method="post" action="#ENV{action}"><div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<div class="editer-groupe">
+			#SET{name,raison}#SET{obli,'obligatoire'}#SET{defaut,''}#SET{erreurs,#ENV**{erreurs}|table_valeur{#GET{name}}}
+	   <div class="editer editer_[(#GET{name})][ (#GET{obli})][ (#GET{erreurs}|oui)erreur]">
+	     <label for="#GET{name}"><:bank:label_remboursement_raison:></label>[
+	     <span class='erreur_message'>(#GET{erreurs})</span>
+	     ][<b>(#ENV{_autorisation_id_prefixe})</b>]
+		   <input type="text" name="#GET{name}" class="text email" value="#ENV*{#GET{name},#GET{defaut}}" id="#GET{name}" [(#HTML5|et{#GET{obli}})required='required'] />
+	   </div>
+            #SET{name,notifier_inscrit}#SET{obli,'obligatoire'}#SET{defaut,''}#SET{erreurs,#ENV**{erreurs}|table_valeur{#GET{name}}}    
+               <div class="editer editer_[(#GET{name})][ (#GET{obli})][ (#GET{erreurs}|oui)erreur]">
+                 [
+                 <span class='erreur_message'>(#GET{erreurs})</span>]
+                <label ><:association:label_remboursement_notifier_inscrit:></label>
+                  <p class='explication'><:association:explication_remboursement_notifier_inscrit:></p>   
+                   <div class="choix">    
+                       <input type="checkbox" name="#GET{name}" class="checkbox" value="#ENV*{#GET{name},#GET{defaut}}" id="#GET{name}" [(#GET{activite}|!={oui}|oui)disable]/>
+                       <label for="#GET{name}"><:association:label_choix_remboursement_notifier_inscrit:></label>
+                    </div>
+               </div>
+                
+		</div>
+		<p class="boutons">
+			<input type="submit" name="enregistrer" class="submit" value="<:bank:bouton_rembourser|attribut_html:>" />
+		</p>
+	</div></form>
+</div>

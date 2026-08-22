@@ -1,0 +1,54 @@
+<BOUCLE_affichage_gabarit(CONDITION){si #ENV{_etape}|=={1}|et{#ENV{mode_email_collectif}|!={evenement}}}>
+    #FORMULAIRE_CHOISIR_GABARIT_ENVOI_COLLECTIF
+</BOUCLE_affichage_gabarit><//B_affichage_gabarit>
+<div class="formulaire_spip formulaire_#FORM formulaire_#FORM_#ENV{_etape}">
+    [<p class='formulaire_erreur'>(#ENV*{message_erreur})</p>]
+    [<p class='formulaire_message_ok'>(#ENV*{message_ok})</p>]
+    <h1 class="grostitre">[(#ENV{mode_email_collectif}|=={evenement}|?{<:association:label_formulaire_envoi_collectif_evenement:>,<:association:label_formulaire_envoi_collectif_adherent:>})] - Étape : [ (#ENV{_etape})]/[(#ENV{_etapes})] :</h1>
+    <INCLURE{fond=formulaires/inc-saisies-cvt-etapes-#ENV{_saisies/options/etapes_presentation,defaut}, etapes=#ENV{_saisies_par_etapes}, env} />
+    <form action="#ENV{action}" method="post" enctype="multipart/form-data">
+        #ACTION_FORMULAIRE{#ENV{action},#FORM}
+        [(#ENV{mode_email_collectif}|=={evenement}|oui)
+            <input type="hidden" name="selection_evenement_affichee" value="[(#ENV{selection_evenement_affichee}|?{1,0})]">
+        ]
+        <BOUCLE_bouton_top(CONDITION){si #ENV{_etape}|in_array{#LISTE{2,3,4}}}>
+        <div class="">
+            <INCLURE{fond=formulaires/inc-formidable-boutons, id_formulaire=#ENV{id}, env} />
+        </div>
+        </BOUCLE_bouton_top>
+        #GENERER_SAISIES{#ENV{_saisies}}
+        <BOUCLE_affichage_email(CONDITION){si #ENV{_etape}|=={2}|oui}>
+            <center>
+                <iframe srcdoc="[(#INCLURE{fond=notifications/email_collectif,env}|spip_htmlspecialchars)]" style="min-width:600px;min-height:800px;"/>
+            </center>
+        </BOUCLE_affichage_email>
+        [(#ENV{afficher_liste_inscrits_evenement}|oui)
+            <INCLURE{fond=formulaires/inc-email-collectif-inscriptions-evenement,env} />
+        ]
+        [(#ENV{afficher_liste_adherents}|oui)
+            <INCLURE{fond=prive/objets/liste/table_destinataires_email_collectif,env,ajax,id_auteurs=#ENV{liste_auteurs}} />
+        ]
+        <BOUCLE_affichage_recapitualif(CONDITION){si #ENV{afficher_recapitulatif}|oui}>
+           <h3><:association:envoi_mail_collectif_recap_titre:></h3>
+           <strong><:association:envoi_mail_collectif_recap_chapeau:></strong>
+            <p><:association:envoi_mail_collectif_recap_message{count_selecteur_adherent=#ENV{count_selecteur_adherent}}:></p>
+            <p><:association:envoi_mail_collectif_recap_attention:></p>
+        </BOUCLE_affichage_recapitualif>
+        <br>
+        <BOUCLE_bouton_bottom(CONDITION){si #ENV{_etape}|in_array{#LISTE{1,2,3,5,6}}}>
+            <div>
+                <INCLURE{fond=formulaires/inc-formidable-boutons, id_formulaire=#ENV{id}, env} />
+            </div>
+        </BOUCLE_bouton_bottom>
+    </form>
+    [(#ENV{editable}|non)
+		[(#ENV{formidable_afficher_apres}|=={valeurs}|oui)
+			<div class="formulaire_valeurs">#VOIR_SAISIES{#ENV*{_saisies},#ENV**|unserialize}</div>
+		]
+		[(#ENV{formidable_afficher_apres}|=={rien}|oui)
+		]
+		[(#ENV{formidable_afficher_apres}|=={stats}|oui)
+			<div class="formulaire_stats">#MODELE{formulaire_analyse,id_formulaire=#ENV{id}}</div>
+		]
+	]
+</div>

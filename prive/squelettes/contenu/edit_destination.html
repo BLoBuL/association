@@ -1,0 +1,8 @@
+[(#AUTORISER{destinations_menu}|sinon_interdire_acces)]
+
+<div class="edition">
+	<h1><:association:destination_comptable:></h1>
+	[(#INCLURE{fond=prive/squelettes/contenu/editer_asso_destinations,
+		id_destination=#ENV{id,#ENV{id_destination}},
+		env})]
+</div>

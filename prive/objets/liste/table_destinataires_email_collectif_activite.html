@@ -1,0 +1,37 @@
+[(#SET{selection_id_activites,#ENV{id_activites}})]
+<div class="formulaire_spip formulaire_asso">
+<h2 class="legend"><:association:email_collectif_destinataire_titre:></h2>
+<B_filtre>
+    <div class="filtre statut_interne">
+        <div class=""><span><:association:filtre_statut_cotisation:></span></div>
+        <div class="[(#ENV{statut}|non)selected]"><a href="[(#SELF|parametre_url{statut,''})]" class="ajax">Tous statuts</a></div>
+        <BOUCLE_filtre(ASSO_ACTIVITES){tout} {id_activite IN  #GET{selection_id_activites}}{fusion statut}>
+            <div class="[(#ENV{statut}=={#STATUT}|oui)selected]">
+                <a href="[(#SELF|parametre_url{statut,#STATUT})]" class="ajax">
+                    #STATUT
+                </a></div>
+        </BOUCLE_filtre>
+    </div>
+</B_filtre>
+<B_tableau_incrits>
+    <table id="tableau_inscriptions_activite" class=" tableau_asso">
+        <tr>
+        <th>[(#TRI{id_activite,'#',ajax})]</th>
+        <th>[(#TRI{date,<:association:activite_entete_date:>,ajax})]</th>
+       <th>[(#TRI{nom_inscrit,<:association:activite_entete_nom:>,ajax})]</th>
+        <th>[(#TRI{statut,<:association:activite_entete_statut_inscription:>,ajax})]</th>
+        <th>[(#TRI{nombre_inscrits,<:association:activite_entete_nombre_inscrit:>,ajax})]</th>
+        <th><:association:activite_entete_voir:></th>
+        <th class="checkbox"> <input id="check_all" name="selecteur_inscription[]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);"><label for="check_all" >
+            </label></th>
+        </tr>
+        <BOUCLE_tableau_incrits(ASSO_ACTIVITES){tout} 
+                                                      {id_activite IN  #GET{selection_id_activites}}                                                      
+                                                      {tri id_activite}
+                                                      {par nom_inscrit}
+                                                      >           
+            [(#INCLURE{fond=prive/objets/liste/item_destinataire_email_collectif_activite,id_activite,env})]
+            </BOUCLE_tableau_incrits>
+    </table>
+</B_tableau_incrits>
+</div>

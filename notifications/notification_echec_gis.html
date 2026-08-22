@@ -1,0 +1,39 @@
+[(#REM)
+][(#HTTP_HEADER{Content-type: text/plain[; charset=(#CHARSET)]})]
+<head>
+    <title><:notifications:email_notification_gis_echec_title:></title>
+    <intro><:notifications:email_notification_gis_echec_intro:></intro>
+</head>
+<body>
+    <div style="
+                line-height: 180%;
+                font-size:15px;
+                color: white !important;
+                background-color: #38414A !important;
+                padding: 1em;
+                text-align: center;
+                font-size: 19px;">
+        <h3 style="line-height: 180%;color: white !important;text-align: center;">
+            <:notifications:email_notification_gis_echec_titre{nom_site_spip = #NOM_SITE_SPIP}:>                
+        </h3>		
+    </div>
+    <p style="line-height: 180%;font-size:15px;color:#555">		
+           <:notifications:email_notification_gis_echec_explication{string_recherche = #STRING_RECHERCHE}:>
+    </p>	
+    <div style="text-align:center;">
+        <a href="[(#URL_ECRIRE{auteur,id_auteur=#ID_AUTEUR}|abs_url)]" style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;"><:notifications:email_notification_gis_lien:></a>
+    </div>
+    <p style="line-height: 180%;font-size:15px;color:#555">		
+          <:notifications:email_notification_gis_lien_test_geolocalisation:>     
+    </p>	
+    <div style="text-align:center;">        
+        <a href="https://photon.komoot.io/api/?q=#STRING_RECHERCHE&lang=en&limit=1" style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;"><:notifications:email_notification_gis_bouton_test_geolocalisation:></a>
+    </div>
+    <p style="line-height: 180%;font-size:15px;color:#555">		
+           <:notifications:email_notification_gis_echec_explication_1:>
+    </p>
+    <p style="line-height: 180%;font-size:15px;color:#555">
+        <:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+    </p>
+</body>
+#FILTRE{facteur_email_wrap_to_html}

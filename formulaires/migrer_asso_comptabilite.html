@@ -1,0 +1,25 @@
+[(#SESSION{webmestre}|=={oui}|oui)]
+
+<div class="formulaire_spip formulaire_asso formulaire_importer_destination_comptable">
+    [<p class="formulaire_erreur erreur_message">(#ENV*{message_erreur})</p>]
+
+
+    <INCLURE{fond=formulaires/inc-saisies-cvt-etapes-#ENV{_saisies/options/etapes_presentation,defaut}, etapes=#ENV{_saisies_par_etapes}, env} />
+    <form action="#ENV{action}" method="post" >
+        <div>
+            #ACTION_FORMULAIRE{#ENV{action}}
+            [(#REM) on affiche les champs de saisies]
+            #GENERER_SAISIES{#ENV{_saisies}}
+        </div>
+        [(#REM) -> Envoie du formulaire ]
+        <BOUCLE_bouton_bottom(CONDITION){si #ENV{_etape}}>
+        <div>
+            <INCLURE{fond=formulaires/inc-formidable-boutons, id_formulaire=#ENV{id_evenement}, env} />
+        </div>
+        </BOUCLE_bouton_bottom>
+        <p class="boutons">
+            <input type="submit" name="ok" value="<:association:validation_inscription:>" class="submit" id="envoyer" />
+        </p>
+    <//B_bouton_bottom>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+<INCLURE{fond=prive/squelettes/navigation/dist,env}>
+[(#BOITE_OUVRIR{'','raccourcis'})]
+    <ul class='liste_items sous_navigation'>
+        <li class="item[(#ENV{config}|=={info}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,info})]" class="bando2"><:association_config:navigation_config_info:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={adhesion}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,adhesion})]" class="bando2"><:association_config:navigation_config_adhesion:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={entreprise}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,entreprise})]" class="bando2"><:association_config:navigation_config_entreprise:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={evenement}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,evenement})]" class="bando2"><:association_config:navigation_config_evenement:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={evenement_defaut}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,evenement_defaut})]" class="bando2"><:association_config:navigation_config_evenement_defaut:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={mode_paiement}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,mode_paiement})]" class="bando2"><:association_config:navigation_config_mode_paiement:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={segments}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,segments})]" class="bando2"><:association_config:navigation_config_segments:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={affichage_prive}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,affichage_prive})]" class="bando2"><:association_config:navigation_config_affichage_prive:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={affichage_public}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,affichage_public})]" class="bando2"><:association_config:navigation_config_affichage_public:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={modules}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,modules})]" class="bando2"><:association_config:navigation_config_modules:></a>
+        </li>
+        [(#CONFIG{association_metas/comptes}|ou{#SESSION{webmestre}|=={oui}}|oui)
+        <li class="item[(#ENV{config}|=={comptabilite}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,comptabilite})]" class="bando2"><:association_config:navigation_config_comptabilite:></a>
+        </li>
+        ]
+        [(#SESSION{webmestre}|=={oui}|oui)
+        <li class="item[(#ENV{config}|=={maintenance_bdd}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,maintenance_bdd})]" class="bando2"><:association_config:navigation_config_maintenance_bdd:></a>
+        </li>
+        <li class="item[(#ENV{config}|=={debug}|oui)on ]">
+            <a href="[(#URL_ECRIRE{configurer_association}|parametre_url{config,debug})]" class="bando2"><:association_config:navigation_config_debug:></a>
+        </li>
+        ]
+        <li class="item">
+            <a href="[(#URL_ECRIRE{notifications})]" class="bando2"><:association_config:navigation_config_notifications:></a>
+        </li>
+    </ul>
+#BOITE_FERMER

@@ -1,0 +1,10 @@
+<INCLURE{fond=prive/squelettes/navigation/dist,env}>
+[(#BOITE_OUVRIR{'','raccourcis'})]
+
+<ul class='liste_raccourcis'>
+    <li class="item">
+        [(#VAL{<:association:ajouter_une_categorie_de_cotisation:>}|association_lien_ecrire_fa{'fa fa-plus','editer_asso_categorie_cotisation'})]
+    </li>
+</ul>
+
+#BOITE_FERMER

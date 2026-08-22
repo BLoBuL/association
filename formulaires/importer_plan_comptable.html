@@ -1,0 +1,38 @@
+[(#SESSION{webmestre}|=={oui}|oui)]
+
+<div class="formulaire_spip formulaire_asso formulaire_importer_plan_comptable">
+    [<p class="formulaire_erreur erreur_message">(#ENV*{message_erreur})</p>]
+    [(#EDITABLE|oui)
+    <form action="#ENV{action}" method="post" >
+        <div>
+            #ACTION_FORMULAIRE{#ENV{action}}
+            [(#REM) on affiche les champs de saisies]
+            #GENERER_SAISIES{#ENV{_saisies}}
+        </div>
+        [(#REM) -> Envoie du formulaire ]
+        <p class="boutons">
+            <input type="submit" name="ok" value="<:association:bouton_enregistrer:>" class="submit" id="form_enregistrer" />
+        </p>
+    </form>]
+</div><!--
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+// Select all main class checkboxes with IDs like 'champ_class_X'
+const classCheckboxes = document.querySelectorAll('[id^="champ_class_"]');
+
+classCheckboxes.forEach(classCheckbox => {
+classCheckbox.addEventListener('change', function() {
+// Get the ID of the clicked checkbox
+const classId = this.id.split('_')[2]; // Extract the X part from 'champ_class_X'
+
+// Select all related compte checkboxes with IDs like 'champ_compte_XY'
+const relatedCompteCheckboxes = document.querySelectorAll(`[id^="champ_compte_${classId}"]`);
+
+// Set the checked property of all related compte checkboxes
+relatedCompteCheckboxes.forEach(compteCheckbox => {
+compteCheckbox.checked = this.checked;
+});
+});
+});
+});
+</script>-->

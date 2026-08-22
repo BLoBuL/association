@@ -1,0 +1,51 @@
+#CACHE{0}
+<BOUCLE_activites(ASSO_ACTIVITES){id_activite}>    
+    #SET{nb_total_inscrit,#NOMBRE_INSCRITS}    
+        <BOUCLE_EVENEMENT_CONFIG(EVENEMENTS){id_evenement}>
+             #SET{evenement_avec_validation,#VALIDATION}
+             #SET{evenement_payant,#PAYANT}
+             #SET{avec_accompagnants,#ACCOMPAGNANTS}
+        </BOUCLE_EVENEMENT_CONFIG>
+ <div class="message_statut_inscription"  style="line-height: 180%;font-size:15px;color:#555;margin: 1em 0;">   
+     
+            <h3 style="color:#555"><:notifications:titre_votre_inscription:>        </h3>
+        <ul class="spip">
+            [<li><b><:notifications:date_inscription:> :</b> (#DATE|affdate{'d/m/Y'})</li>]
+            [<li><b><:notifications:votre_commentaire:></b> <i>"(#COMMENTAIRE)"</i></li>]
+          <BOUCLE_accompagnants_active(CONDITION){si  #GET{avec_accompagnants}|=={oui}}{si #GET{nb_total_inscrit}|>{1}}>
+                 [<li><b><:notifications:nombre_participant:></b> (#GET{nb_total_inscrit})</li>]
+                [(#GET{nb_total_inscrit}|=={2}|oui)
+                 [<li><b><:notifications:nom_accompagnant:></b> (#NOM_PARTICIPANTS)</li>]
+                ]
+                [(#GET{nb_total_inscrit}|>{2}|oui)
+                 [<li><b><:notifications:noms_accompagnants:></b> (#NOM_PARTICIPANTS)</li>]
+                ]
+          </BOUCLE_accompagnants_active>
+            <BOUCLE_evenement_payant(CONDITION){si  #GET{evenement_payant}|=={1}}>
+                   <BOUCLE_transaction_paye(TRANSACTIONS){id_transaction}{statut = ok}>                       
+                        [<li><b><:notifications:montant_recu:></b> (#MONTANT_REGLE|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})</li>]
+                   </BOUCLE_transaction_paye>
+                    <BOUCLE_transaction_a_payer(TRANSACTIONS){id_transaction}{!statut = ok}>
+                        [<li><b><:notifications:montant_adherent_a_regler:></b> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})</li>]
+                            <B_mode_paiement_participation>
+                            <li><b><:notifications:mode_paiement_possible:></b><BOUCLE_mode_paiement_participation(DATA){source tableau, #META{/association/mode_paiement_participation}|unserialize}{', '}>[
+                                                    (#VALEUR|=={simu}|oui)<:bank:label_presta_simulation:>][
+                                                    (#VALEUR|=={cheque}|oui)<:bank:label_presta_cheque:>][
+                                                    (#VALEUR|=={virement}|oui)<:bank:label_presta_virement:>][
+                                                    (#VALEUR|=={interac}|oui)<:bank:label_presta_interac:>][
+                                                    (#VALEUR|=={espece}|oui)<:bank:label_presta_espece:>][
+                                                    (#VALEUR|=={paypal}|oui)<:bank:label_presta_paypal:>][
+                                                    (#VALEUR|=={paypaladvanced}|oui)<:bank:label_presta_paypaladvanced:>][
+                                                    (#VALEUR|=={zettle}|oui)<:bank:label_presta_zettle:>][
+                                                    (#VALEUR|=={gpwebpay}|oui)<:bank:label_presta_gpwebpay:>][
+                                                     (#VALEUR|=={stripe}|oui)<:bank:label_presta_stripe:>][
+                                                     (#VALEUR|=={zelle}|oui)<:bank:label_presta_zelle:>][
+                                                     (#VALEUR|=={payu_latam}|oui)<:bank:label_presta_payu_latam:>][
+                                                     (#VALEUR|=={NexiXPay}|oui)<:bank:label_presta_NexiXPay:>][
+                                                     (#VALEUR|=={abanca}|oui)<:bank:label_presta_abanca:>][
+                                                     (#VALEUR|=={nets}|oui)<:bank:label_presta_nets:>]</BOUCLE_mode_paiement_participation>.</li> </B_mode_paiement_participation>
+                   </BOUCLE_transaction_a_payer>
+            </BOUCLE_evenement_payant>
+        </ul>          
+ </div>
+</BOUCLE_activites>

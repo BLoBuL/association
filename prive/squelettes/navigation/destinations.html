@@ -1,0 +1,9 @@
+[(#AUTORISER{destinations_menu}|oui)
+	[(#BOITE_OUVRIR{<:association:destination_comptable:>,'raccourcis'})]
+	<ul class="liste-items">
+		<li class="item"><a href="[(#URL_ECRIRE{edit_destination})]" class="btn"><:association:ajouter_destination:></a></li>
+		<li class="item"><a href="[(#URL_ECRIRE{destination_comptable_import})]"><:association:importer_destination_comptable:></a></li>
+		<li class="item"><a href="[(#URL_ECRIRE{plan_comptable})]"><:association:plan_comptable:></a></li>
+	</ul>
+	[(#BOITE_FERMER)]
+]

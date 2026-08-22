@@ -1,0 +1,20 @@
+<div class="formulaire_spip formulaire_editer formulaire_editer_asso_categorie_cotisation">
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+
+	[(#ENV{editable})
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<div>
+			[(#REM) Les saisies sont générées automatiquement par la fonction saisies du formulaire]
+			#GENERER_SAISIES{#ENV{_saisies}}
+
+			[(#REM) Champs cachés utiles]
+			<input type="hidden" name="id_categorie" value="#ENV{id_categorie}" />
+		</div>
+		<p class="boutons">
+			<input type="submit" class="submit" value="<:bouton_enregistrer:>" />
+		</p>
+	</form>
+	]
+</div>

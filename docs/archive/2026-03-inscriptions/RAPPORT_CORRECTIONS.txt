@@ -1,0 +1,155 @@
+# 🔧 RAPPORT DE CORRECTIONS - Refactor Formulaires Inscriptions
+
+**Date**: 2026-03-29
+**Statut**: ✅ CORRECTION PRINCIPALE IMPLEMENTÉE
+**Severité Principale Traitée**: CRITIQUE - Quota non vérifié en FO payant
+
+---
+
+## 🎯 Problème Principal
+
+**Symptômes observés**:
+- Inscriptions FO simples payantes avec quota dépassé → pas d'erreur
+- Formulaire redirige vers page événement sans contexte
+- L'inscription n'est pas créée
+
+**Cause identifiée**:
+Normalisation insuffisante du champ `categorie` entre les différents formats POST.
+
+---
+
+## ✅ Correction Implémentée
+
+### Fichier Modifié
+`formulaires/inc/inscription_evenement.php` - Fonction `formater_post_form()` (lignes ~665-720)
+
+### Changement
+**Avant**: Traitement différencié des formats de `categorie`
+```
+categorie (string) = "5"           → nombre_inscrits = 1 (toujours)
+categorie (array) = [5 => 2]       → nombre_inscrits = 2
+```
+
+**Après**: Normalisation uniforme vers format array
+```
+categorie (string) = "5"           → [5 => 1]           → nombre_inscrits = 1
+categorie (array) = [5 => 2]       → [5 => 2] (inchangé) → nombre_inscrits = 2
+```
+
+### Impact sur la Chaîne de Calcul
+```
+formater_post_form()
+  ↓
+  categorie_result normalisé en array
+  ↓
+$data_form['categorie_result'] = [id_categorie => nombre]
+  ↓
+ie_verifier_commons() reçoit categorie_result unifié
+  ↓
+nombre_a_verifier calculé CORRECTEMENT
+  ↓
+Vérifications de quota FONCTIONNELLES
+```
+
+---
+
+## 🧪 Tests Recommandés
+
+### Test 1: Quota Dépassé (PRIORITAIRE)
+- **Événement**: Payant, simple, non-multi, non-famille, quota=2
+- **Cas 1**: Inscription pour 1 → ✅ OK, redirection paiement
+- **Cas 2**: Inscription pour 2 → ✅ OK, redirection paiement
+- **Cas 3**: Inscription pour 3+ → ❌ ERREUR quota (RÉSULTAT ATTENDU)
+
+**Attente**: Erreur affichée, pas de redirection, inscription NOT créée
+
+### Test 2: nom_participants Obligatoire
+- **Événement**: Payant, simple, accompagnants=OUI, quota=5
+- **Cas 1**: 1 personne sans nom → ✅ OK (nom_participants non requis)
+- **Cas 2**: 2 personnes sans noms → ❌ ERREUR nom_participants (RÉSULTAT ATTENDU)
+- **Cas 3**: 2 personnes avec noms → ✅ OK
+
+### Test 3: Autres Configurations
+- Simple gratuit
+- Multi-étapes
+- Multi-famille
+
+---
+
+## 📋 Régressions Restantes à Investiguer
+
+| # | Problème | Sévérité | Status | Notes |
+|---|----------|----------|--------|-------|
+| 2 | nom_participants non vérifié | HAUTE | À tester | Dépend du calcul de `nombre_a_verifier` |
+| 3 | Champs vidés après erreur AJAX | MOYENNE | À investiguer | Rechargement AJAX |
+| 5 | Choix désactivés (doublons) | BASSE | Partiellement implémenté | Feature présente mais peut ne pas fonctionner visuellement |
+| 6 | Navigation BO | BASSE | Futur | Breadcrumb, contexte, tableau de bord |
+| 7 | Messages d'erreur peu clairs | BASSE | Futur | Documentation syntaxe nom_participants |
+
+---
+
+## 📝 Documentation Générale
+
+Trois documents ont été créés pour cette implémentation:
+
+1. **`REGRESSIONS_POST_REFACTOR.md`** (205 lignes)
+   - Inventaire complet des régressions identifiées
+   - Analyse détaillée de chaque problème
+   - Cas de test proposés
+
+2. **`RESUME_CORRECTIONS.md`** (125+ lignes)
+   - Synthèse technique de la correction
+   - Chaîne de propagation des données
+   - Cas de test avec exemples
+
+3. **CE DOCUMENT** - Rapport pour l'utilisateur
+   - Vue d'ensemble simple
+   - Résultats attendus
+   - Prochaines étapes
+
+---
+
+## 🚀 Déploiement
+
+### Fichiers à Déployer
+- `formulaires/inc/inscription_evenement.php` ✅ (Corrigé)
+- `REGRESSIONS_POST_REFACTOR.md` (Documentation)
+- `RESUME_CORRECTIONS.md` (Documentation)
+
+### Rétrocompatibilité
+- ✅ Pas de changement de signature de fonction
+- ✅ Pas de modification de structure de données externe
+- ✅ Modification interne transparente
+
+---
+
+## ⚠️ Note Importante
+
+Cette correction traite le **problème principal identifié** (quota non vérifié).
+
+Les autres régressions listées nécessitent une investigation et test supplémentaires pour être confirmées et corrigées.
+
+**Recommandation**: Tester les 3 cas prioritaires avant d'investir dans les régressions secondaires.
+
+---
+
+## 📞 Suivi Recommandé
+
+1. **Immédiat** (cette semaine):
+   - Exécuter les 3 tests prioritaires
+   - Confirmer que la correction fonctionne
+
+2. **Court terme** (2-3 jours):
+   - Investiguer les régressions restantes (2, 3, 5)
+   - Créer des tickets pour chacune
+
+3. **Moyen terme** (semaine prochaine):
+   - Navigation BO
+   - Suite de tests automatisée
+
+---
+
+**Fin du rapport**
+
+
+

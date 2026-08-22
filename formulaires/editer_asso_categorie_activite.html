@@ -1,0 +1,19 @@
+<div class="formulaire_spip formulaire_editer formulaire_#FORM formulaire_#FORM-#ENV{id_categorie,nouveau}">
+    [<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+    [<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+    [(#ENV{editable})
+    <form method='post' action='#ENV{action}'><div>
+        #ACTION_FORMULAIRE{#ENV{action}}
+        [(#REM) Les saisies sont générées automatiquement par la fonction saisies du formulaire]
+        #GENERER_SAISIES{#ENV{_saisies}}
+
+        [(#REM) Champs cachés utiles]
+        <input type="hidden" name="id_categorie" value="#ENV{id_categorie}" />
+
+        <p class="boutons">
+            <input type='submit' class='submit' value='<:bouton_enregistrer:>' />
+        </p>
+    </div></form>
+    ]
+</div>

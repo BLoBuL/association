@@ -1,0 +1,44 @@
+<!-- UPDATE boucle pour aller chercher les champs existants -->
+[(#REM)
+<!--[(#ENV*|unserialize|foreach)]
+[(#ENV{valeur_recherche}|foreach)]-->
+]
+<!-- creation d'un formulaire de recherche-->
+[(#REM) UPDATE - module de recherche perso sur la page adhérent]
+<div class="recherche-avance" id="recherche-avance">
+    <div class="formulaire_spip recherche-avance">
+        [<p class='formulaire_ok'>(#ENV*{message_ok})</p>]
+        [<p class='formulaire_erreur'>(#ENV*{message_erreur})</p>]
+
+        [(#REM) Indication des filtres actifs qui seront combinés ]
+        [(#ENV{periode}|ou{#ENV{statut_interne}|et{#ENV{statut_interne}|!={tout}}}|ou{#ENV{type_adherent}|et{#ENV{type_adherent}|!={tout}}}|oui)
+        <div class="info-filtres-combines">
+            <p><strong><i class="fa fa-info-circle"></i> <:association:recherche_avancee_info_filtres_titre:></strong></p>
+            <p><:association:recherche_avancee_info_filtres_intro:></p>
+            <ul>
+                [(#ENV{periode}|et{#ENV{periode}|!={tout}}|oui)
+                <li><strong><:association:filtres_actifs_periode:></strong> #ENV{periode}</li>
+                ]
+                [(#ENV{statut_interne}|et{#ENV{statut_interne}|!={tout}}|oui)
+                <li><strong><:association:filtres_actifs_statut:></strong> #ENV{statut_interne}</li>
+                ]
+                [(#ENV{type_adherent}|et{#ENV{type_adherent}|!={tout}}|oui)
+                <li><strong><:association:filtres_actifs_type:></strong> #ENV{type_adherent}</li>
+                ]
+            </ul>
+        </div>
+        ]
+
+       <form action="[(#ENV{action})]" method="post">
+        #ACTION_FORMULAIRE{#ENV{action}}
+        [(#REM) Préserver les filtres GET actifs ]
+        [(#ENV{periode}|oui)<input type="hidden" name="periode" value="#ENV{periode}" />]
+        [(#ENV{statut_interne}|oui)<input type="hidden" name="statut_interne" value="#ENV{statut_interne}" />]
+        [(#ENV{type_adherent}|oui)<input type="hidden" name="type_adherent" value="#ENV{type_adherent}" />]
+        #GENERER_SAISIES{#ENV{_saisies}}
+        <p class="boutons">
+			<input type="submit" class="submit" name="rechercher" value="<:association:recherche_bouton_rechercher:>">
+		</p>
+        </form>
+    </div>
+</div>

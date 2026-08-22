@@ -1,0 +1,5 @@
+spip_evenements:
+  - options: { nom: webinaire_fiafe, label: 'Webinaires des autres accueils', explication: 'Cet événement apparaîtra dans le bloc "Webinaires des autres accueils" en page d''accueil jusqu''à sa date de fin', datas: "oui|Oui\r\nnon|Non", defaut: non, restrictions: { voir: { auteur: '' }, modifier: { auteur: admin } }, sql: 'text DEFAULT '''' NOT NULL', versionner: on }
+    identifiant: '@60095b8cd63c8'
+    verifier: {  }
+    saisie: radio

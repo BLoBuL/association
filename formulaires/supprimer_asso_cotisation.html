@@ -1,0 +1,39 @@
+[(#REM)
+/*
+ * Paiement Bancaire
+ * module de paiement bancaire multi prestataires
+ * stockage des transactions
+ *
+ * Auteurs :
+ * Cedric Morin, Nursit.com
+ * (c) 2012-2015 - Distribue sous licence GNU/GPL
+ *
+ */
+]
+<div class="formulaire_spip formulaire_#FORM">
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV**{message_erreur})</p>]
+
+    
+	<form action='#ENV{action}' method='post'><div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<ul class="editer-groupe">
+	              <li>
+					<label for="supprimer_transaction"><:association:formulaire_supprimer_cotisation_label:></label>
+                    <p class="explication"><:association:formulaire_supprimer_cotisation_explication:></p>
+                  
+                    <div class="choix">
+                        <input type="radio" name="supprimer_transaction" class="checkbox" id="oui" value="oui" checked>
+                    <label for="oui"><:association:oui:></label>
+                    </div>
+                    <div class="choix">
+                        <input type="radio" name="supprimer_transaction" class="checkbox" id="non" value="non">
+                        <label for="non"><:association:non:></label>
+                    </div>  
+				</li>
+		</ul>
+		<p class="boutons">
+			<input type="submit" name="enregistrer" class="submit" value="<:association:bouton_supprimer|attribut_html:>" />
+		</p>
+	</div></form>
+</div>

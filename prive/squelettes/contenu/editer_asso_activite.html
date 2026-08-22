@@ -1,0 +1,7 @@
+<div class="ajax">
+<BOUCLE_info_supp(CONDITION){si #META{/association/meta_cfg_event_form_info_supp}|=={oui}}>
+[(#FORMULAIRE_INSCRIPTION_EVENEMENT_MULTI{#ENV{id_evenement},#ENV{id_activite}})]
+</BOUCLE_info_supp>
+[(#FORMULAIRE_INSCRIPTION_EVENEMENT{#ENV{id_evenement},#ENV{id_activite}})]
+<//B_info_supp>
+</div>

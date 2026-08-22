@@ -1,0 +1,78 @@
+<BOUCLE_evenements(EVENEMENTS){id_evenement}>
+    #SET{nb_preinscrit,#ARRAY}
+    #SET{nb_inscrit,#ARRAY}
+    #SET{nb_attente,#ARRAY}
+    [(#SET{statut_inscription,[(#ID_EVENEMENT|ouverture_inscription_evenement)]})]
+    [(#SET{gestions_places,[(#ID_EVENEMENT|gestions_places)]})]
+    <BOUCLE_nb_inscrit(ASSO_ACTIVITES){id_evenement}>
+        [(#STATUT|=={preinscrit}|oui)
+            [(#SET{nb_preinscrit, #GET{nb_preinscrit}|array_merge{#ARRAY{#ID_ACTIVITE,#NOMBRE_INSCRITS}}})]
+        ]
+        [(#STATUT|=={ok}|oui)
+            [(#SET{nb_inscrit, #GET{nb_inscrit}|array_merge{#ARRAY{#ID_ACTIVITE,#NOMBRE_INSCRITS}}})]
+        ]
+        [(#STATUT|=={liste_attente}|oui)
+            [(#SET{nb_attente, #GET{nb_attente}|array_merge{#ARRAY{#ID_ACTIVITE,#NOMBRE_INSCRITS}}})]
+        ]
+    </BOUCLE_nb_inscrit>
+<tr class="ligne_activite">
+    <td class="id"><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association:activite_bouton_gerer_inscription:>" class="bouton_editer">##ID_EVENEMENT</a></td>
+    <td class="date">[(#DATE_DEBUT|affdate{'d/m/Y'})][<br><small>(#DATE_DEBUT|affdate{'H:i'})</small>]
+        </td>
+    <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement,date_evenement=non}/>
+    <td class="statut_inscription ">
+        <div class="tooltip[ (#GET{statut_inscription/statut_ouverture_inscription})][ 
+                    (#GET{statut_inscription/places_disponibles}|=={non}|oui)quota_plein][ 
+                    (#GET{gestions_places/places_disponibles}|=={0}|et{#GET{gestions_places/places_en_attentes_disponible}|>{0}}|oui)liste_attente]">
+            [(#GET{statut_inscription/statut_ouverture_inscription}|=={inscription_ouverte}|?{<i class="fas fa-unlock"></i>,<i class="fas fa-lock"></i>})]
+            <span class="tooltiptext">
+            <p>[(#VAL{association:}|concat{#GET{statut_inscription/statut_ouverture_inscription}}|_T)]</p>
+            <br>---
+            [<p class="msg_quota_plein">(#GET{statut_inscription/places_disponibles}|=={non}|oui)Quota plein, plus de place disponible</p>]
+            [<p class="msg_liste_attente">(#GET{gestions_places/places_disponibles}|=={0}|et{#GET{gestions_places/places_en_attentes_disponible}|>{0}}|oui)Inscription uniquement en liste d'attente</p>]
+            [<p class="date_ouverture">Date ouverture : (#GET{statut_inscription/date_ouverture_inscription}|affdate{"d/m/Y<br> H:i"})</p>]
+            [<p class="date_fermeture">Date fermeture : (#GET{statut_inscription/date_fermeture_inscription}|affdate{"d/m/Y<br> H:i"})</p>]
+            </span>
+        </div>
+        
+    </td>
+    <td>
+        <BOUCLE_condition_payant(CONDITION){si #PAYANT|=={1}}>
+       <div class="tooltip "><i class="fas fa-coins" ></i><span class="tooltiptext">
+            [(#SET{tableau_mode_de_paiement, [(#MODE_PAIEMENT|explode{','})]})]                 
+            [(#SET{mode_paiement_disponible_evenement,[(#GET{tableau_mode_de_paiement}|sinon{#META{/association/mode_paiement_participation}|unserialize})]})]  
+            <BOUCLE_mode_paiement_participation(POUR){tableau #VAL{acte}|bank_lister_configs}>[(#VALEUR{actif}|oui|et{#VALEUR|bank_config_id|in_any{#GET{mode_paiement_disponible_evenement}}|oui})
+                           [<div>-> (#VALEUR{presta}|bank_titre_type_paiement) [ ((#VALEUR{label}))]</div>]
+                        ]  
+            </BOUCLE_mode_paiement_participation>
+           </span></div>
+        </BOUCLE_condition_payant>        
+            Gratuit
+        <//B_condition_payant>
+    </td>
+    <td>
+        [(#TYPE_INSCRITS_EVENEMENT|=={public}|oui)
+        <div class="tooltip "><i class="fas fa-user-plus"></i><span class="tooltiptext">Ouvert à tous</span></div>
+        ]
+        [(#TYPE_INSCRITS_EVENEMENT|=={prive}|oui)
+        <div class="tooltip "><i class="fas fa-user-shield"></i><span class="tooltiptext">Ouvert aux utilisateurs authentifiés</span></div>
+        ]
+        [(#TYPE_INSCRITS_EVENEMENT|=={strict}|oui)
+        <div class="tooltip "><i class="fas fa-user-lock"></i><span class="tooltiptext">Ouvert aux adhérents uniquement</span></div>
+        ]
+    </td>
+    <td class="quota">
+        [(#VALIDATION|=={oui}|oui)
+        <div class="tooltip preinscrit">[(#GET{nb_preinscrit}|array_sum)]<span class="tooltiptext">Nombre d'inscription en attente de validation</span></div>
+        ]
+        <div class="tooltip inscrit">[(#GET{nb_inscrit}|array_sum)]/[(#PLACES|=={0}|?{∞,#PLACES})]<span class="tooltiptext">Nombre de membres inscrit</span></div>
+        [(#FILE_ATTENTES|=={oui}|et{#PLACES|>{0}})
+        <div class="tooltip attente">[(#GET{nb_attente}|array_sum)]/[(#ATTENTES|=={0}|?{∞,#ATTENTES})]<span class="tooltiptext">Nombre de membres en liste d'attente</span></div>
+        ]
+    </td>
+    <td class=""><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association:activite_bouton_gerer_inscription:>" class="lien_fa"><i class="fa fa-list" aria-hidden="true"></i></a></td>
+    <td class=""><a href="[(#URL_ECRIRE{evenement_edit}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association:activite_bouton_editer_evenement:>" class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a></td>
+    <td class=""><a href="[(#URL_EVENEMENT)]" title="<:association:activite_bouton_voir_evenement:>" class="lien_fa"><i class="fa fa-desktop" aria-hidden="true"></i></a></td>
+   <td class=""><a href="[(#URL_PAGE{export_compta.xml}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+</tr>
+</BOUCLE_evenements>

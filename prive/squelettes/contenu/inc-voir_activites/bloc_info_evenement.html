@@ -1,0 +1,37 @@
+<BOUCLE_evenement(EVENEMENTS){id_evenement}{tout}>
+<strong>#TITRE</strong>
+    [(#SET{titre,#TITRE})]
+    [(#SET{titre_date,[(#TITRE)] - [(#DATE_DEBUT|Agenda_affdate_debut_fin{#DATE_FIN,#HORAIRE})]})]
+
+    [<p class="date_ouverture"><:association:voir_activites_libelle_date_debut:> <strong>(#DATE_DEBUT|affdate{"d/m/Y H:i"})</strong></p>]
+    [<div class="logo_evenement">
+        (#INCLURE{fond=prive/inclure/asso_logo_evenement,id_evenement,largeur=200,hauteur=100,mediabox=oui,env})
+    </div>]
+[(#SET{ids_responsable,#ID_EVENEMENT|liste_responsables_evenement|table_valeur{auteur_array}})]
+<B_responsable><div class="bloc_responsables_separator"></div>
+<h4><:association:activite_liste_responsable:></h4>
+<table class="table_responsables_activite">
+<BOUCLE_responsable(AUTEURS){id_auteur IN #GET{ids_responsable}}{tout}>
+        <tr class="responsable">
+            [<td class="responsable_logo">
+                (#LOGO_AUTEUR
+                    |sinon{#CHEMIN{img/logo_auteur_defaut_#SEXE.png}}
+                    |image_passe_partout{45,45}
+                    |image_recadre{45,45,top center}
+                    |vider_attribut{style}
+                    |vider_attribut{class}
+                    |vider_attribut{height}
+                    |vider_attribut{width}
+                  )
+            </td>]
+            <td class="responsable_info">
+                <span class="nom_famille">#NOM_FAMILLE</span>
+                <span class="prenom">#PRENOM</span>
+    <!--             [<div class="telephone">(#MOBILE)</div>]
+                 [<div class="email"><a href="mailto:[(#INPUT_EMAIL_MEMBRES_ASSO|sinon{#EMAIL})]">(#INPUT_EMAIL_MEMBRES_ASSO|sinon{#EMAIL})</a></div>]
+     -->       </td>
+        </tr>
+</BOUCLE_responsable>
+</table>
+</B_responsable>
+</BOUCLE_evenement>

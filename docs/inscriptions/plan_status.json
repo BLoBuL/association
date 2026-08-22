@@ -1,0 +1,65 @@
+{
+  "plan_version": "1.2",
+  "generated_at": "2026-03-30T00:00:00Z",
+  "feature_flag_meta": "meta_cfg_use_inscription_backend",
+  "steps": [
+    { "id": 1, "title": "Creer backend stub", "file": "formulaires/inc/inscription_evenement_backend.php", "status": "done" },
+    { "id": 2, "title": "Wrappers format/spam", "status": "done" },
+    { "id": 3, "title": "Implementer ie_charger_commons", "status": "done" },
+    { "id": 4, "title": "Brancher charger pour formulaire public", "file": "formulaires/inscription_evenement_public.php", "status": "done" },
+    { "id": 5, "title": "Implementer ie_verifier_commons", "status": "done" },
+    { "id": 6, "title": "Implementer ie_traiter_commons", "status": "done" },
+    { "id": 7, "title": "Brancher verifier+traiter pour formulaire public", "status": "done" },
+    {
+      "id": 8,
+      "title": "Brancher autres formulaires (3 PR)",
+      "status": "done",
+      "qa_status": "validated",
+      "modified_files": [
+        "formulaires/inscription_evenement.php",
+        "formulaires/inscription_evenement_multi.php",
+        "formulaires/inscription_evenement_multi_public.php",
+        "formulaires/inscription_evenement_public.php"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Cleanup code duplique",
+      "status": "done",
+      "scope": [
+        "logs debug",
+        "fallbacks redondants",
+        "normalisation payload",
+        "coherence id_auteur FO/BO"
+      ],
+      "corrections": [
+        "Bug critique : $eligibilite_inscription_evenement et $gestions_places non definies dans ie_traiter_commons (cookie public) -> appel helpers avant bloc cookie",
+        "Notices PHP : $saisies_general/$saisies_tarifs/$saisies_modalites/$saisies_hidden initialises a array() en tete de ie_charger_commons",
+        "Logs debug abaisse de _LOG_CRITIQUE a _LOG_DEBUG : traces [IE_VERIFY] et [IE_CHARGER]",
+        "id_auteur FO/BO confirme conforme (formater_post_form/formater_post_form_multi)"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Feature flag + docs + mise en prod",
+      "status": "in_progress",
+      "scope": [
+        "documentation technique consolidee et recentree sur le domaine inscriptions",
+        "strategie d'activation backend",
+        "plan de recette finale"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Mutualiser FO/BO et supprimer les formulaires publics legacy",
+      "status": "future",
+      "scope": [
+        "formulaires/inscription_evenement_public.php",
+        "formulaires/inscription_evenement_multi_public.php",
+        "formulaires/inscription_evenement_public.html",
+        "formulaires/inscription_evenement_multi_public.html"
+      ]
+    }
+  ],
+  "notes": "Step 9 termine (2026-03-27) : bug critique cookie public corrige (variables manquantes), notices PHP saisies corrigees, logs debug abaisses a _LOG_DEBUG, id_auteur FO/BO confirme conforme. Step 10 reste en cours au 2026-03-30 : documentation consolidee sous docs/inscriptions et docs/README.md, mais recette manuelle FO/BO et strategie de rollout restent a finaliser (voir tests-plan.md)."
+}

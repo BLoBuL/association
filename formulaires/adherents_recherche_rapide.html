@@ -1,0 +1,34 @@
+<!-- creation d'un formulaire de recherche-->
+[(#REM) UPDATE - module de recherche perso sur la page adhérent]
+<div class="formulaire_spip formulaire_recherche_rapide">
+    [<p class='formulaire_erreur'>(#ENV*{message_erreur})</p>]
+    [<p class='formulaire_ok'>(#ENV*{message_ok})</p>]
+
+    [(#REM) Indication des filtres actifs qui seront combinés ]
+    [(#ENV{periode}|ou{#ENV{statut_interne}|et{#ENV{statut_interne}|!={tout}}}|ou{#ENV{type_adherent}|et{#ENV{type_adherent}|!={tout}}}|oui)
+    <div class="info-filtres-combines">
+        <p><i class="fa fa-filter"></i> <strong><:association:recherche_rapide_filtres_actifs:></strong>
+        [(#ENV{periode}|et{#ENV{periode}|!={tout}}|oui)<:association:filtres_actifs_periode:> <em>#ENV{periode}</em> ]
+        [(#ENV{statut_interne}|et{#ENV{statut_interne}|!={tout}}|oui)<:association:filtres_actifs_statut:> <em>#ENV{statut_interne}</em> ]
+        [(#ENV{type_adherent}|et{#ENV{type_adherent}|!={tout}}|oui)<:association:filtres_actifs_type:> <em>#ENV{type_adherent}</em>]
+        </p>
+    </div>
+    ]
+
+    [(#SET{action_form,#URL_ECRIRE{adherents}|parametre_url{clear_filters,''}|parametre_url{clear_search,''}|parametre_url{clear_search_field,''}|parametre_url{tri_dyn,''}|parametre_url{tri_dyn_sens,''}|parametre_url{var_zajax,''}|url_supprimer_filtres_dynamiques})]
+    <form action="[(#GET{action_form})]" method='post'>
+        #ACTION_FORMULAIRE{#ENV{action}}
+        [(#REM) Préserver les filtres GET actifs ]
+        [(#ENV{periode}|oui)<input type="hidden" name="periode" value="#ENV{periode}" />]
+        [(#ENV{statut_interne}|oui)<input type="hidden" name="statut_interne" value="#ENV{statut_interne}" />]
+        [(#ENV{type_adherent}|oui)<input type="hidden" name="type_adherent" value="#ENV{type_adherent}" />]
+        #GENERER_SAISIES{#ENV{_saisies}}
+        <br>
+        <div class="boutons">
+            <div class="bouton option recherche_avancee search">
+                <a href="[(#URL_ECRIRE{recherche_avancee}|parametre_url{var_zajax,content})]" class="lien_avec_fa popin bouton_editer"><span class="fa_icone"><i class="fa fa-search-plus" aria-hidden="true"></i></span><span><:association:bouton_recherche_avance:></span></a>                
+            </div>  
+            <input type="submit" class="submit" name="rechercher" value="Rechercher">
+        </div>
+    </form>  
+</div>

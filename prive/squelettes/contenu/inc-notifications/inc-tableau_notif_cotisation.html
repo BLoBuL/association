@@ -1,0 +1,62 @@
+<B_notif_adhesion>
+    <BOUCLE_notif_adhesion(DATA){source table, #VAL{adhesion}|listes_notifications}{par cle}>
+        <tr>
+            <td>
+                [(#CHEMIN{/notifications/#CLE.html}|match{themes}|oui)*]
+            </td>
+            <td style="min-width:270px">
+                <a href="[(#URL_PAGE{item-notification,notification=#CLE}|parametre_url{lang,#LANG}|parametre_url{id_compte,[(#ENV{radio_type_adherent}|sinon{adherent}|exemple_adherent_par_type|table_valeur{id_compte})]}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#CLE)]</a>
+            </td>
+            #SET{notif_item,#VALEUR}
+            <BOUCLE_description_adhesion(DATA){source file,#CHEMIN{notifications/#CLE.html}}{1,1}>
+                <td>[(#VALEUR)]</td>
+            </BOUCLE_description_adhesion>
+            <td class="sujet">[(#GET{notif_item}|table_valeur{sujet})]</td>
+            <td class="test-notification">
+                <!-- Bouton SPIP si disponible -->
+                #SET{type_actuel,#ENV{radio_type_adherent}|sinon{adherent}}
+                #SET{nb_jour_actuel,30}
+                #SET{id_compte_courant,#ENV{radio_type_adherent}|sinon{adherent}|exemple_adherent_par_type|table_valeur{id_compte}}
+                #SET{id_auteur_courant,#ENV{radio_type_adherent}|sinon{adherent}|exemple_adherent_par_type|table_valeur{id_auteur}}
+                #SET{arg_action,#CLE|concat{':',#GET{type_actuel},':',#LANG,':',#GET{nb_jour_actuel},':',#GET{id_compte_courant},':',#GET{id_auteur_courant}}}
+                #SET{url_action,#URL_ACTION_AUTEUR{test_notification_cotisation,#GET{arg_action},#SELF}}
+                [(#BOUTON_ACTION{<:association:test_notification_submit:>,#GET{url_action},'btn btn-mini ajax'})]
+                [(#ENV{debug_notifications}|=={1}|?{<div class="debug-arg" style="margin-top:6px;font-size:11px;color:#666">Arg: #GET{arg_action}</div>,''})]
+            </td>
+            <BOUCLE_page_editable_adhesion(ARTICLES){tout}{page=#CLE}>
+                <td style="min-width:50px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank">EDITION</a></td>
+            </BOUCLE_page_editable_adhesion><td></td><//B_page_editable_adhesion>
+        </tr>
+    </BOUCLE_notif_adhesion>
+</B_notif_adhesion>
+
+<B_notif_echeances>
+    <BOUCLE_notif_echeances(DATA){source table, #VAL{echeances}|listes_notifications}{par cle}>
+        <tr>
+            <td>
+                [(#CHEMIN{/notifications/#CLE.html}|match{themes}|oui)*]
+            </td>
+            <td style="min-width:270px"><a href="[(#URL_PAGE{item-notification,notification=#CLE}|parametre_url{lang,#LANG}|parametre_url{id_auteur,[(#ENV{radio_type_adherent}|sinon{adherent}|exemple_adherent_par_type|table_valeur{id_auteur})]}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#CLE)]</a>
+            </td>
+             #SET{notif_item,#VALEUR}
+              <BOUCLE_description_echeances(DATA){source file,#CHEMIN{notifications/#CLE.html}}{1,1}>
+                  <td>[(#VALEUR)]</td>
+            </BOUCLE_description_echeances>
+            <td class="sujet">[(#GET{notif_item}|table_valeur{sujet})]</td>
+            <td class="test-notification">
+                <!-- Bouton SPIP si disponible -->
+                #SET{type_actuel,#ENV{radio_type_adherent}|sinon{adherent}}
+                #SET{nb_jour_actuel,30}
+                #SET{id_compte_courant,#ENV{radio_type_adherent}|sinon{adherent}|exemple_adherent_par_type|table_valeur{id_compte}}
+                #SET{id_auteur_courant,#ENV{radio_type_adherent}|sinon{adherent}|exemple_adherent_par_type|table_valeur{id_auteur}}
+                #SET{arg_action,#CLE|concat{':',#GET{type_actuel},':',#LANG,':',#GET{nb_jour_actuel},':',#GET{id_compte_courant},':',#GET{id_auteur_courant}}}
+                #SET{url_action,#URL_ACTION_AUTEUR{test_notification_cotisation,#GET{arg_action},#SELF}}
+                 [(#BOUTON_ACTION{<:association:test_notification_submit:>,#GET{url_action},'btn btn-mini ajax'})]
+                 [(#ENV{debug_notifications}|=={1}|?{<div class="debug-arg" style="margin-top:6px;font-size:11px;color:#666">Arg: #GET{arg_action}</div>,''})]
+             </td>
+            <BOUCLE_page_editable_echeances(ARTICLES){tout}{page=#CLE}>
+                 <td style="min-width:50px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank">EDITION</a></td>
+             </BOUCLE_page_editable_echeances><td></td><//B_page_editable_echeances>
+         </tr>
+     </BOUCLE_notif_echeances>
+</B_notif_echeances>

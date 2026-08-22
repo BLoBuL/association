@@ -1,0 +1,14 @@
+<BOUCLE_activite(ASSO_ACTIVITES){id_activite}{statut != desinscrit}>
+<div class="message_statut_inscription" style="line-height:180%;font-size:15px;color:#555">
+	<h3 class="titre"><i class="fa fa-info-circle" aria-hidden="true"></i> <:notifications:titre_votre_inscription:></h3>
+	[<p><strong><:notifications:date_inscription:></strong> (#DATE|affdate{'d/m/Y'})</p>]
+	[<p><strong><:notifications:votre_commentaire:></strong><br><i>(#COMMENTAIRE)</i></p>]
+	[(#NOMBRE_INSCRITS|>{1}|oui)
+		<p><strong><:notifications:nombre_participant:></strong> #NOMBRE_INSCRITS</p>
+		[<p><strong><:notifications:noms_accompagnants:></strong> (#NOM_PARTICIPANTS)</p>]
+	]
+	<BOUCLE_transaction(TRANSACTIONS){id_transaction}{0,1}>
+	[<p><strong><:notifications:montant_recu:></strong> (#MONTANT_REGLE|sinon{#MONTANT}|bank_affiche_montant{#DEVISE,symbol})</p>]
+	</BOUCLE_transaction>
+</div>
+</BOUCLE_activite>

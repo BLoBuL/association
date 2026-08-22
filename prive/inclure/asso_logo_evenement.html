@@ -1,0 +1,15 @@
+<BOUCLE_evenement(EVENEMENTS){id_evenement}{tout}>
+#SET{largeur,#ENV{largeur,400}}
+#SET{hauteur,#ENV{hauteur,200}}
+[<a href="(#LOGO_EVENEMENT|image_reduire{1500}|extraire_attribut{src})"[(#ENV{mediabox}|=={oui}|oui) class="mediabox"]>]
+[(#LOGO_EVENEMENT
+	|image_passe_partout{#GET{largeur},#GET{hauteur}}
+	|image_recadre{#GET{largeur},#GET{hauteur},center}
+	|inserer_attribut{alt,#TITRE|attribut_html}
+	|inserer_attribut{title,#TITRE|attribut_html}
+	|vider_attribut{style}
+	|vider_attribut{class}
+	|vider_attribut{height}
+	|vider_attribut{width})]
+[(#LOGO_EVENEMENT|oui)</a>]
+</BOUCLE_evenement>

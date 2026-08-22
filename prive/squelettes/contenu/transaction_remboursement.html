@@ -1,0 +1,12 @@
+﻿[(#AUTORISER{menu,_transactions}|sinon_interdire_acces)]
+<BOUCLE_transaction(TRANSACTIONS){id_transaction}>
+<h1 class="grostitre">Remboursement Transaction ##ID_TRANSACTION</h1>
+<div class="transaction">
+	#BOITE_OUVRIR{'',infos simple}
+		<BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
+		<div class="qui">Liée à [<a href='[(#ID_AUTEUR|generer_objet_url{auteur})]'>(#NOM)</a>[ \((#EMAIL)\)]]</div>
+		</BOUCLE_auteur>
+	   #FORMULAIRE_REMBOURSER_TRANSACTION{#ID_TRANSACTION}
+	#BOITE_FERMER
+</div>
+</BOUCLE_transaction>

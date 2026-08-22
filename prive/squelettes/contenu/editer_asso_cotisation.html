@@ -1,0 +1,18 @@
+[(#ID_COMPTE|oui)
+[(#AUTORISER{modifier,asso_compte,#ID_COMPTE}|sinon_interdire_acces)]
+]
+[(#ID_COMPTE|non)
+[(#AUTORISER{creer,asso_compte}|sinon_interdire_acces)]
+]
+<div class="cadre-formulaire-editer">
+
+    [(#ENV{id_compte}|intval|>{0}|oui)
+        <INCLURE{fond=prive/inclure/justificatifs_cotisation,id_compte=#ENV{id_compte},justificatifs_ok=#ENV{justificatifs_ok},justificatifs_erreur=#ENV{justificatifs_erreur}}>
+    ]
+
+    <div class="ajax">
+        [(#FORMULAIRE_EDITER_ASSO_COTISATION{#ENV{id_compte,new}})]
+    </div>
+
+
+</div>

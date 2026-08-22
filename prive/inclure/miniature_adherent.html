@@ -1,0 +1,45 @@
+<BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
+    [(#ENV{option}|=={no_td}|non)<td class="nom">]
+        <a class="bouton_editer #STATUT_INTERNE" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
+        <span class="logo_auteur" style="width:#ENV{largeur,45}px">
+            [(#RADIO_TYPE_ADHERENT|=={famille}|oui)<i class="fa-solid fa-people-roof"></i>]
+            [(#RADIO_TYPE_ADHERENT|=={individuel}|oui)<i class="fa-solid fa-user"></i>]
+            [(#RADIO_TYPE_ADHERENT|=={etudiant}|oui)<i class="fa-solid fa-user-graduate"></i>]
+            [(#RADIO_TYPE_ADHERENT|=={entreprise}|oui)<i class="fa-solid fa-user-tie"></i>]
+            <INCLURE{fond=modeles/asso_logo_adherent,id_auteur,hauteur=#ENV{hauteur,45},largeur=#ENV{largeur,45}}>
+            </span>
+            <div class="nom_prenom">
+                <BOUCLE_nom(DATA){si #ENV{participants_json}}{source table,#ENV{participants_json}}{'<br>'} >
+                    <span class="prenom #CLE" [((#VALEUR{date_naissance}|annee|replace{'0000',''}))]>[<b>(#VALEUR{nom}|strtoupper)</b>][ (#VALEUR{prenom})] </span>
+                </BOUCLE_nom>
+                <BOUCLE_nom_participants(CONDITION){si #ENV{nom_participants}}{si #META{/association/meta_cfg_event_config_accompagnants}|=={membre_famille}}>
+                    <span class="nom_famille">[<b>(#ENV{nom_participants})</b> ]</span>
+                 </BOUCLE_nom_participants>
+                    <span class="nom_famille"><b>[(#NOM_FAMILLE|strtoupper)]</b> </span>
+                    <span class="prenom">#PRENOM</span>
+                <//B_nom_participants>
+                <//B_nom>
+                    [(#ENV{date_adherent}|oui)<br>
+                <small>[(#INSCRIPTION|!={0000-00-00 00:00:00}|oui)[(#INSCRIPTION|affdate{d/m/y})]]
+                    [(#VALIDITE|!={0000-00-00 00:00:00}|oui)[ <-> (#VALIDITE|affdate{d/m/y})]]</small>]
+            </div>
+        </a>
+      [(#ENV{option}|=={no_td}|non)</td> ]
+</BOUCLE_auteur>
+    <BOUCLE_activites(ASSO_ACTIVITES){id_activite}>
+        [(#ENV{option}|=={no_td}|non)<td class="nom">]
+            <a class="bouton_editer popin " href="[(#URL_ECRIRE{popin_contact_libre,email=#EMAIL_INSCRIT})]">
+            <span class="logo_auteur">
+            </span>
+                <div class="nom_prenom">
+                    <span class="nom_famille"><b>[(#NOM_INSCRIT|strtoupper)]</b> </span>
+                    <span class="prenom">#PRENOM_INSCRIT</span>
+                    [<div class="email"><small>(#EMAIL_INSCRIT)</small></div>]
+                    [<div><small>(#TEL_INSCRIT)</small></div>]
+                </div>
+            </a>
+       [(#ENV{option}|=={no_td}|non)</td> ]
+    </BOUCLE_activites>
+            <td class="nom">Adhérent supprimé</td>
+    <//B_activites>
+<//B_auteur>

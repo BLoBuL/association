@@ -1,0 +1,26 @@
+<BOUCLE_groupes_metiers(DATA){source table,#VAL|association_notifications_metiers}>
+<tr class="notifications-metiers-groupe">
+    <td colspan="5"><h2>[(#VALEUR|table_valeur{titre})]</h2></td>
+</tr>
+<BOUCLE_notifications_metiers(DATA){source table,#VALEUR|table_valeur{notifications}}>
+<tr class="notification-metier">
+    <td>[(#VALEUR|table_valeur{personnalisee}|oui)*]</td>
+    <td><code>[(#VALEUR|table_valeur{nom})]</code></td>
+    <td>
+        <strong>[(#VALEUR|table_valeur{label})]</strong><br>
+        <span class="explication">[(#VALEUR|table_valeur{description})]</span>
+    </td>
+    <td>[(#VALEUR|table_valeur{sujet})]</td>
+    <td>
+        [(#VALEUR|table_valeur{url}|oui)
+            <a href="[(#VALEUR|table_valeur{url})]" class="mediabox btn btn_mini"><:association:notifications_metiers_previsualiser:></a>
+        ]
+        [(#VALEUR|table_valeur{url}|non)
+            <span class="notice"><:association:notifications_metiers_contexte_absent:></span>
+        ]
+    </td>
+</tr>
+</BOUCLE_notifications_metiers>
+</BOUCLE_groupes_metiers>
+<tr><td colspan="5" class="notice"><:association:notifications_metiers_aucune:></td></tr>
+<//B_groupes_metiers>

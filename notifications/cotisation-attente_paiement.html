@@ -1,0 +1,94 @@
+[(#REM)
+-> Entreprise,Adhérent - Instruction paiement à l'adhésion/réadhésion
+][(#HTTP_HEADER{Content-type: text/plain[; charset=(#CHARSET)]})]
+<BOUCLE_complement_info_entreprise(CONDITION){si #ENV{type_adherent}|=={entreprise}}>
+ <head>
+     <title><:notifications:attente_paiement_entreprise_title:></title>
+     <intro><:notifications:attente_paiement_entreprise_intro:></intro>
+ </head>
+ <body>
+ <div style="
+             line-height: 180%;
+             color: white !important;
+             background-color: #38414A !important;
+             padding: 1em;
+             text-align: center;">
+     <h3 style="line-height: 180%;color: white !important;text-align: center;">
+         [(#ENV{reinscription}|=={inscription}|oui)
+         <:notifications:attente_paiement_inscription_entreprise_titre:>
+         ]
+         [(#ENV{reinscription}|=={reinscription}|oui)
+         <:notifications:attente_paiement_reinscription_entreprise_titre:>
+         ]
+     </h3>
+     [(#ENV{montant_don}|oui)
+     <p style="font-size: 17px;text-align: center;color: white !important;">
+         <:notifications:validation_compte_donation:>
+     </p>
+     ]
+     <p style="font-size: 17px;text-align: center;color: white !important;">
+         <:notifications:attente_paiement_entreprise_chapo:>
+     </p>
+ </div>
+
+</BOUCLE_complement_info_entreprise>
+<head>
+    <title><:notifications:attente_paiement_title:></title>
+    <intro><:notifications:attente_paiement_intro:></intro>
+</head>
+<body>
+<div style="
+            line-height: 180%;
+            color: white !important;
+            background-color: #38414A !important;
+            padding: 1em;
+            text-align: center;">
+    <h3 style="line-height: 180%;color: white !important;text-align: center;">
+        [(#ENV{reinscription}|=={inscription}|oui)
+        <:notifications:attente_paiement_inscription_titre:>
+        ]
+        [(#ENV{reinscription}|=={reinscription}|oui)
+        <:notifications:attente_paiement_reinscription_titre:>
+        ]
+    </h3>
+    [(#ENV{montant_don}|oui)
+    <p style="font-size: 17px;text-align: center;color: white !important;">
+        <:notifications:validation_compte_donation:>
+    </p>
+    ]
+    <p style="font-size: 17px;text-align: center;color: white !important;">
+        <:notifications:attente_paiement_chapo:>
+    </p>
+</div>
+
+<//B_complement_info_entreprise>
+
+
+ <h4><:notifications:attente_paiement_rappel:></h4>
+
+ <p style="line-height: 180%;font-size:15px;color:#555">
+     [<b><:notifications:votre_nom:></b> (#ENV{nom_entreprise}|sinon{#ENV{nom_adherent}}) <br/>]
+     [<b><:notifications:montant_a_regler:></b> (#ENV{montant}|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''}) <br/>]
+ </p>
+
+ <div style="line-height: 180%;font-size:15px;color:#555">
+     <:notifications:lien_page_paiement:><br>
+         <p style="text-align:center;">
+             <a href="[(#URL_PAGE{paiement,id_transaction=#ENV{id_transaction}}|parametre_url{transaction_hash,#ENV{transaction_hash}})]" style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;"><:notifications:bouton_page_paiement:></a>
+         </p>
+ </div>
+
+ <div style="line-height: 180%;font-size:15px;color:#555">
+     <:notifications:attente_paiement_message_lien_profil:>
+         <p style="text-align:center;">
+             <a href="[(#URL_PAGE{profil}|abs_url)]" style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;">
+                 <:notifications:bouton_page_profil:>
+             </a>
+         </p>
+ </div>
+ <p style="line-height: 180%;font-size:15px;color:#555">
+     <:notifications:email_formule_politesse:><br>
+         <:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+ </p>
+ </body>
+#FILTRE{facteur_email_wrap_to_html}

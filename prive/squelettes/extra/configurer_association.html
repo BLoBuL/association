@@ -1,0 +1,16 @@
+<INCLURE{fond=prive/squelettes/extra/dist,env}>
+[(#META{/association/comptes}|oui|et{#SESSION{webmestre}|=={oui}}|oui)
+[(#BOITE_OUVRIR{'','raccourcis'})]
+<ul class='liste_raccourcis'>
+    <li class="item">
+        [(#VAL{<:association:raccourci_page_pc_import:>}|association_lien_ecrire_fa{'fa-solid fa-file-import','plan_comptable_import',''})]
+    </li>
+    <li class="item">
+        [(#VAL{<:association:raccourci_page_dc_import:>}|association_lien_ecrire_fa{'fa-solid fa-file-import','destination_comptable_import',''})]
+    </li>
+    <li class="item">
+        [(#VAL{<:association:raccourci_page_migration:>}|association_lien_ecrire_fa{'fa-solid fa-rotate','migration_donnees_comptables',''})]
+    </li>
+</ul>
+#BOITE_FERMER
+]

@@ -1,0 +1,59 @@
+<BOUCLE_AUTEUR(AUTEURS){id_auteur} {tout}>
+    	<BOUCLE_activites_evenements(RUBRIQUES){composition IN activites, evenements}{doublons}><BOUCLE_articles_activites_evenements(ARTICLES){id_secteur}{doublons activites_evenements}></BOUCLE_articles_activites_evenements></BOUCLE_activites_evenements>
+<div class="adherent">
+		<div class="item_content">	
+            <div class="item_info">	
+                  <h4>Informations à propos de l'adhérent :</h4>
+                    [<p>Inscrit depuis le <b>(#INSCRIPTION|affdate{'d/m/Y'})</b>.</p>]
+                    [<p>(#STATUT_INTERNE|=={ok}|oui)
+                        Ce membre est à jour de sa cotisation jusqu'au [<b>(#VALIDITE|affdate{'d/m/Y'})</b>].</p>
+                    ]
+                    [<p>(#STATUT_INTERNE|=={prospect}|oui)
+                        Ce membre est <b>un nouvel inscrit</b>.</p>
+                    ]
+                    [<p>(#STATUT_INTERNE|=={relance}|oui)
+                        Ce membre est <b>n'est plus à jour</b> et a déjà été relancé par email.</p>
+                    ]
+                    [<p>(#STATUT_INTERNE|=={desactive}|oui)
+                        Ce membre a été désactivé.</p>
+                    ]
+                    [<p>(#STATUT_INTERNE|=={echu}|oui)
+                        Ce membre est <b>n'est plus à jour</b>.</p>
+                    ]                     
+					<p>
+				    [(#STATUT|=={0minirezo}|oui)
+                        Ce membre est "Administrateur de ce site" 
+				    [<div class="item_info_email"><a href="mailto:#INPUT_EMAIL_MEMBRES_ASSO">(#INPUT_EMAIL_MEMBRES_ASSO)</a></div>]
+					[<div class="item_info_bio #EDIT{bio}">(#BIO)</div>]
+                    ]
+                    [(#STATUT|=={1comite}|oui)
+                        Ce membre est "Rédacteur de ce site"
+					[<div class="item_info_fonction">(#LISTER_VALEURS{fonction}|sinon{#FONCTION})</div>]	
+				    [<div class="item_info_email"><a href="mailto:#INPUT_EMAIL_MEMBRES_ASSO">(#INPUT_EMAIL_MEMBRES_ASSO)</a></div>]
+					[<div class="item_info_bio #EDIT{bio}">(#BIO)</div>]
+                    ]
+                    [(#STATUT|=={6forum}|oui)
+                        Ce membre est "Visiteur" de ce site"
+                    ]
+                    [(#STATUT|=={5poubelle}|oui)
+                        Ce membre a été mis "à la corbeille"
+                    ]
+                    [(#STATUT|=={8aconfirmer}|oui)
+                        Ce membre est en attente de confirmation par un administrateur
+                    ]
+                    </p>	
+                    <B_activite_responsable>
+						<div class="item_info_fonction"><:association:responsable_de:></div>
+						<ul class="activite_responsable">
+							<BOUCLE_activite_responsable(ARTICLES){id_auteur}{par titre}{!doublons activites_evenements}>
+								<li><a href="#URL_ARTICLE">[(#TITRE|supprimer_numero)]</a></li>
+							</BOUCLE_activite_responsable>
+						</ul>
+					</B_activite_responsable>
+            </div>    
+			<div class="item_info_supp">		
+			</div>
+		</div>
+		<div style="clear:both"></div>
+</div>
+</BOUCLE_AUTEUR>

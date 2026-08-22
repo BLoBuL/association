@@ -1,0 +1,22 @@
+<B_tableau_incrits>
+    <table id="tableau_inscriptions_activite" class="tableau_asso">
+        <tr>
+            <th class="checkbox"> <input id="check_all" name="selecteur_id_activite[]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);"><label for="check_all" >
+            </label></th>
+
+            <th>[(#TRI{id_activite,'#',ajax})]</th>
+            <th>[(#TRI{date,<:association:activite_entete_date:>,ajax})]</th>
+             <th>[(#TRI{nom_inscrit,<:association:activite_entete_nom:>,ajax})]</th>
+            <th>[(#TRI{statut,<:association:activite_entete_statut_inscription:>,ajax})]</th>
+            <th>[(#TRI{nombre_inscrits,<:association:activite_entete_nombre_inscrit:>,ajax})]</th>
+            <th colspan="4"><:association:activite_entete_voir:></th>
+        </tr>
+
+<BOUCLE_tableau_incrits(asso_activites spip_auteurs)
+    {id_activite IN #ENV{id_activites}}
+    {tri id_activite}
+    {par date}>
+    [(#INCLURE{fond=prive/objets/liste/item_inscription_activites,id_activite,env,bouton_action=non})]
+</BOUCLE_tableau_incrits>
+    </table>
+</B_tableau_incrits>

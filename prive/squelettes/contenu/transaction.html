@@ -1,0 +1,114 @@
+﻿[(#AUTORISER{menu,_transactions}|sinon_interdire_acces)]
+<BOUCLE_transaction(TRANSACTIONS){id_transaction}>
+<div class="transaction">
+	[(#BOITE_OUVRIR{[
+		<h1><:bank:titre_transaction:> <tt>#(#ID_TRANSACTION)</tt>[(#VAL{transaction}|objet_icone|inserer_attribut{class,cadre-icone})]</h1>
+	],simple fiche_objet})]
+		<BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
+		<div class="champ qui contenu_qui">
+			<div class='label'><:bank:info_liee_a_qui:></div>
+			<div class='valeur'>[<a href='[(#ID_AUTEUR|generer_objet_url{auteur})]'>(#NOM)</a>[ \((#EMAIL)\)]]</div>
+		</div>
+		</BOUCLE_auteur>
+			<B_auteuralt>
+			<div class="champ qui contenu_qui">
+				<div class='label'><:bank:info_liee_a_qui:></div>
+				<div class='valeur'>#AUTEUR</div>
+				<BOUCLE_auteuralt(AUTEURS){email=#AUTEUR}{si #ID_AUTEUR|non|et{#AUTEUR|email_valide}|et{#STATUT|=={ok}}|et{#AUTORISER{webmestre}}}{tout}{0,10}{!par id_auteur}>
+				<div class="msg-alert notice">
+					<p>Cet email correspond à l'auteur <a href='[(#ID_AUTEUR|generer_objet_url{auteur})]'>##ID_AUTEUR[ (#NOM)]</a></p>
+					#BOUTON_ACTION{Associer la transaction à cet auteur,#URL_ACTION_AUTEUR{attribuer_transaction,#ID_TRANSACTION-#ID_AUTEUR,#SELF}}
+				</div>
+				</BOUCLE_auteuralt>
+			</div>
+			</B_auteuralt>
+			[<div class="qui">Liée à (#AUTEUR)</div>]
+			<//B_auteuralt>
+		<//B_auteur>
+		<div class="formulaire_spip formulaire_dater">
+			<div class="editer-groupe">
+				<div class="editer long_label editer_date">
+					<label><:texte_date_creation_objet:></label>
+					<span class="affiche">[(#DATE_TRANSACTION|affdate_heure)]</span>
+				</div>
+			</div>
+		</div>
+		[<div class="champ mode contenu_mode">
+			<div class='label'><:bank:info_mode_paiement:></div>
+			<div class='valeur'><tt>(#MODE)</tt></div>
+		</div>]
+		[<div class="champ montant contenu_montant">
+			<div class='label'><:bank:info_montant_transaction:></div>
+			<div class='valeur'>(#MONTANT_HT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''}) <:bank:label_tri_montant_ht:>[ / (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''}) <:bank:label_tri_montant_ttc:>]</div>
+		</div>]
+		[(#MONTANT_REGLE|intval|et{#MONTANT_REGLE|=={#MONTANT}|non})
+		<div class="msg-alert notice">
+			<div class="champ montant_regle contenu_montant_regle">
+				<div class='label'><:bank:info_montant_regle:></div>
+				<div class='valeur'>[(#MONTANT_REGLE|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</div>
+			</div>
+		</div>]
+		[<div class="champ statut contenu_statut">
+			<div class='label'><:bank:label_tri_statut:> :</div>
+			<div class='valeur'><tt>(#STATUT|bank_traduire_statut_transaction)</tt></div>
+		</div>]
+		[(#STATUT|=={ok}|oui)
+		<div class="msg-alert success">
+			<div class="champ date_paiement contenu_date_paiement">
+				<div class='label'><:bank:info_date_paiement:></div>
+				<div class='valeur'>[(#DATE_PAIEMENT|affdate_heure)]</div>
+			</div>
+			[<div class="champ autorisation_id contenu_autorisation_id">
+				<div class='label'><:bank:info_autorisation_paiement:></div>
+				<div class='valeur'><tt>(#AUTORISATION_ID)</tt></div>
+			</div>]
+			[<div class="champ abo_uid contenu_abo_uid">
+				<div class='label'><:bank:info_abo_uid:></div>
+				<div class='valeur'><tt>(#ABO_UID)</tt></div>
+			</div>]
+			[<div class="champ refcb contenu_refcb">
+				<div class='label'><:bank:info_refcb:></div>
+				<div class='valeur'>(#REFCB)</div>
+			</div>]
+			[<div class="champ validite contenu_validite">
+				<div class='label'><:bank:info_validite:></div>
+				<div class='valeur'>(#VALIDITE)</div>
+			</div>]
+			[<div class="champ pay_id contenu_pay_id">
+				<div class='label'><:bank:info_pay_id:></div>
+				<div class='valeur'><tt>(#PAY_ID)</tt></div>
+			</div>]
+		</div>]
+		[<div class="champ parrain contenu_parrain">
+			<div class='label'><:bank:label_tri_parrain:> :</div>
+			<div class='valeur'>(#PARRAIN) <tt>#TRACKING_ID</tt></div>
+		</div>]
+		[(#ID_COMMANDE|oui)
+		<div class="champ id_commande contenu_id_commande">
+			<div class='label'><:bank:info_commande:> :</div>
+			<div class='valeur'><a href='[(#ID_COMMANDE|generer_objet_url{commande})]'>##ID_COMMANDE[ - (#INFO_TITRE{commande,#ID_COMMANDE})]</a></div>
+		</div>]
+		[(#ID_FACTURE|oui)
+		<div class="champ id_facture contenu_id_facture">
+			<div class='label'><:bank:info_facture:> :</div>
+			<div class='valeur'><a href='[(#URL_PAGE{facture}|parametre_url{id_facture,#ID_FACTURE}|parametre_url{hash,#INFO_DETAILS{facture,#ID_FACTURE}|md5})]'>#ID_FACTURE</a></div>
+		</div>]
+		[(#FINIE|<{0}|oui)
+		<div class="msg-alert error"><:bank:erreur_transaction_traitement_incomplet:></div>
+		]
+		[<div class="msg-alert notice">
+			<div class="champ message contenu_message">
+				<div class='label'><:bank:info_erreur_interne:></div>
+				<div class='valeur'>(#ERREUR)</div>
+			</div>
+		</div>]
+<!--		[<div class="msg-alert info">
+			<div class="champ message contenu_message">
+				<div class='label'><:bank:info_message_utilisateur:></div>
+				<div class='valeur'>(#MESSAGE)</div>
+			</div>
+		</div>]-->
+	#BOITE_FERMER
+
+</div>
+</BOUCLE_transaction>

@@ -1,0 +1,64 @@
+<head>
+    <title>#ENV{titre}</title>
+    <intro>#ENV{chapeau}</intro>
+</head>
+    <body>
+    <BOUCLE_visuel_principal(DOCUMENTS){tout}{si #ENV{visuel_principal}|oui}{id_document IN #ENV{visuel_principal}}>
+        <div class="visuel_principal">
+            [(#LOGO_DOCUMENT|image_passe_partout{570,260}|image_recadre{570,260,center center}{#URL_DOCUMENT})]
+        </div>
+    </BOUCLE_visuel_principal>
+    [<p style="line-height: 180%;font-size:15px;color:#555;margin: 1em 0">
+           (#ENV{texte_html}|html_entity_decode)
+    </p>]
+
+     <div style="line-height: 180%;font-size:15px;color:#555">
+    <BOUCLE_contenu_evenement(EVENEMENTS){id_evenement}{si #ENV{mode_email_collectif}|=={evenement}}{si #ENV{inclure_contenu_evenement}|=={oui}}>
+        <INCLURE{fond=notifications/inc/inc-infos_evenement,env}>
+    </BOUCLE_contenu_evenement>
+     <B_categories_adherents>
+         <b><:association:email_notification_categorie_cotisation:></b>
+        <ul class="spip">
+            <BOUCLE_categories_adherents(ASSO_CATEGORIES_ADHERENTS){tout}{!par cotisation}{statut=ok}{si #ENV{ajouter_information_paiement}|=={oui}}>
+                [<li>(#VALEUR) - [(#COTISATION|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</li>]
+            </BOUCLE_categories_adherents>
+       </ul>
+    <div style="text-align:center;">
+		<a href="[(#URL_PAGE{profil}|abs_url)]" style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;"><:notifications:attente_paiement_message_lien_profil:></a>
+	</div>
+    </B_categories_adherents>
+    <B_mode_paiement_adhesion>
+        <b><:association:email_notification_mode_paiement:></b><br>
+        <ul class="spip">
+            <BOUCLE_mode_paiement_adhesion(POUR){tableau #VAL{acte}|bank_lister_configs}{valeur != simu}{si #ENV{ajouter_information_paiement}|=={oui}}>
+                [(#VALEUR{actif}|oui|et{#VALEUR|bank_config_id|in_any{#META{/association/mode_paiement_adhesion}}|oui})
+                       [<li>(#VALEUR{presta}|bank_titre_type_paiement) [(#VALEUR{iban}|oui)- <small>([ <:notifications:label_iban:> <b>(#VALEUR{iban})</b>] [ <:notifications:label_bic:> <b>(#VALEUR{bic})</b>])</small>]</li>]
+                ]
+            </BOUCLE_mode_paiement_adhesion>
+        </ul>
+    </B_mode_paiement_adhesion>
+    <B_documents_joints_img>
+        <h2 class="titre-section-petit"><:association:galerie:></h2>
+        <BOUCLE_documents_joints_img(DOCUMENTS){tout}{si #ENV{documents_joints}|oui}{id_document IN #ENV{documents_joints}}{extension IN png,jpg,gif}{mode=image}>
+            <div class="document_joints">
+                [(#LOGO_DOCUMENT|image_passe_partout{260,130}|image_recadre{260,130,center center}{#URL_DOCUMENT})]
+            </div>
+        </BOUCLE_documents_joints_img>
+     </B_documents_joints_img>
+    <B_documents_joints_doc>
+        <h2 class="titre-section-petit"><:association:documents_joints:></h2>
+        <BOUCLE_documents_joints_doc(DOCUMENTS){tout}{si #ENV{documents_joints}|oui}{id_document IN #ENV{documents_joints}}{!extension IN png,jpg,gif}{mode=document}>
+            <div class="document_joints">
+                <a href="#URL_DOCUMENT">#URL_DOCUMENT</a>
+            </div>
+        </BOUCLE_documents_joints_doc>
+     </B_documents_joints_doc>
+     </div>
+    <p style="line-height: 180%;font-size:15px;color:#555">
+        <:notifications:email_formule_politesse:><br>
+        <:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+    </p>
+</body>
+
+#FILTRE{newsletters_liens_absolus}
+#FILTRE{facteur_email_wrap_to_html}

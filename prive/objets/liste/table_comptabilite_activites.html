@@ -1,0 +1,137 @@
+<div class="cadre-formulaire-editer">
+    <h2><:association:titre_comptabilite_evenement:></h2>
+    [(#REM) Normalisation du filtre type ]
+    [(#SET{type,[(#ENV{type,'toutes'})]})]
+    [(#GET{type}|=={''}|?{[(#SET{type,toutes})]})]
+    [(#GET{type}|=={'tout'}|?{[(#SET{type,toutes})]})]
+
+    [(#REM) Toggle pour inclure ou non les opérations non validées ]
+    [(#SET{inclure_non_validees,[(#ENV{inclure_non_validees}|association_get_inclure_non_validees)]})]
+    [(#SET{vu,#ENV{vu}})]
+    [(#SET{vu_effectif,[(#GET{vu}|association_vu_selon_inclusion{#GET{inclure_non_validees}})]})]
+
+    [(#REM) Récupérer une fois les statistiques et totaux globaux ]
+    [(#SET{compta_stats,[(#ENV{id_evenement}|table_comptabilite_activites_stats{#GET{vu_effectif}})]})]
+
+    <!-- statistics table (cards, no inline styles) -->
+    <div style="text-align:right;margin-bottom:8px;">
+        [(#GET{inclure_non_validees}|=={1}|?{<a class="spip_button on inclure-toggle ajax" data-value="0" href="[(#SELF|parametre_url{inclure_non_validees,0})]">Inclure non validées : ON</a>,})]
+        [(#GET{inclure_non_validees}|=={0}|?{<a class="spip_button inclure-toggle ajax" data-value="1" href="[(#SELF|parametre_url{inclure_non_validees,1})]">Inclure non validées : OFF</a>,})]
+    </div>
+
+    <div class="boite_stats_compact boite_stats_expanded" aria-label="<:association:label_stats_comptabilite:>">
+      <div class="stats-grid">
+        <div class="stat-card" aria-label="<:association:stat_entrees:>">
+          <div class="stat-card-title">&uarr; <:association:stat_entrees:></div>
+          <div class="stat-card-main">[(#GET{compta_stats}|table_valeur{total_recettes}|association_nbrefr)] <span class="stat-card-currency">[(#GET{devise})]</span></div>
+          <div class="stat-card-sub">[(#GET{compta_stats}|table_valeur{nb_recettes})] <:association:operations:> • <:association:moy_abbrev:> [(#GET{compta_stats}|table_valeur{avg_recette}|association_nbrefr)]</div>
+        </div>
+
+        <div class="stat-card" aria-label="<:association:stat_sorties:>">
+          <div class="stat-card-title">&darr; <:association:stat_sorties:></div>
+          <div class="stat-card-main">[(#GET{compta_stats}|table_valeur{total_depenses}|association_nbrefr)] <span class="stat-card-currency">[(#GET{devise})]</span></div>
+          <div class="stat-card-sub">[(#GET{compta_stats}|table_valeur{nb_depenses})] <:association:operations:> • <:association:moy_abbrev:> [(#GET{compta_stats}|table_valeur{avg_depense}|association_nbrefr)]</div>
+        </div>
+
+          <div class="stat-card" aria-label="<:association:stat_solde:>">
+              <div class="stat-card-title">⚖️ <:association:stat_solde:></div>
+              <div class="stat-card-main stat-solde [(#GET{compta_stats}|table_valeur{total_solde}|>{0}|?{solde_positif,solde_negatif})]">[(#GET{compta_stats}|table_valeur{total_solde}|association_nbrefr)] <span class="stat-card-currency">[(#GET{devise})]</span></div>
+              <div class="stat-card-sub"><:association:recettes_moins_depenses:></div>
+          </div>
+
+        <div class="stat-card" aria-label="<:association:stat_total_lignes:>">
+          <div class="stat-card-title">🧾 <:association:stat_total_lignes:></div>
+          <div class="stat-card-main">[(#GET{compta_stats}|table_valeur{nb_toutes})]</div>
+          <div class="stat-card-sub"><:association:nombre_total_operations:></div>
+        </div>
+
+        <div class="stat-card" aria-label="<:association:stat_moyenne_op:>">
+          <div class="stat-card-title">🔢 <:association:stat_moyenne_op:></div>
+          <div class="stat-card-main">[(#GET{compta_stats}|table_valeur{avg_operation}|association_nbrefr)] <span class="stat-card-currency">[(#GET{devise})]</span></div>
+          <div class="stat-card-sub"><:association:moyenne_par_operation:></div>
+        </div>
+      </div>
+    </div>
+    [(#AUTORISER{modifier, evenement, #ENV{id_evenement}}|oui)
+    <div class="asso-actions">
+        <div class="bouton">
+            <a href="[(#URL_ECRIRE{editer_asso_comptes,id_evenement=#ENV{id_evenement}})]" class="btn-export lien_avec_fa">
+                <span class="fa_icone"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></span>
+                <span><:association:ajouter_une_operation:></span>
+            </a>
+        </div>
+        <div class="bouton">
+            <a href="[(#URL_PAGE{export_comptes_evenement.csv,id_evenement=#ENV{id_evenement}})]" class="btn-export lien_avec_fa">
+                <span class="fa_icone"><i class="fa-solid fa-file-export"></i></span>
+                <span><:association:exporter:></span>
+            </a>
+        </div>
+    </div>
+    ]
+    [(#REM) Filtres d'affichage (Toutes / Recettes / Dépenses) ]
+    <div class="asso-filtres">
+        <div class="filtre-groupe style-pills">
+            <label><i class="fa-solid fa-filter"></i> <:association:label_filtre_operation:></label>
+            <div class="options">
+                <a href="[(#SELF|parametre_url{type,toutes})]" class="ajax option[(#ENV{type}|=={toutes}|oui) selected]"><:association:filtre_operation_toutes:></a>
+                <a href="[(#SELF|parametre_url{type,recette})]" class="ajax option[(#ENV{type}|=={recette}|oui) selected]"><:association:filtre_operation_recettes:></a>
+                <a href="[(#SELF|parametre_url{type,depense})]" class="ajax option[(#ENV{type}|=={depense}|oui) selected]"><:association:filtre_operation_depenses:></a>
+            </div>
+        </div>
+    </div>
+
+    [(#REM) Tableau unique avec filtrage conditionnel ]
+    <table class="tableau_comptabilite tableau_asso">
+        <tr>
+          <th><:association:id:></th>
+          <th><:association:date:></th>
+          <th><:association:id_transaction:></th>
+          <th><:association:compte:></th>
+          <th><:association:justification:></th>
+          <th><:association:montant:></th>
+          <th class="action">[(#BOUTON_ACTION{synchro,#URL_ACTION_AUTEUR{synchroniser_comptabilite_evenement,id_evenement=#ENV{id_evenement},#SELF,ajax}})]</th>
+        </tr>
+        [(#REM) Version quand on inclut non-validées (vu >= 0) ]
+        <BOUCLE_condition_vu_all(CONDITION){si #GET{vu_effectif}|=={>=0}}>
+            <BOUCLE_comptes_toutes(ASSO_COMPTES){objet=evenement}{id_objet=#ENV{id_evenement}}{si #ENV{type}|=={toutes}|ou{#ENV{type}|non}}{par date}>
+                <INCLURE{fond=prive/objets/liste/item_compte_activites,id_compte,id_evenement,env}>
+            </BOUCLE_comptes_toutes>
+
+            <BOUCLE_comptes_recettes(ASSO_COMPTES){objet=evenement}{id_objet=#ENV{id_evenement}}{si #ENV{type}|=={recette}}{par date}{recette>=1}>
+                <INCLURE{fond=prive/objets/liste/item_compte_activites,id_compte,id_evenement,env}>
+            </BOUCLE_comptes_recettes>
+
+            <BOUCLE_comptes_depenses(ASSO_COMPTES){objet=evenement}{id_objet=#ENV{id_evenement}}{si #ENV{type}|=={depense}}{par date}{depense>=1}>
+                <INCLURE{fond=prive/objets/liste/item_compte_activites,id_compte,id_evenement,env}>
+            </BOUCLE_comptes_depenses>
+        </BOUCLE_condition_vu_all>
+
+        [(#REM) Version quand on n'inclut pas les non-validées (vu = 1) ]
+        <BOUCLE_condition_vu_1(CONDITION){si #GET{vu_effectif}|=={1}}>
+                    <BOUCLE_comptes_toutes_vu1(ASSO_COMPTES){objet=evenement}{id_objet=#ENV{id_evenement}}{vu=1}{si #ENV{type}|=={toutes}|ou{#ENV{type}|non}}{par date}>
+                        <INCLURE{fond=prive/objets/liste/item_compte_activites,id_compte,id_evenement,env}>
+                    </BOUCLE_comptes_toutes_vu1>
+
+                    <BOUCLE_comptes_recettes_vu1(ASSO_COMPTES){objet=evenement}{id_objet=#ENV{id_evenement}}{vu=1}{si #ENV{type}|=={recette}}{par date}{recette>=1}>
+                        <INCLURE{fond=prive/objets/liste/item_compte_activites,id_compte,id_evenement,env}>
+                    </BOUCLE_comptes_recettes_vu1>
+
+                    <BOUCLE_comptes_depenses_vu1(ASSO_COMPTES){objet=evenement}{id_objet=#ENV{id_evenement}}{vu=1}{si #ENV{type}|=={depense}}{par date}{depense>=1}>
+                        <INCLURE{fond=prive/objets/liste/item_compte_activites,id_compte,id_evenement,env}>
+                    </BOUCLE_comptes_depenses_vu1>
+        </BOUCLE_condition_vu_1>
+
+    </table>
+<!--
+    <p><:association:compta_aucune_operation:></p>
+
+    [(#AUTORISER{modifier, evenement, #ENV{id_evenement}}|oui)
+        [(#BOUTON_ACTION{<:association:compta_synchroniser_evenement:>,#URL_ACTION_AUTEUR{synchroniser_comptabilite_evenement,id_evenement=#ENV{id_evenement},#SELF,ajax}})]
+    ]-->
+
+    [(#REM) Fin du contenu de la page ]
+</div>
+
+<!-- Utiliser le mécanisme SPIP classique : les liens de toggle incluent le paramètre `inclure_non_validees` dans l'URL
+     et la fonction PHP `association_get_inclure_non_validees` gère la persistance en session. -->
+

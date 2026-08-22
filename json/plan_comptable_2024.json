@@ -1,0 +1,224 @@
+{
+  "Classes": [
+    {
+      "Numero": "1",
+      "Libelle": "Actifs",
+      "Description": "Comptes relatifs aux actifs de l'association.",
+      "Comptes": [
+        {
+          "Numero": "110",
+          "Libelle": "Immobilisations",
+          "Description": "Comptes relatifs aux immobilisations de l'association."
+        },
+        {
+          "Numero": "120",
+          "Libelle": "Amortissements",
+          "Description": "Comptes relatifs aux amortissements des immobilisations."
+        },
+        {
+          "Numero": "130",
+          "Libelle": "Créances",
+          "Description": "Comptes relatifs aux créances de l'association.",
+          "SousComptes": [
+            {
+              "Numero": "1301",
+              "Libelle": "Cotisations à recevoir",
+              "Description": "Montants des cotisations des membres en attente d'encaissement."
+            },
+            {
+              "Numero": "1302",
+              "Libelle": "Inscriptions à recevoir",
+              "Description": "Montants des inscriptions aux activités en attente d'encaissement."
+            }
+          ]
+        },
+        {
+          "Numero": "140",
+          "Libelle": "Trésorerie",
+          "Description": "Comptes relatifs aux disponibilités financières.",
+          "SousComptes": [
+            {
+              "Numero": "1401",
+              "Libelle": "Banque",
+              "Description": "Disponibilités bancaires."
+            },
+            {
+              "Numero": "1402",
+              "Libelle": "Caisse",
+              "Description": "Disponibilités en caisse."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Numero": "4",
+      "Libelle": "Passifs",
+      "Description": "Comptes relatifs aux passifs de l'association.",
+      "Comptes": [
+        {
+          "Numero": "40",
+          "Libelle": "Dettes fournisseurs",
+          "Description": "Comptes relatifs aux dettes envers les fournisseurs."
+        },
+        {
+          "Numero": "41",
+          "Libelle": "Autres dettes",
+          "Description": "Comptes relatifs aux autres dettes de l'association.",
+          "SousComptes": [
+            {
+              "Numero": "4118",
+              "Libelle": "Clients - Factures à émettre",
+              "Description": "Montants dus par les clients pour les prestations de services ou événements facturés mais non encore encaissés."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Numero": "5",
+      "Libelle": "Comptes financiers",
+      "Description": "Comptes relatifs aux opérations financières de l'association.",
+      "Comptes": [
+        {
+          "Numero": "51",
+          "Libelle": "Banques",
+          "Description": "Soldes des comptes bancaires de l'association"
+        },
+        {
+          "Numero": "52",
+          "Libelle": "Caisse",
+          "Description": "Montant de liquidités détenues en caisse"
+        }
+      ]
+    },
+    {
+      "Numero": "6",
+      "Libelle": "Charges",
+      "Description": "Comptes relatifs aux charges de l'association, incluant les dépenses pour les activités, les frais généraux et les achats.",
+      "Comptes": [
+        {
+          "Numero": "60",
+          "Libelle": "Charges",
+          "Description": "Comptes enregistrant les différentes dépenses de l'association.",
+          "SousComptes": [
+            {
+              "Numero": "6010",
+              "Libelle": "Charges des activités",
+              "Description": "Dépenses engagées pour les activités payantes organisées par l'association.",
+              "SousComptes": [
+                {
+                  "Numero": "601001",
+                  "Libelle": "Dépenses des activités payantes",
+                  "Description": "Dépenses engagées pour les activités payantes organisées par l'association"
+                }
+              ]
+            },
+            {
+              "Numero": "6020",
+              "Libelle": "Charges générales",
+              "Description": "Dépenses générales de l'association.",
+              "SousComptes": [
+                {
+                  "Numero": "602001",
+                  "Libelle": "Salaires et charges sociales",
+                  "Description": "Salaires versés aux employés et charges sociales associées"
+                },
+                {
+                  "Numero": "602002",
+                  "Libelle": "Frais de communication et marketing",
+                  "Description": "Dépenses liées à la communication et au marketing"
+                },
+                {
+                  "Numero": "602003",
+                  "Libelle": "Frais administratifs",
+                  "Description": "Dépenses administratives comme le loyer, l'électricité et l'eau"
+                },
+                {
+                  "Numero": "602004",
+                  "Libelle": "Frais de déplacement",
+                  "Description": "Dépenses liées aux déplacements des membres de l'association"
+                },
+                {
+                  "Numero": "602005",
+                  "Libelle": "Frais de fournitures de bureau",
+                  "Description": "Dépenses pour l'achat de fournitures de bureau"
+                },
+                {
+                  "Numero": "602006",
+                  "Libelle": "Achats de goodies",
+                  "Description": "Dépenses pour l'achat de produits dérivés (goodies) à vendre"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Numero": "7",
+      "Libelle": "Produits",
+      "Description": "Comptes relatifs aux produits de l'association, incluant les ventes, les subventions et autres revenus.",
+      "Comptes": [
+        {
+          "Numero": "70",
+          "Libelle": "Produits",
+          "Description": "Comptes enregistrant les différentes sources de revenus de l'association.",
+          "SousComptes": [
+            {
+              "Numero": "7010",
+              "Libelle": "Cotisations",
+              "Description": "Recettes provenant des cotisations des membres."
+            },
+            {
+              "Numero": "7020",
+              "Libelle": "Produits des activités",
+              "Description": "Recettes générées par les activités payantes organisées par l'association."
+            },
+            {
+              "Numero": "7030",
+              "Libelle": "Produits publicitaires",
+              "Description": "Recettes générées par la vente d'espaces publicitaires.",
+              "SousComptes": [
+                {
+                  "Numero": "703001",
+                  "Libelle": "Recettes des annonces publicitaires",
+                  "Description": "Recettes générées par la vente d'espaces publicitaires"
+                }
+              ]
+            },
+            {
+              "Numero": "7040",
+              "Libelle": "Ventes de goodies",
+              "Description": "Recettes générées par la vente de produits dérivés (goodies).",
+              "SousComptes": [
+                {
+                  "Numero": "704001",
+                  "Libelle": "Recettes des ventes de goodies",
+                  "Description": "Recettes générées par la vente de produits dérivés (goodies)"
+                }
+              ]
+            },
+            {
+              "Numero": "7050",
+              "Libelle": "Subventions",
+              "Description": "Subventions reçues des organismes publics et privés.",
+              "SousComptes": [
+                {
+                  "Numero": "705001",
+                  "Libelle": "Subventions publiques",
+                  "Description": "Subventions reçues des organismes publics"
+                },
+                {
+                  "Numero": "705002",
+                  "Libelle": "Subventions privées",
+                  "Description": "Subventions reçues des organismes privés"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+[(#REM)
+-> Adhérent - Cotisation réglée, en attente de validation par un responsable
+][(#HTTP_HEADER{Content-type: text/plain[; charset=(#CHARSET)]})]
+[(#SET{url_profil,[(#URL_PAGE{profil}|url_absolue)]})]
+<BOUCLE_complement_info_entreprise(CONDITION){si #ENV{type_adherent}|=={entreprise}}>
+<head>
+    <title><:notifications:validation_post_paiement_entreprise_title:></title>
+    <intro><:notifications:validation_post_paiement_entreprise_intro:></intro>
+</head>
+<body>
+<div style="
+        line-height: 180%;
+        color: white !important;
+        background-color: #38414A !important;
+        padding: 1em;
+        text-align: center;">
+    <h3 style="line-height: 180%;color: white !important;text-align: center;">
+        [(#ENV{reinscription}|=={inscription}|oui)
+        <:notifications:validation_post_paiement_inscription_entreprise_titre{nom_entreprise=#ENV{nom_entreprise}}:>
+        ]
+        [(#ENV{reinscription}|=={reinscription}|oui)
+        <:notifications:validation_post_paiement_reinscription_entreprise_titre{nom_entreprise=#ENV{nom_entreprise}}:>
+        ]
+    </h3>
+    <p style="font-size: 17px;text-align: center;color: white !important;">
+        <:notifications:validation_post_paiement_entreprise_chapo:>
+    </p>
+</div>
+<p style="line-height: 180%;font-size:15px;color:#555">
+    <:notifications:validation_post_paiement_entreprise_explication:>
+</p>
+
+</BOUCLE_complement_info_entreprise>
+
+<head>
+    <title><:notifications:validation_post_paiement_title:></title>
+    <intro><:notifications:validation_post_paiement_intro:></intro>
+</head>
+<body>
+<div style="
+        line-height: 180%;
+        color: white !important;
+        background-color: #38414A !important;
+        padding: 1em;
+        text-align: center;">
+    <h3 style="line-height: 180%;color: white !important;text-align: center;">
+        [(#ENV{reinscription}|=={inscription}|oui)
+        <:notifications:validation_post_paiement_inscription_titre{nom_adherent=#ENV{nom_adherent}}:>
+        ]
+        [(#ENV{reinscription}|=={reinscription}|oui)
+        <:notifications:validation_post_paiement_reinscription_titre{nom_adherent=#ENV{nom_adherent}}:>
+        ]
+    </h3>
+    <p style="font-size: 17px;text-align: center;color: white !important;">
+        <:notifications:validation_post_paiement_chapo:>
+    </p>
+</div>
+<p style="line-height: 180%;font-size:15px;color:#555">
+    <:notifications:validation_post_paiement_explication:>
+</p>
+
+<//B_complement_info_entreprise>
+<p style="line-height: 180%;font-size:15px;color:#555">
+    <:notifications:email_formule_politesse:><br>
+        <:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+</p>
+</body>
+#FILTRE{facteur_email_wrap_to_html}

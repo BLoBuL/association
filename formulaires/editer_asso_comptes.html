@@ -1,0 +1,21 @@
+<div class="formulaire_spip formulaire_asso formulaire_editer_asso_comptes">
+[<p class="formulaire_erreur erreur_message">(#ENV*{message_erreur})</p>]
+[<span class='erreur'>(#ENV*{message_erreur})</span>]
+<form method="post" action="#ENV{action}">
+	#ACTION_FORMULAIRE{#ENV{action}}
+	<div>
+		[(#REM) on affiche les champs de saisies]
+		#GENERER_SAISIES{#ENV{_saisies}}
+
+		#SET{erreurs,#ENV**{erreurs}|table_valeur{destinations}}
+		[(#ENV{destinations_on}|oui)
+		<div class="editer_destinations">
+			[<span class='erreur_message'>(#GET{erreurs})</span>]
+			#EDITEUR_DESTINATIONS
+		</div>
+		]
+
+	</div>
+	<p class="boutons"><input type="submit" value="<:pass_ok:>" class="submit" /></p>
+</form>
+</div>

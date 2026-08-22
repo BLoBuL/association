@@ -1,0 +1,12 @@
+
+	[<div class='valide'>(#ENV*{message_ok})</div>]
+	[<span class='erreur'>(#ENV*{message_erreur})</span>]
+	<form class="formulaire_spip formulaire_asso formulaire_config_association" method="post" action="#ENV{action}">
+        [<span class='erreur'>(#ENV*{message_erreur})</span>]
+        <div>
+            #ACTION_FORMULAIRE{#ENV{action}}
+
+            #GENERER_SAISIES{#ENV{_saisies}}
+        </div>
+        <p class="boutons"><input type="submit" value="<:bouton_valider:>" class="fondo" /></p>
+	</form>

@@ -1,0 +1,196 @@
+#CACHE{0}#HTTP_HEADER{Content-Encoding: #CHARSET}
+#HTTP_HEADER{Content-Type: text/xml; charset=#CHARSET}
+<BOUCLE_evenement(EVENEMENTS){id_evenement}>[(#HTTP_HEADER{Content-Disposition: attachment; filename=[Event_(#ID_EVENEMENT)][ (#TITRE|replace{','}|supprimer_tags|couper{25,''})][((#DATE_DEBUT|affdate{'d-m-y'}))].xml})]
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="https://www.w3.org/TR/html40/">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Title>Extraction comptable</Title>
+  <Author>[(#SESSION{prenom})][ #SESSION{nom_famille})]</Author>
+  <Created>[(#DATE{Y-d-mTG:i:sz})]</Created>
+  <Company>#NOM_SITE_SPIP</Company>
+  <Version>1.00</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>5460</WindowHeight>
+  <WindowWidth>11865</WindowWidth>
+  <WindowTopX>0</WindowTopX>
+  <WindowTopY>0</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="m62186164">
+   <Borders>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" ss:Size="12" ss:Bold="1"/>
+   <Interior ss:Color="#D7D7D7" ss:Pattern="Solid"/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s63">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Font ss:FontName="Arial" ss:Size="15" ss:Bold="1"/>
+   <Interior ss:Color="#D7D7D7" ss:Pattern="Solid"/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s71">
+   <Borders>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s73">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s75">
+   <Borders>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s77">
+   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11"/>
+   <Interior ss:Color="#CCFFCC" ss:Pattern="Solid"/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s84">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="Arial" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#808080" ss:Pattern="Solid"/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+ </Styles>
+<B_asso_activites> <Worksheet ss:Name="Accounting Balance">
+  <Table ss:ExpandedColumnCount="16" ss:ExpandedRowCount="[(#TOTAL_BOUCLE|plus{13})]" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultRowHeight="15">
+   <Column ss:AutoFitWidth="0" ss:Width="110.25"/>
+   <Column ss:Index="3" ss:AutoFitWidth="0" ss:Width="99.75" ss:Span="1"/>
+   <Column ss:Index="5" ss:AutoFitWidth="0" ss:Width="120"/>
+   <Column ss:Index="8" ss:Width="48.75"/>
+   <Column ss:Width="50.25"/>
+   <Column ss:Width="48.75"/>
+   <Column ss:Width="50.25"/>
+   <Column ss:AutoFitWidth="0" ss:Width="84.75"/>
+   <Column ss:AutoFitWidth="0" ss:Width="95.25"/>
+   <Column ss:AutoFitWidth="0" ss:Width="125.25"/>
+   <Row ss:AutoFitHeight="0" ss:Height="19.5">
+    <Cell ss:MergeAcross="15" ss:StyleID="s63"><Data ss:Type="String">Feuille d'Activité</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="15.75"/>
+   <Row ss:AutoFitHeight="0" ss:Height="15.75">
+    <Cell ss:MergeAcross="5" ss:StyleID="m62186164"><Data ss:Type="String">#NOM_SITE_SPIP</Data></Cell>
+   <Cell ss:Index="8" ss:MergeAcross="5" ss:MergeDown="4" ss:StyleID="s77"><ss:Data
+      ss:Type="String" xmlns="https://www.w3.org/TR/html40/">Toutes les cases se remplissent automatiquement à partir des données du site. Merci de remplir uniquement les cases surlignées en vert puis d'envoyer cette feuille à <B></B></ss:Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Titre :</Data></Cell>
+    <Cell ss:MergeAcross="4" ss:StyleID="s73"><Data ss:Type="String">#TITRE</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Descriptif :</Data></Cell>
+    <Cell ss:MergeAcross="4" ss:StyleID="s73"><Data ss:Type="String">[(#DESCRIPTIF|textebrut)]</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Categorie :</Data></Cell>
+    <Cell ss:MergeAcross="4" ss:StyleID="s75"><Data ss:Type="String"><BOUCLE_article(ARTICLES){id_evenement}><B_hierarchie><BOUCLE_hierarchie(HIERARCHIE){id_evenement}{' \ '}>[(#TITRE|textebrut)]</BOUCLE_hierarchie></B_hierarchie>[ \ (#TITRE|textebrut)]</BOUCLE_article></Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Date :</Data></Cell>
+    <Cell ss:MergeAcross="4" ss:StyleID="s75"><Data ss:Type="String">[(#DATE_DEBUT|affdate{d-m-Y})]</Data></Cell>
+   </Row>
+  <Row ss:AutoFitHeight="0">
+      <Cell ss:StyleID="s71"><Data ss:Type="String">Price:</Data></Cell>
+      <Cell ss:MergeAcross="4" ss:StyleID="s75"><Data ss:Type="String"><BOUCLE_categorie(asso_categories_activites_liens id_categorie){id_evenement}>[(#SET{montant,[(#MONTANT|=={0}|?{Gratuit, [(#MONTANT|replace{',00',''}) ]})]})][(#MONTANT|non) [(#SET{montant,null})]]<BOUCLE_categorie_activite(ASSO_CATEGORIES_ACTIVITES){id_categorie}{statut=ok}{si #GET{montant}|!={null}}>[(#VALEUR) :] #GET{montant}#COMMENTAIRES</BOUCLE_categorie_activite></BOUCLE_categorie></Data></Cell>
+  </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Responsable(s) : </Data></Cell>
+    <Cell ss:MergeAcross="4" ss:StyleID="s75"><Data ss:Type="String">[(#SET{id_responsables,[(#ID_EVENEMENT|liste_responsables_evenement)]})]<BOUCLE_responsables(AUTEURS){id_auteur IN #GET{id_responsables}}{' & '}>[(#PRENOM)][ (#NOM_FAMILLE|strtoupper)] (#MOBILE)</BOUCLE_responsables></Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Mode de paiement : </Data></Cell>
+    <Cell ss:MergeAcross="4" ss:StyleID="s75"><Data ss:Type="String">[(#MODE_PAIEMENT)]</Data></Cell>
+   </Row>
+   <Row ss:Index="11" ss:AutoFitHeight="0">
+    <Cell ss:MergeAcross="15" ss:StyleID="s84"><Data ss:Type="String">Liste des inscrits</Data></Cell>
+   </Row>
+<Row ss:AutoFitHeight="0">
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_num_evenement:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_date:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_statut:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_prenom:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_nom:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_email:>}|textebrut)</Data></Cell>];    
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_nb_inscrits:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_nom_accompagnant:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_commentaire:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_details:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_numero_transaction:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_statut_transaction:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_montant_transaction:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_mode_transaction:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_date_paiement:>}|textebrut)</Data></Cell>];
+    </Row><BOUCLE_asso_activites(ASSO_ACTIVITES){id_evenement}>[(#SET{nb_inscrits,#GET{nb_inscrits}|plus{#NOMBRE_INSCRITS}})]
+    <Row ss:AutoFitHeight="0" ss:Height="12.9375">
+        <Cell><Data ss:Type="String">#ID_ACTIVITE</Data></Cell>
+        <Cell><Data ss:Type="String">[(#DATE|Affdate{d-m-Y})]</Data></Cell>
+        <Cell><Data ss:Type="String">[(#STATUT)]</Data></Cell>
+        <Cell><Data ss:Type="String">[(#PRENOM_INSCRIT|textebrut)]</Data></Cell>
+        <Cell><Data ss:Type="String">[(#NOM_INSCRIT|strtoupper|textebrut)]</Data></Cell>
+        <Cell><Data ss:Type="String">[(#EMAIL_INSCRIT)]</Data></Cell>
+        <Cell><Data ss:Type="Number">#NOMBRE_INSCRITS</Data></Cell>
+       <Cell><Data ss:Type="String">[(#NOM_PARTICIPANTS|textebrut)]</Data></Cell> 
+        <Cell><Data ss:Type="String">[(#COMMENTAIRE|textebrut)]</Data></Cell>   
+       <B_data_transaction><Cell><Data ss:Type="String"><BOUCLE_data_transaction(DATA){source  table, #TRANSACTION|unserialize}{','}>[(#VALEUR|foreach|supprimer_tags)]</BOUCLE_data_transaction></Data></Cell></B_data_transaction>
+        <BOUCLE_transaction(TRANSACTIONS){id_transaction}>[(#SET{montant_total,#GET{montant_total}|plus{#MONTANT}})]<Cell><Data ss:Type="String">##ID_TRANSACTION</Data></Cell>
+        <Cell><Data ss:Type="String">#STATUT</Data></Cell>
+        <Cell><Data ss:Type="Number">#MONTANT</Data></Cell>
+        <Cell><Data ss:Type="String">#MODE</Data></Cell>
+        <Cell><Data ss:Type="String">#DATE_PAIEMENT</Data></Cell></BOUCLE_transaction>
+   </Row></BOUCLE_asso_activites>[(#SET{nb_activites,#TOTAL_BOUCLE})]
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Unsynced/>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>[(#TOTAL_BOUCLE|plus{13})]</ActiveRow>
+     <ActiveCol>7</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</B_asso_activites>
+</Workbook>
+</BOUCLE_evenement>

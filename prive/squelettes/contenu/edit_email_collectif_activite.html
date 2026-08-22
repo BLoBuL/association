@@ -1,0 +1,30 @@
+[(#AUTORISER{modifier, evenement, #ENV{id_evenement}}|sinon_interdire_acces)]
+
+<BOUCLE_evenement(EVENEMENTS){id_evenement}>
+<h1 class="grostitre"><:association:email_collectif_evenement_page_titre{titre=#TITRE}:></h1>
+
+<div class="onglets_simple">
+	<ul>
+		<BOUCLE_gabarits(DATA){source table, #ARRAY{
+			libre, <:association:email_collectif_evenement_gabarit_libre:>,
+			rappel, <:association:email_collectif_evenement_gabarit_rappel:>,
+			annulation, <:association:email_collectif_evenement_gabarit_annulation:>,
+			report, <:association:email_collectif_evenement_gabarit_report:>,
+			modification, <:association:email_collectif_evenement_gabarit_modification:>
+		}}>
+		<li>
+			[(#ENV{gabarit_evenement,libre}|=={#CLE}|oui)
+				<strong class="on">#VALEUR</strong>
+			]
+			[(#ENV{gabarit_evenement,libre}|=={#CLE}|non)
+				<a href="[(#SELF|parametre_url{gabarit_evenement,#CLE})]">#VALEUR</a>
+			]
+		</li>
+		</BOUCLE_gabarits>
+	</ul>
+</div>
+
+<div class="ajax">
+	#FORMULAIRE_EMAIL_COLLECTIF_EVENEMENT{#ID_EVENEMENT}
+</div>
+</BOUCLE_evenement>

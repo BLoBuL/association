@@ -1,0 +1,33 @@
+[<p>
+    (#ENV{criteres_sql}|oui)
+    <:association:resultat_recherche_label{criteres_sql=#ENV{criteres_sql}}:>
+</p>]
+<B_tableau_incrits>
+<p>
+    <:association:table_inscription_adherents_nb_resultat{nb_resultat=#TOTAL_BOUCLE}:>
+</p>     
+    <table id="tableau_adherents" class="tableau_adherents tableau_asso">
+        <tr>
+        <th>[(#TRI{id_auteur,'#',ajax})]</th>
+        <th>[(#TRI{nom_famille,<:association:activite_entete_nom:>,ajax})]</th>
+        <th class=""><:email:></th>
+        <th class=""><:association:activite_entete_cotisation:></th>
+         <th class="checkbox"> 
+            <input id="check_all"  type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);" checked="checked">
+             <label for="check_all" ></label></th>
+        </tr>
+        [(#SET{defaut_tri,#ARRAY{
+                statut_interne,-1,
+                validite,-1,
+                inscription,-1,
+                nom_famille,1
+                }})]
+        <BOUCLE_tableau_incrits(AUTEURS){tout}{id_auteur IN #ENV{id_auteurs}}{tri statut_interne,#GET{defaut_tri}}{statut_interne?}>
+            [(#INCLURE{fond=prive/objets/liste/item_destinataire_email_collectif,id_auteur,env})]
+        </BOUCLE_tableau_incrits>
+    </table>
+</B_tableau_incrits>
+<p>
+    <:association:resultat_vide_recherche_label:>
+</p>    
+<//B_tableau_incrits>

@@ -1,0 +1,36 @@
+<BOUCLE_AUTEUR(AUTEURS){id_auteur} {tout}>
+<div class="adherent">
+		<div class="item_content">	
+            [<div class="item_logo" style="float:right">
+            <a href="[(#LOGO_AUTEUR|image_passe_partout{500,500}|image_recadre{500,500,top center}|extraire_attribut{src})]" type="image/jpeg" title="#PRENOM #NOM_FAMILLE" onclick="" class="cboxElement hasbox">
+				(#LOGO_AUTEUR
+					|sinon{#CHEMIN{img/logo_auteur_defaut_#SEXE.png}}
+					|image_passe_partout{150,150}
+					|image_recadre{150,150,top center}
+					|inserer_attribut{'title',#NOM_FAMILLE #PRENOM}
+					|inserer_attribut{'alt',#NOM_FAMILLE #PRENOM}
+					|vider_attribut{style}
+					|vider_attribut{class}
+					|vider_attribut{height}
+					|vider_attribut{width}
+				  )</a>
+			</div>]
+            <div class="item_info">		
+						<h2 class="item_info_titre">                            
+							<span class="prenom">#PRENOM</span>
+							<span class="nom_famille"><b style="text-transform: uppercase">#NOM_FAMILLE</b></span>
+                        </h2>
+                        [<div class="item_info_fonction"><i>(#LISTER_VALEURS{fonction}|sinon{#FONCTION})</i></div>]	
+            </div>    
+			<div class="item_info_supp">	
+                <h4>Contact :</h4>
+                    <div class="item_info_email">
+                        <a href="[(#URL_PAGE{ecrire_auteur,id_auteur=#ID_AUTEUR})]" rel="nofollow" target="_blank" class="spip_in" onclick="if (jQuery.modalbox){jQuery.modalbox('[(#URL_PAGE{ecrire_auteur,id_auteur=#ID_AUTEUR}|parametre_url{url,#SELF}|parametre_url{var_zajax,content})]');return false;}">#EMAIL</a></div>
+                    [<div class="item_info_mobile"><a href="call:#MOBILE">(#MOBILE)</a></div>
+                    ][<div class="item_info_telephone"><a href="call:#TELEPHONE">(#TELEPHONE)</a></div>]
+			</div>
+		</div>
+		<div style="clear:both"></div>
+</div>
+</BOUCLE_AUTEUR>
+    

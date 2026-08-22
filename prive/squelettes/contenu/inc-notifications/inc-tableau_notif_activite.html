@@ -1,0 +1,101 @@
+<tr>
+    <td colspan="4"><h2>Notifications liées aux activités</h2>
+</td>
+</tr>
+<tr>
+    <td colspan="4">
+            <a href="[(#SELF|parametre_url{nombre_inscrits,1})]" class="">#Inscription_individuel</a>
+            <a href="[(#SELF|parametre_url{nombre_inscrits,2})]" class="">#Inscription_multiple</a>
+    </td>
+</tr>
+<tr>
+    <td colspan="4">
+            <a href="[(#SELF|parametre_url{payant,0})]" class="">#gratuit</a>
+            <a href="[(#SELF|parametre_url{payant,1})]" class="">#payant</a>
+    </td>
+</tr>
+
+<B_notif_activites_preinscrit>
+    <tr>
+        <td colspan="4"><h3>Notifications liées aux préinscrits - [#(#VAL{preinscrit}|exemple_activite_par_statut{#NOMBRE_INSCRITS})]</h3>
+        </td>
+    </tr>
+    <BOUCLE_notif_activites_preinscrit(DATA){source table, #VAL{preinscription_activite}|listes_notifications}{par cle}>
+
+    <tr>
+        <td>
+            [(#CHEMIN{/notifications/#CLE.html}|match{themes}|oui)*]
+        </td>
+        <td style="min-width:270px"><a href="[(#URL_PAGE{item-notification,notification=#CLE}|parametre_url{id_activite,[(#VAL{preinscrit}|exemple_activite_par_statut{#NOMBRE_INSCRITS})]}|parametre_url{id_evenement,#GET{id_evenement}}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#CLE)]</a></td>
+        <BOUCLE_description_activites_preinscrit(DATA){source file,#CHEMIN{notifications/#CLE.html}}{1,1}>
+        <td>[(#VALEUR)]</td>
+        </BOUCLE_description_activites_preinscrit>
+    </tr>
+    </BOUCLE_notif_activites_preinscrit>
+
+</B_notif_activites_preinscrit>
+
+
+
+<B_notif_activites_inscrit>
+<tr>
+    <td colspan="4"><h3>Notifications liées aux inscrits - [#(#VAL{ok}|exemple_activite_par_statut{#NOMBRE_INSCRITS})]</h3>
+    </td>
+</tr>
+<BOUCLE_notif_activites_inscrit(DATA){source table, #VAL{inscription_activite}|listes_notifications}{par cle}>
+
+    <tr>
+        <td>
+           [(#CHEMIN{/notifications/#CLE.html}|match{themes}|oui)*]
+        </td>
+        <td style="min-width:270px"><a href="[(#URL_PAGE{item-notification,notification=#CLE}|parametre_url{lang,#LANG}|parametre_url{id_activite,[(#VAL{ok}|exemple_activite_par_statut{#NOMBRE_INSCRITS})]}|parametre_url{id_evenement,#GET{id_evenement}}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#CLE)]</a></td>
+        <BOUCLE_description_activites_inscrit(DATA){source file,#CHEMIN{notifications/#CLE.html}}{1,1}>
+            <td>[(#VALEUR)]</td>
+            </BOUCLE_description_activites_inscrit>
+    </tr>
+    </BOUCLE_notif_activites_inscrit>
+
+</B_notif_activites_inscrit>
+
+<B_notif_activites_attente>
+<tr>
+    <td colspan="4"><h3>Notifications liées au liste d'attente -  [#(#VAL{liste_attente}|exemple_activite_par_statut{#NOMBRE_INSCRITS})]</h3>
+    </td>
+</tr>
+<BOUCLE_notif_activites_attente(DATA){source table, #VAL{attente_activite}|listes_notifications}{par cle}>
+
+    <tr>
+        <td>
+           [(#CHEMIN{/notifications/#CLE.html}|match{themes}|oui)*]
+        </td>
+        <td style="min-width:270px"><a href="[(#URL_PAGE{item-notification,notification=#CLE}|parametre_url{lang,#LANG}|parametre_url{id_activite,[(#VAL{liste_attente}|exemple_activite_par_statut{#NOMBRE_INSCRITS})]}|parametre_url{id_evenement,#GET{id_evenement}}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#CLE)]</a></td>
+        <BOUCLE_description_activites_attente(DATA){source file,#CHEMIN{notifications/#CLE.html}}{1,1}>
+            <td>[(#VALEUR)]</td>
+            </BOUCLE_description_activites_attente>
+    </tr>
+</BOUCLE_notif_activites_attente>
+
+</B_notif_activites_attente>
+
+<B_notif_activites_desinscription>
+<tr>
+    <td colspan="4">
+        <h3>Notifications liées aux désinscrits - [#(#VAL{desinscrit}|exemple_activite_par_statut{#NOMBRE_INSCRITS})]</h3>
+    </td>
+</tr>
+    <BOUCLE_notif_activites_desinscription(DATA){source table, #VAL{desinscription_activite}|listes_notifications}{par cle}>
+
+        <tr>
+            <td>
+                [(#CHEMIN{/notifications/#CLE.html}|match{themes}|oui)*]
+            </td>
+            <td style="min-width:270px"><a href="[(#URL_PAGE{item-notification,notification=#CLE}|parametre_url{lang,#LANG}|parametre_url{id_activite,[(#VAL{desinscrit}|exemple_activite_par_statut{#NOMBRE_INSCRITS})]}|parametre_url{id_evenement,#GET{id_evenement}}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#CLE)]</a></td>
+            <BOUCLE_description_activites_desinscription(DATA){source file,#CHEMIN{notifications/#CLE.html}}{1,1}>
+                <td>[(#VALEUR)]</td>
+                </BOUCLE_description_activites_desinscription>
+        </tr>
+    </BOUCLE_notif_activites_desinscription>
+
+</B_notif_activites_desinscription>
+
+[(#GET{notif_activite_found}|=={0}|?{<tr><td colspan="6">Aucune notification d'activités trouvée.</td></tr>,''})]

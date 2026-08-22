@@ -1,0 +1,68 @@
+<!--[(#SET{roles,#LISTE{fonction,fonction_secondaire}|roles_association})]-->
+
+[(#SET{roles,#VAL|roles_association})]
+
+<BOUCLE_role_types(DATA){source table, #GET{roles}}>
+[(#SET{nom_role, #CLE})]
+[(#SET{groupes, #VALEUR{groupes}})]
+
+<BOUCLE_groupes(DATA){source table, #GET{groupes}} {cle !IN Adhérent,Adhérente,Babysitter}>
+  [<h2 class="grostitre">(#CLE|typo)</h2>]
+  <table id="tableau_adherents_[(#GET{nom_role})]_[(#COMPTEUR_BOUCLE)]" class="tableau_asso [(#ENV{class_tableau})]">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th><:association:activite_entete_nom:></th>
+        <th></th>
+        <th><:association:adherent_libelle_contact:></th>
+        <th><:association:adherent_libelle_activites:></th>
+        <th colspan="2" class="col_actions"><:association:activite_entete_voir:></th>
+        [(#ENV{checkbox_auteurs}|oui)
+        <th class="checkbox">
+          <input id="check_all_[(#GET{nom_role})]_[(#COMPTEUR_BOUCLE)]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);">
+          <label for="check_all_[(#GET{nom_role})]_[(#COMPTEUR_BOUCLE)]"></label>
+        </th>
+        ]
+      </tr>
+    </thead>
+    <tbody>
+      <BOUCLE_fonctions(DATA){source table, #VALEUR}>
+        [(#SET{fonction_cle, #CLE})]
+        [(#SET{fonction_data, #GET{roles}|table_valeur{#GET{nom_role}}|table_valeur{valeurs}|table_valeur{#GET{fonction_cle}}})]
+        [(#SET{auteurs_ids, #GET{fonction_data}|table_valeur{id_auteurs}})]
+        <BOUCLE_auteurs(AUTEURS){id_auteur IN #GET{auteurs_ids}}{par nom_famille}{doublons #GET{nom_role}}{tout}{doublons autres_auteurs}>
+          <INCLURE{fond=prive/squelettes/contenu/inc-benevoles/item_benevole, id_auteur,role=#GET{nom_role}, fonction=#GET{fonction_data}|table_valeur{libelle}, env} />
+        </BOUCLE_auteurs>
+      </BOUCLE_fonctions>
+    </tbody>
+  </table>
+</BOUCLE_groupes>
+</BOUCLE_role_types>
+
+
+[(#REM) Auteurs sans rôle attribué ]
+<B_autres_auteurs>
+<h2 class="grostitre">Autres admins et rédacteurs</h2>
+<table id="tableau_adherents_autres" class="tableau_asso [(#ENV{class_tableau})]">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th><:association:activite_entete_nom:></th>
+      <th></th>
+      <th><:association:adherent_libelle_contact:></th>
+      <th><:association:adherent_libelle_activites:></th>
+      <th colspan="2" class="col_actions"><:association:activite_entete_voir:></th>
+    </tr>
+  </thead>
+  <tbody>
+    <BOUCLE_autres_auteurs(AUTEURS){tout}
+          {statut_interne=ok}
+          {par nom_famille}
+          {statut IN 0minirezo,1comite}
+          {id_auteur!=1}
+            {doublons autres_auteurs}>
+      <INCLURE{fond=prive/squelettes/contenu/inc-benevoles/item_benevole, id_auteur, env} />
+    </BOUCLE_autres_auteurs>
+  </tbody>
+</table>
+</B_autres_auteurs>

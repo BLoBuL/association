@@ -1,0 +1,97 @@
+titre: 'Formulaires (Formidable)'
+description: 'Saisie permettant de sélectionner un formulaire publié (plugin Formidable).'
+icone: 'images/saisies_formulaire-xx.svg'
+categorie:
+  type: 'choix'
+  rang: 1
+options:
+  -
+    saisie: 'fieldset'
+    options:
+      nom: 'description'
+      label: 'Description'
+    saisies:
+      -
+        saisie: 'input'
+        options:
+          nom: 'label'
+          label: 'Titre'
+          explication: 'Label affiché pour ce champ'
+          size: 50
+      - 'inclure:saisies/_base/explication.yaml'
+      -
+        saisie: 'input'
+        options:
+          nom: 'defaut'
+          label: 'Valeur par défaut'
+          size: 50
+      -
+        saisie: 'case'
+        options:
+          nom: 'cacher_option_intro'
+          label_case: "Cacher l'option vide"
+          conteneur_class: 'pleine_largeur'
+      -
+        saisie: 'input'
+        options:
+          nom: 'option_intro'
+          label: "Texte de l'option vide"
+          size: 50
+          afficher_si: '!@cacher_option_intro@'
+      -
+        saisie: 'input'
+        options:
+          nom: 'statut'
+          label: 'Statut des formulaires à lister'
+          explication: 'Mettre par exemple "publie" (valeur par défaut)'
+          defaut: 'publie'
+  -
+    saisie: 'fieldset'
+    options:
+      nom: 'utilisation'
+      label: 'Utilisation'
+    saisies:
+      -
+        saisie: 'oui_non'
+        options:
+          nom: 'disable'
+          label: 'Désactiver'
+          explication: 'Désactiver la saisie'
+  -
+    saisie: 'fieldset'
+    options:
+      nom: 'affichage'
+      label: 'Affichage'
+    saisies:
+      - 'inclure:saisies/_base/class.yaml'
+      -
+        saisie: 'input'
+        options:
+          nom: 'size'
+          label: 'Taille (size)'
+          explication: 'Taille du select (attribut size)'
+        verifier:
+          type: 'entier'
+          options:
+            min: 1
+  -
+    saisie: 'fieldset'
+    options:
+      nom: 'conditions'
+      label: 'Conditions'
+    saisies:
+      - 'inclure:saisies/_base/afficher_si.yaml'
+  -
+    saisie: 'fieldset'
+    options:
+      nom: 'validation'
+      label: 'Validation'
+    saisies:
+      - 'inclure:saisies/_base/obligatoire.yaml'
+options_dev:
+  - 'inclure:saisies/_base/options_dev.yaml'
+defaut:
+  options:
+    label: 'Formulaire'
+    statut: 'publie'
+    sql: "text DEFAULT '' NOT NULL"

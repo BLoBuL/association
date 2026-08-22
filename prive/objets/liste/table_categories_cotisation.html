@@ -1,0 +1,18 @@
+<B_cotisation>
+    <p class="explication"></p>
+    <table class="tableau_asso tableau_categories_cotisation">
+        <tr>
+            <th class="id">#</th>
+            <th><:association:categorie:></th>
+            <th><:association:validation:></th>
+            <th><:association:montant:></th>
+            <th><:association:cotisation_statut:></th>
+            <th><:association:type_cotisation:></th>
+            <th><:association:commentaires:></th>
+            <th colspan="2"><:association:action:></th>
+        </tr>
+        <BOUCLE_cotisation(ASSO_CATEGORIES_ADHERENTS){tout}{par id_categorie}>
+            [(#INCLURE{fond=prive/objets/liste/item_categorie_cotisation,id_categorie,env})]
+        </BOUCLE_cotisation>
+    </table>
+</B_cotisation>

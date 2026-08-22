@@ -1,0 +1,15 @@
+[(#AUTORISER{modifier,asso_compte,#ENV{id_compte,0}}|sinon_interdire_acces)]
+
+[(#SET{redirect,#ENV{redirect}|sinon{#ID_COMPTE|?{#ID_COMPTE|generer_objet_url{asso_compte},#URL_ECRIRE{asso_comptes}}}})]
+
+<div class="cadre-formulaire-editer">
+
+    <h1 class="grostitre"><:association:form_operation_ajout_title:></h1>
+
+
+    <div class="ajax">
+      [(#FORMULAIRE_EDITER_ASSO_COMPTES{#ENV{id_compte,new}, #GET{redirect}, #ENV{associer_objet}})]
+    </div>
+
+
+</div>

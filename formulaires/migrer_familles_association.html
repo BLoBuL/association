@@ -1,0 +1,12 @@
+<div class="formulaire_spip formulaire_migrer_familles_association">
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	<p><:association:migration_familles_explication:></p>
+	<p><strong><:association:migration_familles_previsualisation:></strong>
+		<:association:migration_familles_totaux{familles=#ENV{rapport/totaux/familles},principaux=#ENV{rapport/totaux/principaux},secondaires=#ENV{rapport/totaux/secondaires},alertes=#ENV{rapport/totaux/alertes}}:>
+	</p>
+	<form method="post" action="#ENV{action}"><div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<p class="boutons"><button class="btn btn_primary" type="submit" name="executer" value="oui"><:association:migration_familles_executer:></button></p>
+	</div></form>
+</div>

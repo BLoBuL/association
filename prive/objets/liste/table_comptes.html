@@ -1,0 +1,89 @@
+[(#REM) Calcul des totaux pour l'exercice sélectionné ]
+[(#SET{_totaux,[(#ENV{imputation}|calcul_fonction_comptes_calculer_totaux{#ENV{exercice},#ENV{vu}})]})]
+[(#SET{somme_recettes,[(#GET{_totaux}|table_valeur{recettes}|sinon{0})]})]
+[(#SET{somme_depenses,[(#GET{_totaux}|table_valeur{depenses}|sinon{0})]})]
+[(#SET{solde,[(#GET{_totaux}|table_valeur{solde}|sinon{0})]})]
+[(#SET{devise,[(#CONFIG{intl/devise_defaut})]})]
+
+
+<div class="cadre-formulaire-editer">
+    <div class="filtres">
+        <form method="post" action="[(#SELF|parametre_url{imputation,''})]">
+        <select name="imputation" class="fondl" onchange="form.submit()">
+            <option value="%" [(#GET{imputation}|=={%}|oui)selected="selected"]><:association:tous:></option>
+            <BOUCLE_plans(ASSO_PLAN){par classe}{par code}>
+            [(#SET{classe_precedente,#CLASSE_PRECEDENTE})]
+            [(#GET{classe_precedente}|!={#CLASSE}|oui)
+            [(#GET{classe_precedente}|oui)</optgroup>]
+            <optgroup label="[(#CLASSE)] [(#INTITULE)]">
+                <option value="#CLASSE"[(#GET{imputation}|=={#CLASSE}|oui) selected="selected"]>[(#CLASSE)] - Classe complète</option>
+                ]
+                <option value="#CODE"[(#GET{imputation}|=={#CODE}|oui) selected="selected"]>#CODE #INTITULE</option>
+                </BOUCLE_plans>
+                [(#TOTAL_BOUCLE|>{0}|oui)</optgroup>]
+            </B_plans>
+        </select>
+        </form>
+    </div>
+
+    <form method="post" action="#URL_ACTION_AUTEUR{traiter_comptes,'',#SELF}" id="form_comptes">
+
+          <div class="actions-group">
+                <select name="action_groupe" id="action_groupe">
+                      <option value="">&mdash; <:association:action_groupee:> &mdash;</option>
+                      <option value="valider"><:association:valider_selection:></option>
+                      <option value="invalider"><:association:invalider_selection:></option>
+                      <option value="supprimer"><:association:supprimer_selection:></option>
+                </select>
+            <input type="submit" name="appliquer" value="<:association:appliquer:>" class="submit" onclick="return confirm_action();" />
+          </div>
+
+
+
+        <B_comptes>
+            <table class="tableau_comptabilite tableau_asso">
+                <tr>
+                    <th><:association:id:></th>
+                    <th><:association:id_transaction:></th>
+                    <th><:association:date:></th>
+                    <th><:association:compte:></th>
+                    <th><:association:justification:></th>
+                    <th><:association:montant:></th>
+                    <th><:association:actions:></th>
+                    <th class="checkbox">
+                      <input id="check_all" name="selecteur_comptes[]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);">
+                      <label for="check_all"></label>
+                    </th>
+                </tr>
+                <BOUCLE_comptes(POUR){tableau #ENV{comptes}}>
+                  <INCLURE{fond=prive/objets/liste/item_compte,id_compte=#VALEUR,css_class=tableau_comptabilite} />
+                </BOUCLE_comptes>
+            </table>
+        </B_comptes>
+
+  </form>
+</div>
+
+<script>
+  function confirm_action() {
+  var action = document.getElementById('action_groupe').value;
+  if (action == 'supprimer') {
+    return confirm('<:association:confirmer_suppression_selection:>');
+  }
+  return true;
+  }
+
+  document.getElementById('action_groupe').addEventListener('change', function() {
+  document.getElementById('action_masse').value = this.value;
+  });
+
+  function cocherOuDecocherTout(source) {
+  var checkboxes = document.querySelectorAll('input[name="selecteur_comptes[]"]');
+  for (var i=0; i<checkboxes.length; i++) {
+    if (checkboxes[i].value != 'check_all') {
+      checkboxes[i].checked = source.checked;
+    }
+  }
+  return true;
+  }
+</script>

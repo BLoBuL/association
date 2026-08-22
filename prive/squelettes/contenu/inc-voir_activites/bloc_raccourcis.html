@@ -1,0 +1,23 @@
+<BOUCLE_voir_activite(EVENEMENTS){id_evenement=#ENV{id,#ENV{id_evenement}}}{tout}>
+    <h2 class="titre_boite_info"><:association:voir_activites_raccourcis:></h2>
+    <ul class="liste_raccourcis">
+        <li>
+            <BOUCLE_condition_si_plein(CONDITION){si #ID_EVENEMENT|gestions_places|table_valeur{plein}}>
+                <a href="#" class="lien_avec_fa disabled"><span class="fa_icone"><i class="fa fa-plus plein"></i></span><span><:association:activite_plus_de_places_disponibles:></span></a>
+            </BOUCLE_condition_si_plein>
+                <a href="[(#URL_ECRIRE{editer_asso_activite}|parametre_url{id_evenement,#ID_EVENEMENT})]" class="lien_avec_fa"><span class="fa_icone"><i class="fa fa-plus"></i></span><span><:association:activite_bouton_ajouter_inscription:></span></a>
+        </li>
+            <//B_condition_si_plein>
+        <li><a href="[(#URL_ECRIRE{evenement_edit}|parametre_url{id_evenement,#ID_EVENEMENT})]" class="lien_avec_fa"><span class="fa_icone"><i class="fa-regular fa-pen-to-square"></i></span><span><:association:activite_bouton_modif_evenement:></span></a></li>
+        <li><a href="[(#URL_ECRIRE{evenement}|parametre_url{id_evenement,#ID_EVENEMENT})]" class="lien_avec_fa"><span class="fa_icone"><i class="fa-solid fa-calendar-days"></i></span><span><:association:activite_bouton_voir_evenement:></span></a></li>
+        <li><a href="[(#URL_PAGE{evenement}|parametre_url{id_evenement,#ID_EVENEMENT})]" class="lien_avec_fa"><span class="fa_icone"><i class="fa fa-desktop"></i></span><span><:association:activite_bouton_voir_evenement_frontend:></span></a></li>
+        <li><a href="[(#URL_ECRIRE{edit_email_collectif_activite}|parametre_url{id_evenement,#ID_EVENEMENT})]" class="lien_avec_fa email"><span class="fa_icone"><i class="fa-solid fa-envelope"></i></span><span><:association:activite_bouton_maj_mail_collectif_inscription:></span></a></li>
+        <li><a href="[(#URL_PAGE{inscriptions_evenement.csv}|parametre_url{id_evenement,#ID_EVENEMENT})]" class="lien_avec_fa download"><span class="fa_icone"><i class="fas fa-file-download"></i></span><span><:association:activite_bouton_export_csv:></span></a></li>
+        <li><a href="[(#URL_PAGE{export_compta.xml}|parametre_url{id_evenement,#ID_EVENEMENT})]" class="lien_avec_fa download"><span class="fa_icone"><i class="fa fa-file-download"></i></span><span><:association:activite_bouton_rapport_comptable:></span></a></li>
+     [(#TYPE_INSCRITS_EVENEMENT|!={public}|oui)
+        <li><a href="[(#URL_ECRIRE{lightbox_lien_inscription_vip,id_evenement=#ID_EVENEMENT})]" class="popin bouton_editer lien_avec_fa lien_vip"><span class="fa_icone"><i class="fa-solid fa-user-plus"></i></span>
+                    <span><:association:activite_bouton_lien_inscription_vip:></span></a>
+        </li>
+     ]
+    </ul>
+</BOUCLE_voir_activite>

@@ -1,0 +1,63 @@
+<h1 class="grostitre"><:association:titre_export_activites_compta:></h1>
+[(#SET{exercices,#VAL{%}|filtre_calcul_fonction_comptes_lister_exercices{%,''}})]
+[(#SET{exercice,#ENV{exercice,#GET{exercices}|reset}})]
+<div class="asso-filtres">
+  <div class="filtre-groupe">
+    <label><:association:label_filtre_exercice_comptable:></label>
+    <div class="options">
+      <BOUCLE_exercices(DATA){source table,#GET{exercices}}>
+        <a href="[(#SELF|parametre_url{exercice,#VALEUR})]" class="ajax option[(#GET{exercice}|=={#VALEUR}|oui) selected]">[(#VALEUR)] / [(#VALEUR|plus{1})]</a>
+      </BOUCLE_exercices>
+    </div>
+  </div>
+</div>
+<div class="asso-actions">
+  <div class="bouton">
+    <a href="[(#URL_PAGE{export_activites_compta.csv}|parametre_url{exercice,#GET{exercice}})]" class="btn-export lien_avec_fa">
+      <span class="fa_icone"><i class="fa-solid fa-download"></i></span>
+      <span><:association:label_export_csv_compta_activites:></span>
+    </a>
+  </div>
+</div>
+[(#SET{bornes,#GET{exercice}|association_comptes_bornes_exercice})]
+[(#SET{date_debut,#GET{bornes}|table_valeur{debut}})]
+[(#SET{date_fin,#GET{bornes}|table_valeur{prochain_debut}})]
+<B_comptes_activites>
+<table class="tableau_asso tableau_compta_activites">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th><:association:col_date_comptable:></th>
+      <th><:association:col_exercice:></th>
+      <th><:association:col_evenement:></th>
+      <th><:association:col_participant:></th>
+      <th><:association:col_imputation:></th>
+      <th><:association:col_montant_recette:></th>
+      <th><:association:col_statut_transaction:></th>
+      <th><:association:col_mode_paiement:></th>
+    </tr>
+  </thead>
+  <tbody>
+  <BOUCLE_comptes_activites(ASSO_COMPTES){journal LIKE activite|%}{date>=#GET{date_debut}}{date<#GET{date_fin}}{par date}{inverse}>
+    [(#SET{id_act,#JOURNAL|replace{'activite|',''}})]
+    <BOUCLE_act_ev(ASSO_ACTIVITES){id_activite=#GET{id_act}}>
+    <tr>
+      <td>#ID_COMPTE</td>
+      <td>[(#DATE|affdate)]</td>
+      <td>#GET{exercice} / [(#GET{exercice}|plus{1})]</td>
+      <td><BOUCLE_ev(EVENEMENTS){id_evenement=#ID_EVENEMENT}>[(#TITRE|supprimer_numero)]</BOUCLE_ev></td>
+      <td>#NOM_INSCRIT #PRENOM_INSCRIT</td>
+      <td>#IMPUTATION</td>
+      <td>[(#RECETTE|bank_affiche_montant{'EUR',symbol})]</td>
+      <td><BOUCLE_trans(TRANSACTIONS){id_transaction=#ID_TRANSACTION}>#STATUT</BOUCLE_trans></td>
+      <td><BOUCLE_mp(TRANSACTIONS){id_transaction=#ID_TRANSACTION}>[(#MODE|bank_titre_type_paiement)]</BOUCLE_mp></td>
+    </tr>
+    </BOUCLE_act_ev>
+  </BOUCLE_comptes_activites>
+  </tbody>
+</table>
+</B_comptes_activites>
+<p><:association:aucune_operation_comptable_activites:></p>
+<//B_comptes_activites>
+<div class="nettoyeur"></div>
+

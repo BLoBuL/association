@@ -1,0 +1,111 @@
+<?php
+
+if (!defined("_ECRIRE_INC_VERSION")) return;
+include_spip('inc/actions');
+include_spip('inc/editer');
+include_spip('formulaires/inc/destinations');
+
+/***************************************************************************\
+ *  Associaspip, extension de SPIP pour gestion d'associations             *
+ *                                                                         *
+ *  Copyright (c) 2007 Bernard Blazin & Francois de Montlivault (V1)       *
+ *  Copyright (c) 2010-2011 Emmanuel Saint-James & Jeannot Lapin (V2)       *
+ *                                                                         *
+ *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+ *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+\***************************************************************************/
+function formulaires_editer_asso_dons_charger_dist($id_don='') {
+	/* cet appel va charger dans $contexte tous les champs de la table spip_asso_dons associes a l'id_don passe en param */
+	$contexte = formulaires_editer_objet_charger('asso_dons', $id_don, '', '',  generer_url_ecrire('dons'), '');
+
+	/* si c'est une nouvelle operation, on charge la date d'aujourd'hui et charge un id_compte et journal null */
+	if (!$id_don) {
+		$contexte['date_don'] = date('Y-m-d');
+		$id_compte = '';
+		$journal = '';
+	} else { /* sinon on recupere l'id_compte correspondant et le journal dans la table des comptes */
+		$comptes = sql_fetsel("id_compte,journal", "spip_asso_comptes", "imputation=".$GLOBALS['association_metas']['pc_dons']." AND id_journal=$id_don");
+		$id_compte = $comptes['id_compte'];
+		$journal = $comptes['journal'];
+	}
+
+	/* ajout du journal qui ne se trouve pas dans la table asso_dons mais asso_comptes et n'est donc pas charge par editer_objet_charger */
+	$contexte['journal'] = $journal;
+
+	/* on concatene au _hidden inserer dans $contexte par l'appel a formulaire_editer_objet l'id_compte qui sera utilise dans l'action editer_asso_dons */
+	$contexte['_hidden'] .= "<input type='hidden' name='id_compte' value='$id_compte' />";
+
+	/* si id_adherent est egal a 0, c'est que le champ est vide, on ne prerempli rien */
+	if (!$contexte['id_adherent']) {
+		$contexte['id_adherent']='';
+	}
+	
+	/* paufiner la presentation des valeurs  */
+	if ($contexte['argent']) {
+		$contexte['argent'] = association_nbrefr($contexte['argent']);
+	}
+	if ($contexte['valeur']) {
+		$contexte['valeur'] = association_nbrefr($contexte['valeur']);
+	}
+
+	// on ajoute les metas de classe_banques et destinations
+	$contexte['classe_banques'] = $GLOBALS['association_metas']['classe_banques'];
+
+	update_destination_contexte_from_compte($contexte, $id_compte, 'dons');
+	
+	return $contexte;
+}
+
+function formulaires_editer_asso_dons_verifier_dist($id_don) {
+	$erreurs = array();
+	/* on verifie que argent et valeur ne soient pas negatifs */
+	$argent = association_recupere_montant(_request('argent'));
+	$valeur = association_recupere_montant(_request('valeur'));
+
+	if ($argent<0) $erreurs['argent'] = _T('association:erreur_montant');
+	if ($valeur<0) $erreurs['valeur'] = _T('association:erreur_montant');	
+
+	/* verifier si on a un numero d'adherent qu'il existe dans la base */
+	$id_adherent = _request('id_adherent');
+	if ($id_adherent != '') {
+		$id_adherent = intval($id_adherent);
+		if (sql_countsel('spip_auteurs', "id_auteur=$id_adherent")==0) {
+			$erreurs['id_adherent'] = _T('association:erreur_id_adherent');
+		}
+		
+	}
+
+	verifier_destination_comptable($argent, 'argent', $erreurs);
+
+	/* verifier la date */
+	if ($erreur_date = association_verifier_date(_request('date_don'))) {
+		$erreurs['date_don'] = _request('date_don')."&nbsp;:&nbsp;".$erreur_date; /* on ajoute la date eronee entree au debut du message d'erreur car le filtre affdate corrige de lui meme et ne reaffiche plus les valeurs eronees */
+	}
+
+	if (count($erreurs)) {
+	$erreurs['message_erreur'] = _T('association:erreur_titre');
+	}
+
+	
+	return $erreurs;
+}
+
+function formulaires_editer_asso_dons_traiter($id_don) {
+	//convertir les date au format timedate
+	foreach ($_POST as $champ => $mot) {
+
+		//verification champs vide ou null
+		if ($_POST[$champ] == ''){ 
+		}else{
+				//convertir les date au format timedate
+				if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $mot)) {
+		  		$otherDateMod = str_replace('/', '-', $mot);
+		  		$dateFinale = date("Y-m-d H:i:s", strtotime($otherDateMod));
+		  		$_POST[$champ] = $dateFinale;
+			  	}
+		}
+			
+	}
+	return formulaires_editer_objet_traiter('asso_dons', $id_don, '', '',  generer_url_ecrire('dons'), '');
+}
+

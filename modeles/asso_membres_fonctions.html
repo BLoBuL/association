@@ -1,0 +1,43 @@
+[(#REM)<!-- doc: contrib.spip.net/4174#modeles -->]
+<B_equipe>
+<table class="tableau_asso tableau_equipe ">
+	<tr>
+        <th><:association:adherent_libelle_photo:></th>
+		<th><:association:adherent_libelle_nom_famille:></th>
+		<th><:association:adherent_libelle_fonction:></th>
+		<th><:association:adherent_libelle_statut:></th>
+		<th><:association:adherent_libelle_telephone:></th>
+		<th><:association:adherent_libelle_email:></th>
+	</tr>
+[(#REM)<!-- //!\ "inclusion de fragments" <http://microformats.org/wiki/include-pattern> -->]
+<BOUCLE_equipe(AUTEURS)
+                                            {statut='0minirezo'}{webmestre='non'}
+                                            {par nom_famille,prenom}
+                                            >
+	<tr>
+		<td>
+            <a class="fn" title="<:association:adherent_label_modifier_visiteur:>" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
+               [(#LOGO_AUTEUR|image_passe_partout{70}|image_recadre{70,70})]
+            </a>
+        </td>
+		<td>
+            <a class="fn" title="<:association:adherent_label_modifier_visiteur:>" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
+               #PRENOM <span class="text-transform:uppercase">#NOM_FAMILLE</span>
+            </a>
+        </td>
+		<td>                       
+               [(#LISTER_VALEURS{fonction}|sinon{#FONCTION})]
+        </td>
+		<td>
+            [(#STATUT_INTERNE|=={ok}|?{Valide, Non valide})]
+        </td>
+        <td>[<a class="tel" href="tel:[(#TELEPHONE|replace{\D})]">(#TELEPHONE)</a>]<br>
+            [<a class="tel" href="tel:[(#MOBILE|replace{\D})]">(#MOBILE)</a>]
+        </td>
+		<td>[<a class="email" href="mailto:(#EMAIL)">#EMAIL</a>]</td> 
+	</tr>
+</BOUCLE_equipe>
+</table>
+</B_equipe>
+[<div class="erreur">(#ENV{vide}|sinon{<:ecrire:texte_vide:>})</div>]
+<//B_equipe>

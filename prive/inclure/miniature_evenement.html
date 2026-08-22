@@ -1,0 +1,76 @@
+<BOUCLE_evenement(EVENEMENTS){id_evenement}{tout}>
+    <td class="nom evenement">
+        [(#REM|test_espace_prive|?{
+        <a class="bouton_editer" [href="(#URL_ECRIRE{voir_activites,id=#ID_EVENEMENT})"]>
+        ,
+        <a class="bouton_editer" [href="(#URL_PAGE{evenement,id_evenement=#ID_EVENEMENT})"]>
+        })]        
+        <span class="logo_evenement">                
+            [(#SESSION{statut}|!={6forum}|oui)
+                        [(#EVENEMENT_A_NE_PAS_MANQUER|=={oui}|oui)<i class="fa-solid fa-star" title="Evénement important"></i>]
+                        [(#ID_EVENEMENT_SOURCE|>{0}|oui)<i class="fas fa-sync-alt"  title="Evénements répétés"></i>]
+            ]
+    [(#SET{titre,#TITRE})]
+    [(#SET{titre_date,[(#TITRE)] - [(#DATE_DEBUT|Agenda_affdate_debut_fin{#DATE_FIN,#HORAIRE})]})]
+    <BOUCLE_logo(CONDITION){si #LOGO_EVENEMENT|oui}>
+        [(#ENV{mediabox}|=={oui}|oui)
+        <a href="[(#LOGO_EVENEMENT|image_reduire{1500}|extraire_attribut{src})]" class="mediabox"[ alt="(#TITRE|attribut_html|couper{80})"]>]
+        [(#LOGO_EVENEMENT
+                |image_passe_partout{#GET{largeur,50},#GET{hauteur,50}}
+                |image_recadre{#GET{largeur,50},#GET{hauteur,50}}
+                |image_aplatir{jpg,ffffff,64,1}
+                |inserer_attribut{'title',#GET{titre_date}}
+                |inserer_attribut{'alt',#GET{titre}}
+                |inserer_attribut{'data-class','logo_evenement'}
+                |vider_attribut{style}
+                |vider_attribut{class}
+                |vider_attribut{height}
+                |vider_attribut{width}
+            )]
+        [(#ENV{mediabox}|=={oui}|oui)</a>]        
+    </BOUCLE_logo>
+    <BOUCLE_logo_evenement_source(EVENEMENTS){tout}{si #ID_EVENEMENT_SOURCE|!={0}}{si #LOGO_EVENEMENT|non}{id_evenement = #ID_EVENEMENT_SOURCE}{logo}>
+        [(#ENV{mediabox}|=={oui}|oui)
+        <a href="[(#LOGO_EVENEMENT|image_reduire{1500}|extraire_attribut{src})]" class="mediabox"[ alt="(#TITRE|attribut_html|couper{80})"]>]
+        [(#LOGO_EVENEMENT
+                |image_passe_partout{#GET{largeur,50},#GET{hauteur,50}}
+                |image_recadre{#GET{largeur,50},#GET{hauteur,50}}
+                |image_aplatir{jpg,ffffff,64,1}
+                |inserer_attribut{'title',#GET{titre_date}}
+                |inserer_attribut{'alt',#GET{titre}}
+                |inserer_attribut{'data-class','logo_evenement_source'}
+                |vider_attribut{style}
+                |vider_attribut{class}
+                |vider_attribut{height}
+                |vider_attribut{width}
+            )]
+        [(#ENV{mediabox}|=={oui}|oui)</a>]
+        [(#SET{logo_evenement_source,oui})]
+    </BOUCLE_logo_evenement_source>
+    <//B_logo_evenement_source>
+
+    <BOUCLE_logo_article(ARTICLES){tout}{id_article=#ID_ARTICLE}{si #LOGO_EVENEMENT|non}{si #GET{logo_evenement_source}|!={oui}}{logo}>
+        [(#ENV{mediabox}|=={oui}|oui)
+        <a href="[(#LOGO_ARTICLE|image_reduire{1500}|extraire_attribut{src})]" class="mediabox"[ alt="(#TITRE|attribut_html|couper{80})"]>]
+        [(#LOGO_ARTICLE
+                |image_passe_partout{#GET{largeur,50},#GET{hauteur,50}}
+                |image_recadre{#GET{largeur,50},#GET{hauteur,50}}
+                |image_aplatir{jpg,ffffff,64,1}
+                |inserer_attribut{'title',#GET{titre_date}}
+                |inserer_attribut{'alt',#GET{titre}}
+                |inserer_attribut{'data-class','logo_article'}
+                |vider_attribut{style}
+                |vider_attribut{class}
+                |vider_attribut{height}
+                |vider_attribut{width}
+            )]
+        [(#ENV{mediabox}|=={oui}|oui)</a>]
+     </BOUCLE_logo_article>
+     <//B_logo_article>
+
+    </span>
+    <span class="">#TITRE <br> [(#ENV{date_evenement}|=={oui}|oui)<div><small>[(#DATE_DEBUT|affdate)]</small></div> ]</span>
+    </a>
+    </td>  
+</BOUCLE_evenement>
+

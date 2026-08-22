@@ -1,0 +1,48 @@
+<BOUCLE_activite(ASSO_ACTIVITES){id_activite}>
+<BOUCLE_id_evenement(EVENEMENTS){tout}{id_evenement}>
+    [(#SET{titre_evenement,#TITRE})]
+    [(#SET{date_evenement,[(#DATE_DEBUT|affdate{'d/m'})]})]
+    [(#SET{heure_evenement,[(#DATE_DEBUT|affdate{"H:i"})]})]
+    [(#SET{url_evenement,#URL_EVENEMENT|abs_url})]
+    [(#SET{url_logo_evenement,[(#LOGO_EVENEMENT|sinon{#LOGO_ARTICLE}image_passe_partout{600,300}|image_recadre{600,300}|extraire_attribut{src}|url_absolue)]})]
+</BOUCLE_id_evenement>
+<head>
+    <title></title>
+    <intro></intro>
+</head>
+<body>
+	<div style="
+				line-height: 180%;
+				font-size:15px;
+				color: white !important;
+				background-color: #38414A !important;
+				padding: 1em;
+				text-align: center;
+				font-size: 19px;">
+			<h3 style="line-height: 180%;color: white !important;text-align: center;"><:notifications:email_desinscription_frontend{evenement=#GET{titre_evenement}, date=#GET{date_evenement}, heure=#GET{heure_evenement}}:></h3>
+		</div>
+
+	[<img src="(#GET{url_logo_evenement})" style="max-width:100%;margin: 0" alt="#TITRE" />]
+
+	<B_id_responsable>
+		<p style="line-height: 180%;font-size:15px;color:#555">
+			<b style="line-height: 180%;color:#555;"><:notifications:email_erreur_desinscription:></b>
+			<BOUCLE_id_responsable(DATA){source tableau,#ID_RESPONSABLES_ARRAY}>
+				<INCLURE{fond=emails/inc-email_auteur,id_auteur=#VALEUR,env}>
+			</BOUCLE_id_responsable>
+		</p>
+	</B_id_responsable>
+
+	<div style="line-height: 180%;font-size:15px;color:#555">
+		<b><:notifications:email_lien_rendez_vous:></b><br>
+          <div style="text-align:center;">
+                <a href="[(#GET{url_evenement}|abs_url)]" style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;">[(#GET{titre_evenement})]</a>
+            </div>
+	</div>
+
+<p style="line-height: 180%;font-size:15px;color:#555">
+	<:notifications:email_formule_politesse:><br>
+	<:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+</p>
+</body>
+</BOUCLE_activite>#FILTRE{facteur_email_wrap_to_html}#FILTRE{emogrifier}</B_activite>

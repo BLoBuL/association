@@ -1,0 +1,18 @@
+[(#HTTP_HEADER{Content-type: text/plain[; charset=(#CHARSET)]})]
+<head>
+    <title><:notifications:justificatifs_a_revoir_title:></title>
+    <intro><:notifications:justificatifs_a_revoir_intro:></intro>
+</head>
+<body>
+    <div style="line-height:180%;color:white!important;background-color:#38414A!important;padding:1em;text-align:center;">
+        <h3 style="color:white!important;"><:notifications:justificatifs_a_revoir_titre:></h3>
+    </div>
+    <p style="line-height:180%;font-size:15px;color:#555;">
+        <:notifications:justificatifs_a_revoir_explication:>
+    </p>
+    <p style="line-height:180%;font-size:15px;color:#555;">
+        <:notifications:email_formule_politesse:><br>
+        <:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+    </p>
+</body>
+#FILTRE{facteur_email_wrap_to_html}

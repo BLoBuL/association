@@ -1,0 +1,27 @@
+<h2 class="titre_boite_info"><:association:adherent_tableau_de_bord:></h2>
+<ul class="liste_statuts">          
+    [(#SET{compteur_adherents,#VAL|compteur_adherents})]
+    [<li class="prospect"><a href="[(#URL_ECRIRE{adherents}|parametre_url{statut_interne,prospect})]" class="ajax"><span class="nom_statut"><:association:adherent_liste_nombre_prospect:></span><span class="nb_adherent">(#GET{compteur_adherents/prospect})</span></a></li>]
+                    
+    [<li class="ok"><a href="[(#URL_ECRIRE{adherents}|parametre_url{statut_interne,ok})]" class="ajax"><span class="nom_statut"><:association:adherent_liste_nombre_ok:></span><span class="nb_adherent">(#GET{compteur_adherents/ok})</span></a></li>]    
+    
+    [<li class="ok"><a><span class="nom_statut"><:association:adherent_liste_nombre_ok_titulaire:></span><span class="nb_adherent">(#GET{compteur_adherents/ok_titulaire})</span></a></li>]    
+    
+    [<li class="ok titulaire"><a><span class="nom_statut"><:association:adherent_liste_nombre_ok_secondaire:></span><span class="nb_adherent">(#GET{compteur_adherents/ok_secondaire})</span></a></li>]    
+        
+    [<li class="echu secondaire"><a href="[(#URL_ECRIRE{adherents}|parametre_url{statut_interne,echu})]" class="ajax"><span class="nom_statut"><:association:adherent_liste_nombre_echu:></span><span class="nb_adherent">(#GET{compteur_adherents/echu})</span></a></li>]
+
+    [<li class="echu titulaire"><a><span class="nom_statut"><:association:adherent_liste_nombre_echu_titulaire:></span><span class="nb_adherent">(#GET{compteur_adherents/echu_titulaire})</span></a></li>]    
+    
+    [<li class="echu secondaire"><a><span class="nom_statut"><:association:adherent_liste_nombre_echu_secondaire:></span><span class="nb_adherent">(#GET{compteur_adherents/echu_secondaire})</span></a></li>]    
+    
+    [<li class="relance"><a href="[(#URL_ECRIRE{adherents}|parametre_url{statut_interne,relance})]" class="ajax"><span class="nom_statut"><:association:adherent_liste_nombre_relance:></span><span class="nb_adherent">(#GET{compteur_adherents/relance})</span></a></li>]
+        
+    [<li class="sorti"><a href="[(#URL_ECRIRE{adherents}|parametre_url{statut_interne,sorti})]" class="ajax"><span class="nom_statut"><:association:adherent_liste_nombre_sorti:></span><span class="nb_adherent">(#GET{compteur_adherents/sorti})</span></a></li>]
+        
+    [<li class="sorti"><a href="[(#URL_ECRIRE{adherents}|parametre_url{statut,8aconfirmer})]" class="ajax"><span class="nom_statut"><:association:adherent_liste_nombre_aconfirmer:></span><span class="nb_adherent">(#GET{compteur_adherents/8aconfirmer})</span></a></li>]  
+    
+    [<li class="sorti"><a href="[(#URL_ECRIRE{adherents}|parametre_url{statut,5poubelle})]" class="ajax"><span class="nom_statut"><:association:adherent_liste_nombre_poubelle:></span><span class="nb_adherent">(#GET{compteur_adherents/5poubelle})</span></a></li>]
+        
+    [<li class="total"><a href="[(#URL_ECRIRE{adherents}|parametre_url{statut_interne,tous})]" class="ajax"><span class="nom_statut"><:association:adherent_liste_nombre_total:></span><span class="nb_adherent">(#GET{compteur_adherents/total})</span></a></li>]
+</ul>

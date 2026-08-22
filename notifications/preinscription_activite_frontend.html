@@ -1,0 +1,45 @@
+[(#REM)
+-> Inscrit - Préinscription par un responsable à partir du frontend
+][(#HTTP_HEADER{Content-type: text/plain[; charset=(#CHARSET)]})]
+<BOUCLE_activite(ASSO_ACTIVITES){id_activite}>
+<BOUCLE_id_evenement(EVENEMENTS){tout}{id_evenement}>
+        [(#SET{titre_evenement,#TITRE})][(#PAYANT|=={1}|et{#VALIDATION_SUR_PAIEMENT|=={oui}}|oui)[(#SET{validation_sur_paiement,oui})]]     
+</BOUCLE_id_evenement>	
+<head>
+    <title></title>
+    <intro></intro>
+</head>
+<body>
+	<div style="
+				line-height: 180%;
+				color: white !important;
+				background-color: #38414A !important;
+				padding: 1em;
+				text-align: center;
+			">
+		<h3 style="line-height: 180%;color: white !important;text-align: center;">
+            <:notifications:email_preinscription_frontend_titre{evenement=#GET{titre_evenement}}:>
+        </h3>
+	</div>	
+	
+	<!--ICI ON INCLUT LES INFOS A PROPOS DE L'INSCRIPTION-->	
+	<INCLURE{fond=notifications/inc/inc-infos_inscription, id_activite=#ID_ACTIVITE,env}/>
+	
+	<!--ICI ON INCLUT LES INFOS A PROPOS DE L'EVENEMENT-->
+	<INCLURE{fond=notifications/inc/inc-infos_evenement,env}/>			
+		
+	<B_id_responsable>
+		<p style="line-height: 180%;font-size:15px;color:#555">
+			<b><:notifications:email_modification_inscription:></b>
+			<BOUCLE_id_responsable(DATA){source tableau,#ID_RESPONSABLES_ARRAY}>
+				<INCLURE{fond=emails/inc-email_auteur,id_auteur=#VALEUR,env}>
+			</BOUCLE_id_responsable>
+		</p>
+	</B_id_responsable>
+	
+	<p style="line-height: 180%;font-size:15px;color:#555">
+		<:notifications:email_formule_politesse:><br>
+		<:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+	</p>
+</body>
+</BOUCLE_activite>#FILTRE{facteur_email_wrap_to_html}#FILTRE{emogrifier}</B_activite>

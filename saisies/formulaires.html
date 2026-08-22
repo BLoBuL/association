@@ -1,0 +1,19 @@
+[(#REM)
+  Saisie permettant de sélectionner un formulaire par son identifiant (version locale)
+
+  Parametres :
+  - option_intro : chaine pour la premiere ligne vide (defaut:"")
+  - cacher_option_intro : pas de premier option vide  (defaut:"")
+  - class : classes CSS ajoutees au select
+  - statut : statut des formulaires a lister (par defaut 'publie')
+
+  Exemple d'appel :
+	[(#SAISIE{formulaires,nom,label=Choisir un formulaire})]
+]
+<label for="champ_#ENV{nom}">[(#ENV{label})]</label>
+<select name="#ENV{nom}" id="champ_#ENV{nom}" [(#ENV{class}|oui)class="#ENV{class}"] [(#ENV{disable}|oui)disabled="disabled"]>
+[(#ENV{cacher_option_intro}|non)<option value="">[(#ENV{option_intro})]</option>]
+<BOUCLE_selection(FORMULAIRES){par titre}{statut=#ENV{statut,publie}}>
+<option value="#ID_FORMULAIRE" [(#ID_FORMULAIRE|=={#ENV{valeur,#ENV{defaut}}}|oui)selected="selected"]>[(#TITRE|typo)]</option>
+</BOUCLE_selection>
+</select>

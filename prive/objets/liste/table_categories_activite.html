@@ -1,0 +1,29 @@
+<B_participation>
+
+    <table class="tableau_asso tableau_liste_participation_activite">
+        <tr>
+            <th>#</th>
+            <th>
+                <:association:categorie:>
+            </th>
+            <th>
+                <:association:evenement_type_inscrits_label:>
+            </th>
+            <th>
+                <:association:quantite:>
+            </th>
+            <th>
+                <:association:commentaires:>
+            </th>
+            <th>
+                <:association:participation_statut:>
+            </th>
+            <th colspan="2">
+                <:association:action:>
+            </th>
+        </tr>
+        <BOUCLE_participation(ASSO_CATEGORIES_ACTIVITES){tout}{par id_categorie}{statut = ok}>
+            [(#INCLURE{fond=prive/objets/liste/item_categorie_participation,id_categorie,env})]
+        </BOUCLE_participation>
+    </table>
+</B_participation>

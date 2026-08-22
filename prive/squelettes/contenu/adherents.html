@@ -1,0 +1,352 @@
+[(#AUTORISER{adherents_menu}|sinon_interdire_acces)]
+[(#SET{criteres_sql,#VAL{criteres_sql}|preparer_liste_adherents})]
+[(#SET{liste_adherents,#VAL{array_auteur}|preparer_liste_adherents|trier_colonne_dynamique})]
+[(#SET{filtres_effectifs,#VAL|filtres_effectifs})]
+[(#SET{filtres_dyn,#VAL|liste_filtres_dynamiques_adherents})]
+[(#SET{colonnes_dyn,#VAL|liste_colonnes_dynamiques_adherents})]
+[(#SET{defaut_tri,#VAL|association_defaut_tri_adherents})]
+[(#SET{tri_dyn_actuel,#ENV{tri_dyn}})]
+[(#SET{tri_dyn_sens_actuel,#ENV{tri_dyn_sens,asc}})]
+[(#SET{url_self_saine,#SELF|parametre_url{clear_filters,''}|parametre_url{clear_search,''}|parametre_url{clear_search_field,''}|parametre_url{periode_contexte,#GET{periode_contexte}|scalar_val{}}})]
+
+[(#REM) Breadcrumb des filtres actifs - simplifié sans objet context ]
+[(#SET{recherche_resume,#VAL|get_recherche_active_resume})]
+[(#SET{recherche_rapide,#VAL|get_recherche_rapide_active})]
+[(#REM) Afficher seulement si au moins UN filtre actif (différent de 'tout' et non vide) OU une recherche active ]
+<BOUCLE_check_active_filters(CONDITION){si #ENV{periode}|et{#ENV{periode}|!={tout}}|ou{#ENV{statut_interne}|et{#ENV{statut_interne}|!={tout}}}|ou{#ENV{type_adherent}|et{#ENV{type_adherent}|!={tout}}}|ou{#ENV{type_compte}|et{#ENV{type_compte}|!={defaut}}}|ou{#ENV{_input_nom_famille}}|ou{#ENV{_input_prenom}}|ou{#ENV{_input_email}}|ou{#ENV{_input_mobile}}|ou{#GET{recherche_rapide}|table_valeur{_input_nom_famille}}|ou{#GET{recherche_rapide}|table_valeur{_input_prenom}}|ou{#GET{recherche_rapide}|table_valeur{_input_email}}|ou{#GET{recherche_rapide}|table_valeur{_input_mobile}}|ou{#GET{recherche_resume}|table_valeur{type}}|ou{#GET{dyn_actifs}}}>
+
+<div class="filtres-actifs-breadcrumb">
+    <h4 class="titre-filtres-actifs"><:association:filtres_actifs_titre:></h4>
+    <div class="tags-filtres">
+        [(#ENV{periode}|et{#ENV{periode}|!={tout}}|oui)
+        <span class="tag tag-periode">
+            <span class="tag-label"><:association:filtres_actifs_periode:> #ENV{periode}</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_filters,periode}|parametre_url{periode,''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+        [(#ENV{statut_interne}|et{#ENV{statut_interne}|!={tout}}|oui)
+        <span class="tag tag-statut tag-statut-#ENV{statut_interne}">
+            <span class="tag-label"><:association:filtres_actifs_statut:> [(#ENV{statut_interne}|=={ok}|?{<:association:statut_interne_ok:>,})][(#ENV{statut_interne}|=={prospect}|?{<:association:statut_interne_prospect:>,})][(#ENV{statut_interne}|=={echu}|?{<:association:statut_interne_echu:>,})][(#ENV{statut_interne}|=={relance}|?{<:association:statut_interne_relance:>,})][(#ENV{statut_interne}|=={sorti}|?{<:association:statut_interne_sorti:>,})]</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_filters,statut_interne}|parametre_url{statut_interne,''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+        [(#ENV{type_adherent}|et{#ENV{type_adherent}|!={tout}}|oui)
+        <span class="tag tag-type">
+            <span class="tag-label"><:association:filtres_actifs_type:> #ENV{type_adherent}</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_filters,type_adherent}|parametre_url{type_adherent,''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+        [(#ENV{type_compte}|et{#ENV{type_compte}|!={defaut}}|oui)
+        <span class="tag tag-type-compte">
+            <span class="tag-label"><:association:filtres_actifs_type_compte:> [(#ENV{type_compte}|=={compte_principal}|?{<:association:filtre_type_compte_principal:>,<:association:filtre_type_compte_secondaire:>})]</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_filters,type_compte}|parametre_url{type_compte,''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+
+        [(#SET{val_nom,#GET{recherche_rapide}|table_valeur{_input_nom_famille}})]
+        [(#GET{val_nom}|oui)
+        <span class="tag tag-recherche">
+            <span class="tag-label"><:association:filtres_actifs_nom:> #GET{val_nom}</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_search_field,_input_nom_famille}|parametre_url{_input_nom_famille,''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+        [(#SET{val_prenom,#GET{recherche_rapide}|table_valeur{_input_prenom}})]
+        [(#GET{val_prenom}|oui)
+        <span class="tag tag-recherche">
+            <span class="tag-label"><:association:filtres_actifs_prenom:> #GET{val_prenom}</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_search_field,_input_prenom}|parametre_url{_input_prenom,''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+        [(#SET{val_email,#GET{recherche_rapide}|table_valeur{_input_email}})]
+        [(#GET{val_email}|oui)
+        <span class="tag tag-recherche">
+            <span class="tag-label"><:association:filtres_actifs_email:> #GET{val_email}</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_search_field,_input_email}|parametre_url{_input_email,''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+        [(#SET{val_mobile,#GET{recherche_rapide}|table_valeur{_input_mobile}})]
+        [(#GET{val_mobile}|oui)
+        <span class="tag tag-recherche">
+            <span class="tag-label"><:association:filtres_actifs_mobile:> #GET{val_mobile}</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_search_field,_input_mobile}|parametre_url{_input_mobile,''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+
+        <BOUCLE_tags_dyn(DATA){source table,#GET{filtres_dyn}}>
+        [(#SET{tag_nom,#CLE})]
+        [(#SET{tag_valeur,#GET{filtres_effectifs}|table_valeur{#GET{tag_nom}}})]
+        [(#GET{tag_valeur}|oui)
+        <span class="tag tag-extra tag-extra-#CLE">
+            <span class="tag-label">[(#VALEUR{label}|typo)] : [(#VALEUR{options}|table_valeur{#GET{tag_valeur}}|sinon{#GET{tag_valeur}}|typo)]</span>
+            <a href="[(#URL_ECRIRE{adherents}|parametre_url{clear_filters,#GET{tag_nom}}|parametre_url{#GET{tag_nom},''})]"
+               class="tag-remove ajax"
+               title="<:association:filtres_supprimer:>">×</a>
+        </span>
+        ]
+        </BOUCLE_tags_dyn>
+        [(#SET{url_reset,#GET{url_self_saine}})]
+        [(#SET{url_reset,#GET{url_reset}|parametre_url{clear_search,1}})]
+        [(#SET{url_reset,#GET{url_reset}|parametre_url{_input_nom_famille,''}|parametre_url{_input_prenom,''}|parametre_url{_input_email,''}|parametre_url{_input_mobile,''}})]
+        [(#SET{url_reset,#GET{url_reset}|parametre_url{clear_filters,#VAL|liste_filtres_reset_adherents}|parametre_url{periode,''}|parametre_url{statut_interne,''}|parametre_url{type_adherent,''}|parametre_url{type_compte,''}|parametre_url{type_cotisation,''}})]
+        [(#SET{url_reset,#GET{url_reset}|url_supprimer_filtres_dynamiques})]
+        [(#SET{url_reset,#GET{url_reset}|url_reinit_recherche_avancee})]
+        <a href="[(#GET{url_reset})]"
+           class="btn-reset-all-filters ajax"
+            title="<:association:filtres_reinitialiser_tout:>">
+            <:association:filtres_reinitialiser:>
+        </a>
+    </div>
+</div>
+
+</BOUCLE_check_active_filters>
+
+<div class="asso-filtres">
+    <div class="filtre-groupe">
+        <label><:association:label_filtre_periodes_cotisations:></label>
+
+<!--
+        &lt;!&ndash; Toggle contexte periode: adherent / entreprise &ndash;&gt;
+        <div class="options options-contexte" style="margin-bottom:6px;">
+            <a href="[(#GET{url_self_saine}|parametre_url{periode_contexte,adherent})]" class="ajax option [(#GET{periode_contexte}|=={adherent}|?{'selected',''})]">Adhérents</a>
+            <a href="[(#GET{url_self_saine}|parametre_url{periode_contexte,entreprise})]" class="ajax option [(#GET{periode_contexte}|=={entreprise}|?{'selected',''})]">Entreprises</a>
+        </div>
+-->
+
+        <div class="options">
+            <a href="[(#GET{url_self_saine}|parametre_url{periode,'tout'})]" class="ajax option[(#GET{filtres_effectifs}|table_valeur{periode}|non) selected]">
+                <:association:label_tous_statut_cotisation:>
+            </a>
+            <BOUCLE_periodes(DATA){source table, #VAL{6}|liste_periodes_adherents}>
+            <a href="[(#GET{url_self_saine}|parametre_url{periode,#LIBELLE})]"
+               class="ajax option[(#GET{filtres_effectifs}|table_valeur{periode}|=={#LIBELLE}|oui) selected][ (#ENCOURS|oui)encours]"
+               title="Du [(#DATE_DEBUT|affdate_jourcourt)] au [(#DATE_FIN|affdate_jourcourt)]">
+                <span class="periode-libelle">#LIBELLE</span>
+                [(#ENCOURS|oui)
+                <span class="badge-encours"><i class="fa fa-circle"></i></span>
+                ]
+            </a>
+            </BOUCLE_periodes>
+        </div>
+    </div>
+
+    <div class="filtre-groupe">
+        <label><:association:label_filtre_statut:></label>
+        <div class="options">
+            <a href="[(#GET{url_self_saine}|parametre_url{statut_interne,'tout'})]" class="ajax option[(#GET{filtres_effectifs}|table_valeur{statut_interne}|non) selected]">
+                <:association:label_tous_statut_statut:>
+            </a>
+            <BOUCLE_statuts(DATA){source table, #VAL|liste_statut_interne_adherents}>
+            <a href="[(#GET{url_self_saine}|parametre_url{statut_interne,#CLE})]"
+               class="ajax option #CLE[(#GET{filtres_effectifs}|table_valeur{statut_interne}|=={#CLE}|oui) selected]"
+               title="#VALEUR">
+                <span class="periode-libelle">#VALEUR</span>
+            </a>
+            </BOUCLE_statuts>
+        </div>
+    </div>
+
+    <B_filtres_dyn>
+    <BOUCLE_filtres_dyn(DATA){source table,#GET{filtres_dyn}}>
+    [(#SET{filtre_nom,#CLE})]
+    [(#SET{filtre_valeur,#GET{filtres_effectifs}|table_valeur{#GET{filtre_nom}}})]
+    <div class="filtre-groupe filtre-champ-extra filtre-#CLE">
+        <label>[(#VALEUR{label}|typo)]</label>
+        <div class="options">
+            <a href="[(#GET{url_self_saine}|parametre_url{#GET{filtre_nom},'tout'})]"
+               class="ajax option[(#GET{filtre_valeur}|non) selected]">
+                <:association:label_tous_statut_statut:>
+            </a>
+            <BOUCLE_filtres_dyn_options(DATA){source table,#VALEUR{options}}>
+            <a href="[(#GET{url_self_saine}|parametre_url{#GET{filtre_nom},#CLE})]"
+               class="ajax option[(#GET{filtre_valeur}|=={#CLE}|oui) selected]"
+               title="#VALEUR">
+                <span class="periode-libelle">[(#VALEUR|typo)]</span>
+            </a>
+            </BOUCLE_filtres_dyn_options>
+        </div>
+    </div>
+    </BOUCLE_filtres_dyn>
+    </B_filtres_dyn>
+
+
+    <B_type_cotisations>
+    <div class="filtre-groupe filtre-type-cotisation">
+        <label><:association:label_filtre_type_cotisation:></label>
+        <div class="options">
+            <a href="[(#GET{url_self_saine}|parametre_url{type_cotisation,'tout'})]" class="ajax option[(#GET{filtres_effectifs}|table_valeur{type_cotisation}|non) selected]">
+                <:association:label_tous_statut_statut:>
+            </a>
+            <BOUCLE_type_cotisations(DATA){si #VAL|liste_type_cotisation|count|>{1}}{source table, #VAL|liste_type_cotisation}>
+            <a href="[(#GET{url_self_saine}|parametre_url{type_cotisation,#CLE})]"
+               class="ajax option[(#GET{filtres_effectifs}|table_valeur{type_cotisation}|=={#CLE}|oui) selected]"
+               title="#VALEUR">
+                <span class="periode-libelle">#VALEUR</span>
+            </a>
+            </BOUCLE_type_cotisations>
+        </div>
+    </div>
+    </B_type_cotisations>
+    <B_type_comptes>
+        <div class="filtre-groupe filtre-type-compte">
+            <label><:association:label_filtre_type_compte:></label>
+            <div class="options">
+                <BOUCLE_type_comptes(DATA){si #VAL|a_type_compte}{source table, #VAL|liste_type_compte}>
+                    <a href="[(#GET{url_self_saine}|parametre_url{type_compte,#CLE})]"
+                       class="ajax option[(#GET{filtres_effectifs}|table_valeur{type_compte}|=={#CLE}|oui) selected]"
+                       title="#VALEUR">
+                        <span class="periode-libelle">#VALEUR</span>
+                    </a>
+                </BOUCLE_type_comptes>
+            </div>
+        </div>
+    </B_type_comptes>
+
+</div>
+
+
+
+
+<B_tableau_incrits>
+    <p>
+        <:association:table_inscription_adherents_nb_resultat{nb_resultat=#TOTAL_BOUCLE}:>
+    </p>
+    <div class="tableau-adherents-scroll" role="region" aria-label="<:association:adherent_titre_liste_actifs:>" tabindex="0">
+    <table id="tableau_adherents" class="tableau_adherents tableau_asso">
+        <tr>
+            [(#SET{tri_dyn_clef,id_auteur})]
+            [(#SET{tri_dyn_actif,#GET{tri_dyn_actuel}|=={#GET{tri_dyn_clef}}})]
+            [(#SET{tri_dyn_suivant,asc})]
+            [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_suivant,[(#GET{tri_dyn_sens_actuel}|=={asc}|?{desc,asc})]})]]
+            [(#SET{tri_dyn_classes,'tri-dyn ajax'})]
+            [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_classes,#GET{tri_dyn_classes}|concat{' actif ',#GET{tri_dyn_sens_actuel}}})]]
+            [(#SET{tri_dyn_url,#GET{url_self_saine}|parametre_url{tri_dyn,#GET{tri_dyn_clef}}|parametre_url{tri_dyn_sens,#GET{tri_dyn_suivant}}})]
+            <th class="col-tri col-tri-id">
+                <a class="#GET{tri_dyn_classes}" href="[(#GET{tri_dyn_url})]">
+                    <span class="libelle">#</span>
+
+                </a>
+            </th>
+
+            [(#SET{tri_dyn_clef,tri_nom})]
+            [(#SET{tri_dyn_actif,#GET{tri_dyn_actuel}|=={#GET{tri_dyn_clef}}})]
+            [(#SET{tri_dyn_suivant,asc})]
+            [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_suivant,[(#GET{tri_dyn_sens_actuel}|=={asc}|?{desc,asc})]})]]
+            [(#SET{tri_dyn_classes,'tri-dyn ajax'})]
+            [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_classes,#GET{tri_dyn_classes}|concat{' actif ',#GET{tri_dyn_sens_actuel}}})]]
+            [(#SET{tri_dyn_url,#GET{url_self_saine}|parametre_url{tri_dyn,#GET{tri_dyn_clef}}|parametre_url{tri_dyn_sens,#GET{tri_dyn_suivant}}})]
+            <th class="col-tri col-tri-nom">
+                <a class="#GET{tri_dyn_classes}" href="[(#GET{tri_dyn_url})]">
+                    <span class="libelle"><:association:activite_entete_nom:></span>
+
+                </a>
+            </th>
+             [(#VAL|gestion_comptes_secondaires_active|oui)
+             <th class="compte-secondaire"><:association:activite_entete_nom_secondaire:></th>
+             ]
+             <BOUCLE_gis(CONDITION){si #PLUGIN{gis}|oui}><th></th>  </BOUCLE_gis>
+            [(#SET{tri_dyn_clef,inscription})]
+            [(#SET{tri_dyn_actif,#GET{tri_dyn_actuel}|=={#GET{tri_dyn_clef}}})]
+            [(#SET{tri_dyn_suivant,asc})]
+            [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_suivant,[(#GET{tri_dyn_sens_actuel}|=={asc}|?{desc,asc})]})]]
+            [(#SET{tri_dyn_classes,'tri-dyn ajax'})]
+            [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_classes,#GET{tri_dyn_classes}|concat{' actif ',#GET{tri_dyn_sens_actuel}}})]]
+            [(#SET{tri_dyn_url,#GET{url_self_saine}|parametre_url{tri_dyn,#GET{tri_dyn_clef}}|parametre_url{tri_dyn_sens,#GET{tri_dyn_suivant}}})]
+            <th class='inscription' scope='col'>
+                <a class="#GET{tri_dyn_classes}" href="[(#GET{tri_dyn_url})]">
+                    <span class="libelle"><:association:adherent_libelle_inscription:></span>
+
+                </a>
+            </th>
+
+            [(#SET{tri_dyn_clef,validite})]
+            [(#SET{tri_dyn_actif,#GET{tri_dyn_actuel}|=={#GET{tri_dyn_clef}}})]
+            [(#SET{tri_dyn_suivant,asc})]
+            [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_suivant,[(#GET{tri_dyn_sens_actuel}|=={asc}|?{desc,asc})]})]]
+            [(#SET{tri_dyn_classes,'tri-dyn ajax'})]
+            [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_classes,#GET{tri_dyn_classes}|concat{' actif ',#GET{tri_dyn_sens_actuel}}})]]
+            [(#SET{tri_dyn_url,#GET{url_self_saine}|parametre_url{tri_dyn,#GET{tri_dyn_clef}}|parametre_url{tri_dyn_sens,#GET{tri_dyn_suivant}}})]
+            <th class='validite' scope='col'>
+                <a class="#GET{tri_dyn_classes}" href="[(#GET{tri_dyn_url})]">
+                    <span class="libelle"><:association:adherent_libelle_validite:></span>
+
+                </a>
+            </th>
+
+             <BOUCLE_entete_colonnes(DATA){source table,#GET{colonnes_dyn}}>
+             [(#SET{tri_dyn_clef,#VAL{col_}|concat{#CLE}})]
+             [(#SET{tri_dyn_actif,#GET{tri_dyn_actuel}|=={#GET{tri_dyn_clef}}})]
+             [(#SET{tri_dyn_suivant,asc})]
+             [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_suivant,[(#GET{tri_dyn_sens_actuel}|=={asc}|?{desc,asc})]})]]
+             [(#SET{tri_dyn_classes,'tri-dyn ajax'})]
+             [(#GET{tri_dyn_actif}|oui)[(#SET{tri_dyn_classes,#GET{tri_dyn_classes}|concat{' actif ',#GET{tri_dyn_sens_actuel}}})]]
+             [(#SET{tri_dyn_url,#GET{url_self_saine}|parametre_url{tri_dyn,#GET{tri_dyn_clef}}|parametre_url{tri_dyn_sens,#GET{tri_dyn_suivant}}})]
+             <th class="col-extra col-extra-#CLE">
+                 <a class="#GET{tri_dyn_classes}" href="[(#GET{tri_dyn_url})]">
+                     <span class="libelle">[(#VALEUR{label}|typo)]</span>
+                 </a>
+             </th>
+             </BOUCLE_entete_colonnes>
+
+             <th class="cotisation"><:association:activite_entete_cotisation:></th>
+            <th colspan="2" class="col_actions"><:association:activite_entete_voir:></th>
+            [(#ENV{checkbox_auteurs}|oui)
+            <th class="checkbox">
+                <input id="check_all"  type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);">
+                <label for="check_all" ></label>
+            </th>]
+        </tr>
+        [(#SESSION{id_auteur}|=={1}|oui)
+        <INCLURE{fond=prive/objets/liste/item_inscription_adherent,id_auteur=1,colonnes_dyn=#GET{colonnes_dyn},env}>
+        ]
+        <BOUCLE_tableau_incrits(DATA)
+            {source table,#GET{liste_adherents}}
+        {par ordre_tri}{tri statut_interne, #GET{defaut_tri}, session_adh_v2}{par tri_nom}>
+             <INCLURE{fond=prive/objets/liste/item_inscription_adherent,
+                     id_auteur=#CLE,
+                     statut=#VALEUR{statut},
+                     statut_interne=#VALEUR{statut_interne},
+                     validite=#VALEUR{validite},
+                     inscription=#VALEUR{inscription},
+                     id_compte=#VALEUR{comptes},
+                     email=#VALEUR{email},
+                     colonnes_dyn=#GET{colonnes_dyn},
+                      env}>
+        </BOUCLE_tableau_incrits>
+      </table>
+    </div>
+</B_tableau_incrits>
+ <p>
+     <:association:resultat_vide_recherche_label:>
+ </p>
+<//B_tableau_incrits>
+
+[<div class="box raccourcis">
+    <div class="inner">
+        <div class="export_csv">
+            <h3 class="titre_boite_info">
+                <:association:exportation_csv:>
+            </h3>
+                (#GET{criteres_sql,''}|generer_export_csv_adherents)
+        </div>
+    </div>
+</div>
+]
+[(#SESSION{id_auteur}|=={1}|oui)
+<p class="debug">Debug - nombre d'adhérents retournés : [(#GET{liste_adherents}|count)]<br> - Critères SQL : <br>[(#GET{criteres_sql})]</p>
+]

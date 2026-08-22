@@ -1,0 +1,37 @@
+    <tr>
+        <td colspan="4">
+            <h2>Notifications liées à la création/validation des comptes auteurs</h2></td>
+    </tr>
+
+    <B_notif_defaut>
+        <BOUCLE_notif_defaut(DATA){source table, #VAL{creation}|listes_notifications}{par cle}>
+            <tr>
+                <td>
+                    [(#CHEMIN{/notifications/#CLE.html}|match{themes}|oui)*]
+                </td>
+                <td style="min-width:270px"><a href="[(#URL_PAGE{item-notification,notification=#CLE}|parametre_url{lang,#LANG}|parametre_url{id_auteur,#SESSION{id_auteur}}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#CLE)]</a></td>
+                <BOUCLE_description_defaut(DATA){source file,#CHEMIN{notifications/#CLE.html}}{1,1}>
+                    <td>[(#VALEUR)]</td>
+                    </BOUCLE_description_defaut>
+                    <BOUCLE_page_editable_defaut(ARTICLES){tout}{page=#CLE}>
+                       <td style="min-width:270px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank">EDITION</a></td>
+                    </BOUCLE_page_editable_defaut><td></td><//B_page_editable_defaut>
+            </tr>
+            </BOUCLE_notif_defaut>
+    </B_notif_defaut>
+    <B_notif_validation>
+        <BOUCLE_notif_validation(DATA){si #CONFIG{inscription3/valider_comptes}|=={on}}{source table, #VAL{validation}|listes_notifications}{par cle}>
+            <tr>
+                <td>
+                    [(#CHEMIN{/notifications/#CLE.html}|match{themes}|oui)*]
+                </td>
+               <td style="min-width:270px"><a href="[(#URL_PAGE{item-notification,notification=#CLE}|parametre_url{lang,#LANG}|parametre_url{id_auteur,#SESSION{id_auteur}}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#CLE)]</a></td>
+                <BOUCLE_description_validation(DATA){source file,#CHEMIN{notifications/#CLE.html}}{1,1}>
+                    <td>[(#VALEUR)]</td>
+                    </BOUCLE_description_validation>
+                    <BOUCLE_page_editable_validation(ARTICLES){tout}{page=#CLE}>
+                       <td style="min-width:270px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank">EDITION</a></td>
+                    </BOUCLE_page_editable_validation><td></td><//B_page_editable_validation>
+            </tr>
+            </BOUCLE_notif_validation>
+    </B_notif_validation>

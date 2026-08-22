@@ -1,0 +1,12 @@
+#CACHE{0}
+[(#SESSION{webmestre}|=={oui}|et{#ENV{diagnostic}|oui}|oui)
+<details class="diagnostic-inscription" id="diagnostic-inscription">
+	<summary>
+		<:association:diagnostic_inscription_titre:>
+		[— <code>(#ENV{diagnostic/code}|textebrut)</code>]
+	</summary>
+	[<p><:association:diagnostic_inscription_reference:> : <code>(#ENV{diagnostic/reference}|textebrut)</code></p>]
+	<p><:association:diagnostic_inscription_explication:></p>
+	<pre><code>[(#ENV{diagnostic}|association_diagnostic_inscription_json|entites_html)]</code></pre>
+</details>
+]

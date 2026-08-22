@@ -1,0 +1,28 @@
+<BOUCLE_id_evenement(EVENEMENTS){tout}{id_evenement}>
+<head>
+    <title>#ENV{titre}</title>
+    <intro>#ENV{chapeau}</intro>
+</head>
+<body>
+    [<p style="line-height: 180%;font-size:15px;color:#555;margin: 1em 0">		
+           (#ENV{texte}|html_entity_decode)
+    </p>]
+    [(#ENV{afficher_descriptif_evenement}=={oui}|oui)
+        <!--ICI ON INCLUT LES INFOS A PROPOS DE L'EVENEMENT-->
+        <INCLURE{fond=notifications/inc/inc-infos_evenement,env}>
+    ]
+	<B_id_responsable>
+		<p style="line-height: 180%;font-size:15px;color:#555">
+			<b><:notifications:email_modification_inscription:></b>
+			<BOUCLE_id_responsable(DATA){source tableau,#ID_RESPONSABLES_ARRAY}>                
+				<INCLURE{fond=emails/inc-email_auteur,id_auteur=#VALEUR,env}>
+			</BOUCLE_id_responsable>
+             <b><:notifications:email_ne_pas_repondre:></b>
+		</p>
+	</B_id_responsable>
+          
+    <INCLURE{fond=notifications/inc/inc-signature_activites,id_expediteur=#ID_EXPEDITEUR}>
+</body>
+</BOUCLE_id_evenement>
+#FILTRE{newsletters_liens_absolus}
+#FILTRE{facteur_email_wrap_to_html}

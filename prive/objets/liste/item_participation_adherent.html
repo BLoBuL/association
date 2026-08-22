@@ -1,0 +1,26 @@
+<BOUCLE_activites(ASSO_ACTIVITES){id_activite}{statut ?}>
+    <tr class="#STATUT">
+        <td class="id">##ID_ACTIVITE</td>
+        <td class="date">[(#DATE|affdate{d/m/y})]</td>
+        <BOUCLE_evenement(EVENEMENTS){id_evenement}{tout}>
+            <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement,date_evenement=oui}/>
+        </BOUCLE_evenement>
+        <td>Le rendez-vous a été supprimé.</td>
+        <//B_evenement>
+        <td class="statut">
+            [(#STATUT|=={ok}|oui)<:association:activite_content_cotisation_ok:>]
+            [(#STATUT|=={preinscrit}|oui)<:association:activite_content_cotisation_preinscrit:>]
+            [(#STATUT|=={desinscrit}|oui)<:association:activite_content_cotisation_desinscrit:>]
+            [(#STATUT|=={liste_attente}|oui)<:association:activite_content_cotisation_liste_attente:>]
+        </td>
+        <td>#NOMBRE_INSCRITS</td>
+        <td>
+            [<div class="tooltip"><i class="fa fa-comment" aria-hidden="true"></i><span class="tooltiptext"><p>(#COMMENTAIRE)</p></span></div>]
+        </td>       
+        <BOUCLE_transaction(TRANSACTIONS){id_transaction}>
+            <INCLURE{fond=prive/inclure/miniature_transaction,id_transaction,id_activite}/>
+        </BOUCLE_transaction>
+            <td></td>
+        <//B_transaction>
+    </tr>
+</BOUCLE_activites>

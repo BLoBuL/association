@@ -1,0 +1,684 @@
+# Appels dynamiques SPIP et resolutions
+
+Generation: 2026-04-20
+
+## 0) Conventions SPIP a lire avant la matrice
+
+### `action_*`
+
+- Convention: `action/<nom>.php` avec fonction `action_<nom>[_dist]`.
+- Declenchement: URL/action SPIP (souvent sans appel PHP local explicite).
+- Exemples plugin: `action_invalider_compte_dist`, `action_synchroniser_comptabilite_evenement_dist`.
+
+### `autoriser_*`
+
+- Convention: `autoriser_<faire>_<objet>[_dist]` et variantes menu/page.
+- Declenchement: pipeline `autoriser`, appels `autoriser(...)`, balise `#AUTORISER`.
+- Exemples plugin: `autoriser_modifier_evenement_dist`, `autoriser_assocompte_modifier_dist`.
+
+### `formulaires_*`
+
+- Convention CVT: `formulaires_<nom>_{charger,verifier,traiter}[_dist]`.
+- Declenchement: `#FORMULAIRE_<NOM>` ou `charger_fonction($nom,'formulaires')`.
+- Exemples plugin: `formulaires_editer_asso_comptes_*`, `formulaires_inscription_evenement_*`.
+
+### `balise_*` / `critere_*` / `filtre_*`
+
+- Convention: resolu depuis les squelettes et compilateur SPIP.
+- Declenchement: balises/criteres/filtres dans `.html` et `_fonctions.php`.
+- Exemples plugin: `balise_AUTORISER_PAGE`, `critere_compteur_articles_filtres_dist`, `filtre_*`.
+
+### Pipelines `association_*`
+
+- Convention: `association_<pipeline>` relie par declarations `paquet.xml`.
+- Declenchement: cycle de vie SPIP (edition, insertion, cron, notifications, bank).
+- Exemples plugin: `association_formulaire_verifier`, `association_trig_bank_notifier_reglement`.
+
+### Chargement dynamique
+
+- `include_spip()` pour charger un fichier/fonctions.
+- `charger_fonction()` pour resoudre un callable SPIP.
+- Ces mecanismes expliquent une partie des appels absents dans la detection textuelle.
+
+## 1) Pipelines declares dans `paquet.xml`
+
+- `autoriser` -> `association_autoriser.php` (resolution forte).
+- `declarer_tables_principales` -> `base/association.php` (resolution forte).
+- `declarer_tables_auxiliaires` -> `base/association.php` (resolution forte).
+- `declarer_champs_extras` -> `base/association.php` (resolution forte).
+- `taches_generales_cron` -> `association_pipelines.php` (resolution forte).
+- `formulaire_charger` -> `association_pipelines.php` (resolution forte).
+- `formulaire_verifier` -> `association_pipelines.php` (resolution forte).
+- `formulaire_traiter` -> `association_pipelines.php` (resolution forte).
+- `pre_insertion` -> `association_pipelines.php` (resolution forte).
+- `post_insertion` -> `association_pipelines.php` (resolution forte).
+- `pre_edition` -> `association_pipelines.php` (resolution forte).
+- `post_edition` -> `association_pipelines.php` (resolution forte).
+- `ajouter_menus` -> `association_pipelines.php` (resolution forte).
+- `afficher_contenu_objet` -> `association_pipelines.php` (resolution forte).
+- `declarer_tables_objets_sql` -> `association_pipelines.php` (resolution forte).
+- `header_prive` -> `association_options.php` (resolution forte).
+- `jqueryui_plugins` -> `association_options.php` (resolution forte).
+- `notifications_destinataires` -> `association_pipelines.php` (resolution forte).
+- `i3_verifier_formulaire` -> `association_pipelines.php` (resolution forte).
+- `trig_bank_notifier_reglement` -> `association_pipelines.php` (resolution forte).
+- `bank_redirige_apres_retour_transaction` -> `association_pipelines.php` (resolution forte).
+- `mailsubscriber_informations_liees` -> `association_pipelines.php` (resolution forte).
+- `declarer_champs_extras` -> `association_pipelines.php` (resolution forte).
+
+## 2) include_spip / charger_fonction detectes
+
+- `association_administrations.php:12` `include_spip('base/abstract_sql')`
+- `association_administrations.php:14` `include_spip('inc/meta')`
+- `association_administrations.php:16` `include_spip('inc/cextras')`
+- `association_administrations.php:17` `include_spip('public/interfaces')`
+- `association_administrations.php:284` `include_spip('base/upgrade')`
+- `association_administrations.php:362` `include_spip('inc/yaml')`
+- `association_administrations.php:368` `include_spip('formulaires/importer_champs_extras')`
+- `association_administrations.php:397` `include_spip('inc/cextras')`
+- `association_autoriser.php:22` `include_spip('inc/minipres')`
+- `association_autoriser.php:23` `include_spip('inc/utils')`
+- `association_autoriser.php:24` `include_spip('inc/association/utils')`
+- `association_autoriser.php:138` `include_spip('inc/autoriser')`
+- `association_autoriser.php:148` `include_spip('inc/autorisations')`
+- `association_autoriser.php:581` `include_spip('inc/config')`
+- `association_autoriser.php:827` `include_spip('association_options')`
+- `association_fonctions.php:23` `include_spip('inc/actions')`
+- `association_fonctions.php:24` `include_spip('inc/editer')`
+- `association_fonctions.php:25` `include_spip('inc/autoriser')`
+- `association_fonctions.php:53` `include_spip('inc/agenda_timezone')`
+- `association_fonctions.php:193` `include_spip('inc/date_gestion')`
+- `association_fonctions.php:194` `include_spip('inc/saisies')`
+- `association_fonctions.php:207` `include_spip('formulaires/selecteur/selecteur_fonctions')`
+- `association_fonctions.php:270` `include_spip('action/editer_auteur')`
+- `association_fonctions.php:271` `include_spip('action/inscrire_auteur')`
+- `association_fonctions.php:280` `include_spip('inc/auth')`
+- `association_fonctions.php:368` `include_spip('inc/bank')`
+- `association_fonctions.php:428` `include_spip("action/editer_liens")`
+- `association_fonctions.php:435` `charger_fonction("generer_newsletter","action")`
+- `association_fonctions.php:484` `include_spip('inc/fonctions/roles_association')`
+- `association_options.php:14` `include_spip('balise/meta')`
+- `association_options.php:16` `charger_fonction('meta', 'inc')`
+- `association_options.php:42` `include_spip('inc/fonctions/priviliges_adherent')`
+- `association_options.php:43` `include_spip('inc/fonctions/affichage_dans_activites')`
+- `association_options.php:44` `include_spip('inc/fonctions/eligibilite_inscription_evenement')`
+- `association_options.php:45` `include_spip('inc/fonctions/eligibilite_desinscription_evenement')`
+- `association_options.php:46` `include_spip('inc/fonctions/eligibilite_modification_evenement')`
+- `association_options.php:47` `include_spip('inc/fonctions/alerte_inscription_evenement')`
+- `association_options.php:48` `include_spip('inc/fonctions/gestion_places')`
+- `association_options.php:49` `include_spip('inc/fonctions/liste_responsables_evenement')`
+- `association_options.php:50` `include_spip('inc/fonctions/ouverture_inscription_evenement')`
+- `association_options.php:51` `include_spip('inc/fonctions/validation_attente_automatique')`
+- `association_options.php:52` `include_spip('formulaires/inc/inscription_evenement')`
+- `association_options.php:53` `include_spip('inc/fonctions/facteur_envoyer_app')`
+- `association_options.php:54` `include_spip('inc/fonctions/facteur_envoyer_mail_activites')`
+- `association_options.php:55` `include_spip('inc/fonctions/association_job_notifier_echeance')`
+- `association_options.php:56` `include_spip('inc/fonctions/facteur_envoyer_recu_adhesion')`
+- `association_options.php:57` `include_spip('inc/fonctions/facteur_envoyer_recu_participation')`
+- `association_options.php:59` `include_spip('inc/fonctions/comptes')`
+- `association_options.php:61` `include_spip('inc/association_log')`
+- `association_options.php:64` `include_spip('inc/filtres')`
+- `association_options.php:92` `include_spip('inc/fonctions/facteur_envoyer_notification_gis')`
+- `association_options.php:447` `include_spip('inc/autoriser')`
+- `association_pipelines.php:7` `include_spip('inc/comptes')`
+- `association_pipelines.php:8` `include_spip('inc/boutons')`
+- `association_pipelines.php:10` `include_spip('inc/notifications_emails')`
+- `association_pipelines.php:220` `include_spip('inc/fonctions/gis_auteur')`
+- `association_pipelines.php:372` `include_spip('inc/cotisations')`
+- `association_pipelines.php:373` `include_spip('inc/api_cotisations')`
+- `association_pipelines.php:470` `include_spip("inc/autoriser")`
+- `association_pipelines.php:513` `include_spip('base/abstract_sql')`
+- `association_pipelines.php:578` `include_spip('inc/filtres')`
+- `export_comptes_evenement.csv_fonctions.php:10` `include_spip('base/abstract_sql')`
+- `inscriptions_evenement.csv_fonctions.php:12` `include_spip('inc/actions')`
+- `inscriptions_evenement.csv_fonctions.php:13` `include_spip('inc/editer')`
+- `inscriptions_evenement.csv_fonctions.php:14` `include_spip('inc/autoriser')`
+- `action/ajouter_activites.php:14` `include_spip('inc/fonctions/activite_enregistrement_calculator')`
+- `action/ajouter_activites.php:16` `charger_fonction('securiser_action', 'inc')`
+- `action/ajouter_activites.php:35` `charger_fonction('inserer_transaction','bank')`
+- `action/ajouter_destinations.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/ajouter_prets.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/editer_asso_comptes.php:15` `include_spip('inc/presentation')`
+- `action/editer_asso_comptes.php:16` `include_spip('inc/navigation_modules')`
+- `action/editer_asso_comptes.php:17` `include_spip('inc/comptes')`
+- `action/editer_asso_comptes.php:21` `charger_fonction('securiser_action', 'inc')`
+- `action/editer_asso_dons.php:15` `include_spip('inc/comptes')`
+- `action/editer_asso_dons.php:19` `charger_fonction('securiser_action', 'inc')`
+- `action/editer_asso_membres.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/editer_asso_membres.php:20` `include_spip('base/association')`
+- `action/editer_asso_plan.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/editer_asso_plan.php:35` `include_spip('base/association')`
+- `action/editer_asso_ressources.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/editer_asso_ressources.php:27` `include_spip('base/association')`
+- `action/editer_asso_ventes.php:17` `include_spip('inc/presentation')`
+- `action/editer_asso_ventes.php:18` `include_spip('inc/navigation_modules')`
+- `action/editer_asso_ventes.php:19` `include_spip('inc/comptes')`
+- `action/editer_asso_ventes.php:23` `charger_fonction('securiser_action', 'inc')`
+- `action/envoyer_email_collectif_activite.php:22` `charger_fonction('securiser_action', 'inc')`
+- `action/envoyer_email_collectif_activite.php:66` `include_spip('inc/fonctions/liste_responsables_evenement')`
+- `action/envoyer_email_collectif_activite.php:133` `include_spip('inc/genie')`
+- `action/envoyer_email_collectif_adherent.php:16` `charger_fonction('securiser_action', 'inc')`
+- `action/envoyer_email_collectif_adherent.php:103` `include_spip('inc/genie')`
+- `action/envoyer_relances.php:16` `charger_fonction('securiser_action', 'inc')`
+- `action/envoyer_relances.php:80` `include_spip('inc/genie')`
+- `action/gerer_activites.php:15` `charger_fonction('securiser_action', 'inc')`
+- `action/gerer_activites.php:22` `include_spip('inc/comptes')`
+- `action/gis_geocoder_rechercher.php:16` `include_spip('inc/modifier')`
+- `action/gis_geocoder_rechercher.php:19` `include_spip('inc/gis_geocode')`
+- `action/gis_geocoder_rechercher.php:29` `include_spip('inc/config')`
+- `action/gis_geocoder_rechercher.php:33` `include_spip('inc/modifier')`
+- `action/gis_geocoder_rechercher.php:46` `include_spip('inc/distant')`
+- `action/gis_geocoder_rechercher.php:51` `include_spip('inc/gis_geocode')`
+- `action/invalider_compte.php:3` `charger_fonction('securiser_action', 'inc')`
+- `action/invalider_compte.php:6` `include_spip('inc/autoriser')`
+- `action/invalider_compte.php:16` `include_spip('inc/headers')`
+- `action/modifier_activites.php:13` `include_spip('inc/fonctions/activite_enregistrement_calculator')`
+- `action/modifier_activites.php:15` `charger_fonction('securiser_action', 'inc')`
+- `action/modifier_activites.php:17` `charger_fonction('inserer_transaction','bank')`
+- `action/modifier_destinations.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/modifier_destinations.php:23` `include_spip('base/association')`
+- `action/modifier_prets.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/modifier_prets.php:32` `include_spip('base/association')`
+- `action/modifier_relances.php:19` `charger_fonction('securiser_action', 'inc')`
+- `action/modifier_relances.php:28` `charger_fonction('envoyer_mail', 'inc')`
+- `action/supprimer_adherents.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_categorie_activite.php:6` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_categorie_cotisation.php:6` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_commande.php:16` `charger_fonction('securiser_action','inc')`
+- `action/supprimer_compte.php:7` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_compte.php:10` `include_spip('inc/autoriser')`
+- `action/supprimer_destinations.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_dons.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_plans.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_prets.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_ressources.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/supprimer_ventes.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/synchroniser_asso_membres.php:17` `charger_fonction('securiser_action', 'inc')`
+- `action/synchroniser_asso_membres.php:45` `include_spip('inc/post_edition')`
+- `action/synchroniser_comptabilite_evenement.php:11` `include_spip('inc/comptes')`
+- `action/synchroniser_comptabilite_evenement.php:18` `charger_fonction('securiser_action', 'inc')`
+- `action/synchroniser_comptabilite_evenement.php:34` `include_spip('inc/headers')`
+- `action/test_notification_cotisation.php:7` `include_spip('inc/cotisations')`
+- `action/test_notification_cotisation.php:19` `charger_fonction('securiser_action', 'inc')`
+- `action/test_notification_cotisation.php:277` `include_spip('inc/headers')`
+- `action/test_notification_cotisation.php:283` `include_spip('inc/minipres')`
+- `action/traiter_comptes.php:9` `charger_fonction('securiser_action', 'inc')`
+- `action/traiter_comptes.php:12` `include_spip('inc/autoriser')`
+- `action/traiter_comptes.php:36` `include_spip('inc/headers')`
+- `action/valider_compte.php:7` `charger_fonction('securiser_action', 'inc')`
+- `action/valider_compte.php:10` `include_spip('inc/autoriser')`
+- `action/valider_compte.php:21` `include_spip('inc/headers')`
+- `balise/autoriser_page.php:11` `include_spip('inc/autorisations')`
+- `balise/configurer_metas.php:23` `include_spip('inc/editer')`
+- `balise/configurer_metas.php:24` `include_spip('inc/mailsubscribers')`
+- `balise/configurer_metas.php:25` `include_spip('inc/bank')`
+- `balise/configurer_metas.php:36` `include_spip('balise/formulaire_')`
+- `balise/editeur_destinations.php:12` `include_spip('formulaires/inc/destinations')`
+- `base/association.php:254` `include_spip('base/association_champs_extras')`
+- `base/association_champs_extras.php:105` `include_spip('inc/bank')`
+- `exec/action_activites.php:3` `include_spip('inc/presentation')`
+- `exec/action_activites.php:4` `include_spip('inc/navigation_modules')`
+- `exec/action_activites.php:5` `include_spip('inc/comptes')`
+- `exec/action_activites.php:21` `include_spip('inc/minipres')`
+- `exec/action_activites.php:28` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_adherents.php:15` `include_spip('inc/presentation')`
+- `exec/action_adherents.php:16` `include_spip('inc/navigation_modules')`
+- `exec/action_adherents.php:20` `include_spip('inc/autoriser')`
+- `exec/action_adherents.php:22` `include_spip('inc/minipres')`
+- `exec/action_adherents.php:30` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_comptes.php:15` `include_spip('inc/presentation')`
+- `exec/action_comptes.php:16` `include_spip('inc/navigation_modules')`
+- `exec/action_comptes.php:17` `include_spip('inc/autorisations')`
+- `exec/action_comptes.php:31` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_destinations.php:15` `include_spip('inc/presentation')`
+- `exec/action_destinations.php:16` `include_spip('inc/navigation_modules')`
+- `exec/action_destinations.php:17` `include_spip('inc/autorisations')`
+- `exec/action_destinations.php:18` `include_spip('inc/page')`
+- `exec/action_email_collectif_activite.php:12` `include_spip('inc/presentation')`
+- `exec/action_email_collectif_activite.php:13` `include_spip('inc/navigation_modules')`
+- `exec/action_email_collectif_activite.php:14` `include_spip('inc/mail')`
+- `exec/action_email_collectif_activite.php:15` `include_spip('inc/filtres')`
+- `exec/action_email_collectif_activite.php:16` `include_spip('inc/documents')`
+- `exec/action_email_collectif_activite.php:17` `include_spip('inc/charsets')`
+- `exec/action_email_collectif_activite.php:22` `include_spip('inc/minipres')`
+- `exec/action_email_collectif_activite.php:34` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_email_collectif_adherent.php:12` `include_spip('inc/presentation')`
+- `exec/action_email_collectif_adherent.php:13` `include_spip('inc/navigation_modules')`
+- `exec/action_email_collectif_adherent.php:14` `include_spip('inc/mail')`
+- `exec/action_email_collectif_adherent.php:15` `include_spip('inc/charsets')`
+- `exec/action_email_collectif_adherent.php:17` `include_spip('inc/autoriser')`
+- `exec/action_email_collectif_adherent.php:19` `include_spip('inc/minipres')`
+- `exec/action_email_collectif_adherent.php:23` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_email_relances.php:12` `include_spip('inc/presentation')`
+- `exec/action_email_relances.php:13` `include_spip('inc/navigation_modules')`
+- `exec/action_email_relances.php:14` `include_spip('inc/mail')`
+- `exec/action_email_relances.php:15` `include_spip('inc/charsets')`
+- `exec/action_email_relances.php:17` `include_spip('inc/autoriser')`
+- `exec/action_email_relances.php:19` `include_spip('inc/minipres')`
+- `exec/action_email_relances.php:23` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_labels.php:7` `include_spip('pdf/pdf_label')`
+- `exec/action_plan.php:15` `include_spip('inc/presentation')`
+- `exec/action_plan.php:16` `include_spip('inc/navigation_modules')`
+- `exec/action_plan.php:17` `include_spip('inc/autorisations')`
+- `exec/action_plan.php:18` `include_spip('inc/page')`
+- `exec/action_prets.php:15` `include_spip('inc/presentation')`
+- `exec/action_prets.php:16` `include_spip('inc/navigation_modules')`
+- `exec/action_prets.php:20` `include_spip('inc/autoriser')`
+- `exec/action_prets.php:22` `include_spip('inc/minipres')`
+- `exec/action_prets.php:38` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_relances.php:16` `include_spip('inc/presentation')`
+- `exec/action_relances.php:17` `include_spip('inc/navigation_modules')`
+- `exec/action_relances.php:18` `include_spip('inc/mail')`
+- `exec/action_relances.php:19` `include_spip('inc/charsets')`
+- `exec/action_relances.php:23` `include_spip('inc/autoriser')`
+- `exec/action_relances.php:25` `include_spip('inc/minipres')`
+- `exec/action_relances.php:39` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_ressources.php:15` `include_spip('inc/presentation')`
+- `exec/action_ressources.php:16` `include_spip('inc/navigation_modules')`
+- `exec/action_ressources.php:21` `include_spip('inc/autoriser')`
+- `exec/action_ressources.php:23` `include_spip('inc/minipres')`
+- `exec/action_ressources.php:31` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_ventes.php:15` `include_spip('inc/presentation')`
+- `exec/action_ventes.php:16` `include_spip('inc/navigation_modules')`
+- `exec/action_ventes.php:20` `include_spip('inc/autoriser')`
+- `exec/action_ventes.php:22` `include_spip('inc/minipres')`
+- `exec/action_ventes.php:28` `charger_fonction('commencer_page', 'inc')`
+- `exec/action_voir.php:15` `include_spip('inc/presentation')`
+- `exec/action_voir.php:16` `include_spip('inc/navigation_modules')`
+- `exec/action_voir.php:19` `include_spip('inc/autoriser')`
+- `exec/action_voir.php:21` `include_spip('inc/minipres')`
+- `exec/action_voir.php:25` `charger_fonction('commencer_page', 'inc')`
+- `exec/activites.php:12` `include_spip('inc/presentation')`
+- `exec/activites.php:13` `include_spip('inc/navigation_modules')`
+- `exec/activites.php:18` `include_spip('inc/minipres')`
+- `exec/activites.php:21` `charger_fonction('commencer_page', 'inc')`
+- `exec/activites.php:46` `include_spip('inc/plugin')`
+- `exec/adherents_bck.php:12` `include_spip('inc/presentation')`
+- `exec/adherents_bck.php:13` `include_spip('inc/navigation_modules')`
+- `exec/adherents_bck.php:14` `include_spip('inc/voir_adherent')`
+- `exec/adherents_bck.php:15` `include_spip('inc/headers')`
+- `exec/adherents_bck.php:16` `include_spip('formulaires/inc/adherents_recherche_avancee')`
+- `exec/adherents_bck.php:17` `include_spip('inc/fonctions/generer_export_csv')`
+- `exec/adherents_bck.php:18` `include_spip('inc/urls')`
+- `exec/adherents_bck.php:20` `include_spip('inc/autoriser')`
+- `exec/adherents_bck.php:26` `include_spip('inc/minipres')`
+- `exec/adherents_bck.php:32` `charger_fonction('commencer_page', 'inc')`
+- `exec/bilan.php:15` `include_spip('inc/presentation')`
+- `exec/bilan.php:16` `include_spip('inc/navigation_modules')`
+- `exec/bilan.php:17` `include_spip('inc/autorisations')`
+- `exec/bilan.php:18` `include_spip('formulaires/inc/destinations')`
+- `exec/bilan.php:45` `charger_fonction('commencer_page', 'inc')`
+- `exec/comptes.php:14` `include_spip('inc/presentation')`
+- `exec/comptes.php:15` `include_spip('inc/navigation_modules')`
+- `exec/comptes.php:16` `include_spip('inc/autorisations')`
+- `exec/comptes.php:109` `charger_fonction('commencer_page', 'inc')`
+- `exec/configurer_visuel.php:4` `include_spip('inc/presentation')`
+- `exec/configurer_visuel.php:5` `include_spip('inc/navigation_modules')`
+- `exec/configurer_visuel.php:6` `include_spip('inc/autoriser')`
+- `exec/configurer_visuel.php:10` `include_spip('cextras_pipelines')`
+- `exec/configurer_visuel.php:16` `include_spip('inc/minipres')`
+- `exec/configurer_visuel.php:20` `charger_fonction('commencer_page', 'inc')`
+- `exec/csv_activites.php:14` `include_spip('inc/exporter_csv')`
+- `exec/csv_activites.php:15` `include_spip('inc/autorisations')`
+- `exec/csv_activites.php:32` `charger_fonction('trouver_table', 'base')`
+- `exec/csv_activites.php:61` `charger_fonction('trouver_table', 'base')`
+- `exec/csv_activites.php:96` `charger_fonction('trouver_table', 'base')`
+- `exec/csv_activites.php:157` `charger_fonction('exporter_csv', 'inc/')`
+- `exec/csv_adherents.php:18` `include_spip('inc/exporter_csv')`
+- `exec/csv_adherents.php:19` `include_spip('inc/fonctions/generer_exporter_csv')`
+- `exec/csv_adherents.php:20` `include_spip('inc/charsets')`
+- `exec/csv_adherents.php:21` `include_spip('inc/filtres')`
+- `exec/csv_adherents.php:22` `include_spip('inc/texte')`
+- `exec/csv_adherents.php:25` `include_spip('inc/minipres')`
+- `exec/csv_adherents.php:80` `charger_fonction('exporter_csv', 'inc/')`
+- `exec/destinations.php:15` `include_spip('inc/presentation')`
+- `exec/destinations.php:16` `include_spip('inc/navigation_modules')`
+- `exec/destinations.php:17` `include_spip('inc/autorisations')`
+- `exec/destinations.php:18` `include_spip('inc/page')`
+- `exec/dons.php:14` `include_spip('inc/presentation')`
+- `exec/dons.php:15` `include_spip('inc/navigation_modules')`
+- `exec/dons.php:19` `include_spip('inc/autoriser')`
+- `exec/dons.php:21` `include_spip('inc/minipres')`
+- `exec/dons.php:25` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_compte.php:16` `include_spip('inc/presentation')`
+- `exec/edit_compte.php:17` `include_spip('inc/navigation_modules')`
+- `exec/edit_compte.php:18` `include_spip('inc/autorisations')`
+- `exec/edit_compte.php:19` `include_spip('inc/page')`
+- `exec/edit_cotisation.php:12` `include_spip('inc/presentation')`
+- `exec/edit_cotisation.php:13` `include_spip('inc/autoriser')`
+- `exec/edit_cotisation.php:14` `include_spip('inc/navigation_modules')`
+- `exec/edit_cotisation.php:19` `include_spip('inc/minipres')`
+- `exec/edit_cotisation.php:34` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_destination.php:14` `include_spip('inc/presentation')`
+- `exec/edit_destination.php:15` `include_spip('inc/navigation_modules')`
+- `exec/edit_destination.php:16` `include_spip('inc/autorisations')`
+- `exec/edit_destination.php:17` `include_spip('inc/page')`
+- `exec/edit_don.php:15` `include_spip('inc/presentation')`
+- `exec/edit_don.php:16` `include_spip('inc/navigation_modules')`
+- `exec/edit_don.php:17` `include_spip('inc/association_comptabilite')`
+- `exec/edit_don.php:21` `include_spip('inc/autoriser')`
+- `exec/edit_don.php:23` `include_spip('inc/minipres')`
+- `exec/edit_don.php:29` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_email_collectif_activite.php:12` `include_spip('inc/presentation')`
+- `exec/edit_email_collectif_activite.php:13` `include_spip('inc/navigation_modules')`
+- `exec/edit_email_collectif_activite.php:14` `include_spip('inc/voir_adherent')`
+- `exec/edit_email_collectif_activite.php:15` `include_spip('inc/filtres')`
+- `exec/edit_email_collectif_activite.php:16` `include_spip('inc/documents')`
+- `exec/edit_email_collectif_activite.php:21` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_email_collectif_adherent.php:12` `include_spip('inc/presentation')`
+- `exec/edit_email_collectif_adherent.php:13` `include_spip('inc/navigation_modules')`
+- `exec/edit_email_collectif_adherent.php:14` `include_spip('inc/voir_adherent')`
+- `exec/edit_email_collectif_adherent.php:17` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_labels.php:15` `include_spip('inc/presentation')`
+- `exec/edit_labels.php:16` `include_spip('inc/navigation_modules')`
+- `exec/edit_labels.php:20` `include_spip('inc/autoriser')`
+- `exec/edit_labels.php:22` `include_spip('inc/minipres')`
+- `exec/edit_labels.php:29` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_mail.php:13` `include_spip('inc/presentation')`
+- `exec/edit_mail.php:14` `include_spip('inc/navigation_modules')`
+- `exec/edit_mail.php:15` `include_spip('inc/voir_adherent')`
+- `exec/edit_mail.php:18` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_plan.php:14` `include_spip('inc/presentation')`
+- `exec/edit_plan.php:15` `include_spip('inc/navigation_modules')`
+- `exec/edit_plan.php:16` `include_spip('inc/autorisations')`
+- `exec/edit_plan.php:17` `include_spip('inc/page')`
+- `exec/edit_pret.php:15` `include_spip('inc/presentation')`
+- `exec/edit_pret.php:16` `include_spip('inc/navigation_modules')`
+- `exec/edit_pret.php:23` `include_spip('inc/autoriser')`
+- `exec/edit_pret.php:25` `include_spip('inc/minipres')`
+- `exec/edit_pret.php:57` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_relances.php:15` `include_spip('inc/presentation')`
+- `exec/edit_relances.php:16` `include_spip('inc/navigation_modules')`
+- `exec/edit_relances.php:17` `include_spip('inc/voir_adherent')`
+- `exec/edit_relances.php:21` `charger_fonction('commencer_page', 'inc')`
+- `exec/edit_ressource.php:15` `include_spip('inc/presentation')`
+- `exec/edit_ressource.php:16` `include_spip('inc/navigation_modules')`
+- `exec/edit_ressource.php:17` `include_spip('inc/page')`
+- `exec/edit_ressource.php:18` `include_spip('inc/autorisations')`
+- `exec/edit_vente.php:14` `include_spip('inc/presentation')`
+- `exec/edit_vente.php:15` `include_spip('inc/navigation_modules')`
+- `exec/edit_vente.php:16` `include_spip('inc/autorisations')`
+- `exec/edit_vente.php:26` `charger_fonction('commencer_page', 'inc')`
+- `exec/pdf_activite.php:14` `include_spip('pdf/extends')`
+- `exec/pdf_activite.php:19` `include_spip('inc/minipres')`
+- `exec/pdf_adherents.php:14` `include_spip('pdf/extends')`
+- `exec/pdf_adherents.php:19` `include_spip('inc/minipres')`
+- `exec/pdf_adherents.php:86` `include_spip('pdf/extends')`
+- `exec/pdf_fiscal.php:25` `include_spip('pdf/fpdi_pdf_parser')`
+- `exec/pdf_fiscal.php:26` `include_spip('pdf/fpdf')`
+- `exec/pdf_fiscal.php:27` `include_spip('pdf/fpdf_tpl')`
+- `exec/pdf_fiscal.php:28` `include_spip('pdf/fpdi')`
+- `exec/pdf_fiscal.php:29` `include_spip('pdf/chiffreEnLettre')`
+- `exec/pdf_fiscal.php:38` `include_spip('inc/minipres')`
+- `exec/pdf_fiscal.php:41` `include_spip('inc/minipres')`
+- `exec/plan_comptable.php:13` `include_spip('inc/presentation')`
+- `exec/plan_comptable.php:14` `include_spip('inc/navigation_modules')`
+- `exec/plan_comptable.php:15` `include_spip('inc/autorisations')`
+- `exec/plan_comptable.php:16` `include_spip('inc/page')`
+- `exec/plan_comptable.php:17` `include_spip('inc/destinations')`
+- `exec/prets.php:15` `include_spip('inc/presentation')`
+- `exec/prets.php:16` `include_spip('inc/navigation_modules')`
+- `exec/prets.php:17` `include_spip('inc/autorisations')`
+- `exec/prets.php:18` `include_spip('inc/page')`
+- `exec/prets.php:27` `charger_fonction('commencer_page', 'inc')`
+- `exec/ressources.php:15` `include_spip('inc/presentation')`
+- `exec/ressources.php:16` `include_spip('inc/navigation_modules')`
+- `exec/ressources.php:17` `include_spip('inc/autorisations')`
+- `exec/ressources.php:18` `include_spip('inc/page')`
+- `exec/settings_list_members_event.php:14` `include_spip('inc/presentation')`
+- `exec/settings_list_members_event.php:15` `include_spip('inc/navigation_modules')`
+- `exec/ventes.php:14` `include_spip('inc/presentation')`
+- `exec/ventes.php:15` `include_spip('inc/navigation_modules')`
+- `exec/ventes.php:16` `include_spip('inc/autorisations')`
+- `exec/ventes.php:17` `include_spip('inc/page')`
+- `exec/ventes.php:31` `charger_fonction('commencer_page', 'inc')`
+- `exec/voir_adherent.php:12` `include_spip('inc/presentation')`
+- `exec/voir_adherent.php:13` `include_spip('inc/autoriser')`
+- `exec/voir_adherent.php:14` `include_spip('inc/navigation_modules')`
+- `exec/voir_adherent.php:15` `include_spip('inc/voir_adherent')`
+- `exec/voir_adherent.php:20` `charger_fonction('commencer_page', 'inc')`
+- `formulaires/adherents_recherche_avancee.php:12` `include_spip('inc/actions')`
+- `formulaires/adherents_recherche_avancee.php:13` `include_spip('inc/editer')`
+- `formulaires/adherents_recherche_avancee.php:14` `include_spip('inc/autoriser')`
+- `formulaires/adherents_recherche_avancee.php:15` `include_spip('formulaires/inc/adherents_recherche_avancee')`
+- `formulaires/adherents_recherche_rapide.php:13` `include_spip('inc/actions')`
+- `formulaires/adherents_recherche_rapide.php:14` `include_spip('inc/editer')`
+- `formulaires/adherents_recherche_rapide.php:15` `include_spip('inc/autoriser')`
+- `formulaires/adherents_recherche_rapide.php:16` `include_spip('inc/adherents_search_context')`
+- `formulaires/choisir_gabarit_envoi_collectif.php:12` `include_spip('inc/actions')`
+- `formulaires/choisir_gabarit_envoi_collectif.php:13` `include_spip('inc/editer')`
+- `formulaires/choisir_gabarit_envoi_collectif.php:14` `include_spip('inc/saisies')`
+- `formulaires/choisir_gabarit_envoi_collectif.php:15` `include_spip('inc/filtres')`
+- `formulaires/configurer_association.php:14` `include_spip('formulaires/inc/configurer_association')`
+- `formulaires/configurer_association.php:15` `include_spip('inc/comptes')`
+- `formulaires/configurer_association.php:16` `include_spip('inc/destinations')`
+- `formulaires/configurer_association.php:1803` `include_spip('inc/association_log')`
+- `formulaires/configurer_association.php:1974` `include_spip('inc/cvt_configurer')`
+- `formulaires/configurer_association.php:1994` `include_spip('inc/association_log')`
+- `formulaires/configurer_association.php:2009` `include_spip('genie/association_maintenance_bdd')`
+- `formulaires/desinscription_evenement_public.php:3` `include_spip('inc/actions')`
+- `formulaires/desinscription_evenement_public.php:4` `include_spip('inc/editer')`
+- `formulaires/desinscription_evenement_public.php:42` `include_spip('inc/comptes')`
+- `formulaires/desinscription_evenement_public.php:67` `include_spip('inc/cookie')`
+- `formulaires/editer_asso_categorie_activite.php:6` `include_spip('inc/saisies')`
+- `formulaires/editer_asso_categorie_cotisation.php:13` `include_spip('inc/saisies')`
+- `formulaires/editer_asso_categorie_cotisation.php:14` `include_spip('inc/bank')`
+- `formulaires/editer_asso_comptes.php:3` `include_spip('inc/actions')`
+- `formulaires/editer_asso_comptes.php:4` `include_spip('inc/editer')`
+- `formulaires/editer_asso_comptes.php:5` `include_spip('inc/autoriser')`
+- `formulaires/editer_asso_comptes.php:6` `include_spip('inc/comptes')`
+- `formulaires/editer_asso_comptes.php:7` `include_spip('formulaires/inc/destinations')`
+- `formulaires/editer_asso_comptes.php:188` `include_spip('inc/autoriser')`
+- `formulaires/editer_asso_comptes.php:190` `include_spip('association_autoriser')`
+- `formulaires/editer_asso_comptes.php:270` `include_spip('inc/autoriser')`
+- `formulaires/editer_asso_comptes.php:271` `include_spip('association_autoriser')`
+- `formulaires/editer_asso_comptes.php:387` `include_spip('inc/autoriser')`
+- `formulaires/editer_asso_comptes.php:388` `include_spip('association_autoriser')`
+- `formulaires/editer_asso_comptes.php:445` `include_spip('inc/invalideur')`
+- `formulaires/editer_asso_cotisation.php:4` `include_spip('inc/actions')`
+- `formulaires/editer_asso_cotisation.php:5` `include_spip('inc/editer')`
+- `formulaires/editer_asso_cotisation.php:6` `include_spip('inc/filtres')`
+- `formulaires/editer_asso_cotisation.php:7` `include_spip('inc/autoriser')`
+- `formulaires/editer_asso_cotisation.php:8` `include_spip('formulaires/inc/destinations')`
+- `formulaires/editer_asso_cotisation.php:9` `include_spip('inc/fonctions/association_validite_calculator')`
+- `formulaires/editer_asso_cotisation.php:11` `include_spip('inc/api_cotisations')`
+- `formulaires/editer_asso_cotisation.php:23` `include_spip('inc/api_cotisations')`
+- `formulaires/editer_asso_cotisation.php:376` `include_spip('inc/api_cotisations')`
+- `formulaires/editer_asso_destinations.php:14` `include_spip('inc/actions')`
+- `formulaires/editer_asso_destinations.php:15` `include_spip('inc/editer')`
+- `formulaires/editer_asso_dons.php:4` `include_spip('inc/actions')`
+- `formulaires/editer_asso_dons.php:5` `include_spip('inc/editer')`
+- `formulaires/editer_asso_dons.php:6` `include_spip('formulaires/inc/destinations')`
+- `formulaires/editer_asso_membres.php:4` `include_spip('inc/actions')`
+- `formulaires/editer_asso_membres.php:5` `include_spip('inc/editer')`
+- `formulaires/editer_asso_membres.php:6` `include_spip('inc/autoriser')`
+- `formulaires/editer_asso_plan.php:4` `include_spip('inc/actions')`
+- `formulaires/editer_asso_plan.php:5` `include_spip('inc/editer')`
+- `formulaires/editer_asso_plan.php:98` `charger_fonction('editer_asso_plan','action')`
+- `formulaires/editer_asso_ressources.php:4` `include_spip('inc/actions')`
+- `formulaires/editer_asso_ressources.php:5` `include_spip('inc/editer')`
+- `formulaires/editer_asso_ventes.php:4` `include_spip('inc/actions')`
+- `formulaires/editer_asso_ventes.php:5` `include_spip('inc/editer')`
+- `formulaires/editer_asso_ventes.php:6` `include_spip('formulaires/inc/destinations')`
+- `formulaires/editer_evenement.php:14` `include_spip('inc/actions')`
+- `formulaires/editer_evenement.php:15` `include_spip('inc/editer')`
+- `formulaires/editer_evenement.php:16` `include_spip('inc/autoriser')`
+- `formulaires/editer_evenement.php:23` `include_spip('inc/agenda_timezone')`
+- `formulaires/editer_evenement.php:104` `include_spip('inc/date_gestion')`
+- `formulaires/editer_evenement.php:118` `include_spip('formulaires/selecteur/selecteur_fonctions')`
+- `formulaires/editer_evenement.php:186` `include_spip('inc/date_gestion')`
+- `formulaires/editer_evenement.php:214` `include_spip('action/editer_evenement')`
+- `formulaires/email_collectif_adherent.php:13` `include_spip('inc/actions')`
+- `formulaires/email_collectif_adherent.php:14` `include_spip('inc/editer')`
+- `formulaires/email_collectif_adherent.php:15` `include_spip('inc/autoriser')`
+- `formulaires/email_collectif_adherent.php:16` `include_spip('inc/saisies')`
+- `formulaires/email_collectif_adherent.php:17` `include_spip('inc/cvtupload')`
+- `formulaires/email_collectif_adherent.php:18` `include_spip('inc/filtres')`
+- `formulaires/email_collectif_adherent.php:19` `include_spip('formulaires/inc/adherents_recherche_avancee')`
+- `formulaires/email_collectif_adherent.php:253` `charger_fonction('ajouter_documents', 'action')`
+- `formulaires/email_collectif_adherent.php:464` `include_spip('inc/genie')`
+- `formulaires/importer_destination_comptable.php:5` `include_spip('inc/destinations')`
+- `formulaires/importer_plan_comptable.php:5` `include_spip('inc/comptes')`
+- `formulaires/inscription_evenement.php:14` `include_spip('inc/actions')`
+- `formulaires/inscription_evenement.php:15` `include_spip('inc/editer')`
+- `formulaires/inscription_evenement.php:16` `include_spip('inc/comptes')`
+- `formulaires/inscription_evenement.php:17` `include_spip('formulaires/inc/inscription_evenement')`
+- `formulaires/inscription_evenement.php:18` `include_spip('inc/fonctions/activite_enregistrement_calculator')`
+- `formulaires/inscription_evenement.php:34` `include_spip('inc/minipres')`
+- `formulaires/inscription_evenement.php:414` `include_spip('inc/filtres')`
+- `formulaires/inscription_evenement_multi.php:12` `include_spip('inc/actions')`
+- `formulaires/inscription_evenement_multi.php:13` `include_spip('inc/editer')`
+- `formulaires/inscription_evenement_multi.php:14` `include_spip('inc/autoriser')`
+- `formulaires/inscription_evenement_multi.php:15` `include_spip('inc/saisies')`
+- `formulaires/inscription_evenement_multi.php:16` `include_spip('inc/filtres')`
+- `formulaires/inscription_evenement_multi.php:17` `include_spip('formulaires/inc/inscription_evenement')`
+- `formulaires/inscription_evenement_multi.php:18` `include_spip('formulaires/inc/inscription_evenement_saisies')`
+- `formulaires/inscription_evenement_multi.php:19` `include_spip('inc/fonctions/activite_enregistrement_calculator')`
+- `formulaires/inscription_evenement_multi.php:326` `include_spip('inc/minipres')`
+- `formulaires/inscription_evenement_multi_public.php:13` `include_spip('inc/actions')`
+- `formulaires/inscription_evenement_multi_public.php:14` `include_spip('inc/editer')`
+- `formulaires/inscription_evenement_multi_public.php:15` `include_spip('inc/autoriser')`
+- `formulaires/inscription_evenement_multi_public.php:16` `include_spip('inc/saisies')`
+- `formulaires/inscription_evenement_multi_public.php:17` `include_spip('inc/filtres')`
+- `formulaires/inscription_evenement_multi_public.php:18` `include_spip('formulaires/inc/inscription_evenement')`
+- `formulaires/inscription_evenement_multi_public.php:19` `include_spip('formulaires/inc/inscription_evenement_saisies')`
+- `formulaires/inscription_evenement_multi_public.php:20` `include_spip('inc/fonctions/activite_enregistrement_calculator')`
+- `formulaires/inscription_evenement_multi_public.php:320` `include_spip('inc/filtres')`
+- `formulaires/inscription_evenement_multi_public.php:321` `include_spip('inc/cookie')`
+- `formulaires/inscription_evenement_multi_public.php:498` `include_spip('inc/comptes')`
+- `formulaires/inscription_evenement_multi_public.php:545` `include_spip('inc/cookie')`
+- `formulaires/inscription_evenement_public.php:12` `include_spip('inc/actions')`
+- `formulaires/inscription_evenement_public.php:13` `include_spip('inc/editer')`
+- `formulaires/inscription_evenement_public.php:15` `include_spip('formulaires/inc/inscription_evenement')`
+- `formulaires/inscription_evenement_public.php:16` `include_spip('inc/fonctions/activite_enregistrement_calculator')`
+- `formulaires/inscription_evenement_public.php:384` `include_spip('inc/filtres')`
+- `formulaires/inscription_evenement_public.php:385` `include_spip('inc/cookie')`
+- `formulaires/inscription_evenement_public.php:553` `include_spip('inc/comptes')`
+- `formulaires/inscription_evenement_public.php:605` `include_spip('inc/cookie')`
+- `formulaires/migrer_asso_comptabilite.php:4` `include_spip('inc/comptes')`
+- `formulaires/migrer_asso_comptabilite.php:5` `include_spip('inc/destinations')`
+- `formulaires/migrer_asso_comptabilite.php:6` `include_spip('inc/config')`
+- `formulaires/migrer_asso_comptabilite.php:131` `include_spip('genie/association_maintenance_bdd')`
+- `formulaires/migrer_asso_comptabilite.php:132` `include_spip('action/synchroniser_comptabilite_evenement')`
+- `formulaires/rembourser_transaction.php:22` `include_spip('inc/autoriser')`
+- `formulaires/rembourser_transaction.php:51` `charger_fonction('rembourser_transaction','bank')`
+- `formulaires/rembourser_transaction.php:55` `include_spip('inc/comptes')`
+- `formulaires/synchro_asso_membres.php:4` `include_spip('inc/actions')`
+- `formulaires/synchro_asso_membres.php:5` `include_spip('inc/editer')`
+- `formulaires/synchro_asso_membres.php:6` `include_spip('inc/autoriser')`
+- `formulaires/synchro_asso_membres.php:30` `charger_fonction('synchroniser_asso_membres','action')`
+- `genie/association_maintenance_bdd.php:9` `include_spip('base/abstract_sql')`
+- `genie/association_taches_generales.php:21` `include_spip('base/abstract_sql')`
+- `genie/association_taches_generales.php:23` `include_spip('inc/cotisations')`
+- `genie/association_taches_generales.php:24` `include_spip('inc/fonctions/privileges_adherent')`
+- `genie/association_taches_generales.php:25` `include_spip('inc/fonctions/association_job_notifier_echeance')`
+- `inc/adherents_search_context.php:12` `include_spip('prive/squelettes/contenu/adherents_fonctions')`
+- `inc/adherents_search_context.php:250` `include_spip('prive/squelettes/contenu/adherents_fonctions')`
+- `inc/adherents_search_context.php:335` `include_spip('formulaires/inc/adherents_recherche_avancee')`
+- `inc/adherents_search_context.php:461` `include_spip('formulaires/inc/adherents_recherche_avancee')`
+- `inc/api_cotisations.php:11` `include_spip('inc/comptes')`
+- `inc/api_cotisations.php:12` `include_spip('inc/cotisations')`
+- `inc/api_cotisations.php:13` `include_spip('inc/bank')`
+- `inc/api_cotisations.php:14` `include_spip('inc/fonctions/association_validite_calculator')`
+- `inc/api_cotisations.php:214` `charger_fonction('inserer_transaction', 'bank')`
+- `inc/api_cotisations.php:336` `include_spip('inc/bank')`
+- `inc/api_cotisations.php:453` `charger_fonction('ajouter_documents', 'action')`
+- `inc/association_comptabilite.php:144` `include_spip('base/association')`
+- `inc/association_comptabilite.php:256` `include_spip('base/association')`
+- `inc/association_log.php:19` `include_spip('inc/config')`
+- `inc/autorisations.php:5` `include_spip('inc/autorisations')`
+- `inc/autorisations.php:14` `include_spip('inc/autorisations')`
+- `inc/comptes.php:2` `include_spip('inc/destinations')`
+- `inc/cotisations.php:5` `include_spip('inc/api_cotisations')`
+- `inc/cotisations.php:6` `include_spip('inc/notifications_emails')`
+- `inc/cotisations.php:432` `include_spip('inc/fonctions/facteur_envoyer_app')`
+- `inc/cotisations.php:639` `include_spip('inc/filtres')`
+- `inc/cotisations.php:789` `include_spip('inc/filtres')`
+- `inc/cotisations.php:930` `include_spip('inc/session')`
+- `inc/cotisations.php:931` `include_spip('inc/fonctions/privileges_adherent')`
+- `inc/cotisations.php:933` `include_spip('inc/fonctions/association_validite_calculator')`
+- `inc/cotisations.php:1099` `include_spip('inc/filtres')`
+- `inc/destinations.php:2` `include_spip('inc/association/utils')`
+- `inc/exporter_csv.php:12` `include_spip('inc/charsets')`
+- `inc/exporter_csv.php:13` `include_spip('inc/filtres')`
+- `inc/exporter_csv.php:14` `include_spip('inc/texte')`
+- `inc/gis_geocode.php:19` `include_spip('inc/distant')`
+- `inc/gis_geocode.php:20` `include_spip('inc/config')`
+- `inc/page.php:7` `include_spip('inc/presentation')`
+- `inc/page.php:8` `include_spip('inc/navigation_modules')`
+- `inc/page.php:27` `charger_fonction('commencer_page', 'inc')`
+- `saisies/auteurs.php:24` `include_spip("saisies/$type_saisie")`
+- `prive/squelettes/contenu/adherents_fonctions.php:6` `include_spip('inc/cotisations')`
+- `prive/squelettes/contenu/adherents_fonctions.php:7` `include_spip('inc/fonctions/generer_export_csv')`
+- `prive/squelettes/contenu/adherents_fonctions.php:8` `include_spip('inc/filtres')`
+- `prive/squelettes/contenu/adherents_fonctions.php:206` `include_spip('inc/config')`
+- `prive/squelettes/contenu/adherents_fonctions.php:455` `include_spip('inc/adherents_search_context')`
+- `prive/squelettes/contenu/adherents_fonctions.php:456` `include_spip('formulaires/inc/adherents_recherche_avancee')`
+- `prive/squelettes/contenu/adherents_fonctions.php:971` `include_spip('inc/saisies_data')`
+- `prive/squelettes/contenu/notifications_fonctions.php:6` `include_spip('inc/cotisations')`
+- `prive/squelettes/top/inc-top_association_fonctions.php:7` `include_spip('inc/bandeau')`
+- `prive/squelettes/contenu/inc-adherents/bloc_filtres_fonctions.php:7` `include_spip('prive/squelettes/contenu/adherents_fonctions')`
+- `prive/objets/liste/auteurs_associer_fonctions.php:17` `include_spip('prive/objets/liste/auteurs_fonctions')`
+- `prive/objets/liste/visiteurs_fonctions.php:17` `include_spip('prive/objets/liste/auteurs_fonctions')`
+- `inc/fonctions/affichage_dans_activites.php:18` `include_spip('inc/filtres')`
+- `inc/fonctions/affichage_dans_activites.php:19` `include_spip('agenda_fonctions')`
+- `inc/fonctions/affichage_dans_activites.php:137` `include_spip('inc/bank')`
+- `inc/fonctions/association_job_notifier_echeance.php:7` `include_spip('inc/cotisations')`
+- `inc/fonctions/association_job_notifier_echeance.php:8` `include_spip('base/abstract_sql')`
+- `inc/fonctions/eligibilite_inscription_evenement.php:17` `include_spip('agenda_fonctions')`
+- `inc/fonctions/eligibilite_inscription_evenement.php:46` `include_spip('inc/session')`
+- `inc/fonctions/facteur_envoyer_app.php:30` `include_spip('inc/filtres')`
+- `inc/fonctions/facteur_envoyer_app.php:98` `charger_fonction('envoyer_mail', 'inc')`
+- `inc/fonctions/facteur_envoyer_mail_activites.php:26` `include_spip('inc/filtres')`
+- `inc/fonctions/facteur_envoyer_mail_activites.php:46` `include_spip('inc/liste_responsables_evenement')`
+- `inc/fonctions/facteur_envoyer_mail_activites.php:197` `include_spip('inc/notifications_emails')`
+- `inc/fonctions/facteur_envoyer_recu_adhesion.php:18` `include_spip('inc/filtres')`
+- `inc/fonctions/facteur_envoyer_recu_adhesion.php:19` `include_spip('inc/notifications_emails')`
+- `inc/fonctions/facteur_envoyer_recu_participation.php:6` `include_spip('inc/filtres')`
+- `inc/fonctions/facteur_envoyer_recu_participation.php:7` `include_spip('inc/notifications_emails')`
+- `inc/fonctions/generer_export_csv.php:12` `include_spip('inc/charsets')`
+- `inc/fonctions/generer_export_csv.php:13` `include_spip('inc/filtres')`
+- `inc/fonctions/generer_export_csv.php:14` `include_spip('inc/texte')`
+- `inc/fonctions/gis_auteur.php:20` `include_spip('inc/config')`
+- `inc/fonctions/gis_auteur.php:21` `include_spip('inc/gis_geocode')`
+- `inc/fonctions/gis_auteur.php:22` `include_spip('action/editer_gis')`
+- `inc/fonctions/gis_auteur.php:23` `include_spip('action/editer_objet')`
+- `inc/fonctions/priviliges_adherent.php:20` `include_spip('inc/autoriser')`
+- `inc/fonctions/priviliges_adherent.php:21` `include_spip('action/editer_zone')`
+- `inc/fonctions/priviliges_adherent.php:22` `include_spip('inc/mailsubscribers')`
+- `inc/fonctions/priviliges_adherent.php:23` `include_spip('inc/filtres')`
+- `inc/fonctions/priviliges_adherent.php:25` `charger_fonction("subscribe","newsletter")`
+- `inc/fonctions/priviliges_adherent.php:26` `charger_fonction("unsubscribe","newsletter")`
+- `inc/fonctions/priviliges_adherent.php:94` `include_spip('inc/autoriser')`
+- `inc/fonctions/priviliges_adherent.php:95` `include_spip('action/editer_zone')`
+- `inc/fonctions/priviliges_adherent.php:96` `include_spip('inc/mailsubscribers')`
+- `inc/fonctions/priviliges_adherent.php:97` `include_spip('mailsubscribers_fonctions')`
+- `inc/fonctions/priviliges_adherent.php:99` `charger_fonction("subscribe","newsletter")`
+- `inc/fonctions/priviliges_adherent.php:100` `charger_fonction("unsubscribe","newsletter")`
+- `inc/fonctions/priviliges_adherent.php:164` `include_spip('inc/fonctions/gis_auteur')`
+- `inc/fonctions/priviliges_adherent.php:173` `include_spip('action/editer_zone')`
+- `inc/fonctions/priviliges_adherent.php:174` `include_spip('inc/mailsubscribers')`
+- `inc/fonctions/priviliges_adherent.php:175` `include_spip('mailsubscribers_fonctions')`
+- `inc/fonctions/priviliges_adherent.php:177` `charger_fonction("subscribe", "newsletter")`
+- `inc/fonctions/priviliges_adherent.php:178` `charger_fonction("unsubscribe", "newsletter")`
+- `inc/fonctions/priviliges_adherent.php:184` `include_spip('inc/filtres')`
+- `inc/fonctions/priviliges_adherent.php:300` `include_spip('inc/fonctions/gis_auteur')`
+- `inc/fonctions/roles_association.php:21` `include_spip('inc/cextras')`
+- `inc/fonctions/roles_association.php:22` `include_spip('inc/saisies')`
+- `formulaires/inc/adherents_recherche_avancee.php:673` `include_spip('inc/config')`
+- `formulaires/inc/configurer_association.php:11` `include_spip('inc/bank')`
+- `formulaires/inc/destinations.php:3` `include_spip('inc/destinations')`
+- `formulaires/inc/inscription_evenement.php:5` `include_spip('inc/fonctions/activite_enregistrement_calculator')`
+- `formulaires/inc/inscription_evenement.php:971` `include_spip('inc/bank')`
+- `formulaires/inc/inscription_evenement.php:1143` `charger_fonction('inserer_transaction', 'bank')`
+- `formulaires/inc/inscription_evenement.php:1203` `charger_fonction("subscribe","newsletter")`
+- `formulaires/inc/inscription_evenement.php:1212` `include_spip('inc/mailsubscribers')`
+- `formulaires/inc/inscription_evenement.php:1213` `include_spip('mailsubscribers_fonctions')`
+- `formulaires/inc/inscription_evenement_saisies.php:3` `include_spip('inc/saisies')`
+- `formulaires/inc/inscription_evenement_saisies.php:317` `include_spip('inc/saisies')`
+
+## 3) Points a verifier manuellement
+
+- `autoriser(...)` / `#AUTORISER{...}`: convention `autoriser_<faire>_<objet>[_dist]`.
+- Formulaires CVT: convention `formulaires_<nom>_{charger,verifier,traiter}_dist`.
+- Callbacks passes en chaine et appels variables.

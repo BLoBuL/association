@@ -1,0 +1,126 @@
+<h1>Visualisation des notifications - Version BETA</h1>
+
+
+[(#ENV{message_ok}|oui)
+    <div class="reussite">[(#ENV{message_ok})]</div>
+]
+[(#ENV{message_erreur}|oui)
+    <div class="erreur">[(#ENV{message_erreur})]</div>
+]
+
+<p>Cette page est en travaux, merci de votre indulgence. Chaque notification nécessitant un contexte particulier et varie en conséquence de celui-ci, des améliorations seront prochainement apportées de manière à visualiser les différents cas de figure.</p>
+
+<br>
+<b>Pour info : </b><br>
+L'étoile <strong>*</strong> permets d'identifier les notifications personnalisées pour votre association.
+
+<hr class="spip"/>
+
+
+
+<!-- Onglets pour n'afficher qu'un tableau à la fois -->
+<div class="notifications-tabs">
+    <!-- current tab via paramètre GET 'tab' (fallback: 'adhesion') -->
+    <ul class="notif-tabs">
+        <li class="tab-validation [(#ENV{tab,adhesion}|=={validation}|?{active,})]">
+            [(#ENV{tab,adhesion}|=={validation}|oui)
+                <strong class="on" aria-current="page">Création / Validation de compte</strong>
+            ]
+            [(#ENV{tab,adhesion}|=={validation}|non)
+                <a href="[(#SELF|parametre_url{tab,validation})]" class="ajax">Création / Validation de compte</a>
+            ]
+        </li>
+        <li class="tab-adhesion_echeances [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|?{active,})]">
+            [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|oui)
+                <strong class="on" aria-current="page">Adhésions / Échéances</strong>
+            ]
+            [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|non)
+                <a href="[(#SELF|parametre_url{tab,adhesion})]" class="ajax">Adhésions / Échéances</a>
+            ]
+        </li>
+        <li class="tab-activite [(#ENV{tab,adhesion}|in_array{#LISTE{activite,activites}}|?{active,})]">
+            [(#ENV{tab,adhesion}|in_array{#LISTE{activite,activites}}|oui)
+                <strong class="on" aria-current="page">Activités</strong>
+            ]
+            [(#ENV{tab,adhesion}|in_array{#LISTE{activite,activites}}|non)
+                <a href="[(#SELF|parametre_url{tab,activites})]" class="ajax">Activités</a>
+            ]
+        </li>
+        <li class="tab-autres [(#ENV{tab,adhesion}|=={autres}|?{active,})]">
+            [(#ENV{tab,adhesion}|=={autres}|oui)
+                <strong class="on" aria-current="page">Autres / Personnalisées</strong>
+            ]
+            [(#ENV{tab,adhesion}|=={autres}|non)
+                <a href="[(#SELF|parametre_url{tab,autres})]" class="ajax">Autres / Personnalisées</a>
+            ]
+        </li>
+        <BOUCLE_onglet_metiers(CONDITION){si #VAL|association_notifications_metiers|count|>{0}}>
+        <li class="tab-metiers [(#ENV{tab,adhesion}|=={metiers}|?{active,})]">
+            [(#ENV{tab,adhesion}|=={metiers}|oui)
+                <strong class="on" aria-current="page"><:association:notifications_metiers_titre:></strong>
+            ]
+            [(#ENV{tab,adhesion}|=={metiers}|non)
+                <a href="[(#SELF|parametre_url{tab,metiers})]" class="ajax"><:association:notifications_metiers_titre:></a>
+            ]
+        </li>
+        </BOUCLE_onglet_metiers>
+    </ul>
+</div>
+<!-- Filtres : sortis du tableau et affichés au dessus des onglets -->
+<B_filtre_radio_type_adherent>
+    <div class="notifications-filters">
+        <h2>Filtres</h2>
+        <div class="filters-row">
+            <div class="filter-item">
+                <label>Type de destinataire :</label>
+                <ul class="onglets_simple inline-filters">
+                    <BOUCLE_filtre_radio_type_adherent(DATA){si #ENV{tab,adhesion}|in_array{#LISTE{validation,adhesion}}}{source table,#VAL|radio_type_adherent}{si #VAL|radio_type_adherent|count|>{1}}{' | '}>
+                    [(#ENV{radio_type_adherent}|=={#CLE}|oui)
+                        <li><strong class="on" aria-current="page">#VALEUR</strong></li>
+                    ]
+                    [(#ENV{radio_type_adherent}|=={#CLE}|non)
+                        <li><a href="[(#SELF|parametre_url{radio_type_adherent,#CLE})]" class="ajax">#VALEUR</a></li>
+                    ]
+                    </BOUCLE_filtre_radio_type_adherent>
+                </ul>
+            </div>
+        </div>
+    </div>
+</B_filtre_radio_type_adherent>
+<!-- Zone de contenu : inclure le tableau correspondant au tab sélectionné -->
+<div class="notifications-content">
+    [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|oui)
+        [(#VAL|notifications_cotisations_audit_html)]
+    ]
+    <!-- Lien debug pour forcer l'affichage des notifications Activités -->
+
+    <table class="">
+        <thead>
+            <tr>
+                <th style="width:8%"></th>
+                <th style="width:28%">Notification</th>
+                <th style="width:34%">Description</th>
+                <th style="width:18%">Sujet</th>
+                <th style="width:6%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Validation/flux de comptes -->
+            [(#ENV{tab,adhesion}|=={validation}|?{#INCLURE{fond=prive/squelettes/contenu/inc-notifications/inc-tableau_notif_validation,env},''})]
+
+            <!-- Adhésions + Échéances (cotisations + échéances) -->
+            [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|?{#INCLURE{fond=prive/squelettes/contenu/inc-notifications/inc-tableau_notif_cotisation,env},''})]
+
+            <!-- Activités -->
+            <!-- Inclusion forcée pour debug si ?debug_activite=1 -->
+             [(#ENV{tab,adhesion}|=={activite}|?{#INCLURE{fond=prive/squelettes/contenu/inc-notifications/inc-tableau_notif_activite,env},''})]
+             [(#ENV{tab,adhesion}|=={activites}|?{#INCLURE{fond=prive/squelettes/contenu/inc-notifications/inc-tableau_notif_activite,env},''})]
+
+            <!-- Autres personnalisations -->
+            [(#ENV{tab,adhesion}|=={autres}|?{#INCLURE{fond=prive/squelettes/contenu/inc-notifications/inc-tableau_notif_autres,env},''})]
+
+            <!-- Notifications métier déclarées par les plugins actifs -->
+            [(#ENV{tab,adhesion}|=={metiers}|?{#INCLURE{fond=prive/squelettes/contenu/inc-notifications/inc-tableau_notif_metiers,env},''})]
+        </tbody>
+    </table>
+</div>

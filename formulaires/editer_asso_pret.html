@@ -1,0 +1,37 @@
+<div class="formulaire_spip formulaire_editer formulaire_editer_asso_pret">
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	<form method="post" action="#ENV{action}"><div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<h3 class="legend">[(#ENV{ressource})]</h3>
+		<div class="editer-groupe">
+			#SET{erreur,#ENV**{erreurs}|table_valeur{date_sortie}}
+			<div class="editer editer_date_sortie[ (#GET{erreur}|oui)erreur]">
+				<label for="date_sortie"><:association:prets_libelle_date_sortie:></label>[<span class="erreur_message">(#GET{erreur})</span>]
+				<input type="text" name="date_sortie" id="date_sortie" value="[(#ENV{date_sortie}|attribut_html)]" required="required" />
+			</div>
+			<div class="editer editer_duree[ (#ENV**{erreurs}|table_valeur{duree}|oui)erreur]">
+				<label for="duree"><:association:prets_libelle_duree:></label>[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{duree})</span>]
+				<input type="number" min="0" name="duree" id="duree" value="[(#ENV{duree}|attribut_html)]" />
+			</div>
+			<div class="editer editer_id_emprunteur[ (#ENV**{erreurs}|table_valeur{id_emprunteur}|oui)erreur]">
+				<label for="id_emprunteur"><:association:prets_libelle_num_emprunteur:></label>[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{id_emprunteur})</span>]
+				<input type="number" min="1" name="id_emprunteur" id="id_emprunteur" value="[(#ENV{id_emprunteur}|attribut_html)]" required="required" />
+			</div>
+			<div class="editer editer_commentaire_sortie"><label for="commentaire_sortie"><:association:prets_libelle_commentaires:></label><textarea name="commentaire_sortie" id="commentaire_sortie" rows="3">[(#ENV{commentaire_sortie})]</textarea></div>
+		</div>
+		<fieldset><legend><:association:prets_entete_retour:></legend><div class="editer-groupe">
+			<div class="editer editer_date_retour[ (#ENV**{erreurs}|table_valeur{date_retour}|oui)erreur]">
+				<label for="date_retour"><:association:prets_libelle_date_retour:></label>[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{date_retour})</span>]
+				<input type="text" name="date_retour" id="date_retour" value="[(#ENV{date_retour}|attribut_html)]" />
+			</div>
+			<div class="editer editer_montant[ (#ENV**{erreurs}|table_valeur{montant}|oui)erreur]">
+				<label for="montant"><:association:prets_libelle_montant:></label>[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{montant})</span>]
+				<input type="text" name="montant" id="montant" value="[(#ENV{montant}|attribut_html)]" />
+			</div>
+			<div class="editer editer_journal"><INCLURE{fond=inc/mode_de_paiement,journal=#ENV{journal},classe_banques=#ENV{classe_banques}}></div>
+			<div class="editer editer_commentaire_retour"><label for="commentaire_retour"><:association:prets_libelle_commentaires:></label><textarea name="commentaire_retour" id="commentaire_retour" rows="3">[(#ENV{commentaire_retour})]</textarea></div>
+		</div></fieldset>
+		<p class="boutons"><button type="submit" class="submit"><:bouton_enregistrer:></button></p>
+	</div></form>
+</div>

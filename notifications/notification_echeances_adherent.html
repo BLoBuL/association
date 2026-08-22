@@ -1,0 +1,75 @@
+[(#REM)
+-> Adhérent/Entreprise - Rappel automatique envoyé X jours avant échéance.
+][(#HTTP_HEADER{Content-type: text/plain[; charset=(#CHARSET)]})]
+<BOUCLE_adherent(AUTEURS){id_auteur}{tout}>
+    [(#SET{type_adherent,#ENV{type_adherent}|sinon{adherent}})]
+    [(#SET{date_source,#ENV{validite}|sinon{#VALIDITE}})]
+    [(#SET{date_validite,#GET{date_source}|affdate{'d/m/Y'}})]
+    [(#SET{nom_cible,#ENV{nom_adherent}|sinon{#NOM}})]
+    [(#GET{type_adherent}|=={entreprise}|oui)
+        (#SET{nom_cible,#ENV{nom_entreprise}|sinon{#ENV{nom_adherent}|sinon{#NOM}}})
+    ]
+    [(#SET{contact_reference,#ENV{nom_adherent}|sinon{#NOM}})]
+    [(#SET{statut,#ENV{statut}|sinon{#STATUT}})]
+    [(#SET{delai,#ENV{nb_jour_differences}|intval})]
+    <!-- Affichage explicite du nombre de jours et de la date de validité -->
+    <!-- rappel_libelle removed: affichage direct du délai (évite parsing complexe) -->
+    <head>
+        <title><:notifications:email_notification_echeances_title:></title>
+        <intro><:notifications:email_notification_echeances_intro{nb_jour_differences =#ENV{nb_jour_differences}}:></intro>
+    </head>
+    <body>
+        <div style="line-height:180%;font-size:15px;color:white !important;background-color:#38414A !important;padding:1em;text-align:center;font-size:19px;">
+            <h3 style="line-height:180%;color:white !important;text-align:center;">
+                <:notifications:email_notification_echeances_titre{nom_site_spip = #NOM_SITE_SPIP,date_validite=#GET{date_validite}}:>
+            </h3>
+        </div>
+        <!-- intro paragraph removed: all texts are localized below -->
+        [(#GET{type_adherent}|=={entreprise}|oui)
+            <p style="line-height:180%;font-size:15px;color:#555">
+                <:notifications:notification_echeance_preventive_intro_entreprise{nom_entreprise=#GET{nom_cible},nom_referent=#GET{contact_reference}}:>
+            </p>
+        ]
+        [(#GET{type_adherent}|=={entreprise}|non)
+            <p style="line-height:180%;font-size:15px;color:#555">
+                <:notifications:notification_echeance_preventive_intro_adherent{nom_adherent=#GET{nom_cible}}:>
+            </p>
+        ]
+        <!-- Avertissement conditionnel pour administrateurs / responsables d'activités -->
+        [(#GET{statut}|in_array{#LISTE{0minirezo,1comite}}|oui)
+            <div style="line-height:180%;font-size:14px;color:#b00;background:#FFF0F0;border-radius:4px;padding:10px;margin:10px 0;">
+                <:notifications:notification_echeance_warning_admin:>
+            </div>
+        ]
+        <div style="line-height:180%;font-size:15px;color:#555;background:#F4F6F8;border-radius:6px;padding:1em;margin-bottom:1em;">
+            <ul class="spip" style="margin:0;padding-left:1.2em;">
+                <li><strong><:notifications:notification_echeance_bloc_label_validite:></strong> #GET{date_validite}</li>
+                <li>
+                    <:notifications:email_notification_echeances_rappel{delai=#GET{delai},date_validite=#GET{date_validite}}:>
+                </li>
+            </ul>
+        </div>
+        <p style="line-height:180%;font-size:15px;color:#555">
+            <:notifications:email_notification_echeances_explication:>
+        </p>
+        <div style="text-align:center;">
+            <a href="[(#URL_PAGE{profil}|abs_url)]" style="display:inline-block;margin:20px auto;padding:10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;">
+                <:notifications:attente_paiement_message_lien_profil:>
+            </a>
+        </div>
+        <p style="line-height:180%;font-size:15px;color:#555">
+            <:notifications:email_notification_echeances_explication_2:>
+        </p>
+        <BOUCLE_complement_info(ARTICLES){page=notification_echeances_adherent}{texte != ''}>
+            [<p style="line-height:180%;font-size:15px;color:#555">(#CHAPO)</p>]
+            [<p style="line-height:180%;font-size:15px;color:#555">(#TEXTE)</p>]
+        </BOUCLE_complement_info>
+        <//B_complement_info>
+        <p style="line-height:180%;font-size:15px;color:#555">
+            <:notifications:email_formule_politesse:><br>
+            <:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+        </p>
+    </body>
+</BOUCLE_adherent>
+#FILTRE{emogrifier}
+#FILTRE{facteur_email_wrap_to_html}

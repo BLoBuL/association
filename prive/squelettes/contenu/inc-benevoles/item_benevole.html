@@ -1,0 +1,64 @@
+<BOUCLE_activites(AUTEURS){id_auteur}{tout}>
+    <tr class="#STATUT_INTERNE #STATUT">
+        <td class="id">##ID_AUTEUR</td>
+        <td class="nom">
+            <a class="bouton_editer" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
+            <span class="logo_auteur"><INCLURE{fond=modeles/asso_logo_adherent,id_auteur,hauteur=50,largeur=50}/></span>
+                <span class="nom_prenom">#PRENOM </br><b style="text-transform: uppercase">#NOM_FAMILLE</b>
+                <br>
+                <small>[(#INSCRIPTION|!={0000-00-00 00:00:00}|oui)[(#INSCRIPTION|affdate{d/m/y})]] <-> [(#VALIDITE|!={0000-00-00 00:00:00}|oui)[(#VALIDITE|affdate{d/m/y})]]</small>
+                </span>
+            </a>
+         </td>  
+        <td class="fonction left">
+            [(#ENV{role}|=={fonction}|oui)
+            [(#LISTER_VALEURS{fonction}|replace{',',<br>})]
+            ]
+            [(#ENV{role}|=={fonction_secondaire}|oui)
+            [(#LISTER_VALEURS{fonction_secondaire}|replace{',',<br>})]
+            ]
+            [(#ENV{role}|=={marraines}|oui)
+            [(#LISTER_VALEURS{marraines}|replace{',',<br>})]
+            ]
+            [(#ENV{role}|=={hotesse_quartier}|oui)
+            [(#LISTER_VALEURS{hotesse_quartier}|replace{',',<br>})]
+            ]
+            [(#ENV{role}|=={responsable_quartier}|oui)
+            [(#LISTER_VALEURS{responsable_quartier}|replace{',',<br>})]
+            ]
+            [(#ENV{role}|=={responsable_activites}|oui)
+            [(#LISTER_VALEURS{responsable_activites}|replace{',',<br>})]
+            ]
+        </td>
+        <td class="contact left">
+            [<a href="#EMAIL">(#EMAIL)</a><br>]
+            [<a href="#INPUT_EMAIL_MEMBRES_ASSO">(#INPUT_EMAIL_MEMBRES_ASSO)</a><br>]
+            [(#TELEPHONE)<br>]
+            [(#MOBILE)]
+        </td>
+        <td class="activites left">
+            <B_articles>
+                <ul class="liste_evenement spip">
+                    <BOUCLE_articles(ARTICLES){id_auteur}{doublons}>
+                        <BOUCLE_articles_evenements(EVENEMENTS){id_article}{!par date}{doublons}{0,1}>
+                        </BOUCLE_articles_evenements>
+                            <li><a href="[(#URL_ECRIRE{article,id_article=#ID_ARTICLE})]">[(#TITRE|couper{50}|supprimer_numero)]</a></li>
+                        </B_articles_evenements>
+                    </BOUCLE_articles>
+                </ul>    
+            </B_articles>
+       </td>   
+        <td class="actions">
+            <div class="actions_wrap">
+            <a href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]" title="<:association:adherent_label_gerer_membre:>" class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
+            <a href="[(#URL_ECRIRE{auteur,id_auteur=#ID_AUTEUR})]" title="<:association:adherent_label_voir_membre:>" class="lien_fa"><i class="fa-solid fa-user" aria-hidden="true"></i></a>
+            </div>
+        </td>
+        [(#ENV{checkbox_auteurs}|oui)
+        <td class="checkbox">
+            <input id="checkbox_[(#ID_AUTEUR)]" name="selecteur_adherent" type="checkbox" value="[(#ID_AUTEUR)]">
+                <label for="checkbox_[(#ID_AUTEUR)]"></label>
+        </td>
+        ]
+    </tr>
+</BOUCLE_activites>

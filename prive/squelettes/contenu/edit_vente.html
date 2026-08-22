@@ -1,0 +1,8 @@
+[(#AUTORISER{ventes_menu}|sinon_interdire_acces)]
+
+<div class="edition">
+	<h1><:association:titre_onglet_ventes:></h1>
+	[(#INCLURE{fond=prive/squelettes/contenu/editer_asso_ventes,
+		id_vente=#ENV{id,#ENV{id_vente}},
+		env})]
+</div>

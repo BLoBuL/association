@@ -1,0 +1,12 @@
+<B_gis><td class="gis">
+    <BOUCLE_gis(GIS gis_lien){id_objet=#ENV{id_auteur}}{objet=auteur}>
+        <a href="[(#URL_ECRIRE{gis,id_gis=#ID_GIS})]" class=""><i class="fa-solid fa-location-dot"></i></a>
+    </BOUCLE_gis>
+</td></B_gis>
+<td class="gis">
+    [(#OUI_NON_CONFIDENTIALITE|=={oui}|et{#OUI_NON_CONFIDENTIALITE_GMAP|=={oui}}|?{
+        <a href="[(#URL_ECRIRE{auteur_edit,id_auteur=#ENV{id_auteur}})]" class=""><i class="fa-solid fa-location-pin"></i></a>,
+        <i class="fa-solid fa-location-pin-lock"></i>
+    })]
+</td>
+<//B_gis>

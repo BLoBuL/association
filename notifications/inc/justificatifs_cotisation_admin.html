@@ -1,0 +1,10 @@
+[(#ENV{justificatifs_requis}|=={oui}|oui)
+<div style="margin:15px 0;padding:12px;border:1px solid #d9a400;background:#fff8df;color:#333;">
+    <p style="margin:0 0 6px;font-weight:bold;"><:notifications:justificatifs_admin_titre:></p>
+    <p style="margin:0;">
+        <:notifications:justificatifs_admin_etat{recus=#ENV{documents_recus},controles=#ENV{documents_controles}}:>
+        [(#ENV{justificatifs_controles}|=={oui}|?{<:notifications:justificatifs_admin_controles:>,<:notifications:justificatifs_admin_action:>})]
+    </p>
+    [<p style="margin:8px 0 0;"><a href="(#ENV{url_editer_cotisation}|abs_url)"><:notifications:justificatifs_admin_bouton:></a></p>]
+</div>
+]

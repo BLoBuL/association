@@ -1,0 +1,84 @@
+[(#ENV{id_evenement}|oui)
+<fieldset class="email_collectif_inscriptions_evenement">
+    <legend><:association:email_collectif_inscriptions_evenement_label:></legend>
+    <p class="explication"><:association:email_collectif_inscriptions_evenement_explication:></p>
+    <B_filtre>
+    <div class="onglets_simple email_collectif_filtre_statut">
+        <ul>
+            <li data-statut="">
+                <strong class="on" aria-current="page">Tous statuts</strong>
+            </li>
+        <BOUCLE_filtre(ASSO_ACTIVITES){tout}{id_activite IN #ENV{id_activites_evenement}}{fusion statut}>
+            <li data-statut="#STATUT">
+                <a href="#tableau_inscriptions_activite">#STATUT</a>
+            </li>
+        </BOUCLE_filtre>
+        </ul>
+    </div>
+    <script>
+    document.addEventListener('click', function (event) {
+        var lien = event.target.closest('.email_collectif_filtre_statut a');
+        if (!lien) {
+            return;
+        }
+        event.preventDefault();
+        var filtre = lien.closest('.email_collectif_filtre_statut');
+        var statut = lien.parentElement.getAttribute('data-statut');
+        filtre.querySelectorAll('li').forEach(function (onglet) {
+            var libelle = onglet.textContent.trim();
+            if (onglet.getAttribute('data-statut') === statut) {
+                onglet.innerHTML = '<strong class="on" aria-current="page">' + libelle + '</strong>';
+            } else {
+                onglet.innerHTML = '<a href="#tableau_inscriptions_activite">' + libelle + '</a>';
+            }
+        });
+        document.querySelectorAll('#tableau_inscriptions_activite tbody tr').forEach(function (ligne) {
+            ligne.hidden = statut !== '' && !ligne.classList.contains(statut);
+        });
+    });
+    </script>
+    </B_filtre>
+    <B_inscriptions>
+    <table id="tableau_inscriptions_activite" class="tableau_asso">
+        <thead>
+            <tr>
+                <th>[(#TRI{id_activite,'#',ajax})]</th>
+                <th>[(#TRI{date,<:association:activite_entete_date:>,ajax})]</th>
+                <th>[(#TRI{nom_inscrit,<:association:activite_entete_nom:>,ajax})]</th>
+                <th>[(#TRI{statut,<:association:activite_entete_statut_inscription:>,ajax})]</th>
+                <th>[(#TRI{nombre_inscrits,<:association:activite_entete_nombre_inscrit:>,ajax})]</th>
+                <th><:association:activite_entete_voir:></th>
+                <th class="checkbox">
+                    <input id="check_all_evenement" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);">
+                    <label for="check_all_evenement"></label>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        <BOUCLE_inscriptions(ASSO_ACTIVITES){tout}{id_activite IN #ENV{id_activites_evenement}}{statut ?}{tri id_activite}{par nom_inscrit}>
+            <tr class="#STATUT">
+                <td class="id">##ID_ACTIVITE</td>
+                <td class="date">[(#DATE|affdate{d/m/Y})]</td>
+                <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,id_activite,env}/>
+                <td class="statut">
+                    [(#STATUT|=={ok}|oui)<:association:activite_content_cotisation_ok:>]
+                    [(#STATUT|=={preinscrit}|oui)<:association:activite_content_cotisation_preinscrit:>]
+                    [(#STATUT|=={liste_attente}|oui)<:association:activite_content_cotisation_liste_attente:>]
+                </td>
+                <td>#NOMBRE_INSCRITS</td>
+                <td>
+                    [<div class="tooltip"><i class="fa fa-comment" aria-hidden="true"></i><span class="tooltiptext"><p>(#COMMENTAIRE)</p></span></div>]
+                </td>
+                <td class="checkbox">
+                    <input id="checkbox_evenement_#ID_ACTIVITE" name="selecteur_activite_evenement[]" type="checkbox" value="#ID_ACTIVITE"[(#ID_ACTIVITE|in_array{#ENV{selecteur_activite_evenement,#ARRAY}}|oui) checked="checked"]>
+                    <label for="checkbox_evenement_#ID_ACTIVITE"></label>
+                </td>
+            </tr>
+        </BOUCLE_inscriptions>
+        </tbody>
+    </table>
+    </B_inscriptions>
+    <p><:association:email_collectif_inscriptions_evenement_vide:></p>
+    <//B_inscriptions>
+</fieldset>
+]

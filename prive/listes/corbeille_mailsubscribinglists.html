@@ -1,0 +1,18 @@
+<B_mailsubscribinglists>
+<div class="liste corbeille-mailsubscribinglists">
+[<h3 class="titrem">(#GRAND_TOTAL|singulier_ou_pluriel{association:mailsubscribinglist_corbeille_un,association:mailsubscribinglist_corbeille_tous})</h3>]
+[<p class='pagination'>(#PAGINATION)</p>]
+<ul class='liste-items checkables'>
+<BOUCLE_mailsubscribinglists(MAILSUBSCRIBINGLISTS){statut}{pagination 10}{par titre}{recherche ?}>
+<li class='item'>
+    <label for='mailsubscribinglist-#ID_MAILSUBSCRIBINGLIST'><:corbeille:selectionner:></label>
+    <input type='checkbox' name='elements[]' id="mailsubscribinglist-#ID_MAILSUBSCRIBINGLIST" value='#ID_MAILSUBSCRIBINGLIST'[ (#ID_MAILSUBSCRIBINGLIST|in_any{#ENV{elements}}|oui)checked='checked']/>
+    <h4>##ID_MAILSUBSCRIBINGLIST - #TITRE</h4>
+    <small>[(#DATE|affdate)]</small>
+</li>
+</BOUCLE_mailsubscribinglists>
+</ul>
+[<p class='pagination'>(#PAGINATION{prive})</p>]
+</div>
+</B_mailsubscribinglists>
+

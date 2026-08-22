@@ -1,0 +1,12 @@
+#BOITE_OUVRIR{'','info'}
+<:association:navigation_boite_info:>
+#BOITE_FERMER
+
+<INCLURE{fond=prive/squelettes/navigation/dist,env}>
+[(#BOITE_OUVRIR{'','raccourcis'})]
+    <ul class='liste_items sous_navigation'>
+        <li class="item">
+            <a href="[(#URL_ECRIRE{plan_comptable})]" class="bando2"><:association:navigation_plan_comptable:></a>
+        </li>
+    </ul>
+#BOITE_FERMER

@@ -1,0 +1,30 @@
+[(#REM)
+* Fichier destiné à la desinscription des adhérents à un évenement
+* sur l'espace publique.
+]
+[(#REM)
+**************  DEBUT DU FORMULAIRE DE DESINSCRIPTION  **************
+]
+[(#SESSION{webmestre}|=={oui}|oui)
+<!--[DESINSCRIPTION :(#ENV{desinscription_possible})]-->
+]
+<BOUCLE_CONDITION(CONDITION){si #ENV{desinscription_possible}|=={possible}}
+                                                            {si #ENV{statut_ouverture_inscription}|=={inscription_ouverte}}>
+  <div>
+      <h3 class="titre"><i class="fa fa-times-circle"></i><span><:association:titre_desinscription:></span></h3>
+     [<p class='formulaire_erreur'>(#ENV*{message_erreur})</p>]
+			<form action="#ENV{action}" method="post">
+                <div>
+                    #ACTION_FORMULAIRE{#ENV{action}}                
+                    
+                        #GENERER_SAISIES{#ENV{saisies}}
+                        <input type="hidden" name="id_activite" value="#ENV{id_activite}">
+                        <div class="boutons">        
+                            <input type="submit" name="ok" value="<:association:me_desinscrire:>" class="submit"/>
+                        </div>
+                    </div>
+      </form>
+  </div>
+</BOUCLE_CONDITION>
+    
+<//B_CONDITION>

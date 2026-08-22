@@ -1,0 +1,37 @@
+<B_notif_gis>
+    <tr>
+        <td colspan="4">
+            <h2>Notifications liées à GIS</h2>
+        </td>
+    </tr>
+    <BOUCLE_notif_gis(DATA){source glob, #CHEMIN{notifications/}*_gis.html}{si #PLUGIN{gis}|oui}>
+        <tr>
+            <td>
+                [(#CHEMIN{/notifications/#VALEUR.html}|match{themes}|oui)*]
+            </td>
+            <td><a href="[(#URL_PAGE{item-notification,notification=[(#VALEUR|basename|replace{.html,''})]}|parametre_url{lang,#LANG}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#VALEUR|basename)]</a></td>
+            <BOUCLE_description_gis(DATA){source file,#VALEUR}{1,1}>
+                <td>[(#VALEUR)]</td>
+                </BOUCLE_description_gis>
+        </tr>
+    </BOUCLE_notif_gis>
+</B_notif_gis>
+
+<B_notif_autres>
+    <tr>
+        <td colspan="4">
+            <h2>Personnalisations</h2>
+        </td>
+    </tr>
+    <BOUCLE_notif_autres(DATA){source glob,#CHEMIN{notifications/}*.html}>
+        <tr>
+            <td>
+                [(#VALEUR|match{themes}|oui)*]
+            </td>
+            <td><a href="[(#URL_PAGE{item-notification,notification=[(#VALEUR|basename|replace{.html,''})]}|parametre_url{lang,#LANG}|parametre_url{radio_type_adherent,#ENV{radio_type_adherent}|sinon{adherent}}|parametre_url{tab,#ENV{tab,adhesion}})]" class="mediabox">[(#VALEUR|basename)]</a></td>
+            <BOUCLE_description_autres(DATA){source file,#VALEUR}{1,1}>
+                <td>[(#VALEUR)]</td>
+                </BOUCLE_description_autres>
+        </tr>
+        </BOUCLE_notif_autres>
+</B_notif_autres>

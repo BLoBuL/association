@@ -1,0 +1,1097 @@
+{
+  "Classes": [
+    {
+      "Numero": "1",
+      "Libelle": "Capitaux",
+      "Description": "Comptes liés aux fonds propres de l'entreprise, y compris les réserves et les résultats.",
+      "Comptes": [
+        {
+          "Numero": "10",
+          "Libelle": "Capital social et réserves",
+          "Description": "Comptes enregistrant le capital apporté par les associés et les réserves.",
+          "SousComptes": [
+            {
+              "Numero": "101",
+              "Libelle": "Capital social",
+              "Description": "Montant des apports des associés ou actionnaires."
+            },
+            {
+              "Numero": "102",
+              "Libelle": "Réserves légales",
+              "Description": "Part des bénéfices réservée pour renforcer les fonds propres."
+            },
+            {
+              "Numero": "103",
+              "Libelle": "Réserves statutaires ou contractuelles",
+              "Description": "Réserves définies par les statuts ou les contrats."
+            }
+          ]
+        },
+        {
+          "Numero": "11",
+          "Libelle": "Report à nouveau (solde créditeur ou débiteur)",
+          "Description": "Compte enregistrant les résultats non distribués des exercices précédents.",
+          "SousComptes": [
+            {
+              "Numero": "110",
+              "Libelle": "Report à nouveau créditeur",
+              "Description": "Excédents de bénéfices reportés des exercices précédents."
+            },
+            {
+              "Numero": "119",
+              "Libelle": "Report à nouveau débiteur",
+              "Description": "Déficits reportés des exercices précédents."
+            }
+          ]
+        },
+        {
+          "Numero": "12",
+          "Libelle": "Résultat de l'exercice (bénéfice ou perte)",
+          "Description": "Résultat net de l'exercice en cours, avant répartition."
+        },
+        {
+          "Numero": "13",
+          "Libelle": "Subventions d'investissement",
+          "Description": "Subventions reçues pour financer des investissements."
+        },
+        {
+          "Numero": "14",
+          "Libelle": "Provisions réglementées",
+          "Description": "Provisions constituées en vertu de règlements spécifiques."
+        },
+        {
+          "Numero": "15",
+          "Libelle": "Provisions pour risques et charges",
+          "Description": "Provisions pour couvrir des risques futurs ou des charges probables.",
+          "SousComptes": [
+            {
+              "Numero": "151",
+              "Libelle": "Provisions pour litiges",
+              "Description": "Provisions pour couvrir les coûts éventuels des litiges en cours."
+            },
+            {
+              "Numero": "152",
+              "Libelle": "Provisions pour garanties données aux clients",
+              "Description": "Provisions pour couvrir les garanties accordées aux clients."
+            }
+          ]
+        },
+        {
+          "Numero": "16",
+          "Libelle": "Emprunts et dettes assimilées",
+          "Description": "Comptes enregistrant les emprunts contractés par l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "161",
+              "Libelle": "Emprunts obligataires convertibles",
+              "Description": "Emprunts obligataires pouvant être convertis en actions."
+            },
+            {
+              "Numero": "162",
+              "Libelle": "Emprunts obligataires non convertibles",
+              "Description": "Emprunts obligataires qui ne peuvent pas être convertis en actions."
+            },
+            {
+              "Numero": "164",
+              "Libelle": "Emprunts auprès des établissements de crédit",
+              "Description": "Emprunts contractés auprès des banques et autres institutions financières."
+            }
+          ]
+        },
+        {
+          "Numero": "17",
+          "Libelle": "Dettes rattachées à des participations",
+          "Description": "Dettes liées aux participations financières dans d'autres entreprises."
+        },
+        {
+          "Numero": "18",
+          "Libelle": "Comptes de liaison des établissements et sociétés en participation",
+          "Description": "Comptes utilisés pour enregistrer les transactions entre établissements ou sociétés en participation."
+        }
+      ]
+    },
+    {
+      "Numero": "2",
+      "Libelle": "Immobilisations",
+      "Description": "Comptes relatifs aux actifs immobilisés de l'entreprise.",
+      "Comptes": [
+        {
+          "Numero": "20",
+          "Libelle": "Immobilisations incorporelles",
+          "Description": "Actifs incorporels comme les brevets et les licences.",
+          "SousComptes": [
+            {
+              "Numero": "201",
+              "Libelle": "Frais d'établissement",
+              "Description": "Frais liés à la constitution de la société."
+            },
+            {
+              "Numero": "205",
+              "Libelle": "Concessions et droits similaires, brevets, licences, marques, procédés, logiciels, droits et valeurs similaires",
+              "Description": "Droits incorporels acquis par l'entreprise."
+            }
+          ]
+        },
+        {
+          "Numero": "21",
+          "Libelle": "Immobilisations corporelles",
+          "Description": "Actifs physiques détenus par l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "211",
+              "Libelle": "Terrains",
+              "Description": "Valeur des terrains possédés par l'entreprise."
+            },
+            {
+              "Numero": "212",
+              "Libelle": "Constructions",
+              "Description": "Bâtiments et autres constructions de l'entreprise."
+            },
+            {
+              "Numero": "218",
+              "Libelle": "Autres immobilisations corporelles",
+              "Description": "Immobilisations corporelles diverses comme le matériel et les installations."
+            }
+          ]
+        },
+        {
+          "Numero": "22",
+          "Libelle": "Immobilisations mises en concession",
+          "Description": "Immobilisations concédées à d'autres entreprises."
+        },
+        {
+          "Numero": "23",
+          "Libelle": "Immobilisations en cours",
+          "Description": "Projets d'immobilisations en cours de réalisation."
+        },
+        {
+          "Numero": "25",
+          "Libelle": "Parts dans des entreprises liées et créances sur des entreprises liées",
+          "Description": "Participations financières dans des entreprises liées et créances y afférentes."
+        },
+        {
+          "Numero": "26",
+          "Libelle": "Participations et créances rattachées à des participations",
+          "Description": "Participations financières et créances associées."
+        },
+        {
+          "Numero": "27",
+          "Libelle": "Autres immobilisations financières",
+          "Description": "Immobilisations financières autres que les participations."
+        },
+        {
+          "Numero": "28",
+          "Libelle": "Amortissement des immobilisations",
+          "Description": "Amortissements accumulés sur les immobilisations."
+        },
+        {
+          "Numero": "29",
+          "Libelle": "Dépréciations des immobilisations",
+          "Description": "Dépréciations constatées sur les immobilisations."
+        }
+      ]
+    },
+    {
+      "Numero": "3",
+      "Libelle": "Stocks et en-cours",
+      "Description": "Comptes relatifs aux stocks et travaux en cours de l'entreprise.",
+      "Comptes": [
+        {
+          "Numero": "31",
+          "Libelle": "Matières premières et fournitures",
+          "Description": "Matières premières et fournitures destinées à la production."
+        },
+        {
+          "Numero": "32",
+          "Libelle": "Autres approvisionnements",
+          "Description": "Autres approvisionnements utilisés dans le processus de production."
+        },
+        {
+          "Numero": "33",
+          "Libelle": "En-cours de Production de biens",
+          "Description": "Travaux en cours de production de biens."
+        },
+        {
+          "Numero": "34",
+          "Libelle": "En-cours de Production de services",
+          "Description": "Travaux en cours de production de services."
+        },
+        {
+          "Numero": "35",
+          "Libelle": "Stocks de produits",
+          "Description": "Produits finis en stock."
+        },
+        {
+          "Numero": "36",
+          "Libelle": "Stocks provenant d'immobilisations",
+          "Description": "Stocks d'immobilisations destinées à être vendues."
+        },
+        {
+          "Numero": "37",
+          "Libelle": "Stocks de marchandises",
+          "Description": "Marchandises achetées pour être revendues."
+        },
+        {
+          "Numero": "39",
+          "Libelle": "Provisions pour dépréciation des stocks et en-cours",
+          "Description": "Provisions constituées pour dépréciation des stocks et en-cours."
+        }
+      ]
+    },
+    {
+      "Numero": "4",
+      "Libelle": "Tiers",
+      "Description": "Comptes relatifs aux opérations avec les tiers.",
+      "Comptes": [
+        {
+          "Numero": "40",
+          "Libelle": "Comptes de tiers Fournisseurs",
+          "Description": "Comptes enregistrant les transactions avec les fournisseurs.",
+          "SousComptes": [
+            {
+              "Numero": "401",
+              "Libelle": "Fournisseurs",
+              "Description": "Enregistrement des dettes envers les fournisseurs."
+            },
+            {
+              "Numero": "408",
+              "Libelle": "Fournisseurs - Factures non parvenues",
+              "Description": "Factures fournisseurs en attente de réception."
+            }
+          ]
+        },
+        {
+          "Numero": "41",
+          "Libelle": "Comptes de tiers Clients",
+          "Description": "Comptes enregistrant les transactions avec les clients.",
+          "SousComptes": [
+            {
+              "Numero": "411",
+              "Libelle": "Clients",
+              "Description": "Enregistrement des créances sur les clients."
+            },
+            {
+              "Numero": "418",
+              "Libelle": "Clients - Produits non encore facturés",
+              "Description": "Produits livrés mais non encore facturés."
+            }
+          ]
+        },
+        {
+          "Numero": "42",
+          "Libelle": "Personnel et Comptes rattachés",
+          "Description": "Comptes relatifs aux rémunérations et avances au personnel."
+        },
+        {
+          "Numero": "43",
+          "Libelle": "Sécurité Sociale et autres organismes sociaux",
+          "Description": "Comptes enregistrant les dettes envers les organismes sociaux."
+        },
+        {
+          "Numero": "44",
+          "Libelle": "Etat et autres collectivités publiques",
+          "Description": "Comptes enregistrant les dettes fiscales et sociales.",
+          "SousComptes": [
+            {
+              "Numero": "445",
+              "Libelle": "Etat - Impôts sur les bénéfices",
+              "Description": "Comptes enregistrant les dettes relatives aux impôts sur les bénéfices."
+            }
+          ]
+        },
+        {
+          "Numero": "45",
+          "Libelle": "Groupe et associés",
+          "Description": "Comptes enregistrant les opérations avec les entités du même groupe."
+        },
+        {
+          "Numero": "46",
+          "Libelle": "Débiteurs divers et créditeurs divers",
+          "Description": "Comptes relatifs aux autres dettes et créances divers.",
+          "SousComptes": [
+            {
+              "Numero": "461",
+              "Libelle": "Débiteurs divers",
+              "Description": "Créances diverses non liées aux activités principales."
+            },
+            {
+              "Numero": "462",
+              "Libelle": "Créditeurs divers",
+              "Description": "Dettes diverses non liées aux activités principales."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Numero": "5",
+      "Libelle": "Comptes financiers",
+      "Description": "Comptes relatifs aux opérations financières de l'entreprise.",
+      "Comptes": [
+        {
+          "Numero": "50",
+          "Libelle": "Valeurs mobilières de placement",
+          "Description": "Comptes enregistrant les valeurs mobilières détenues à des fins de placement.",
+          "SousComptes": [
+            {
+              "Numero": "501",
+              "Libelle": "Actions",
+              "Description": "Actions acquises dans le cadre d'une gestion de trésorerie."
+            },
+            {
+              "Numero": "502",
+              "Libelle": "Obligations",
+              "Description": "Obligations détenues à des fins de placement."
+            },
+            {
+              "Numero": "503",
+              "Libelle": "Bons de caisse",
+              "Description": "Bons de caisse détenus par l'entreprise."
+            },
+            {
+              "Numero": "504",
+              "Libelle": "Certificats de dépôt",
+              "Description": "Certificats de dépôt détenus par l'entreprise."
+            },
+            {
+              "Numero": "505",
+              "Libelle": "Billets de trésorerie",
+              "Description": "Billets de trésorerie détenus par l'entreprise."
+            },
+            {
+              "Numero": "506",
+              "Libelle": "Obligations convertibles",
+              "Description": "Obligations convertibles détenues par l'entreprise."
+            }
+          ]
+        },
+        {
+          "Numero": "51",
+          "Libelle": "Banques, établissements financiers et assimilés",
+          "Description": "Comptes relatifs aux opérations bancaires.",
+          "SousComptes": [
+            {
+              "Numero": "511",
+              "Libelle": "Banque",
+              "Description": "Solde des comptes bancaires courants."
+            },
+            {
+              "Numero": "512",
+              "Libelle": "Chèques postaux",
+              "Description": "Solde des comptes de chèques postaux."
+            },
+            {
+              "Numero": "513",
+              "Libelle": "Caisse d'épargne",
+              "Description": "Solde des comptes de caisse d'épargne."
+            },
+            {
+              "Numero": "514",
+              "Libelle": "Banques étrangères",
+              "Description": "Solde des comptes bancaires détenus à l'étranger."
+            },
+            {
+              "Numero": "515",
+              "Libelle": "Banques et établissements financiers à l'étranger",
+              "Description": "Solde des comptes bancaires et financiers à l'étranger."
+            }
+          ]
+        },
+        {
+          "Numero": "52",
+          "Libelle": "Instruments de trésorerie",
+          "Description": "Comptes relatifs aux instruments de trésorerie.",
+          "SousComptes": [
+            {
+              "Numero": "521",
+              "Libelle": "Effets à recevoir",
+              "Description": "Effets de commerce à recevoir."
+            },
+            {
+              "Numero": "522",
+              "Libelle": "Effets escomptés non échus",
+              "Description": "Effets de commerce escomptés mais non échus."
+            },
+            {
+              "Numero": "523",
+              "Libelle": "Chèques à encaisser",
+              "Description": "Chèques à encaisser mais non encore crédités."
+            }
+          ]
+        },
+        {
+          "Numero": "53",
+          "Libelle": "Caisse",
+          "Description": "Comptes enregistrant les opérations de caisse.",
+          "SousComptes": [
+            {
+              "Numero": "531",
+              "Libelle": "Caisse",
+              "Description": "Solde de la caisse."
+            }
+          ]
+        },
+        {
+          "Numero": "54",
+          "Libelle": "Régies d'avances et accréditifs",
+          "Description": "Comptes relatifs aux régies d'avances et accréditifs.",
+          "SousComptes": [
+            {
+              "Numero": "541",
+              "Libelle": "Régies d'avances",
+              "Description": "Avances de fonds pour petites dépenses."
+            },
+            {
+              "Numero": "542",
+              "Libelle": "Accréditifs",
+              "Description": "Fonds déposés pour garantir des paiements."
+            }
+          ]
+        },
+        {
+          "Numero": "58",
+          "Libelle": "Virements internes",
+          "Description": "Comptes enregistrant les virements internes à l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "580",
+              "Libelle": "Virements internes",
+              "Description": "Opérations de transfert interne de fonds."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Numero": "6",
+      "Libelle": "Charges",
+      "Description": "Comptes relatifs aux charges de l'entreprise, incluant les achats, les services extérieurs, et autres frais.",
+      "Comptes": [
+        {
+          "Numero": "60",
+          "Libelle": "Achats (sauf 603)",
+          "Description": "Comptes enregistrant les achats de biens et services nécessaires à l'activité de l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "601",
+              "Libelle": "Achats stockés - Matières premières (et fournitures)",
+              "Description": "Achats de matières premières et fournitures stockées."
+            },
+            {
+              "Numero": "602",
+              "Libelle": "Achats stockés - Autres approvisionnements",
+              "Description": "Achats d'autres approvisionnements stockés."
+            },
+            {
+              "Numero": "604",
+              "Libelle": "Achats d'études et prestations de services",
+              "Description": "Achats de services et d'études nécessaires à l'activité."
+            },
+            {
+              "Numero": "605",
+              "Libelle": "Achats de matériel, équipements et travaux",
+              "Description": "Achats de matériel, équipements et travaux non immobilisables."
+            }
+          ]
+        },
+        {
+          "Numero": "61",
+          "Libelle": "Services extérieurs",
+          "Description": "Comptes enregistrant les services extérieurs utilisés par l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "611",
+              "Libelle": "Sous-traitance générale",
+              "Description": "Frais de sous-traitance engagés par l'entreprise."
+            },
+            {
+              "Numero": "612",
+              "Libelle": "Locations",
+              "Description": "Frais de location d'équipements, de locaux, etc."
+            },
+            {
+              "Numero": "613",
+              "Libelle": "Réparations et entretien",
+              "Description": "Dépenses pour les réparations et l'entretien des actifs."
+            },
+            {
+              "Numero": "614",
+              "Libelle": "Primes d'assurances",
+              "Description": "Dépenses pour les assurances."
+            },
+            {
+              "Numero": "615",
+              "Libelle": "Etudes et recherches",
+              "Description": "Dépenses pour des études et des recherches spécifiques."
+            }
+          ]
+        },
+        {
+          "Numero": "62",
+          "Libelle": "Autres services extérieurs",
+          "Description": "Comptes enregistrant d'autres services extérieurs utilisés par l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "621",
+              "Libelle": "Personnel extérieur à l'entreprise",
+              "Description": "Frais pour le personnel extérieur (intérim, consultants, etc.)."
+            },
+            {
+              "Numero": "622",
+              "Libelle": "Rémunérations d'intermédiaires et honoraires",
+              "Description": "Paiements pour les services d'intermédiaires et les honoraires."
+            },
+            {
+              "Numero": "623",
+              "Libelle": "Publicité, publications, relations publiques",
+              "Description": "Dépenses pour la publicité, les publications et les relations publiques."
+            },
+            {
+              "Numero": "624",
+              "Libelle": "Transports de biens et transports collectifs du personnel",
+              "Description": "Dépenses pour le transport de biens et le transport du personnel."
+            }
+          ]
+        },
+        {
+          "Numero": "63",
+          "Libelle": "Impôts, taxes et versements assimilés",
+          "Description": "Comptes enregistrant les impôts et taxes payés par l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "631",
+              "Libelle": "Impôts, taxes et versements assimilés sur rémunérations",
+              "Description": "Impôts et taxes sur les rémunérations."
+            },
+            {
+              "Numero": "635",
+              "Libelle": "Autres impôts, taxes et versements assimilés",
+              "Description": "Autres impôts et taxes non spécifiquement liés aux rémunérations."
+            }
+          ]
+        },
+        {
+          "Numero": "64",
+          "Libelle": "Charges de personnel",
+          "Description": "Comptes enregistrant les charges liées au personnel.",
+          "SousComptes": [
+            {
+              "Numero": "641",
+              "Libelle": "Rémunérations du personnel",
+              "Description": "Salaires et traitements versés au personnel."
+            },
+            {
+              "Numero": "645",
+              "Libelle": "Charges de sécurité sociale et de prévoyance",
+              "Description": "Contributions de l'entreprise aux systèmes de sécurité sociale et de prévoyance."
+            }
+          ]
+        },
+        {
+          "Numero": "65",
+          "Libelle": "Autres charges de gestion courante",
+          "Description": "Comptes enregistrant les autres charges de gestion courante.",
+          "SousComptes": [
+            {
+              "Numero": "651",
+              "Libelle": "Quotes-parts de résultats sur opérations faites en commun",
+              "Description": "Charges liées aux opérations en commun."
+            },
+            {
+              "Numero": "653",
+              "Libelle": "Redevances pour concessions, brevets, licences, marques, procédés, logiciels, droits et valeurs similaires",
+              "Description": "Dépenses pour les redevances et licences."
+            }
+          ]
+        },
+        {
+          "Numero": "66",
+          "Libelle": "Charges financières",
+          "Description": "Comptes enregistrant les charges financières de l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "661",
+              "Libelle": "Intérêts des emprunts et dettes",
+              "Description": "Intérêts payés sur les emprunts et autres dettes."
+            },
+            {
+              "Numero": "664",
+              "Libelle": "Pertes de change",
+              "Description": "Pertes liées aux fluctuations des taux de change."
+            }
+          ]
+        },
+        {
+          "Numero": "67",
+          "Libelle": "Charges exceptionnelles",
+          "Description": "Comptes enregistrant les charges exceptionnelles de l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "671",
+              "Libelle": "Charges exceptionnelles sur opérations de gestion",
+              "Description": "Charges exceptionnelles liées à la gestion courante."
+            },
+            {
+              "Numero": "675",
+              "Libelle": "Valeurs comptables des éléments d'actif cédés",
+              "Description": "Valeur comptable des actifs cédés."
+            }
+          ]
+        },
+        {
+          "Numero": "68",
+          "Libelle": "Dotations aux amortissements et aux provisions",
+          "Description": "Comptes enregistrant les dotations aux amortissements et aux provisions.",
+          "SousComptes": [
+            {
+              "Numero": "681",
+              "Libelle": "Dotations aux amortissements des immobilisations",
+              "Description": "Dotations aux amortissements des immobilisations corporelles et incorporelles."
+            },
+            {
+              "Numero": "686",
+              "Libelle": "Dotations aux provisions pour dépréciation des éléments d'actif circulant",
+              "Description": "Dotations pour dépréciation des éléments d'actif circulant."
+            }
+          ]
+        },
+        {
+          "Numero": "69",
+          "Libelle": "Participation des salariés - impôts sur les bénéfices et assimilés",
+          "Description": "Comptes enregistrant la participation des salariés et les impôts sur les bénéfices.",
+          "SousComptes": [
+            {
+              "Numero": "691",
+              "Libelle": "Participation des salariés aux résultats",
+              "Description": "Montants de la participation des salariés aux résultats de l'entreprise."
+            },
+            {
+              "Numero": "695",
+              "Libelle": "Impôts sur les bénéfices",
+              "Description": "Impôts dus sur les bénéfices de l'exercice."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Numero": "7",
+      "Libelle": "Produits",
+      "Description": "Comptes relatifs aux produits de l'entreprise, incluant les ventes, les subventions et autres revenus.",
+      "Comptes": [
+        {
+          "Numero": "70",
+          "Libelle": "Ventes de produits fabriqués, prestations de services, marchandises",
+          "Description": "Comptes enregistrant les ventes de produits finis, les prestations de services, et les ventes de marchandises.",
+          "SousComptes": [
+            {
+              "Numero": "701",
+              "Libelle": "Ventes de produits finis",
+              "Description": "Revenus provenant de la vente de produits finis."
+            },
+            {
+              "Numero": "702",
+              "Libelle": "Ventes de produits intermédiaires",
+              "Description": "Revenus provenant de la vente de produits intermédiaires."
+            },
+            {
+              "Numero": "703",
+              "Libelle": "Ventes de produits résiduels",
+              "Description": "Revenus provenant de la vente de produits résiduels."
+            },
+            {
+              "Numero": "704",
+              "Libelle": "Travaux",
+              "Description": "Revenus provenant des travaux effectués."
+            },
+            {
+              "Numero": "705",
+              "Libelle": "Etudes",
+              "Description": "Revenus provenant des études réalisées."
+            },
+            {
+              "Numero": "706",
+              "Libelle": "Prestations de services",
+              "Description": "Revenus provenant des prestations de services."
+            },
+            {
+              "Numero": "707",
+              "Libelle": "Ventes de marchandises",
+              "Description": "Revenus provenant de la vente de marchandises."
+            }
+          ]
+        },
+        {
+          "Numero": "71",
+          "Libelle": "Production stockée (ou déstockage)",
+          "Description": "Comptes enregistrant les variations de stocks de produits finis et en cours.",
+          "SousComptes": [
+            {
+              "Numero": "711",
+              "Libelle": "Variations de stocks de produits finis",
+              "Description": "Variations des stocks de produits finis."
+            },
+            {
+              "Numero": "712",
+              "Libelle": "Variations de stocks de produits en cours",
+              "Description": "Variations des stocks de produits en cours."
+            },
+            {
+              "Numero": "713",
+              "Libelle": "Variations de stocks de produits intermédiaires",
+              "Description": "Variations des stocks de produits intermédiaires."
+            }
+          ]
+        },
+        {
+          "Numero": "72",
+          "Libelle": "Production immobilisée",
+          "Description": "Comptes enregistrant les productions immobilisées.",
+          "SousComptes": [
+            {
+              "Numero": "721",
+              "Libelle": "Immobilisations incorporelles",
+              "Description": "Productions immobilisées d'immobilisations incorporelles."
+            },
+            {
+              "Numero": "722",
+              "Libelle": "Immobilisations corporelles",
+              "Description": "Productions immobilisées d'immobilisations corporelles."
+            }
+          ]
+        },
+        {
+          "Numero": "74",
+          "Libelle": "Subventions d'exploitation",
+          "Description": "Comptes enregistrant les subventions reçues pour l'exploitation.",
+          "SousComptes": [
+            {
+              "Numero": "741",
+              "Libelle": "Subventions pour équilibre d'exploitation",
+              "Description": "Subventions reçues pour équilibrer l'exploitation."
+            },
+            {
+              "Numero": "742",
+              "Libelle": "Subventions pour charges de personnel",
+              "Description": "Subventions reçues pour couvrir les charges de personnel."
+            },
+            {
+              "Numero": "743",
+              "Libelle": "Subventions pour autres charges d'exploitation",
+              "Description": "Subventions reçues pour couvrir d'autres charges d'exploitation."
+            }
+          ]
+        },
+        {
+          "Numero": "75",
+          "Libelle": "Autres produits de gestion courante",
+          "Description": "Comptes enregistrant les autres produits de gestion courante.",
+          "SousComptes": [
+            {
+              "Numero": "751",
+              "Libelle": "Revenus des immeubles",
+              "Description": "Revenus générés par la location d'immeubles."
+            },
+            {
+              "Numero": "752",
+              "Libelle": "Redevances pour concessions, brevets, licences, marques, procédés, logiciels, droits et valeurs similaires",
+              "Description": "Revenus générés par les concessions, brevets, licences, etc."
+            },
+            {
+              "Numero": "753",
+              "Libelle": "Jetons de présence et rémunérations d'administrateurs",
+              "Description": "Revenus provenant des jetons de présence et des rémunérations d'administrateurs."
+            },
+            {
+              "Numero": "754",
+              "Libelle": "Ristournes obtenues des coopératives",
+              "Description": "Ristournes obtenues des coopératives."
+            },
+            {
+              "Numero": "755",
+              "Libelle": "Quotes-parts de résultat sur opérations faites en commun",
+              "Description": "Quotes-parts de résultat provenant d'opérations faites en commun."
+            }
+          ]
+        },
+        {
+          "Numero": "76",
+          "Libelle": "Produits financiers",
+          "Description": "Comptes enregistrant les produits financiers de l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "761",
+              "Libelle": "Revenus des participations",
+              "Description": "Revenus provenant des participations détenues."
+            },
+            {
+              "Numero": "762",
+              "Libelle": "Revenus des autres immobilisations financières",
+              "Description": "Revenus provenant d'autres immobilisations financières."
+            },
+            {
+              "Numero": "763",
+              "Libelle": "Revenus des valeurs mobilières de placement",
+              "Description": "Revenus provenant des valeurs mobilières de placement."
+            },
+            {
+              "Numero": "764",
+              "Libelle": "Revenus des créances rattachées à des participations",
+              "Description": "Revenus provenant des créances rattachées à des participations."
+            },
+            {
+              "Numero": "765",
+              "Libelle": "Escomptes obtenus",
+              "Description": "Escomptes financiers obtenus sur les achats."
+            },
+            {
+              "Numero": "766",
+              "Libelle": "Gains de change",
+              "Description": "Gains réalisés sur les fluctuations de taux de change."
+            }
+          ]
+        },
+        {
+          "Numero": "77",
+          "Libelle": "Produits exceptionnels",
+          "Description": "Comptes enregistrant les produits exceptionnels de l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "771",
+              "Libelle": "Produits exceptionnels sur opérations de gestion",
+              "Description": "Produits exceptionnels liés aux opérations de gestion courante."
+            },
+            {
+              "Numero": "775",
+              "Libelle": "Produits des cessions d'éléments d'actif",
+              "Description": "Produits des cessions d'immobilisations."
+            }
+          ]
+        },
+        {
+          "Numero": "78",
+          "Libelle": "Reprises sur amortissements et provisions",
+          "Description": "Comptes enregistrant les reprises sur amortissements et provisions.",
+          "SousComptes": [
+            {
+              "Numero": "781",
+              "Libelle": "Reprises sur amortissements et provisions (exploitation)",
+              "Description": "Reprises sur amortissements et provisions d'exploitation."
+            },
+            {
+              "Numero": "786",
+              "Libelle": "Reprises sur provisions (financières)",
+              "Description": "Reprises sur provisions financières."
+            }
+          ]
+        },
+        {
+          "Numero": "79",
+          "Libelle": "Transferts de charges",
+          "Description": "Comptes enregistrant les transferts de charges.",
+          "SousComptes": [
+            {
+              "Numero": "791",
+              "Libelle": "Transferts de charges d'exploitation",
+              "Description": "Transferts de charges d'exploitation."
+            },
+            {
+              "Numero": "797",
+              "Libelle": "Transferts de charges financières",
+              "Description": "Transferts de charges financières."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Numero": "8",
+      "Libelle": "Comptes spéciaux",
+      "Description": "Comptes relatifs aux engagements hors bilan et aux résultats en instance d'affectation.",
+      "Comptes": [
+        {
+          "Numero": "80",
+          "Libelle": "Engagements",
+          "Description": "Comptes enregistrant les engagements hors bilan de l'entreprise.",
+          "SousComptes": [
+            {
+              "Numero": "801",
+              "Libelle": "Engagements de financement",
+              "Description": "Engagements de l'entreprise concernant des financements futurs."
+            },
+            {
+              "Numero": "802",
+              "Libelle": "Engagements de crédit-bail",
+              "Description": "Engagements de l'entreprise concernant des contrats de crédit-bail."
+            },
+            {
+              "Numero": "803",
+              "Libelle": "Engagements de garantie",
+              "Description": "Engagements de l'entreprise en matière de garanties données."
+            },
+            {
+              "Numero": "804",
+              "Libelle": "Engagements en matière de personnel",
+              "Description": "Engagements de l'entreprise relatifs aux avantages accordés au personnel."
+            },
+            {
+              "Numero": "805",
+              "Libelle": "Engagements divers",
+              "Description": "Autres engagements hors bilan divers."
+            }
+          ]
+        },
+        {
+          "Numero": "88",
+          "Libelle": "Résultat en instance d'affectation",
+          "Description": "Comptes enregistrant les résultats en instance d'affectation à la fin de l'exercice.",
+          "SousComptes": [
+            {
+              "Numero": "881",
+              "Libelle": "Résultat de l'exercice",
+              "Description": "Résultat global de l'exercice précédent en attente d'affectation."
+            }
+          ]
+        },
+        {
+          "Numero": "89",
+          "Libelle": "Bilan",
+          "Description": "Compte de synthèse utilisé pour la présentation du bilan comptable.",
+          "SousComptes": [
+            {
+              "Numero": "891",
+              "Libelle": "Bilan actif",
+              "Description": "Regroupe les comptes de l'actif du bilan."
+            },
+            {
+              "Numero": "892",
+              "Libelle": "Bilan passif",
+              "Description": "Regroupe les comptes du passif du bilan."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Numero": "9",
+      "Libelle": "Comptabilité analytique",
+      "Description": "Comptes utilisés pour la comptabilité analytique, permettant de suivre les coûts et les résultats par centres de responsabilité ou par activités.",
+      "Comptes": [
+        {
+          "Numero": "90",
+          "Libelle": "Comptes d'exploitation",
+          "Description": "Comptes enregistrant les charges et les produits par nature dans la comptabilité analytique.",
+          "SousComptes": [
+            {
+              "Numero": "901",
+              "Libelle": "Charges par nature",
+              "Description": "Enregistrement des charges selon leur nature (matières premières, salaires, etc.)."
+            },
+            {
+              "Numero": "902",
+              "Libelle": "Produits par nature",
+              "Description": "Enregistrement des produits selon leur nature (ventes de produits, prestations de services, etc.)."
+            }
+          ]
+        },
+        {
+          "Numero": "91",
+          "Libelle": "Comptes de répartition primaire",
+          "Description": "Comptes permettant de répartir les charges indirectes entre les différents centres d'analyse.",
+          "SousComptes": [
+            {
+              "Numero": "911",
+              "Libelle": "Répartition des charges indirectes",
+              "Description": "Répartition des charges indirectes entre les centres de coût."
+            }
+          ]
+        },
+        {
+          "Numero": "92",
+          "Libelle": "Comptes de répartition secondaire",
+          "Description": "Comptes permettant une répartition plus détaillée des charges indirectes après une première répartition.",
+          "SousComptes": [
+            {
+              "Numero": "921",
+              "Libelle": "Répartition secondaire des charges",
+              "Description": "Répartition détaillée des charges après répartition primaire."
+            }
+          ]
+        },
+        {
+          "Numero": "93",
+          "Libelle": "Comptes de coût",
+          "Description": "Comptes enregistrant les coûts par centre de coût ou par activité.",
+          "SousComptes": [
+            {
+              "Numero": "931",
+              "Libelle": "Coût des matières premières",
+              "Description": "Enregistrement des coûts liés aux matières premières."
+            },
+            {
+              "Numero": "932",
+              "Libelle": "Coût de la main-d'œuvre",
+              "Description": "Enregistrement des coûts liés à la main-d'œuvre."
+            },
+            {
+              "Numero": "933",
+              "Libelle": "Coût des services extérieurs",
+              "Description": "Enregistrement des coûts liés aux services extérieurs."
+            }
+          ]
+        },
+        {
+          "Numero": "94",
+          "Libelle": "Comptes de résultat analytique",
+          "Description": "Comptes permettant de calculer le résultat analytique par centre de responsabilité ou par activité.",
+          "SousComptes": [
+            {
+              "Numero": "941",
+              "Libelle": "Résultat analytique par centre",
+              "Description": "Calcul du résultat analytique pour chaque centre de responsabilité."
+            },
+            {
+              "Numero": "942",
+              "Libelle": "Résultat analytique par activité",
+              "Description": "Calcul du résultat analytique pour chaque activité."
+            }
+          ]
+        },
+        {
+          "Numero": "95",
+          "Libelle": "Comptes de gestion budgétaire",
+          "Description": "Comptes utilisés pour le suivi budgétaire et les écarts par rapport aux budgets prévisionnels.",
+          "SousComptes": [
+            {
+              "Numero": "951",
+              "Libelle": "Budgets prévisionnels",
+              "Description": "Enregistrement des budgets prévisionnels par centre de coût ou par activité."
+            },
+            {
+              "Numero": "952",
+              "Libelle": "Ecarts sur budgets",
+              "Description": "Enregistrement des écarts entre les réalisations et les budgets prévisionnels."
+            }
+          ]
+        },
+        {
+          "Numero": "96",
+          "Libelle": "Comptes de contrôle",
+          "Description": "Comptes utilisés pour le contrôle des opérations et la vérification de leur conformité aux objectifs.",
+          "SousComptes": [
+            {
+              "Numero": "961",
+              "Libelle": "Contrôle des coûts",
+              "Description": "Contrôle des coûts par rapport aux prévisions et objectifs."
+            },
+            {
+              "Numero": "962",
+              "Libelle": "Contrôle des résultats",
+              "Description": "Contrôle des résultats obtenus par rapport aux objectifs fixés."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

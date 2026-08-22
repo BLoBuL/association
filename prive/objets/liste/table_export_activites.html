@@ -1,0 +1,78 @@
+[(#SET{defaut_tri,#ARRAY{
+	date_debut,#ENV{tri_orientation,1}  
+}})]      
+#SET{date_annee_defaut,#ENV{date}|affdate{'Y'}}
+#SET{date_debut,#ENV{annee}|sinon{#GET{date_annee_defaut}}}
+#SET{date_fin,#ENV{annee}|sinon{#GET{date_annee_defaut}}}
+
+<B_tableau_activites>
+<div><b>Filtres :</b>
+    <span><a href="[(#SELF|parametre_url{payant,''})]" [class="(#ENV{payant}|=={''}|et{#ENV{payant}|!={0}})on]">Tout</a> | </span>
+    <span><a href="[(#SELF|parametre_url{payant,1})]" [class="(#ENV{payant}|=={1}|oui)on]">Payant </a> | </span>
+    <span><a href="[(#SELF|parametre_url{payant,0})]" [class="(#ENV{payant}|=={0}|oui)on]">Gratuit</a></span>
+<br>
+    <div><b>Année :</b>
+<BOUCLE_filtre_annee(EVENEMENTS) {inscription = 1}
+                                                                    {payant ?}
+                                                                    {statut = publie}
+                                                                    {id_article ?}
+                                                                    {!par date_debut}{fusion YEAR(date_debut)}>
+        <span><a href="[(#SELF|parametre_url{annee,#DATE_DEBUT|affdate{'Y'}})]" [class="(#ENV{annee}|=={#DATE_DEBUT|affdate{'Y'}}|oui)on]">[(#DATE_DEBUT|affdate{'Y'})]</a> | </span>  
+    </BOUCLE_filtre_annee>
+</div><br></div>
+    <table class="tableau_listes_export_activite  tableau_asso tableau_listes_activite">
+        <tr>
+            <th>#</th>
+            <th>[(#TRI{date_debut,<:date:>,ajax})]</th>
+            <th><:association:activite_entete_intitule:></th>
+            <th><:association:activite_entete_inscrits:></th>
+            <th><:association:activite_entete_montant_attente:></th>
+            <th><:association:activite_entete_montant_total:></th>
+            <th colspan="4"><:association:adherent_entete_action:></th>
+        </tr>
+        <BOUCLE_tableau_activites(EVENEMENTS)
+                                                                    {inscription = 1}
+                                                                    {payant ?}
+                                                                    {statut = publie}
+                                                                    {date_debut >= #GET{date_debut}-01-01}
+                                                                    {date_debut < #GET{date_fin}-12-31}  
+                                                                    {id_article ?}
+                                                                    {!par date_debut}
+                                                                    {tri date_debut,#GET{defaut_tri}}
+                                                                    > 
+            [(#DATE_DEBUT|affdate{'Y'}|unique|oui)
+                [<tr class="separateur_annuel">
+                    <th colspan="6">(#DATE_DEBUT|affdate{'Y'})</th>   
+                    <th class=""><a href="[(#URL_PAGE{export_activites.csv}
+                                                   |parametre_url{periode_debut,#DATE_DEBUT|affdate{'Y-01-01'}}
+                                                   |parametre_url{periode_fin,#DATE_DEBUT|affdate{'Y-12-31'}}
+                                                   |parametre_url{periode,annuel}
+                                                   |parametre_url{payant,#ENV{payant}})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-csv"></i></a></td>
+                    <th class=""><a href="[(#URL_PAGE{export_evenements_compta.xml}
+                                                   |parametre_url{periode_debut,#DATE_DEBUT|affdate{'Y-01-01'}}
+                                                   |parametre_url{periode_fin,#DATE_DEBUT|affdate{'Y-12-31'}}
+                                                   |parametre_url{periode,annuel}
+                                                   |parametre_url{payant,#ENV{payant}})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-excel"></i></a></th>
+            </tr>]
+            ]
+            [(#DATE_DEBUT|affdate{'m-Y'}|unique|oui)
+                [<tr class="separateur_mensuel">
+                    <th colspan="6">(#DATE_DEBUT|affdate{'m-Y'})</th>   
+                    <th class=""><a href="[(#URL_PAGE{export_activites.csv}
+                                                    |parametre_url{periode_debut,#DATE_DEBUT|affdate{'Y-m-01'}}
+                                                    |parametre_url{periode_fin,#DATE_DEBUT|affdate{'Y-m-t'}}
+                                                    |parametre_url{periode,mensuel}
+                                                    |parametre_url{payant,#ENV{payant}})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-csv"></i></a></td>
+                    <th class=""><a href="[(#URL_PAGE{export_evenements_compta.xml}
+                                                    |parametre_url{periode_debut,#DATE_DEBUT|affdate{'Y-m-01'}}
+                                                    |parametre_url{periode_fin,#DATE_DEBUT|affdate{'Y-m-t'}}
+                                                    |parametre_url{periode,mensuel}
+                                                    |parametre_url{payant,#ENV{payant}})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa">
+                            <i class="fa-solid fa-file-excel"></i></a></th>
+            </tr>]
+            ]            
+            <INCLURE{fond=prive/objets/liste/item_export_activites,id_evenement,env}>
+        </BOUCLE_tableau_activites>
+    </table>            
+</B_tableau_activites>
+        

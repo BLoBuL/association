@@ -1,0 +1,13 @@
+[(#AUTORISER{adherents_menu}|sinon_interdire_acces)]
+<BOUCLE_adherent(AUTEURS){id_auteur}{tout}>
+[(#BOITE_OUVRIR{#NOM,'simple'})]
+<INCLURE{fond=prive/squelettes/contenu/inc-voir_adherent/voir_adherent-info,id_auteur,env}>
+<INCLURE{fond=prive/squelettes/contenu/inc-voir_adherent/voir_adherent-statut,id_auteur,env}>
+[(#BOITE_FERMER)]
+[(#BOITE_OUVRIR{<:association:operations_comptables:>,'simple'})]
+<INCLURE{fond=prive/objets/liste/table_cotisation_adherent,id_auteur,env,ajax}>
+<INCLURE{fond=prive/objets/liste/table_participation_adherent,id_auteur,env,ajax}>
+[(#BOITE_FERMER)]
+</BOUCLE_adherent>
+<div class="error"><:public:aucun_auteur:></div>
+<//B_adherent>

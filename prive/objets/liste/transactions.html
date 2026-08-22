@@ -1,0 +1,145 @@
+[(#SET{defaut_tri,#ARRAY{
+	id_transaction,-1,
+	date_transaction,#ENV{date_sens,-1},
+	montant_ht,-1,
+	montant,-1,
+	montant_regle,-1,
+	statut,1
+}})
+]#SET{has_facture,''}#SET{has_commande,''}#SET{has_parrain,''}<B_transactions>
+<div class='transactions[(#GET{has_facture}|oui)w-id_facture][(#GET{has_commande}|oui)w-id_commande][(#GET{has_parrain}|oui)w-parrain]'>
+	<table class='tableau_transaction tableau_asso'>
+	[<caption><strong class="caption">(#ENV*{titre,#GRAND_TOTAL|singulier_ou_pluriel{bank:info_1_transaction,bank:info_nb_transactions}})</strong></caption>]
+		<thead>
+			<tr>
+				<th class="id">[(#TRI{id_transaction,#,ajax})]</th>
+                <th class='date' >[(#TRI{date_transaction,<:date:>,ajax})]</th>
+				<th class="id_auteur">[(#TRI{id_auteur,<:bank:adherent_transaction:>,ajax})]</th>
+				<th class="nom" ><:bank:justification_transaction:></th>
+				<th class='mode' >[(#TRI{mode,<:bank:label_tri_mode:>,ajax})]</th>
+				[(#REM)<!--<th class='autorisation_id' >[(#TRI{autorisation_id,<:bank:label_tri_autorisation:>,ajax})]</th>-->]
+				[(#META{/association/meta_cfg_taxe_evenement}|ou{#META{/association/meta_cfg_taxe}}|oui)
+                    <th class='montant_ht' >[(#TRI{montant_ht,<:bank:label_tri_montant_ht:>,ajax})]</th>]
+				<th class='montant' >[(#TRI{montant,<:bank:label_tri_montant_ttc:>,ajax})]</th>
+				<th class='regle' >[(#TRI{montant_regle,<:bank:label_tri_montant_paye:>,ajax})]</th>
+				<th class='statut' >[(#TRI{statut,<:bank:label_tri_statut:>,ajax})]</th>
+                <th class='action'>Actions</th>
+				<!--<th class='parrain' >[(#TRI{parrain,<:bank:label_tri_parrain:>,ajax})]</th>
+				<th class="id_commande"><abbr title="Commande">C</abbr></th>
+				<th class="id_facture"><abbr title="Facture">F</abbr></th>-->
+			</tr>
+		</thead>
+		<BOUCLE_transactions(transactions)
+			{id_transaction?}
+			{id_auteur?}
+			{id_facture?}
+			{id_panier?}
+			{id_commande?}
+			{where?}
+			{recherche?}
+			{statut==#ENV{statut,'.'}}
+			{tri #ENV{par,id_transaction},#GET{defaut_tri}}{pagination #ENV{nb,10}}>
+				<tr class="[(#ENV{id_transaction}|is_array|non)[ (#EXPOSE)]] #STATUT">
+					<td class="id"><a href="[(#URL_ECRIRE{transaction,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer">##ID_TRANSACTION</a></td>
+                    <td class="date">
+                        [(#DATE_TRANSACTION|affdate{'d/m/Y'})]
+                        [(#REGLEE|=={oui}|oui)
+                            [<br><small>(#DATE_PAIEMENT|affdate{'H:i:s'})</small>]
+                        ]
+                        [(#REGLEE|=={non}|oui)
+                            [<br><small>(#DATE_TRANSACTION|affdate{'H:i:s'})</small>]
+                        ]
+                    </td>
+
+
+                        <BOUCLE_adherent(AUTEURS){id_auteur}{tout}{si #PARRAIN|non}>
+                                <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,id_compte,date_adherent=oui}>
+                        </BOUCLE_adherent>
+                        <BOUCLE_info_adherent_cotisation(ASSO_COMPTES){id_transaction}{objet=cotisation}>
+                                <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,id_compte,date_adherent=oui}>
+                        </BOUCLE_info_adherent_cotisation>
+                        <BOUCLE_info_adherent_activite(ASSO_ACTIVITES){id_transaction}>
+                                <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,id_activite,date_adherent=oui}>
+                        </BOUCLE_info_adherent_activite>
+                        <BOUCLE_info_adherent_formidable(AUTEURS){si #AUTEUR|>{0}}{email = #AUTEUR}{tout}>
+                            <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,date_adherent=oui}>
+                        </BOUCLE_info_adherent_formidable>
+
+                        <BOUCLE_condition(CONDITION){si #AUTEUR|>{0}}>
+                            <td class="nom"> #AUTEUR </td>
+                        </BOUCLE_condition>
+                            <td class="nom">L'adhérent lié à cette transaction (##ID_AUTEUR) n'existe plus dans la base de données.</td>
+                       <//B_condition>
+
+                 <//B_info_adherent_formidable>
+                <//B_info_adherent_activite>
+            <//B_info_adherent_cotisation>
+
+            <//B_adherent>
+            <BOUCLE_info_activite(ASSO_ACTIVITES){id_transaction}>
+                <BOUCLE_info_evenement(EVENEMENTS){id_evenement = #ID_EVENEMENT}>
+                    <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement}>
+                </BOUCLE_info_evenement>
+                    <td class="description">Information indisponible</td>
+                <//B_info_evenement>
+            </BOUCLE_info_activite>
+
+
+            <BOUCLE_info_cotisation(ASSO_COMPTES){id_transaction}{0,1}>
+                <td class="description">
+                    <B_info_categories_adherents>
+                            [<b>(#REINSCRIPTION|=={reinscription}|?{Réinscription à l'association,Inscription à l'association})</b><br>]
+                            <BOUCLE_info_categories_adherents(ASSO_CATEGORIES_ADHERENTS){id_categorie = #ID_CATEGORIE}>[(#VALEUR|propre|textebrut)]
+                            </BOUCLE_info_categories_adherents>
+                    <B_info_categories_adherents>
+                 </td>
+            </BOUCLE_info_cotisation>
+
+
+            <BOUCLE_info_formulaire(FORMULAIRES){id_formulaire = #PARRAIN|replace{'formidable:',''} }{tout}>
+                <td class="description">[<a href="[(#URL_ECRIRE{formulaires_reponse,id_formulaires_reponse=#TRACKING_ID})]">#(#TRACKING_ID)</a>] : #TITRE </td>
+            </BOUCLE_info_formulaire>
+
+
+            <td class="description">Information indisponible</td>
+        <//B_info_formulaire>
+    <//B_info_cotisation>
+<//B_info_activite>
+            <td class="mode">
+                [(#MODE|bank_mode_paiement_icone)]
+            </td>
+            [(#REM)<!--<td class="autorisation_id"><abbr title="#AUTORISATION_ID">[(#AUTORISATION_ID|couper{15})]</abbr></td>-->]
+            [(#META{/association/meta_cfg_taxe}|ou{#META{/association/meta_cfg_taxe_evenement}}|oui)<td class="montant_ht">[(#MONTANT_HT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</td>]
+            <td class="montant">[(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</td>
+            <td class="regle">[(#MONTANT_REGLE|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</td>
+            <td class="statut">
+                [(#STATUT|=={ok}|et{#MESSAGE|trim|strlen}|oui)<i class="fa fa-check-square-o"></i> ok]
+
+                [(#STATUT|match{echec|rembourse}|et{#MESSAGE|trim|strlen}|oui)[<abbr title="[(#MESSAGE|attribut_html)[ - (#ERREUR|attribut_html)]]">(#STATUT)</abbr>]]
+
+                [(#STATUT|in_array{#LISTE{commande,attente}}|et{#AUTORISER{regler,transaction,#ID_TRANSACTION}})
+                    <a href="[(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION}|parametre_url{transaction_hash,#TRANSACTION_HASH})]" class="lien_fa">
+                        <i class="fa-regular fa-square"></i>
+                    </a>
+                ]
+                </td>
+                <td class="action">
+                    [(#STATUT|match{ok}|oui)
+                        <a href="[(#URL_ECRIRE{transaction_remboursement,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer"><i class="fa fa-undo"></i></a>
+                    ]
+                    [(#STATUT|in_array{#LISTE{commande,attente}}|oui)
+                        <a href="[(#URL_ECRIRE{transaction_abandon,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer"><i class="fa fa-ban"></i></a>
+                    ]
+                   [(#STATUT|match{abandon}|oui)
+                        <a href="[(#URL_ECRIRE{transaction_suppression,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer"><i class="fa-regular fa-trash-can"></i></a>
+                    ]
+                </td>
+				</tr>
+		</BOUCLE_transactions>
+		</tbody>
+	</table>
+	[<nav class="pagination">(#PAGINATION{prive})</nav>]
+</div>
+</B_transactions>[
+<div class="liste-objets breves caption-wrap"><strong class="caption">(#ENV*{sinon,''})</strong></div>
+]<//B_transactions>

@@ -1,0 +1,15 @@
+[(#AUTORISER{activites_menu}|sinon_interdire_acces)]
+#SET{contexte,#VAL{action}|association_action_activites_contexte}
+[(#GET{contexte}|table_valeur{valide}|sinon_interdire_acces)]
+[(#BOITE_OUVRIR{[(#GET{contexte}|table_valeur{titre}|entites_html)],'simple'})]
+<p>[(#GET{contexte}|table_valeur{chapo}|propre)]</p>
+<INCLURE{fond=prive/objets/liste/table_inscription_activites_actions_lots,id_activites=#GET{contexte}|table_valeur{ids},env}>
+<form method="post" action="[(#GET{contexte}|table_valeur{url_action}|attribut_html)]" class="formulaire_spip formulaire_action_activites">
+	<input type="hidden" name="id_evenement" value="[(#GET{contexte}|table_valeur{id_evenement})]" />
+	<input type="hidden" name="action_activites" value="[(#GET{contexte}|table_valeur{action_activites}|attribut_html)]" />
+	[(#GET{contexte}|table_valeur{type_reactivation}|oui)<input type="hidden" name="type_reactivation" value="[(#GET{contexte}|table_valeur{type_reactivation}|attribut_html)]" />]
+	<BOUCLE_ids(DATA){source tableau,#GET{contexte}|table_valeur{ids}}><input type="hidden" name="selecteur_id_activite[]" value="#VALEUR" /></BOUCLE_ids>
+	[(#GET{contexte}|table_valeur{notifier}|oui)<div class="editer editer_notify_the_members"><div class="choix"><input type="checkbox" name="notify_the_members" id="notify_the_members" value="1" checked="checked" /><label for="notify_the_members"><:association:activite_bouton_notifier_adherents:></label></div></div>]
+	<p class="boutons"><button type="submit" class="submit"><:association:activite_bouton_confirmer:></button></p>
+</form>
+[(#BOITE_FERMER)]

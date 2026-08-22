@@ -1,0 +1,114 @@
+{
+  "Destinations": [
+    {
+      "Numero": "1",
+      "Libelle": "Adhérents",
+      "Description": "Destinations liées aux membres de l'association.",
+      "SousDestinations": [
+        {
+          "Numero": "1001",
+          "Libelle": "Cotisations des membres",
+          "Description": "Recettes provenant des cotisations des membres"
+        },
+        {
+          "Numero": "1002",
+          "Libelle": "Services aux membres",
+          "Description": "Charges liées aux services fournis aux membres"
+        }
+      ]
+    },
+    {
+      "Numero": "2",
+      "Libelle": "Événements et Ateliers",
+      "Description": "Destinations liées aux événements et ateliers payants organisés par l'association.",
+      "SousDestinations": [
+        {
+          "Numero": "2001",
+          "Libelle": "Recettes des événements",
+          "Description": "Recettes générées par les événements payants"
+        },
+        {
+          "Numero": "2002",
+          "Libelle": "Charges des événements",
+          "Description": "Dépenses engagées pour l'organisation des événements"
+        },
+        {
+          "Numero": "2003",
+          "Libelle": "Recettes des ateliers",
+          "Description": "Recettes générées par les ateliers payants"
+        },
+        {
+          "Numero": "2004",
+          "Libelle": "Charges des ateliers",
+          "Description": "Dépenses engagées pour l'organisation des ateliers"
+        }
+      ]
+    },
+    {
+      "Numero": "3",
+      "Libelle": "Sponsors et Partenariats",
+      "Description": "Destinations liées aux sponsors et partenariats de l'association.",
+      "SousDestinations": [
+        {
+          "Numero": "3001",
+          "Libelle": "Recettes des sponsors",
+          "Description": "Recettes provenant des sponsors"
+        },
+        {
+          "Numero": "3002",
+          "Libelle": "Charges des partenariats",
+          "Description": "Dépenses engagées pour les partenariats"
+        }
+      ]
+    },
+    {
+      "Numero": "4",
+      "Libelle": "Frais de fonctionnement",
+      "Description": "Destinations liées aux frais de fonctionnement de l'association.",
+      "SousDestinations": [
+        {
+          "Numero": "4001",
+          "Libelle": "Salaires et charges sociales",
+          "Description": "Salaires versés aux employés et charges sociales associées"
+        },
+        {
+          "Numero": "4002",
+          "Libelle": "Frais administratifs",
+          "Description": "Dépenses administratives comme le loyer, l'électricité et l'eau"
+        },
+        {
+          "Numero": "4003",
+          "Libelle": "Frais de communication",
+          "Description": "Dépenses liées à la communication et au marketing"
+        },
+        {
+          "Numero": "4004",
+          "Libelle": "Frais de déplacement",
+          "Description": "Dépenses liées aux déplacements des membres de l'association"
+        },
+        {
+          "Numero": "4005",
+          "Libelle": "Fournitures de bureau",
+          "Description": "Dépenses pour l'achat de fournitures de bureau"
+        }
+      ]
+    },
+    {
+      "Numero": "5",
+      "Libelle": "Produits dérivés (Goodies)",
+      "Description": "Destinations liées à la vente de produits dérivés (goodies).",
+      "SousDestinations": [
+        {
+          "Numero": "5001",
+          "Libelle": "Recettes des ventes de goodies",
+          "Description": "Recettes générées par la vente de produits dérivés"
+        },
+        {
+          "Numero": "5002",
+          "Libelle": "Achats de goodies",
+          "Description": "Dépenses pour l'achat de produits dérivés à vendre"
+        }
+      ]
+    }
+  ]
+}

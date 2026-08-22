@@ -1,0 +1,49 @@
+<BOUCLE_afficher_contenu(EVENEMENTS){id_evenement=#ENV{id}}{statut==.*}>
+<div class="champ contenu_titre[ (#TITRE*|strlen|?{'',vide})]">
+<div class='label'><:info_titre:></div>
+<div dir='#LANG_DIR' class='#EDIT{titre} titre'>#TITRE</div>
+</div>
+<div class="champ contenu_dates">
+<div class='label'><:agenda:evenement_date:></div>
+<div dir='#LANG_DIR' class='dates'>[(#DATE_DEBUT|affdate_debut_fin{#DATE_FIN,#HORAIRE,annee})[ (#TIMEZONE{#HORAIRE,abbr})]]</div>
+</div>
+<B_repetitions>
+<div class="champ contenu_repetitions info [(#CONST{_SPIP_VERSION_ID}|<{30300}|non)msg-alert] information">
+	<div class='label'>[(#GRAND_TOTAL|singulier_ou_pluriel{agenda:une_repetition,agenda:nb_repetitions})]</div>
+	<div dir='#LANG_DIR' class='repetitions'>(<BOUCLE_repetitions(EVENEMENTS){par date_debut}{id_evenement_source=#ID_EVENEMENT}{', '}{statut==.*}>[<a href="[(#ID_EVENEMENT|generer_objet_url{evenement})]">(#DATE_DEBUT|affdate)[(#MODIF_SYNCHRO_SOURCE|non) #TITRE[(#CHEMIN_IMAGE{broken-link-event-16.png}|balise_img)]]</a>]</BOUCLE_repetitions>)</div>
+</div>
+</B_repetitions>
+<B_repetition_de>
+<div class="champ contenu_repetition_de info [(#CONST{_SPIP_VERSION_ID}|<{30300}|non)msg-alert] information">
+	<div class="label"><:agenda:repetition_de:></div>
+	<BOUCLE_repetition_de(EVENEMENTS){id_evenement=#ID_EVENEMENT_SOURCE} {statut==.*}>
+	[<a href="[(#ID_EVENEMENT|generer_objet_url{evenement})]">[(#MODIF_SYNCHRO_SOURCE|non)[(#CHEMIN_IMAGE{broken-link-event-16.png}|balise_img)]]#TITRE - (#DATE_DEBUT|affdate)</a>]
+	</BOUCLE_repetition_de>
+</div>
+</B_repetition_de>
+
+[(#CONFIG{agenda/fuseaux_horaires,0}|oui)
+<div class="champ contenu_timezone_affiche[ (#TIMEZONE_AFFICHE*|strlen|?{'',vide})]">
+<div class='label'><:agenda:info_timezone_affiche:></div>
+<div dir='#LANG_DIR' class='timezone_affiche'>#TIMEZONE_AFFICHE</div>
+</div>]
+
+</div>
+[<div class="champ contenu_notes">
+	<div class='label'><:info_notes:></div>						  
+	<div dir='#LANG_DIR' class='#EDIT{notes} notes'>(#NOTES)</div>
+</div>
+	]
+	<hr>
+	<h2 class="legend" style="text-align:center"><:association:evenemement_gestion_association:></h2>
+	<hr>
+	<div class="champ contenu_places[ (#INSCRIPTION*|?{'',vide})]">
+			<div class='label'><:agenda:info_inscription:></div><br/><br/>
+			<div>
+				<a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]">
+					<:association:evenemement_gerer_inscrits:>
+				</a>
+			</div>
+		<hr>
+	</div>
+</BOUCLE_afficher_contenu>

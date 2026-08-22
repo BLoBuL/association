@@ -1,0 +1,27 @@
+<div style="max-width:  400px;margin: auto">
+<hr style="clear: both;background-color: #F5F5F5">        
+        <h3><:association:voir_activites_lien_inscription_invites:></h3>
+        <p><:association:voir_activites_lien_inscription_vip:></p>
+        [(#SET{token,#ID_EVENEMENT|affichage_dans_activites|table_valeur{token}})]
+
+        [<textarea  id="copy_url" rows="4" cols="50"  style="display: block;width: 100%" readonly>(#URL_EVENEMENT|parametre_url{token,#GET{token}}|url_absolue)</textarea>]
+        <button onclick="myFunction()"><i class="fa-solid fa-copy"></i> Copier le lien</button>
+    </p>
+</div>
+<script>
+function myFunction() {
+  // Get the text field
+  var copyText = document.getElementById("copy_url");
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+  // Alert the copied text
+  alert(" Le lien texte à bien été copié");
+}
+</script>
+<style> 
+    
+    
+</style>

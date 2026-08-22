@@ -1,0 +1,42 @@
+[(#REM)
+-> Responsable - Préinscription d'un adhérent à partir du frontend
+][(#HTTP_HEADER{Content-type: text/plain[; charset=(#CHARSET)]})]
+<BOUCLE_activite(ASSO_ACTIVITES){id_activite}>
+<BOUCLE_id_evenement(EVENEMENTS){tout}{id_evenement}>
+        [(#SET{id_evenement,#ID_EVENEMENT})]	
+        [(#SET{titre_evenement,#TITRE})]
+        [(#SET{date_evenement,[(#DATE_DEBUT|affdate{'d/m'})]})]
+        [(#SET{heure_evenement,[(#DATE_DEBUT|affdate{"H:i"})]})]
+</BOUCLE_id_evenement>	
+        
+<head>
+    <title></title>
+    <intro></intro>
+</head>
+<body>
+	<div style="
+			line-height: 180%;
+			color: white !important;
+			background-color: #38414A !important;
+			padding: 1em;
+			text-align: center;">
+    <h3 style="line-height: 180%;color: white !important;text-align: center;">
+        [(#NOMBRE_INSCRITS|=={1}|oui)            <:notifications:email_preinscription_responsable_frontend{adherents=#ENV{nom_participants},evenement=#GET{titre_evenement},date=#GET{date_evenement},heure=#GET{heure_evenement}}:>]
+       [(#NOMBRE_INSCRITS|>{1}|oui)           <:notifications:email_preinscription_responsable_frontend_p{adherents=#ENV{nom_participants},evenement=#GET{titre_evenement},date=#GET{date_evenement},heure=#GET{heure_evenement}}:>]
+    </h3> 
+	</div>
+    <!--ICI ON INCLUT LES INFOS A PROPOS DE L'INSCRIPTION-->	
+	<INCLURE{fond=notifications/inc/inc-infos_inscription_responsable, id_activite=#ID_ACTIVITE,env}/>        
+
+    <p style="line-height: 180%;font-size:15px;color:#555"><b><:notifications:email_contact_adherent:></b></p>
+    <!--ICI ON INCLUT LES INFOS A PROPOS DE L'INSCRIT-->
+   <INCLURE{fond=notifications/inc/inc-infos_inscrit,env}>
+
+	[<div style="text-align:center;">
+	<p style="line-height: 180%;font-size:15px;color:#555">
+        <:notifications:email_texte_lien_module_inscription:></p>
+	<a href="(#URL_ECRIRE{voir_activites,id=#GET{id_evenement}}|abs_url)" style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;"><:notifications:email_bouton_module_inscription:></a>
+	</div>]        
+</body>
+</BOUCLE_activite>#FILTRE{facteur_email_wrap_to_html}#FILTRE{emogrifier}</B_activite>
+

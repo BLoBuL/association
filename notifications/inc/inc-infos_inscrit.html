@@ -1,0 +1,54 @@
+<BOUCLE_asso_activites(ASSO_ACTIVITES){id_activite}>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;margin: 0;" >
+           <tr class="inscrit" style="border-collapse: collapse;" >
+                <BOUCLE_AUTEUR(AUTEURS){id_auteur}{tout}>
+                    [<td class="inscrit_logo" style="border-collapse: collapse;width:100px;height:100px;vertical-align: middle;padding: 0; line-height: 180%;font-size:15px;color:#555">
+                        <a href="[(#URL_AUTEUR|abs_url)]" style="display:block">
+                        (#LOGO_AUTEUR
+                            |sinon{#CHEMIN{img/logo_auteur_defaut_#SEXE.png}|abs_url}
+                            |image_passe_partout{100,100}
+                            |image_recadre{100,100,top center}
+                            |vider_attribut{style}
+                            |inserer_attribut{style,background-color:#CCC;margin:0;}
+                            |vider_attribut{class}
+                            |vider_attribut{height}
+                            |vider_attribut{width}
+                          )
+                        </a>
+                    </td>]
+                    <td class="inscrit_info" style="border-collapse: collapse;padding: 0 0 0 15px;vertical-align: middle">	
+                        <a href="[(#URL_AUTEUR|abs_url)]" class="nom" style="text-decoration:none;color:#555;padding: 0 0 10px 0;display:block;"> 
+                            <span class="nom_famille" style="text-transform:uppercase;font-weight:bold;font-size:120%;color:#555;">#NOM_FAMILLE</span>
+                            <span class="prenom">#PRENOM</span>
+                        </a>
+                        [(#CONFIG{association_metas/afficher_telephone_inscrit,oui}|=={oui}|oui)
+                         [<div class="telephone"> (#MOBILE)</div>]
+                        ]
+                         [<div class="email"><a href="mailto:[(#EMAIL)]"style="text-decoration:none;font-size:110%;color:#555;">(#EMAIL)</a></div>]
+                </BOUCLE_AUTEUR>
+                     [<td class="inscrit_logo" style="border-collapse: collapse;width:100px;height:100px;vertical-align: middle;padding: 0;">
+                        <div style="display:block">
+                        (#CHEMIN{img/logo_auteur_defaut_.png}
+                            |abs_url
+                            |image_passe_partout{100,100}
+                            |image_recadre{100,100,top center}
+                            |vider_attribut{style}
+                            |inserer_attribut{style,background-color:#CCC;margin:0;}
+                            |vider_attribut{class}
+                            |vider_attribut{height}
+                            |vider_attribut{width}
+                          )
+                        </div>
+                    </td>]
+                    <td class="inscrit_info" style="border-collapse: collapse;padding: 0 0 0 15px;vertical-align: middle">	
+                        <a href="[(#URL_AUTEUR|abs_url)]" class="nom" style="text-decoration:none;color:#555;padding: 0 0 10px 0;display:block;"> 
+                            <span class="nom_famille" style="text-transform:uppercase;font-weight:bold;font-size:120%;color:#555;">[(#NOM_INSCRIT|strtoupper)]</span>
+                            <span class="prenom">#PRENOM_INSCRIT</span>
+                        </a>                
+                         [<div class="email"><a href="mailto:[(#EMAIL_INSCRIT)]"style="text-decoration:none;font-size:110%;color:#555;">(#EMAIL_INSCRIT)</a></div>]
+                         [<div class="tel"><a href="tel:[(#TEL_INSCRIT)]"style="text-decoration:none;font-size:110%;color:#555;">(#TEL_INSCRIT)</a></div>]
+                    </td>
+                <//B_AUTEUR>			
+                </tr>
+        </table>
+</BOUCLE_asso_activites>

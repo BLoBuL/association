@@ -1,0 +1,65 @@
+<paquet
+	prefix="association"
+	categorie="communication"
+	version="4.0.0-dev"
+	etat="dev"
+	compatibilite="[4.0.0;4.*]"
+	logo="logo.jpg"
+	schema="1.6.0"
+	documentation="https://assistance.blobul.com"
+>
+	<nom>BLoBuL Association</nom>
+	<!-- Socle de gestion des associations -->
+
+	<auteur>Julien Bellegueulle</auteur>
+	<credit>Développé par BLoBuL.com</credit>
+	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
+
+	<pipeline nom="autoriser" inclure="association_autoriser.php" />
+	<pipeline nom="declarer_tables_principales" inclure="base/association.php" />
+	<pipeline nom="declarer_tables_auxiliaires" inclure="base/association.php" />
+	<pipeline nom="declarer_tables_objets_sql" inclure="base/association.php" />
+	<pipeline nom="declarer_champs_extras" inclure="base/association.php" />
+
+	<pipeline nom="taches_generales_cron" inclure="association_pipelines.php" />
+	<pipeline nom="formulaire_charger" inclure="association_pipelines.php" />
+	<pipeline nom="formulaire_verifier" inclure="association_pipelines.php" />
+	<pipeline nom="formulaire_traiter" inclure="association_pipelines.php" />
+	<pipeline nom="formulaire_saisies" inclure="association_pipelines.php" />
+	<pipeline nom="pre_insertion" inclure="association_pipelines.php" />
+	<pipeline nom="post_insertion" inclure="association_pipelines.php" />
+	<pipeline nom="pre_edition" inclure="association_pipelines.php" />
+	<pipeline nom="post_edition" inclure="association_pipelines.php" />
+	<pipeline nom="ajouter_menus" inclure="association_pipelines.php" />
+	<pipeline nom="afficher_contenu_objet" inclure="association_pipelines.php" />
+	<pipeline nom="affiche_milieu" inclure="association_pipelines.php" />
+	<pipeline nom="corbeille_table_infos" inclure="association_pipelines.php" />
+	<pipeline nom="header_prive" inclure="association_pipelines.php" />
+	<pipeline nom="jqueryui_plugins" inclure="association_pipelines.php" />
+
+	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
+	<necessite nom="association_adhesions" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_evenements" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_dons" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_ventes" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_prets" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_paiements" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_groupes" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_communication" compatibilite="[4.0.0;4.*]" />
+	<pipeline nom="i3_definition_champs" inclure="association_pipelines.php" />
+	<pipeline nom="notifications_destinataires" inclure="association_pipelines.php" />
+	<pipeline nom="i3_verifier_formulaire" inclure="association_pipelines.php" />
+
+	<pipeline nom="trig_bank_notifier_reglement" inclure="association_pipelines.php" />
+	<pipeline nom="bank_redirige_apres_retour_transaction" inclure="association_pipelines.php" />
+
+	<pipeline nom="mailsubscriber_informations_liees" inclure="association_pipelines.php" />
+
+	<necessite nom="verifier" compatibilite="[2.1.0;[" />
+	<utilise nom="gis" compatibilite="[4.54.0;[" />
+
+	<style source="prive/themes/spip/css/comptabilite.css" type="prive" />
+	<style source="prive/themes/spip/css/asso.css" />
+	<script source="javascript/association-script.js" type="prive" />
+</paquet>

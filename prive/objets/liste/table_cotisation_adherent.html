@@ -1,0 +1,23 @@
+<B_cotisation>
+    <h2 class="spip"><:association:adherent_titre_historique_cotisations:></h2>
+    <div class="tableau-cotisations-scroll" role="region" aria-label="<:association:adherent_titre_historique_cotisations:>" tabindex="0">
+    <table class="tableau_asso tableau_cotisations_adherent">
+        <thead>
+        <tr>	
+            <th>#</th>
+            <th><:association:adherent_entete_date:></th>
+            <th class="type-inscription"><:association:type_inscription:></th>
+            <th><:association:cotisation_categorie:></th>
+            <th><:association:statut_cotisation:></th>
+            <th><:association:id_transaction:></th>
+            <th colspan="2"><:association:action:></th>
+        </tr>
+        </thead>
+        <tbody>
+        <BOUCLE_cotisation(ASSO_COTISATIONS){id_auteur}{tout}{par date_creation}{id_categorie >= 1}>
+             [(#INCLURE{fond=prive/objets/liste/item_cotisation_adherent,id_compte,env})]
+        </BOUCLE_cotisation>
+        </tbody>
+    </table>
+    </div>
+</B_cotisation>

@@ -1,0 +1,29 @@
+<!-- UPDATE boucle pour aller chercher les champs existants -->
+[<!--(#ENV*|unserialize|foreach)-->]
+<!-- creation d'un formulaire de recherche-->
+[(#REM) UPDATE - module de recherche perso sur la page adhérent]
+#SET{selection, #ARRAY}
+<BOUCLE_champscorps(DATA){source table,#CONFIG{inscription3}}{valeur = 'on'}>
+     [(#CLE|match{_table}|oui)
+            [(#SET{selection, #GET{selection}|push{#CLE|replace{'_table',''}|replace{'_nocreation',''}}})]
+    ]
+</BOUCLE_champscorps>
+<BOUCLE_data_champs(DATA){source tableau, #GET{selection}}>
+    [(#SET{final, #VALEUR})]
+    <BOUCLE_champs_extra_bot(DATA){source table,#CONFIG*{champs_extras_spip_auteurs}|unserialize}>
+        [(#VALEUR|table_valeur{options}|table_valeur{nom}|=={#GET{final}}|oui)
+            [(#SAISIE{[(#VALEUR|table_valeur{saisie}|print_r{1})],[(#VALEUR|table_valeur{options}|table_valeur{nom}|print_r{1})]}
+                    {class=asso_recherche}
+                    {id=[(#VALEUR|table_valeur{nom})]}
+                    {label=[(#VALEUR|table_valeur{options}|table_valeur{label}|print_r{1})]}
+                    {datas=[(#VALEUR|table_valeur{options}|table_valeur{datas})]}
+            )]
+        ] 
+    </BOUCLE_champs_extra_bot>
+</BOUCLE_data_champs>
+<!-- Scripts -->
+<script>
+    $(function() {
+        $(".asso_recherche").moteurRecherche({});
+    });
+</script>

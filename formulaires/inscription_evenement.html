@@ -1,0 +1,123 @@
+<div class="formulaire_spip formulaire_asso formulaire_inscription_evenement">
+    [<p class='formulaire_erreur'>(#ENV{erreurs\email_inscrit}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{message_erreur}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/nb_inscrits}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/categorie}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/nb_accompagnants}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/auteur_inconnu}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/doublon}|ie_message_erreur_texte)</p>]
+    [(#SESSION{webmestre}|=={oui}|et{#ENV{diagnostic_inscription}|oui}|oui)
+        <INCLURE{fond=formulaires/inc-diagnostic-inscription, diagnostic=#ENV{diagnostic_inscription}} />
+    ]
+[(#EDITABLE|oui)
+    <form action="#ENV{action}" method="post" >
+        #ACTION_FORMULAIRE{#ENV{action}}
+        <div id="ie_saisies_container">
+            #GENERER_SAISIES{#ENV{_saisies}}
+        </div>
+        [(#REM) -> Envoie du formulaire ]
+        <p class="boutons">
+            <input type="submit" name="ok" value="<:association:validation_inscription:>" class="submit" id="envoyer" />
+        </p>
+    </form>
+</div>
+]
+    [(#REM) Rechargement AJAX pour charger les membres de famille si config famille active]
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    function fetchAndReplace(url){
+        var container = document.getElementById('ie_saisies_container');
+        if (!container) { window.location = url; return; }
+        var original = container.innerHTML;
+        container.innerHTML = '<p class="ie-loading">Chargement…</p>';
+        fetch(url, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(function(r){ if (!r.ok) throw new Error('Network error'); return r.text(); })
+        .then(function(html){
+            try {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                var remote = doc.getElementById('ie_saisies_container');
+                if (remote) {
+                    container.innerHTML = remote.innerHTML;
+                    attachMemberHandlers();
+                    // re-init select2 if present
+                    if (window.jQuery && jQuery().select2) {
+                        try {
+                            jQuery('#ie_saisies_container').find('select').each(function(){
+                                var $s = jQuery(this);
+                                try { if ($s.hasClass('select2-hidden-accessible')) { $s.select2('destroy'); } } catch(e){}
+                                $s.select2();
+                            });
+                        } catch(e){ console.warn('select2 init failed', e); }
+                    }
+                } else {
+                    window.location = url;
+                }
+            } catch (e) {
+                container.innerHTML = original;
+                console.error(e);
+            }
+        })
+        .catch(function(err){ container.innerHTML = original; console.error(err); window.location = url; });
+    }
+
+    function buildUrlWithParams(params){
+        var url = new URL(window.location.href);
+        var p = new URLSearchParams(url.search);
+        Object.keys(params).forEach(function(k){
+            var v = params[k];
+            if (v === null) { p.delete(k); }
+            else { p.set(k, v); }
+        });
+        url.search = p.toString();
+        return url.toString();
+    }
+
+    function reloadWithParam(paramName, paramValue){
+        var params = {};
+        if (paramName === 'membre') {
+            params.select_type_inscrit = 'membre';
+            params.membre = paramValue;
+            params.non_membre = null;
+        } else if (paramName === 'non_membre') {
+            params.select_type_inscrit = 'non_membre';
+            params.non_membre = paramValue;
+            params.membre = null;
+        }
+        var url = buildUrlWithParams(params);
+        fetchAndReplace(url);
+    }
+
+    function attachMemberHandlers(){
+        var champM = document.getElementById('champ_membre') || document.querySelector('select[name="membre"]');
+        if (champM) {
+            champM.removeEventListener('change', _ie_membre_change_handler);
+            champM.addEventListener('change', _ie_membre_change_handler);
+        }
+        var champNM = document.getElementById('champ_non_membre') || document.querySelector('select[name="non_membre"]');
+        if (champNM) {
+            champNM.removeEventListener('change', _ie_nonmembre_change_handler);
+            champNM.addEventListener('change', _ie_nonmembre_change_handler);
+        }
+        var selType = document.querySelector('select[name="select_type_inscrit"]') || document.getElementById('champ_select_type_inscrit');
+        if (selType) {
+            selType.removeEventListener('change', _ie_select_type_change_handler);
+            selType.addEventListener('change', _ie_select_type_change_handler);
+        }
+    }
+
+    function _ie_membre_change_handler(){ reloadWithParam('membre', this.value); }
+    function _ie_nonmembre_change_handler(){ reloadWithParam('non_membre', this.value); }
+    function _ie_select_type_change_handler(){
+        var val = this.value || '';
+        if (val !== 'membre' && val !== 'non_membre') {
+            // remove member params
+            var url = buildUrlWithParams({ select_type_inscrit: val, membre: null, non_membre: null });
+            fetchAndReplace(url);
+        }
+    }
+
+    // initial attach
+    attachMemberHandlers();
+});
+</script>
+

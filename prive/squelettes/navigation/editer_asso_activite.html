@@ -1,0 +1,38 @@
+<INCLURE{fond=prive/squelettes/navigation/dist,env}>
+
+#SET{id_evenement_contexte,#ENV{id_evenement}}
+<BOUCLE_activite_contexte_navigation(ASSO_ACTIVITES){id_activite=#ENV{id_activite}}{0,1}>
+[(#SET{id_evenement_contexte,#ID_EVENEMENT})]
+</BOUCLE_activite_contexte_navigation>
+
+    [(#REM) Informations sur l'événement ]
+    #BOITE_OUVRIR{'', info}
+    <INCLURE{fond=prive/squelettes/contenu/inc-voir_activites/bloc_info_evenement,
+      id_evenement=#GET{id_evenement_contexte},
+      ajax=bloc_info} />
+    #BOITE_FERMER
+
+    [(#REM) Tableau de bord : statuts, quotas, suivi paiement ]
+    #BOITE_OUVRIR{'', info}
+    <INCLURE{fond=prive/squelettes/contenu/inc-voir_activites/bloc_configuration,
+      id_evenement=#GET{id_evenement_contexte},
+      ajax=bloc_config} />
+    #BOITE_FERMER
+
+    [(#REM) Raccourcis : retour vers voir_activites + actions courantes ]
+    #BOITE_OUVRIR{'', raccourcis}
+    <ul class="liste_raccourcis">
+        <li>
+            <a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#GET{id_evenement_contexte}})]" class="lien_avec_fa">
+                <span class="fa_icone"><i class="fa fa-arrow-left"></i></span>
+                <span><:association:activite_retour_voir_activites:></span>
+            </a>
+        </li>
+        <li>
+            <a href="[(#URL_ECRIRE{evenement_edit}|parametre_url{id_evenement,#GET{id_evenement_contexte}})]" class="lien_avec_fa">
+                <span class="fa_icone"><i class="fa-regular fa-pen-to-square"></i></span>
+                <span><:association:activite_bouton_modif_evenement:></span>
+            </a>
+        </li>
+    </ul>
+    #BOITE_FERMER

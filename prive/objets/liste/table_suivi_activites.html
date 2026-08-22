@@ -1,0 +1,21 @@
+     <B_inscription_adherent><!--
+        <h2 class="spip"><:association:adherent_titre_historique_activites:></h2>-->
+    <p class="explication">
+    </p>
+    <table class="tableau_asso tableau_participation_adherent">
+        <tr>
+            <th>#</th>
+            <th><:association:adherent_libelle_date:></th>
+             <th><:association:adherent_libelle_nom:></th>
+            <th><:association:adherent_libelle_titre_evenement:></th>
+<!--      <th><:association:activite_entete_statut_inscription:></th>-->
+            <th><:association:activite_entete_nombre_inscrit:></th>
+            <th colspan="4">Info</th>     
+            <th class="col_actions"><:association:activite_entete_transaction:></th>
+        </tr>
+        <BOUCLE_inscription_adherent(ASSO_ACTIVITES){tout}{!par maj,id_activite}{pagination 100}>
+             [(#INCLURE{fond=prive/objets/liste/item_suivi_activite_adherent,id_activite,env})]
+        </BOUCLE_inscription_adherent>      
+    </table>
+     [<nav class="pagination">(#PAGINATION{prive})</nav>]
+</B_inscription_adherent>

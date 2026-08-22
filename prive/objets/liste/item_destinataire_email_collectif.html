@@ -1,0 +1,37 @@
+<BOUCLE_activites(AUTEURS){id_auteur}{tout}>
+    <tr class="#STATUT_INTERNE #STATUT">
+        <td class="id">#ID_AUTEUR</td>
+        <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=20,largeur=20}/>
+        <td class="email" style="text-align: left">#EMAIL</td>        
+        <BOUCLE_derniere_cotisation(ASSO_COMPTES){id_auteur}{0,1}{!par date}>
+            <td class="cotisation #STATUT_COTISATION">
+                 <BOUCLE_transaction_ok(TRANSACTIONS){id_transaction}{statut =ok}>
+                       [<div class="tooltip"><i class="fa fa-check-circle" aria-hidden="true"></i>(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
+                            <span class="tooltiptext"><p>
+                                #REINSCRIPTION
+                               Transaction : N°#ID_TRANSACTION
+                                Mode : <small>#MODE</small></p></span>
+                        </div>]
+                  </BOUCLE_transaction_ok>
+                 <BOUCLE_transaction_pas_ok(TRANSACTIONS){id_transaction}{statut IN attente,commande}>
+                    [<a href="(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION&transaction_hash=#TRANSACTION_HASH})" title="En attente de paiement" target="_blank">
+                       [<div class="tooltip"><i class="fa-regular fa-clock" aria-hidden="true"></i> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
+                            <span class="tooltiptext"><p>
+                                #REINSCRIPTION
+                                N°#ID_TRANSACTION
+                            <small>#MODE</small></p></span>
+                        </div>]
+                     </a>]
+                  </BOUCLE_transaction_pas_ok>
+            </td>       
+        </BOUCLE_derniere_cotisation>
+        </B_derniere_cotisation>
+        <td class="cotisation"></td>
+        <//B_derniere_cotisation>
+
+        <td class="checkbox">
+            <input id="checkbox_[(#ID_AUTEUR)]" name="selecteur_adherent[]" type="checkbox" value="[(#ID_AUTEUR)]" checked="checked">
+                <label for="checkbox_[(#ID_AUTEUR)]"></label>
+        </td>
+    </tr>
+</BOUCLE_activites>

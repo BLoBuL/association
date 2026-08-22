@@ -1,0 +1,44 @@
+<BOUCLE_id_evenement(EVENEMENTS){tout}{id_evenement}>
+	<p style="line-height: 180%;font-size:15px;color:#555">
+		<b><:notifications:email_date_evenement:></b>
+		Le [(#DATE_DEBUT|affdate) ] à [ (#DATE_DEBUT|affdate{"H:i"})]
+	</p>
+	[(#PRESENTIEL|=={oui}|oui)
+	<p style="line-height: 180%;font-size:15px;color:#555">		
+		[<b><:notifications:email_adresse_evenement:></b>
+		 (#LIEU)[, (#ADRESSE)]
+	</p>]	
+    ]
+    [<p style="line-height: 180%;font-size:15px;color:#555">		
+    (#PRESENTIEL|=={non}|et{#ENV{statut_inscription}|=={inscrit}}|oui)    
+     <b><:notifications:evenement_non_presentiel_lien:> </b><a href="#LIEN"  class="spip_out" target="_blank" rel="noopener">#LIEN</a>
+    </p> ]
+
+	<BOUCLE_logo(CONDITION){si #LOGO_EVENEMENT|oui}>
+		[<img src="(#LOGO_EVENEMENT|image_passe_partout{600,300}|image_recadre{600,300}|extraire_attribut{src}|url_absolue)" style="max-width:100%;margin: 0" alt="#TITRE"/>]
+		[(#SET{logo_evenement,oui})]
+	</BOUCLE_logo>
+
+	<BOUCLE_logo_evenement_source(EVENEMENTS){si #GET{logo_evenement}|!={oui}}{si #ID_EVENEMENT_SOURCE|!={0}}{id_evenement = #ID_EVENEMENT_SOURCE}{logo}>
+		[<img src="(#LOGO_EVENEMENT|image_passe_partout{600,300}|image_recadre{600,300}|extraire_attribut{src}|url_absolue)" style="max-width:100%;margin: 0" alt="#TITRE"/>]
+		[(#SET{logo_evenement_source,oui})]
+	</BOUCLE_logo_evenement_source>
+
+	<//B_logo_evenement_source>
+
+	<BOUCLE_logo_article(ARTICLES){id_article=#ID_ARTICLE}{si #LOGO_EVENEMENT|non}{si #GET{logo_evenement_source}|!={oui}}{logo}>
+		[<img src="(#LOGO_ARTICLE|image_passe_partout{600,300}|image_recadre{600,300}|extraire_attribut{src}|url_absolue)" style="max-width:100%;margin: 0" alt="#TITRE"/>]
+	</BOUCLE_logo_article>
+	<//B_logo_article>
+
+	<h4 style="color:#4a4a4a;"><:notifications:email_info_rendez_vous:></h4>
+	<div style="line-height: 180%;font-size:15px;color:#555">
+		[(#DESCRIPTIF|image_reduire{600}|abs_url)]
+		[(#DESCRIPTIF_SECURISE|image_reduire{600}|propre|abs_url)]
+		<b style="color:#555"><:notifications:email_lien_rendez_vous:></b><br>
+		<a href="[(#URL_EVENEMENT|url_absolue)]"style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;">
+                Fiche du rendez-vous
+        </a>
+	</div>	
+</BOUCLE_id_evenement>
+

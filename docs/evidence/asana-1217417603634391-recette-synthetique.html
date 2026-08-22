@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recette synthétique ASANA-1217417603634391</title>
+  <style>
+    body { margin: 0; background: #f3f5f7; color: #1f2933; font: 16px/1.5 Arial, sans-serif; }
+    main { max-width: 920px; margin: 32px auto; padding: 0 20px 40px; }
+    .notice { border-left: 5px solid #2563eb; background: #eff6ff; padding: 14px 18px; margin-bottom: 20px; }
+    .card { background: #fff; border: 1px solid #d8dee5; border-radius: 8px; box-shadow: 0 2px 8px #00000012; padding: 24px; }
+    h1 { font-size: 25px; margin: 0 0 8px; }
+    h2 { font-size: 19px; margin-top: 26px; }
+    label { display: block; font-weight: 700; margin: 16px 0 6px; }
+    select { width: 100%; padding: 10px; border: 1px solid #9aa6b2; border-radius: 4px; background: #fff; }
+    .available { display: inline-block; color: #166534; background: #dcfce7; border-radius: 999px; padding: 5px 11px; font-weight: 700; }
+    .success { margin-top: 20px; padding: 13px 15px; background: #ecfdf5; border: 1px solid #86efac; color: #166534; }
+    .capture { margin-top: 18px; padding: 14px; background: #111827; color: #e5e7eb; border-radius: 6px; font: 14px/1.5 Consolas, monospace; white-space: pre-wrap; }
+    small { color: #52606d; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="notice"><strong>Preuve locale synthétique</strong> — aucune donnée, session ou adresse cliente; aucun email ni paiement réel.</div>
+    <section class="card">
+      <h1>Inscription manuelle BO — état corrigé</h1>
+      <p><span class="available">5 places disponibles</span></p>
+
+      <label for="type">Type d'inscrit</label>
+      <select id="type"><option selected>Membre</option></select>
+
+      <label for="membre">Membre</label>
+      <select id="membre"><option selected>Jean Test — example.test</option></select>
+
+      <label for="tarif">Tarif Adhérente — quantité</label>
+      <select id="tarif"><option selected>1 personne</option></select>
+
+      <div class="success"><strong>Validation synthétique réussie.</strong> Aucune erreur de quota ni de catégorie.</div>
+
+      <h2>Capture notification (transport désactivé)</h2>
+      <div class="capture">fonction: facteur_envoyer_mail_activites
+type: inscription_backend
+destinataire: jean@example.test
+sujet: association:inscription_activite_mail_sujet_backend
+modele: notifications/inscription_activite_backend
+occurrences: 1
+transport_reel: non execute</div>
+      <p><small>Scénario associé aux tests automatisés du plugin Association.</small></p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,107 @@
+#CACHE{0}
+
+<B_CONDITION>
+    <BOUCLE_CONDITION(CONDITION){si #ENV{creation_inscription}|=={oui}|ou{#ENV{modification_inscription}|=={oui}}}>
+    <h2 class="titre-section-petit"><:association:titre_inscription_en_ligne:></h2>
+    <div class="formulaire_spip formulaire_inscription_evenement_public">
+        <div class="inscription-evenement-public__intro">
+        [(#SESSION{id_auteur}|non|et{#ENV{domaine_site}|non}|oui)
+            <h3 class="spip"><:association:formulaire_inscription_public_titre:></h3>
+            <p class="inscription-evenement-public__intro-text"><:association:formulaire_inscription_public_texte{self=#SELF}:></p>
+        ]
+        [(#SESSION{id_auteur}|non|et{#ENV{domaine_site}|oui}|oui)
+             [(#CHEMIN{img/logo_reseau_fiafe.jpg}|image_reduire{80,80}|image_recadre{80,80}|inserer_attribut{style,float:right})]
+            <h3 class="spip"><:association:formulaire_inscription_reseau_fiafe_titre:></h3>
+            <p class="inscription-evenement-public__intro-text"><:association:formulaire_inscription_reseau_fiafe_texte:></p>
+        ]
+        [(#SESSION{id_auteur}|oui)
+            <h3 class="spip"><:association:formulaire_inscription_titre:></h3>
+            <p class="inscription-evenement-public__intro-text">Choisissez les participants puis verifiez les informations avant validation.</p>
+        ]
+        </div>
+        <div class="inscription-evenement-public__messages">
+        [<p class="formulaire_erreur erreur_message">(#ENV{message_erreur}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/nb_inscrits}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/categorie}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/nb_accompagnants}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/auteur_inconnu}|ie_message_erreur_texte)</p>]
+        [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/doublon}|ie_message_erreur_texte)</p>]
+        [(#ENV{erreurs}|non)
+            [<p class="formulaire_alerte alerte_message">(#ENV{alerte})</p>]
+        ]
+        </div>
+        <!--[<p class="formulaire_erreur erreur_message">(#ENV{erreurs/email_inscrit})</p>]-->
+    [(#EDITABLE|oui)
+        [(#SET{cle_variable,#ENV{date}|affdate{'YmdH'}|md5})]
+
+        <form action="#ENV{action}" method="post" onsubmit='desactiver()'>
+            #ACTION_FORMULAIRE{#ENV{action}}
+
+            [(#REM) Piege a robots spammeurs made in blobul ]
+            <div class="piege_#GET{cle_variable}">
+                <label for="input_#GET{cle_variable}"><:antispam_champ_vide:></label>
+                <input type="text" class="text" name="input_#GET{cle_variable}" id="input_#GET{cle_variable}" value="#ENV{input_#GET{cle_variable}}" size="10" tabindex="-1" aria-hidden="true" autocomplete="off" />
+            </div>
+            #GENERER_SAISIES{#ENV{_saisies}}
+    [(#REM) Piege a robots spammeurs  made in blobul ]
+        <div class="piege_#GET{cle_variable}">
+            <label for="checkbox_#GET{cle_variable}"><:antispam_champ_vide:></label>
+            <input type="checkbox" class="checkbox" name="checkbox_#GET{cle_variable}" id="checkbox_#GET{cle_variable}" value="yes" tabindex="-1" aria-hidden="true" />
+        </div>
+    [(#REM) Piege a robots spammeurs ]
+    <p style="display: none;">
+        <label for="nobot"><:antispam_champ_vide:></label>
+        <input type="text" class="text" name="nobot" id="nobot" value="#ENV{nobot}" size="10" tabindex="-1" aria-hidden="true" autocomplete="off" />
+    </p>
+            <p class="boutons inscription-evenement-public__submit">
+                <input type="submit" name="ok" value="<:association:validation_inscription:>" class="submit" id="envoyer" />
+            </p>
+        </form>
+    </div>
+<style>
+    .formulaire_inscription_evenement_public{
+        padding: 1.25rem;
+        border: 1px solid #d9dfd4;
+        border-radius: 12px;
+        background: #fbfcf8;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__intro{
+        margin-bottom: 1rem;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__intro-text{
+        margin: 0.35rem 0 0;
+        color: #324235;
+        line-height: 1.55;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__messages > * + *{
+        margin-top: 0.5rem;
+    }
+    .formulaire_inscription_evenement_public .inscription-evenement-public__submit{
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid #d9dfd4;
+    }
+    form .piege_#GET{cle_variable},
+    form .piege_#GET{cle_variable} input{
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        position: absolute;
+        right: 100000px;
+        opacity: 0;
+    }
+</style>
+    ]
+    [(#REM) ************** DEBUT DES SCRIPTS **************]
+    [(#REM) -> Script pour empecher le multiclick des adhérents ]
+    <script language="JavaScript">
+        function desactiver(id) {
+            id = document.getElementById('envoyer');
+            id.disabled = "disabled";
+            id.value = "<:association:validation_inscription_en_cours:>";
+            return;
+        }
+    </script>
+    </BOUCLE_CONDITION>
+</B_CONDITION>
+<//B_CONDITION>

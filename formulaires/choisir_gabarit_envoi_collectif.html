@@ -1,0 +1,11 @@
+<div class="formulaire_spip formulaire_#FORM">
+    
+    <h1 class="grostitre"><:association:label_formulaire_choisir_gabarit:></h1>
+    [<p class='formulaire_erreur'>(#ENV*{message_erreur})</p>]
+    [<p class='formulaire_message_ok'>(#ENV*{message_ok})</p>]
+    
+    <form action="#ENV{action}" method="post">
+        #ACTION_FORMULAIRE{#ENV{action},#FORM}        
+        #GENERER_SAISIES{#ENV{_saisies}}        
+    </form> 
+</div>

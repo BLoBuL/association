@@ -1,0 +1,17 @@
+<BOUCLE_commande(COMMANDES){id_commande}{tout}>
+<div class="commande">
+    <div class="titre_commande">
+        <h2><:commandes:info_commande:> #ID_COMMANDE</h2>
+        <div class="date_commande">[(#DATE_COMMANDE|affdate)]</div>
+    </div>
+    <div class="details_commande">
+        <div class="champ id_commande contenu_id_commande">
+            <div class='label'><:commandes:info_id_commande:> :</div>
+            <div class='valeur'>#ID_COMMANDE</div>
+        </div>
+        <div class="champ statut contenu_statut">
+            <div class='label'><:commandes:info_statut:> :</div>
+            <div class='valeur'>#STATUT</div>
+        </div>
+    </div>
+</BOUCLE_commande>

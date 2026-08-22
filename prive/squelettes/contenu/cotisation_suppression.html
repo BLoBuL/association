@@ -1,0 +1,14 @@
+﻿<!--[(#AUTORISER{menu,_transactions}|sinon_interdire_acces)]-->
+<BOUCLE_asso_compte(ASSO_COMPTES){id_compte}>
+<h1 class="grostitre">Suppression de la cotisation ##ID_COMPTE</h1>
+<div class="transaction">
+	#BOITE_OUVRIR{'',infos simple}
+		<BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
+		<div class="qui">Liée à [<a href='[(#ID_AUTEUR|generer_objet_url{auteur})]'>(#NOM)</a>[ \((#EMAIL)\)]]</div>
+		</BOUCLE_auteur>
+    <div class="ajax">
+	   [(#FORMULAIRE_SUPPRIMER_ASSO_COTISATION{#ID_COMPTE})]
+        </div>   
+	#BOITE_FERMER
+</div>
+</BOUCLE_asso_compte>

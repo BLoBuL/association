@@ -1,0 +1,79 @@
+[(#REM)
+-> Adhérent - Cotisation validée, paiement désormais possible
+][(#HTTP_HEADER{Content-type: text/plain[; charset=(#CHARSET)]})]
+[(#SET{url_profil,[(#URL_PAGE{profil}|url_absolue)]})]
+<BOUCLE_complement_info_entreprise(CONDITION){si #ENV{type_adherent}|=={entreprise}}>
+<head>
+    <title><:notifications:validation_pre_paiement_entreprise_title:></title>
+    <intro><:notifications:validation_pre_paiement_entreprise_intro:></intro>
+</head>
+<body>
+    <div style="
+        line-height: 180%;
+        color: white !important;
+        background-color: #38414A !important;
+        padding: 1em;
+        text-align: center;">
+        <h3 style="line-height: 180%;color: white !important;text-align: center;">
+            [(#ENV{reinscription}|=={inscription}|oui)
+            <:notifications:validation_pre_paiement_entreprise_inscription_titre{nom_entreprise=#ENV{nom_entreprise}}:>
+            ]
+            [(#ENV{reinscription}|=={reinscription}|oui)
+            <:notifications:validation_pre_paiement_entreprise_reinscription_titre{nom_entreprise=#ENV{nom_entreprise}}:>
+            ]
+        </h3>
+        <p style="font-size: 17px;text-align: center;color: white !important;">
+            <:notifications:validation_pre_paiement_entreprise_chapo:>
+        </p>
+    </div>
+
+    <p style="line-height: 180%;font-size:15px;color:#555">
+        <:notifications:validation_pre_paiement_entreprise_explication:>
+    </p>
+
+</BOUCLE_complement_info_entreprise>
+<head>
+    <title><:notifications:validation_pre_paiement_title:></title>
+    <intro><:notifications:validation_pre_paiement_intro:></intro>
+</head>
+<body>
+    <div style="
+        line-height: 180%;
+        color: white !important;
+        background-color: #38414A !important;
+        padding: 1em;
+        text-align: center;">
+        <h3 style="line-height: 180%;color: white !important;text-align: center;">
+            [(#ENV{reinscription}|=={inscription}|oui)
+            <:notifications:validation_pre_paiement_inscription_titre{nom_entreprise=#ENV{nom_entreprise}}:>
+            ]
+            [(#ENV{reinscription}|=={reinscription}|oui)
+            <:notifications:validation_pre_paiement_reinscription_titre{nom_entreprise=#ENV{nom_entreprise}}:>
+            ]
+        </h3>
+        <p style="font-size: 17px;text-align: center;color: white !important;">
+            <:notifications:validation_pre_paiement_chapo:>
+        </p>
+    </div>
+
+    <p style="line-height: 180%;font-size:15px;color:#555">
+        <:notifications:validation_pre_paiement_explication:>
+    </p>
+
+<//B_complement_info_entreprise>
+    <div style="line-height: 180%;font-size:15px;color:#555">
+        <p style="text-align:center;">
+            <a href="[(#URL_PAGE{profil}|abs_url)]" style="display:inline-block;margin: 20px auto;padding: 10px 15px;background-color:#436BA7;border-radius:5px;color:white;font-weight:bold;text-decoration:none;">
+                <:notifications:bouton_page_profil:>
+            </a>
+        </p>
+    </div>
+
+    <p style="line-height: 180%;font-size:15px;color:#555">
+        <:notifications:email_formule_politesse:><br>
+        <:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+    </p>
+</body>
+
+
+#FILTRE{facteur_email_wrap_to_html}

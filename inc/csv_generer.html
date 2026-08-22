@@ -1,0 +1,14 @@
+#BOITE_OUVRIR
+<BOUCLE_evt(EVENEMENTS){id_evenement}>
+[<div class="label"><span dir="#LANG_DIR" class="#EDIT{places} places">(#PLACES|singulier_ou_pluriel{agenda:info_1_place,agenda:info_nb_places})</span></div>]
+</BOUCLE_evt>
+
+#SET{args,#ARRAY{id_evenement,#ID_EVENEMENT}}
+<h3><:agenda:telecharger:></h3>
+<ul class="liste-items">
+    <li class="item">
+    	<a href="[(#URL_PAGE{transmettre,[(#VAL{evenement_participants}|param_low_sec{#GET{args}, '', 'transmettre'})]}|parametre_url{reponse,oui})]" class="noajax"><:agenda:telecharger_oui:>
+    	</a>
+    </li>
+</ul>
+#BOITE_FERMER

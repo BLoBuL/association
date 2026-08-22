@@ -1,0 +1,9 @@
+<p style="line-height: 180%;font-size:15px;color:#555">
+    <:notifications:email_formule_politesse:><br>
+    <:notifications:email_signature{nom_site_spip=#NOM_SITE_SPIP}:>
+</p>
+    <BOUCLE_expediteur(AUTEURS){id_auteur=#ID_EXPEDITEUR}{tout}>
+    <p style="font-size: 15px;text-align: left;color: #555;">
+    <i><:notifications:email_signature_activites_inscription{prenom=#PRENOM,nom=#NOM_FAMILLE,email=[(#INPUT_EMAIL_MEMBRES_ASSO|sinon{#EMAIL})]}:></i>
+    </p>
+</BOUCLE_expediteur>

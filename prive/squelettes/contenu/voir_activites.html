@@ -1,0 +1,81 @@
+[(#AUTORISER{voir_activites, evenement, #ENV{id}}|sinon_interdire_acces)]
+
+<BOUCLE_evenement(EVENEMENTS){id_evenement=#ENV{id}}>
+[(#VALIDATION_ATTENTE_AUTOMATIQUE|=={oui}|oui)
+<!--Balise de déclenchement pour la validation automatique des inscriptions aux activités -->
+[(#ID_EVENEMENT|validation_attente_automatique{page_prive_voir_activites})]
+]
+#SET{tri_tableau_incrits, #ENV{tri_tableau_incrits}}
+#SET{activite_responsable, #ID_EVENEMENT|liste_responsables_evenement}
+#SET{affichage_dans_activites, #ID_EVENEMENT|affichage_dans_activites}
+#SET{gestions_places, #ID_EVENEMENT|gestions_places}
+#SET{id_responsables, #GET{activite_responsable}|table_valeur{auteur_array}|sinon{#ARRAY}}
+
+<div class="onglets_simple onglets_voir_activites">
+    <ul class="">
+        [(#ENV{affichage}|=={inscriptions}|oui)
+            <li class="inscriptions"><strong class="on" aria-current="page"><:association:voir_activites_onglet_inscriptions:></strong></li>
+        ]
+        [(#ENV{affichage}|=={inscriptions}|non)
+            <li class="inscriptions"><a href="[(#SELF|parametre_url{affichage,inscriptions})]" class="ajax"><:association:voir_activites_onglet_inscriptions:></a></li>
+        ]
+        <!--<li class="participants"><a href="[(#SELF|parametre_url{affichage,participants})]" class="ajax">Participants</a></li>-->
+        [(#AUTORISER{onglet_activites, evenement, #ENV{id}, '', #ARRAY{onglet,mailshots_activite}}|oui)
+        [(#ENV{affichage}|=={mailshots_activite}|oui)
+            <li class="mailshots_activite"><strong class="on" aria-current="page"><:association:voir_activites_onglet_emails_collectifs:></strong></li>
+        ]
+        [(#ENV{affichage}|=={mailshots_activite}|non)
+            <li class="mailshots_activite"><a href="[(#SELF|parametre_url{affichage,mailshots_activite})]" class="ajax"><:association:voir_activites_onglet_emails_collectifs:></a></li>
+        ]
+        ]
+        [(#AUTORISER{onglet_activites, evenement, #ENV{id}, '', #ARRAY{onglet,comptabilite}}|oui)
+        [(#META{/association/comptes}|et{#GET{affichage_dans_activites/payant}|oui})
+            [(#ENV{affichage}|=={comptabilite}|oui)
+                <li class="comptabilite"><strong class="on" aria-current="page"><:association:voir_activites_onglet_comptabilite:></strong></li>
+            ]
+            [(#ENV{affichage}|=={comptabilite}|non)
+                <li class="comptabilite"><a href="[(#SELF|parametre_url{affichage,comptabilite})]" class="ajax"><:association:voir_activites_onglet_comptabilite:></a></li>
+            ]
+        ]
+        ]
+    </ul>
+</div>
+
+<BOUCLE_condition_inscriptions(CONDITION){si #ENV{affichage}|=={inscriptions}|ou{#ENV{affichage}|non}}>
+<INCLURE{fond=prive/objets/liste/table_inscription_activites,
+                id_evenement=#ENV{id},
+                configuration_evenement=#GET{affichage_dans_activites},
+                disponibilite=#GET{gestions_places},
+                tri_tableau_incrits=#GET{tri_tableau_incrits},
+                id_responsables=#GET{id_responsables},
+                ajax=table_inscription_activites,
+                env} />
+</BOUCLE_condition_inscriptions>
+
+<BOUCLE_condition_participants(CONDITION){si #ENV{affichage}|=={participants}}>
+<INCLURE{fond=prive/objets/liste/table_participants_activites,
+                id_evenement=#ENV{id},
+                configuration_evenement=#GET{affichage_dans_activites},
+                disponibilite=#GET{gestions_places},
+                tri_tableau_incrits=#GET{tri_tableau_incrits},
+                id_responsables=#GET{id_responsables},
+                ajax=table_participants_activites,
+                env} />
+</BOUCLE_condition_participants>
+
+<BOUCLE_condition_mailshots_activite(CONDITION){si #ENV{affichage}|=={mailshots_activite}}>
+<INCLURE{fond=prive/objets/liste/table_mailshots_activite,
+                id_evenement=#ENV{id},
+                env} />
+</BOUCLE_condition_mailshots_activite>
+
+<BOUCLE_condition_comptabilite(CONDITION)
+                {si #ENV{affichage}|=={comptabilite}}
+                {si #GET{affichage_dans_activites/payant}|oui}>
+<INCLURE{fond=prive/objets/liste/table_comptabilite_activites,
+                id_evenement=#ENV{id},
+                ajax=table_comptabilite_activites,
+                env} />
+</BOUCLE_condition_comptabilite>
+
+</BOUCLE_evenement>

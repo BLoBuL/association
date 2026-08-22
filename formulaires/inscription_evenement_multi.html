@@ -1,0 +1,90 @@
+<div class="formulaire_spip formulaire_asso formulaire_inscription_evenement">
+    [<p class='formulaire_erreur'>(#ENV{erreurs\email_inscrit}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{message_erreur}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/nb_inscrits}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/categorie}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/nb_accompagnants}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/auteur_inconnu}|ie_message_erreur_texte)</p>]
+    [<p class="formulaire_erreur erreur_message">(#ENV{erreurs/doublon}|ie_message_erreur_texte)</p>]
+    [(#SESSION{webmestre}|=={oui}|et{#ENV{diagnostic_inscription}|oui}|oui)
+        <INCLURE{fond=formulaires/inc-diagnostic-inscription, diagnostic=#ENV{diagnostic_inscription}} />
+    ]
+
+      <INCLURE{fond=formulaires/inc-saisies-cvt-etapes-#ENV{_saisies/options/etapes_presentation,defaut}, etapes=#ENV{_saisies_par_etapes}, env} />
+    <form action="#ENV{action}" method="post" >
+        #ACTION_FORMULAIRE{#ENV{action}}
+        <div>
+            #GENERER_SAISIES{#ENV{_saisies}}
+
+        <BOUCLE_affichage_recapitualif(CONDITION){si #ENV{_etapes}|=={#ENV{_etape}}|oui}>
+           <input type="hidden" name="ie_recapitulatif" value="1" />
+
+           <h3><:association:inscription_evenement_multi_prive_recap_titre:></h3>
+           <strong><:association:inscription_evenement_multi_prive_recap_chapeau:></strong>
+           <!--<p><:association:inscription_evenement_multi_prive_recap_texte:></p>-->
+           <ul class="spip">
+           <BOUCLE_recap(DATA){source table, #ENV*|generer_recapitulatif_multi_env{#ENV{id_evenement},prive}}>
+                             [<li><span class="label" style="">[(#VALEUR{label}) :]</span>
+                        <span class="label" style="display: block;margin: 0.25em 0.25em 0.5em 18px;font-weight: bold;">(#VALEUR{data})</span>
+               </li>]
+            </BOUCLE_recap>
+            </ul>
+       </BOUCLE_affichage_recapitualif>
+       </div>
+        [(#REM) -> Envoie du formulaire ]
+            <BOUCLE_bouton_bottom(CONDITION){si #ENV{_etape}}>
+                <div>
+                    <INCLURE{fond=formulaires/inc-formidable-boutons, id_formulaire=#ENV{id_evenement}, env} />
+                </div>
+            </BOUCLE_bouton_bottom>
+                <p class="boutons">
+                    <input type="submit" name="ok" value="<:association:validation_inscription:>" class="submit" id="envoyer" />
+                </p>
+            <//B_bouton_bottom>
+    </form>
+</div>
+
+<script>
+    (function(){
+        // When family checkboxes change, compute the selected keys and
+        // populate hidden inputs to ensure server sees explicit selection.
+        var form = document.querySelector('.formulaire_inscription_evenement form');
+        if (!form) return;
+        function updateFamille() {
+            var checks = form.querySelectorAll("input[name='famille[]'], input[name='famille']");
+            var keys = [];
+            checks.forEach(function(c){
+                if ((c.type === 'checkbox' || c.type === 'radio') && c.checked) {
+                    keys.push(c.value || c.getAttribute('data-key'));
+                } else if (c.tagName === 'SELECT' && c.value) {
+                    keys.push(c.value);
+                }
+            });
+            var hidden = form.querySelector("input[name='famille_selected_json']") || form.querySelector('#famille_selected_json');
+            if (!hidden) {
+                hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = 'famille_selected_json';
+                hidden.id = 'famille_selected_json';
+                form.appendChild(hidden);
+            }
+            hidden.value = JSON.stringify(keys);
+            // also set nb_inscrits if present
+            var nb = form.querySelector("input[name='nb_inscrits']") || form.querySelector("select[name='nb_inscrits']");
+            if (nb) {
+                if (nb.tagName === 'SELECT') {
+                    // leave select alone
+                } else {
+                    nb.value = keys.length > 0 ? keys.length : nb.value;
+                }
+            }
+        }
+        document.addEventListener('change', function(e){
+            var target = e.target || e.srcElement;
+            if (!target) return;
+            if (target.name && target.name.indexOf('famille') !== -1) updateFamille();
+        }, true);
+        // initial update
+        updateFamille();
+    })();
+</script>

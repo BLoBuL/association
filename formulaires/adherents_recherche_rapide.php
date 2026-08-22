@@ -1,0 +1,114 @@
+<?php
+
+/***************************************************************************\
+ *  SPIP, Systeme de publication pour l'internet                           *
+ *                                                                         *
+ *  Copyright (c) 2001-2014                                                *
+ *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
+ *                                                                         *
+ *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+ *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+\***************************************************************************/
+if(!defined('_ECRIRE_INC_VERSION')) return;
+include_spip('inc/actions');
+include_spip('inc/editer');
+include_spip('inc/autoriser');
+include_spip('inc/adherents_search_context');
+function formulaires_adherents_recherche_rapide_charger_dist(){
+    $context = AdherentsSearchContext::fromRequest();
+    $defaults = array(
+        '_input_prenom' => $context->prenom ?: (_request('_input_prenom') ?: ''),
+        '_input_nom_famille' => $context->nom ?: (_request('_input_nom_famille') ?: ''),
+        '_input_email' => $context->email ?: (_request('_input_email') ?: ''),
+        '_input_mobile' => $context->mobile ?: (_request('_input_mobile') ?: ''),
+    );
+
+    $saisies = array(
+        array(
+            'saisie' => 'hidden',
+            'options' => array(
+                'nom' => 'recherche',
+                'defaut' => 'rapide',
+            )
+        ),
+        array(
+            'saisie' => 'input',
+            'options' => array(
+                'nom' => '_input_prenom',
+                'label' => _T('association:activite_form_public_prenom_inscrit'),
+                'defaut' => $defaults['_input_prenom'],
+            )
+        ),
+        array(
+            'saisie' => 'input',
+            'options' => array(
+                'nom' => '_input_nom_famille',
+                'label' => _T('association:activite_form_public_nom_inscrit'),
+                'defaut' => $defaults['_input_nom_famille'],
+            )
+        ),
+        array(
+            'saisie' => 'input',
+            'options' => array(
+                'nom' => '_input_email',
+                'label' => _T('association:activite_form_public_email_inscrit'),
+                'defaut' => $defaults['_input_email'],
+            )
+        ),
+        array(
+            'saisie' => 'input',
+            'options' => array(
+                'nom' => '_input_mobile',
+                'label' => _T('association:activite_form_public_tel_inscrit'),
+                'defaut' => $defaults['_input_mobile'],
+            )
+        ),
+    );
+
+    return array_merge($defaults, array(
+        '_saisies' => $saisies,
+        'recherche' => 'rapide',
+    ));
+}
+function formulaires_adherents_recherche_rapide_verifier_dist(){
+    $erreurs = array();
+    if (count($erreurs))
+        $erreurs['message_erreur'] = 'Votre saisie contient des erreurs !';
+    return $erreurs;
+}
+
+function formulaires_adherents_recherche_rapide_traiter_dist(){
+    // Sauvegarder les critères de recherche rapide en session
+    $criteres_recherche = array();
+
+    // Récupérer les champs de recherche
+    $champs = array('_input_nom_famille', '_input_prenom', '_input_email', '_input_mobile');
+    foreach ($champs as $champ) {
+        $valeur = _request($champ);
+        if (!empty($valeur)) {
+            $criteres_recherche[$champ] = $valeur;
+        }
+    }
+
+    // Sauvegarder en session si des critères sont présents
+    if (!empty($criteres_recherche)) {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        $criteres_recherche['recherche'] = 'rapide'; // Marqueur
+        $_SESSION['adherents_recherche_rapide'] = $criteres_recherche;
+
+        association_log('adherents', 'Recherche rapide sauvegardée en session: ' . count($criteres_recherche) . ' critères', 'debug');
+    } else {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        unset($_SESSION['adherents_recherche_rapide']);
+        association_log('adherents', 'Recherche rapide réinitialisée (aucun critère soumis)', 'debug');
+    }
+
+    return array(
+        'message_ok' => _T('association:recherche_effectuee'),
+        'redirect' => generer_url_ecrire('adherents')
+    );
+}
