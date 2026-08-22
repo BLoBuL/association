@@ -21,7 +21,7 @@
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association.php" />
 	<pipeline nom="declarer_champs_extras" inclure="base/association.php" />
 
-	<pipeline nom="taches_generales_cron" action="" inclure="association_pipelines.php" />
+	<pipeline nom="taches_generales_cron" inclure="association_pipelines.php" />
 	<pipeline nom="formulaire_charger" inclure="association_pipelines.php" />
 	<pipeline nom="formulaire_verifier" inclure="association_pipelines.php" />
 	<pipeline nom="formulaire_traiter" inclure="association_pipelines.php" />
