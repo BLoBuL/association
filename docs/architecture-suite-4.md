@@ -2,10 +2,11 @@
 
 ## Statut
 
-Ce document décrit la cible de refactorisation de la branche `4.x`. Le code
-reste temporairement monolithique pendant l'extraction. Les règles métier du BO
-6.8 continuent de faire référence tant qu'un domaine n'a pas été caractérisé,
-migré et testé dans son plugin propriétaire.
+La branche `4.x` est distribuée sous la forme d’un socle et de neuf plugins
+métier. Les tables, dépendances externes et pages publiques ont été transférées
+à leur propriétaire. Le socle conserve encore les services de compatibilité du
+BO 6.8 afin que la première livraison 4.0 n’impose aucune perte fonctionnelle ;
+leur déplacement interne pourra ensuite se faire sans migration de données.
 
 ## Modules cibles
 
@@ -21,6 +22,10 @@ migré et testé dans son plugin propriétaire.
 | Dons | `association_dons` | dons et contreparties | reçus, comptabilité et paiement optionnel |
 | Ventes | `association_ventes` | ventes et expéditions | comptabilité et paiement optionnel |
 | Communication | `association_communication` | gabarits et préférences propres à la suite | Notifications, Mailshot et Mailsubscribers |
+
+Chaque préfixe correspond à un dépôt public `BLoBuL/<nom-du-plugin>` et à une
+branche `4.x`. Le dossier de déploiement porte le nom du plugin, sans préfixe
+`blobul-`.
 
 ## Règles SPIP
 
@@ -64,15 +69,19 @@ centralisé dans une API publique du module propriétaire.
 - wrappers historiques minces et temporaires ;
 - statuts transactionnel, commande et métier toujours distincts.
 
-## Ordre d'extraction
+## État de l’extraction 4.0
 
-1. stabiliser le Socle et son registre de configuration ;
-2. extraire Adhésions, déjà couvert par des tests métier étendus ;
-3. extraire Événements et conserver Agenda comme propriétaire des événements ;
-4. extraire Paiements autour des contrats BANK ;
-5. extraire Comptabilité et introduire les exercices ;
-6. extraire Groupes, Prêts, Dons, Ventes et Communication ;
-7. réduire le Socle aux migrations, contrats partagés et configuration commune.
+1. le Socle conserve `spip_association_metas`, la configuration et les
+   migrations de compatibilité ;
+2. Adhésions possède les catégories et `spip_asso_cotisations` ;
+3. Événements possède les catégories, tarifs et `spip_asso_activites` ;
+4. Comptabilité possède `spip_asso_comptes`, le plan et les destinations ;
+5. Prêts, Dons et Ventes possèdent leurs tables respectives ;
+6. Paiements porte la dépendance Bank ;
+7. Communication porte Notifications et Mailsubscribers ;
+8. Groupes porte Champs Extras ;
+9. les pages publiques profil/adhésion/inscription sont dans Adhésions et la
+   page événement dans Événements.
 
 Chaque extraction exige une matrice de traçabilité 2.1 / 2.2 / 6.8 / 4.x,
 des tests de caractérisation et une migration idempotente.
@@ -81,6 +90,8 @@ des tests de caractérisation et une migration idempotente.
 
 - les plugins Blobul externes restent hors périmètre : aucune modification de
   leur code et aucune dépendance implicite vers eux ;
+- aucun plugin dont le préfixe ou le dossier commence par `blobul` ou `zblobul`
+  n’est nécessaire au fonctionnement de la suite ;
 - `spip_asso_comptes` est exclusivement le journal du module Comptabilité ;
 - une cotisation existe dans `spip_asso_cotisations`, avec un lien optionnel
   `id_compte` vers son écriture comptable ;

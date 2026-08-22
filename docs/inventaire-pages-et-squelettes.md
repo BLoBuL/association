@@ -43,20 +43,18 @@ en charge par le formulaire CVT d'email collectif.
 
 ## Éléments rapatriés du plugin FO
 
-Le plugin FO `zblobul_asso` reste propriétaire de la composition visuelle du
-site. La logique réutilisable qui relève de l'association est accueillie sous
-le chemin public `squelettes/` du plugin Association :
+La suite ne dépend plus d’un plugin FO Blobul. Les compositions publiques
+reposent sur les inclusions standard du squelette actif de SPIP 4 et sont
+rangées dans leur plugin métier :
 
 | Source FO | Cible Association 4 | Décision |
 |---|---|---|
-| `content/fiche_adherent.html` | `squelettes/content/fiche_adherent.html` | rapatrié et débarrassé des dépendances de thème |
-| `content/inc/profil-statut_cotisation.html` | même chemin sous `squelettes/` | rapatrié |
-
-| `content/inc/profil-newsletter.html` | même chemin sous `squelettes/` | rapatrié ; textes déplacés en langue |
-| `inclure/inc-item_inscrit.html` | même chemin sous `squelettes/` | rapatrié et rendu plus sémantique |
-| `content/profil.html`, `right_col/profil.html`, `extra/profil.html` | FO | composition et habillage, donc laissés au FO |
-| `formulaires/inscription.*` | futur module Adhésions | ne pas recopier tel quel : surcharge ancienne à réécrire avec l'API SPIP 4 |
-| `formulaires/editer_mailsubscriber_public.*` | futur module Communication | à migrer avec une dépendance explicite vers Mailsubscribers |
+| `content/fiche_adherent.html` | Adhésions : `squelettes/content/fiche_adherent.html` | rapatrié et débarrassé des dépendances de thème |
+| `content/inc/profil-statut_cotisation.html` | Adhésions : même chemin | rapatrié |
+| `content/inc/profil-newsletter.html` | Adhésions : même chemin | rapatrié ; textes déplacés en langue |
+| `inclure/inc-item_inscrit.html` | Événements : `squelettes/inclure/inc-item_inscrit.html` | rapatrié et rendu plus sémantique |
+| pages `profil`, `fiche_adherent`, `inscription` | Adhésions : `squelettes/*.html` | compositions SPIP 4 autonomes |
+| page `evenement` | Événements : `squelettes/evenement.html` | composition SPIP 4 autonome |
 
 Les pages privées n'incluent plus de fragments `content/` ou `right_col/`
 fournis par un thème ou un plugin FO. Le logo d'événement utilisé dans le BO
@@ -80,9 +78,10 @@ installation SPIP avec le plugin activé :
 spip php:run --include=plugins/association/tests/compiler_squelettes_spip.php
 ```
 
-La recette locale du 22 août 2026 a utilisé SPIP 4.4.21 et PHP 8.4. Elle a
+La recette du 22 août 2026 a utilisé SPIP 4.4.21 et PHP 8.4. Elle a
 installé le schéma `1.6.0`, puis compilé sans erreur les 179 squelettes HTML du
-répertoire `prive/`. Cette installation à blanc a également révélé puis permis
+répertoire `prive/`. Les quatre routes publiques déplacées dans Adhésions et
+Événements ont ensuite répondu en HTTP 200 sans erreur fatale. Cette installation à blanc a également révélé puis permis
 de corriger l'appel historique à `lire_fichier()` lorsque
 `yaml/association.yaml` est absent. Le script complète les tests structurels,
 mais ne remplace pas la recette authentifiée de navigation et de rendu sur
