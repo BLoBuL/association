@@ -55,7 +55,7 @@
                         <BOUCLE_adherent(AUTEURS){id_auteur}{tout}{si #PARRAIN|non}>
                                 <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,id_compte,date_adherent=oui}>
                         </BOUCLE_adherent>
-                        <BOUCLE_info_adherent_cotisation(ASSO_COMPTES){id_transaction}{objet=cotisation}>
+                        <BOUCLE_info_adherent_cotisation(ASSO_COTISATIONS){id_transaction}>
                                 <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,id_compte,date_adherent=oui}>
                         </BOUCLE_info_adherent_cotisation>
                         <BOUCLE_info_adherent_activite(ASSO_ACTIVITES){id_transaction}>
@@ -85,10 +85,10 @@
             </BOUCLE_info_activite>
 
 
-            <BOUCLE_info_cotisation(ASSO_COMPTES){id_transaction}{0,1}>
+            <BOUCLE_info_cotisation(ASSO_COTISATIONS){id_transaction}{0,1}>
                 <td class="description">
                     <B_info_categories_adherents>
-                            [<b>(#REINSCRIPTION|=={reinscription}|?{Réinscription à l'association,Inscription à l'association})</b><br>]
+                            [<b>(#INSCRIPTION|=={reinscription}|?{Réinscription à l'association,Inscription à l'association})</b><br>]
                             <BOUCLE_info_categories_adherents(ASSO_CATEGORIES_ADHERENTS){id_categorie = #ID_CATEGORIE}>[(#VALEUR|propre|textebrut)]
                             </BOUCLE_info_categories_adherents>
                     <B_info_categories_adherents>

@@ -32,12 +32,12 @@
         </td>
         </BOUCLE_colonnes_dyn>
          <!-- Afficher d'abord la cotisation correspondant à la période sélectionnée (si présente dans ENV{id_compte}) -->
-        <BOUCLE_cotisation_periode(ASSO_COMPTES){id_auteur}{objet=cotisation}{id_compte IN #ENV{id_compte}}{0,1}{!par date}>
-            <td class="cotisation #STATUT_COTISATION">
+        <BOUCLE_cotisation_periode(ASSO_COTISATIONS){id_auteur}{id_compte IN #ENV{id_compte}}{0,1}{!par date_creation}>
+            <td class="cotisation #STATUT">
                  <BOUCLE_transaction_ok_periode(TRANSACTIONS){id_transaction}{statut =ok}>
                        [<div class="tooltip"><i class="fa fa-check-circle" aria-hidden="true"></i>(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
                             <span class="tooltiptext"><p>
-                                #REINSCRIPTION
+                                #INSCRIPTION
                                Transaction : N°#ID_TRANSACTION
                                 Mode : <small>#MODE</small></p></span>
                         </div>]
@@ -46,7 +46,7 @@
                     [<a href="(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION&transaction_hash=#TRANSACTION_HASH})" title="En attente de paiement">
                        [<div class="tooltip"><i class="fa-regular fa-clock" aria-hidden="true"></i> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
                             <span class="tooltiptext"><p>
-                                #REINSCRIPTION
+                                #INSCRIPTION
                                 N°#ID_TRANSACTION
                             <small>#MODE</small></p></span>
                         </div>]
