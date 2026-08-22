@@ -47,3 +47,40 @@ if (($resultat[0]['saisies'][1]['options']['afficher_si'] ?? '') !== '@pays@=="f
 }
 
 echo "OK - conditions afficher_si imbriquées normalisées\n";
+
+function include_spip($fichier) {
+}
+
+function saisies_lister_par_nom($saisies) {
+    $resultat = array();
+    foreach ($saisies as $saisie) {
+        if (!empty($saisie['options']['nom'])) {
+            $resultat[$saisie['options']['nom']] = $saisie;
+        }
+        if (!empty($saisie['saisies'])) {
+            $resultat += saisies_lister_par_nom($saisie['saisies']);
+        }
+    }
+    return $resultat;
+}
+
+require_once dirname(__DIR__) . '/association_pipelines.php';
+
+$vue_partielle = array($saisies[0]['saisies'][0]);
+$vue_partielle = association_saisies_afficher_si_saisies($vue_partielle);
+if (isset($vue_partielle[0]['options']['afficher_si'])) {
+    fwrite(STDERR, "Une condition dont le champ pilote est absent doit être neutralisée.\n");
+    exit(1);
+}
+
+$formulaire_complet = array(
+    array('saisie' => 'radio', 'options' => array('nom' => 'type')),
+    $saisies[0]['saisies'][0],
+);
+$formulaire_complet = association_saisies_afficher_si_saisies($formulaire_complet);
+if (($formulaire_complet[1]['options']['afficher_si'] ?? '') !== '@type@=="entreprise"') {
+    fwrite(STDERR, "Une condition dont le champ pilote est présent doit être conservée.\n");
+    exit(1);
+}
+
+echo "OK - conditions orphelines des vues partielles neutralisées\n";

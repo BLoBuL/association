@@ -26,6 +26,7 @@
 	<pipeline nom="formulaire_verifier" inclure="association_pipelines.php" />
 	<pipeline nom="formulaire_traiter" inclure="association_pipelines.php" />
 	<pipeline nom="formulaire_saisies" inclure="association_pipelines.php" />
+	<pipeline nom="saisies_afficher_si_saisies" inclure="association_pipelines.php" />
 	<pipeline nom="pre_insertion" inclure="association_pipelines.php" />
 	<pipeline nom="post_insertion" inclure="association_pipelines.php" />
 	<pipeline nom="pre_edition" inclure="association_pipelines.php" />

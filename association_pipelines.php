@@ -968,6 +968,66 @@ function association_formulaire_saisies($flux)
 }
 
 /**
+ * Neutraliser une condition impossible à évaluer dans une vue partielle.
+ *
+ * Champs Extras et Crayons peuvent demander la vue d'un seul champ. Saisies 6
+ * reçoit alors une structure qui ne contient pas les champs pilotant son
+ * `afficher_si` et journalise une erreur critique. La sélection de la vue ayant
+ * déjà été faite par l'appelant, conserver cette condition n'apporte rien.
+ *
+ * @param array $saisies
+ * @return array
+ */
+function association_saisies_afficher_si_saisies($saisies)
+{
+    if (!is_array($saisies) || !$saisies) {
+        return $saisies;
+    }
+
+    include_spip('inc/saisies');
+    $saisies_par_nom = saisies_lister_par_nom($saisies);
+    return association_saisies_retirer_conditions_orphelines($saisies, $saisies_par_nom);
+}
+
+/**
+ * @param array $saisies
+ * @param array $saisies_par_nom
+ * @return array
+ */
+function association_saisies_retirer_conditions_orphelines($saisies, $saisies_par_nom)
+{
+    foreach ($saisies as $cle => $saisie) {
+        if (!is_array($saisie)) {
+            continue;
+        }
+
+        $condition = (string) ($saisie['options']['afficher_si'] ?? '');
+        if ($condition !== '' && preg_match_all('/@([^@]+)@/', $condition, $references)) {
+            foreach ($references[1] as $reference) {
+                $nom = preg_replace('/\[.*$/', '', $reference);
+                if (
+                    strpos($nom, 'config:') !== 0
+                    && strpos($nom, 'plugin:') !== 0
+                    && !isset($saisies_par_nom[$nom])
+                ) {
+                    unset($saisies[$cle]['options']['afficher_si']);
+                    break;
+                }
+            }
+        }
+
+        if (!empty($saisie['saisies']) && is_array($saisie['saisies'])) {
+            $saisies[$cle]['saisies'] = association_saisies_retirer_conditions_orphelines(
+                $saisie['saisies'],
+                $saisies_par_nom
+            );
+        }
+    }
+
+    return $saisies;
+}
+
+/**
  * Indiquer si un champ de requête est effectivement renseigné.
  * Gère les scalaires, tableaux et dates découpées jour/mois/année.
  *
