@@ -2,8 +2,8 @@
 
 ## Statut
 
-La branche `4.x` est distribuée sous la forme d’un socle et de neuf plugins
-métier. Les tables, dépendances externes et pages publiques ont été transférées
+La branche `4.x` est distribuée depuis un monorepo sous la forme d’un socle et
+de neuf plugins métier. Les tables, dépendances externes et pages publiques ont été transférées
 à leur propriétaire. Le socle conserve encore les services de compatibilité du
 BO 6.8 afin que la première livraison 4.0 n’impose aucune perte fonctionnelle ;
 leur déplacement interne pourra ensuite se faire sans migration de données.
@@ -23,9 +23,11 @@ leur déplacement interne pourra ensuite se faire sans migration de données.
 | Ventes | `association_ventes` | ventes et expéditions | comptabilité et paiement optionnel |
 | Communication | `association_communication` | gabarits et préférences propres à la suite | Notifications, Mailshot et Mailsubscribers |
 
-Chaque préfixe correspond à un dépôt public `BLoBuL/<nom-du-plugin>` et à une
-branche `4.x`. Le dossier de déploiement porte le nom du plugin, sans préfixe
-`blobul-`.
+Le socle est à la racine du dépôt. Chaque module métier est un plugin autonome
+dans `plugins/<nom-du-plugin>`. Le dossier déployé porte le nom du plugin, sans
+préfixe `blobul-`. Les anciens dépôts séparés sont uniquement des sources
+historiques : le développement, les commits et les versions partent désormais
+de ce monorepo.
 
 ## Règles SPIP
 

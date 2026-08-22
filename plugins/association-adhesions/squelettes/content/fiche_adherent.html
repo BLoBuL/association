@@ -1,0 +1,25 @@
+<section class="page page_fiche_adherent">
+	<BOUCLE_page_fiche_adherent(ARTICLES){page=page_fiche_adherent}>
+		<h1 class="h1 titre">#TITRE</h1>
+		[<h2 class="#EDIT{soustitre} soustitre">(#SOUSTITRE)</h2>]
+		[<div class="chapo #EDIT{chapo}">(#CHAPO)</div>]
+		[<div class="texte #EDIT{texte}">(#TEXTE)</div>]
+	</BOUCLE_page_fiche_adherent>
+		<h1 class="h1 titre"><:association:page_fiche_adherent_titre:></h1>
+		<div class="chapo"><:association:page_fiche_adherent_chapo:></div>
+	<//B_page_fiche_adherent>
+
+	<div class="ajax">
+		[(#SESSION{id_auteur}|oui)
+			[(#FORMULAIRE_EDITER_AUTEUR{#SESSION{id_auteur},#URL_PAGE{profil}})]
+		]
+		[(#SESSION{id_auteur}|non)
+			<p><:association:page_fiche_adherent_deconnecte:></p>
+			<p>
+				<a href="[(#URL_PAGE{login}|parametre_url{url,#SELF})]" rel="nofollow"><:association:page_fiche_adherent_identifier:></a>
+				<span aria-hidden="true"> — </span>
+				<a href="[(#URL_PAGE{signin}|parametre_url{url,#SELF})]" rel="nofollow"><:pass_vousinscrire:></a>
+			</p>
+		]
+	</div>
+</section>

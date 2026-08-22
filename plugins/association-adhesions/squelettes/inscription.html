@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html dir="#LANG_DIR" lang="#LANG" class="[(#LANG_DIR)][ (#LANG)] no-js">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');</script>
+	<title><:association:formulaire_inscription_titre:> - [(#NOM_SITE_SPIP|textebrut)]</title>
+	<INCLURE{fond=inclure/head,robots=none} />
+</head>
+<body class="pas_surlignable page_inscription">
+<div class="page">
+	<INCLURE{fond=inclure/header} />
+	<INCLURE{fond=inclure/nav,env} />
+	<main class="main" role="main">
+		<div class="wrapper">
+			<div class="content" id="content">
+				<p class="arbo"><a href="#URL_SITE_SPIP/"><:accueil_site:></a> &gt; <strong class="on"><:association:formulaire_inscription_titre:></strong></p>
+				<h1><:association:formulaire_inscription_titre:></h1>
+				<div class="ajax">#FORMULAIRE_INSCRIPTION</div>
+			</div>
+		</div>
+		<aside class="aside" role="complementary">
+			<INCLURE{fond=inclure/navsub} />
+			#FORMULAIRE_RECHERCHE
+		</aside>
+	</main>
+	<INCLURE{fond=inclure/footer,self=#SELF} />
+</div>
+</body>
+</html>

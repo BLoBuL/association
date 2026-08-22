@@ -1,0 +1,39 @@
+<BOUCLE_evenement_principal(EVENEMENTS){id_evenement}>
+<!DOCTYPE html>
+<html dir="#LANG_DIR" lang="#LANG" class="[(#LANG_DIR)][ (#LANG)] no-js">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');</script>
+	<title>[(#TITRE|couper{80}|textebrut)] - [(#NOM_SITE_SPIP|textebrut)]</title>
+	<INCLURE{fond=inclure/head} />
+</head>
+<body class="pas_surlignable page_evenement">
+<div class="page">
+	<INCLURE{fond=inclure/header} />
+	<INCLURE{fond=inclure/nav,env} />
+	<main class="main" role="main">
+		<div class="wrapper">
+			<div class="content" id="content">
+				<p class="arbo"><a href="#URL_SITE_SPIP/"><:accueil_site:></a>[ &gt; <strong class="on">(#TITRE|couper{80})</strong>]</p>
+				<article class="evenement">
+					<header class="cartouche">
+						<h1>#TITRE</h1>
+						<p class="publication"><time datetime="[(#DATE_DEBUT|date_iso)]">[(#DATE_DEBUT|affdate)] [<span class="heure">(#DATE_DEBUT|heures):[(#DATE_DEBUT|minutes)]</span>]</time></p>
+					</header>
+					[<div class="chapo">(#DESCRIPTIF)</div>]
+					[<div class="texte">(#LIEU)</div>]
+					[<div class="notes"><hr />(#NOTES)</div>]
+				</article>
+				<div class="ajax">#FORMULAIRE_INSCRIPTION_EVENEMENT_PUBLIC{#ID_EVENEMENT}</div>
+			</div>
+		</div>
+		<aside class="aside" role="complementary">
+			<INCLURE{fond=inclure/navsub} />
+			#FORMULAIRE_RECHERCHE
+		</aside>
+	</main>
+	<INCLURE{fond=inclure/footer,self=#SELF} />
+</div>
+</body>
+</html>
+</BOUCLE_evenement_principal>

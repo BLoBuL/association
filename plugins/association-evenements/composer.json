@@ -1,0 +1,7 @@
+{
+  "name": "spip-contrib/association-evenements",
+  "description": "Événements et inscriptions pour la suite Association 4",
+  "type": "spip-plugin",
+  "license": "GPL-3.0-or-later",
+  "require": { "php": ">=8.0" }
+}

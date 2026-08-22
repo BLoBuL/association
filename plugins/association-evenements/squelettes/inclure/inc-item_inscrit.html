@@ -1,0 +1,25 @@
+<BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
+	<article class="item inscrit num_item_#ENV{num_item}">
+		[(#ENV{nb_accompagnant}|>={1}|oui)
+			[<div class="nb_accompagnant">+(#ENV{nb_accompagnant})</div>]
+		]
+		[<div class="item_logo">
+			<a href="#URL_AUTEUR" aria-label="[(#NOM_FAMILLE|concat{' ',#PRENOM}|attribut_html)]">
+				(#LOGO_AUTEUR
+					|sinon{#CHEMIN{img/logo_auteur_defaut_#SEXE.png}}
+					|image_passe_partout{120,120}
+					|image_recadre{120,120,top center}
+					|vider_attribut{style}
+					|vider_attribut{class}
+					|vider_attribut{height}
+					|vider_attribut{width})
+			</a>
+		</div>]
+		<div class="item_info">
+			<a href="#URL_AUTEUR">
+				<span class="prenom">#PRENOM</span>
+				<span class="nom_famille">#NOM_FAMILLE</span>
+			</a>
+		</div>
+	</article>
+</BOUCLE_auteur>

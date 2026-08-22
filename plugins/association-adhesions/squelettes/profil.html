@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html dir="#LANG_DIR" lang="#LANG" class="[(#LANG_DIR)][ (#LANG)] no-js">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');</script>
+	<title><:association:profil_de_lassociation:> - [(#NOM_SITE_SPIP|textebrut)]</title>
+	<INCLURE{fond=inclure/head,robots=none} />
+</head>
+<body class="pas_surlignable page_profil">
+<div class="page">
+	<INCLURE{fond=inclure/header} />
+	<INCLURE{fond=inclure/nav,env} />
+	<main class="main" role="main">
+		<div class="wrapper">
+			<div class="content" id="content">
+				<p class="arbo"><a href="#URL_SITE_SPIP/"><:accueil_site:></a> &gt; <strong class="on"><:association:profil_de_lassociation:></strong></p>
+				[(#SESSION{id_auteur}|oui)
+					<INCLURE{fond=content/fiche_adherent,env} />
+					<INCLURE{fond=content/inc/profil-statut_cotisation,env} />
+					<INCLURE{fond=content/inc/profil-newsletter,env} />
+				]
+				[(#SESSION{id_auteur}|non)
+					<h1><:association:profil_de_lassociation:></h1>
+					#FORMULAIRE_LOGIN{#SELF}
+				]
+			</div>
+		</div>
+		<aside class="aside" role="complementary">
+			<INCLURE{fond=inclure/navsub} />
+			#FORMULAIRE_RECHERCHE
+		</aside>
+	</main>
+	<INCLURE{fond=inclure/footer,self=#SELF} />
+</div>
+</body>
+</html>

@@ -5,7 +5,9 @@ associations Blobul pour SPIP 4 et PHP 8.
 
 La branche `4.x` part du comportement éprouvé du BO 6.8 et utilise Associaspip
 2.1 et 2.2 comme références logiques. Le chantier remplace progressivement le
-monolithe par des plugins métier autonomes conformes aux conventions SPIP.
+monolithe par des plugins métier autonomes conformes aux conventions SPIP, tous
+versionnés dans ce monorepo : le socle est à la racine et les modules sont sous
+`plugins/`.
 
 ## État
 

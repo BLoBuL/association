@@ -1,4 +1,5 @@
 [(#AUTORISER{adherents_menu}|sinon_interdire_acces)]
+<h1 class="grostitre"><:association:titre_onglet_adherents:></h1>
 [(#SET{criteres_sql,#VAL{criteres_sql}|preparer_liste_adherents})]
 [(#SET{liste_adherents,#VAL{array_auteur}|preparer_liste_adherents|trier_colonne_dynamique})]
 [(#SET{filtres_effectifs,#VAL|filtres_effectifs})]
@@ -346,7 +347,4 @@
         </div>
     </div>
 </div>
-]
-[(#SESSION{id_auteur}|=={1}|oui)
-<p class="debug">Debug - nombre d'adhérents retournés : [(#GET{liste_adherents}|count)]<br> - Critères SQL : <br>[(#GET{criteres_sql})]</p>
 ]

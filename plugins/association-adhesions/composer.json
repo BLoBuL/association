@@ -1,0 +1,9 @@
+{
+  "name": "spip-contrib/association-adhesions",
+  "description": "Adhésions et cotisations pour la suite Association 4",
+  "type": "spip-plugin",
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": ">=8.0"
+  }
+}
