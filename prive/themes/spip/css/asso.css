@@ -75,7 +75,7 @@
  * Son padding horizontal de 20 px sur body crée sinon un débordement sur les
  * téléphones de 375 à 414 px. */
 @media (max-width: 415px) {
-    body {
+    html body {
         padding-right: 0;
         padding-left: 0;
     }
