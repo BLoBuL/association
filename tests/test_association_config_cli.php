@@ -122,11 +122,11 @@ association_config_cli_test_assert(
 );
 $chemins_formulaire = array();
 foreach (array_keys($saisies_persistantes) as $nom) {
-	$chemins_formulaire[] = 'association_metas/' . $nom;
+	$chemins_formulaire[] = '/association_metas/' . $nom;
 }
 $chemins_registre_association = array();
 foreach ($registre as $definition) {
-	if (isset($definition['path']) && strpos($definition['path'], 'association_metas/') === 0) {
+	if (isset($definition['path']) && strpos($definition['path'], '/association_metas/') === 0) {
 		$chemins_registre_association[] = $definition['path'];
 	}
 }

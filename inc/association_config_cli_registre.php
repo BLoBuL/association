@@ -155,7 +155,9 @@ function association_config_cli_completer_registre($registre) {
 	}
 
 	foreach ($definitions as $nom => $spec) {
-		$path = 'association_metas/' . $spec[0];
+		// Le slash initial désigne explicitement la table de métas dédiée.
+		// Sans lui, SPIP interprète association_metas comme un casier de spip_meta.
+		$path = '/association_metas/' . $spec[0];
 		if (isset($paths_existants[$path])) {
 			continue;
 		}
