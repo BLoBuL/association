@@ -127,14 +127,14 @@ function pipeline($nom, $flux) {
 			'association_paiements_association_configuration_saisies',
 			'association_compta_association_configuration_saisies',
 		) as $fournisseur) { $flux = $fournisseur($flux); }
-		return $flux;
+		return $flux['data'];
 	}
 	if ($nom === 'association_configuration_verifier') {
 		foreach (array(
 			'association_compta_association_configuration_verifier',
 			'association_communication_association_configuration_verifier',
 		) as $fournisseur) { $flux = $fournisseur($flux); }
-		return $flux;
+		return $flux['data'];
 	}
 	$data = $flux['data'] ?? $flux;
 	if ($nom === 'association_config_cli_registre') {

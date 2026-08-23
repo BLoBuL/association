@@ -102,7 +102,9 @@ $contributions = pipeline('association_configuration_saisies', array(
     'args' => array('config' => $config, 'disable_meta_admin' => $disable_meta_admin),
     'data' => array(),
 ));
-$contributions = is_array($contributions) ? ($contributions['data'] ?? array()) : array();
+$contributions = is_array($contributions)
+    ? (array_key_exists('args', $contributions) ? ($contributions['data'] ?? array()) : $contributions)
+    : array();
 usort($contributions, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
 foreach ($contributions as $contribution) {
     $saisies = array_merge($saisies, (array) ($contribution['saisies'] ?? array()));
@@ -220,7 +222,9 @@ function formulaires_configurer_association_verifier_dist($config) {
 		'args' => array('config' => $config),
 		'data' => array(),
 	));
-	$contributions = is_array($contributions) ? ($contributions['data'] ?? array()) : array();
+	$contributions = is_array($contributions)
+		? (array_key_exists('args', $contributions) ? ($contributions['data'] ?? array()) : $contributions)
+		: array();
 	usort($contributions, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
 	foreach ($contributions as $contribution) {
 		$erreurs = array_merge($erreurs, (array) ($contribution['erreurs'] ?? array()));
