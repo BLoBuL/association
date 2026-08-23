@@ -542,3 +542,12 @@ Paiements utilise désormais son domaine `association_paiements`. Le commit
 `0219a18559119fade822f023bb531c41f3b49e0d116dfa101497699f0b42fc28`.
 Le serveur résout le domaine depuis Paiements, restitue les libellés de statut
 et remboursement puis compile le formulaire en 1292 octets sans erreur.
+
+## Lot 42 — domaine de langue Communication
+
+Communication utilise désormais son domaine `association_communication`. Le
+commit `0d524fb` a été déployé atomiquement depuis l'artefact SHA-256
+`1fa6b553a5d2f2419eb8bbb6a075ae836b55a6bf8590143a95c34bf2eccd78c7`.
+Le serveur confirme les clés statiques, la famille dynamique des sujets
+d'événements et la clé Newsletter préexistante, puis compile le formulaire de
+gabarit en 387 octets sans erreur.
