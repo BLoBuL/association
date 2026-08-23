@@ -115,6 +115,19 @@ $verifier(
 		&& strpos(file_get_contents($racine . '/genie/association_maintenance_bdd.php'), 'function asso_recuperer_auteurs_inactifs(') === false,
 	'La maintenance des auteurs doit appartenir à Adhésions.'
 );
+$dons_lang = file_get_contents($racine . '/plugins/association-dons/lang/association_dons_fr.php');
+$dons_sources = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-dons')) as $dons_source) {
+	if ($dons_source->isFile() && preg_match('/\.(?:php|html)$/', $dons_source->getFilename()) && strpos($dons_source->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$dons_sources .= file_get_contents($dons_source->getPathname());
+	}
+}
+$verifier(
+	strpos($dons_sources, 'association:') === false
+		&& strpos($dons_sources, 'association_dons:') !== false
+		&& strpos($dons_lang, "'ajouter_un_don'") !== false,
+	'Le plugin Dons doit utiliser son propre domaine de langue.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

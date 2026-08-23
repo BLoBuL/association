@@ -62,15 +62,15 @@ function formulaires_editer_asso_dons_verifier_dist($id_don) {
 	$argent = association_recupere_montant(_request('argent'));
 	$valeur = association_recupere_montant(_request('valeur'));
 
-	if ($argent<0) $erreurs['argent'] = _T('association:erreur_montant');
-	if ($valeur<0) $erreurs['valeur'] = _T('association:erreur_montant');	
+	if ($argent<0) $erreurs['argent'] = _T('association_dons:erreur_montant');
+	if ($valeur<0) $erreurs['valeur'] = _T('association_dons:erreur_montant');
 
 	/* verifier si on a un numero d'adherent qu'il existe dans la base */
 	$id_adherent = _request('id_adherent');
 	if ($id_adherent != '') {
 		$id_adherent = intval($id_adherent);
 		if (sql_countsel('spip_auteurs', "id_auteur=$id_adherent")==0) {
-			$erreurs['id_adherent'] = _T('association:erreur_id_adherent');
+			$erreurs['id_adherent'] = _T('association_dons:erreur_id_adherent');
 		}
 		
 	}
@@ -83,7 +83,7 @@ function formulaires_editer_asso_dons_verifier_dist($id_don) {
 	}
 
 	if (count($erreurs)) {
-	$erreurs['message_erreur'] = _T('association:erreur_titre');
+	$erreurs['message_erreur'] = _T('association_dons:erreur_titre');
 	}
 
 	
@@ -111,4 +111,3 @@ function formulaires_editer_asso_dons_traiter($id_don) {
 	}
 	return formulaires_editer_objet_traiter('asso_dons', $id_don, '', '',  generer_url_ecrire('dons'), '');
 }
-

@@ -3,30 +3,30 @@
 <form method="post" action="#ENV{action}"><div>
 	#ACTION_FORMULAIRE{#ENV{action}}
 	<ul>
-		<h3 class="legend"><:association:dons_titre_mise_a_jour:></h3>
+		<h3 class="legend"><:association_dons:dons_titre_mise_a_jour:></h3>
 		#SET{erreurs,#ENV**{erreurs}|table_valeur{date_don}}
 		<li class="editer_date_don">
 			[<span class='erreur_message'>(#GET{erreurs})</span>]
-			<label for="date_don"><strong><:association:date_aaaa_mm_jj:></strong></label>
+			<label for="date_don"><strong><:association_dons:date_aaaa_mm_jj:></strong></label>
 			<input type="text" name="date_don" [value="(#ENV{date_don}|affdate{d/m/Y})"] id="date_don"  class='formo'/>
 		</li>
 
 		<li class="editer_bienfaiteur">
-			<label for="bienfaiteur"><strong><:association:nom_du_bienfaiteur:></strong></label>
+			<label for="bienfaiteur"><strong><:association_dons:nom_du_bienfaiteur:></strong></label>
 			<input type="text" name="bienfaiteur" [value="(#ENV{bienfaiteur})"] id="bienfaiteur"  class='formo'/>
 		</li>
 
 		#SET{erreurs,#ENV**{erreurs}|table_valeur{id_adherent}}
 		<li class="editer_id_adherent">
 			[<span class='erreur_message'>(#GET{erreurs})</span>]
-			<label for="id_adherent"><strong><:association:nd_de_membre:></strong></label>
+			<label for="id_adherent"><strong><:association_dons:nd_de_membre:></strong></label>
 			<input type="text" name="id_adherent" [value="(#ENV{id_adherent})"] id="id_adherent"  class='formo'/>
 		</li>
 		
 		#SET{erreurs,#ENV**{erreurs}|table_valeur{argent}}
 		<li class="editer_argent">
 			[<span class='erreur_message'>(#GET{erreurs})</span>]
-			<label for="argent"><strong><:association:don_financier_en_e__:></strong></label>
+			<label for="argent"><strong><:association_dons:don_financier_en_e__:></strong></label>
 			<input type="text" name="argent" [value="(#ENV{argent})"] id="argent"  class='formo'/>
 		</li>
 
@@ -46,24 +46,24 @@
 		]
 
 		<li class="editer_colis">
-			<label for="colis"><strong><:association:colis:></strong></label>
+			<label for="colis"><strong><:association_dons:colis:></strong></label>
 			<input type="text" name="colis" [value="(#ENV{colis})"] id="colis"  class='formo'/>
 		</li>
 
 		#SET{erreurs,#ENV**{erreurs}|table_valeur{valeur}}
 		<li class="editer_valeur">
 			[<span class='erreur_message'>(#GET{erreurs})</span>]
-			<label for="valeur"><strong><:association:contre_valeur_en_e__:></strong></label>
+			<label for="valeur"><strong><:association_dons:contre_valeur_en_e__:></strong></label>
 			<input type="text" name="valeur" [value="(#ENV{valeur})"] id="valeur"  class='formo'/>
 		</li>
 
 		<li class="editer_contrepartie">
-			<label for="contrepartie"><strong><:association:geste_association:></strong></label>
+			<label for="contrepartie"><strong><:association_dons:geste_association_dons:></strong></label>
 			<input type="text" name="contrepartie" [value="(#ENV{contrepartie})"] id="contrepartie"  class='formo'/>
 		</li>
 
 		<li class="editer_commentaire">
-			<label for="commentaire"><strong><:association:remarques:></strong></label>
+			<label for="commentaire"><strong><:association_dons:remarques:></strong></label>
 			<input type="text" name="commentaire" [value="(#ENV{commentaire})"] id="commentaire"  class='formo'/>
 		</li>
 

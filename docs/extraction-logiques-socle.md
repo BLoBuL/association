@@ -479,6 +479,14 @@ l'anonymisation des auteurs inactifs appartiennent à Adhésions. Une phase
 nettoyage et transmet au socle uniquement le résumé et les identifiants utiles
 aux autres modules.
 
+## Lot 38 : domaine de langue Dons
+
+Les vingt-neuf libellés consommés par Dons sont fournis par
+`association_dons_fr.php` et les squelettes/CVT utilisent le domaine
+`association_dons`. Les langues sans traduction dédiée bénéficient du repli
+SPIP vers le français. Le domaine historique du socle n'est plus requis par ce
+plugin.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
