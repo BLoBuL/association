@@ -8,17 +8,19 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * Maintenance des abonnements et redirections, propriété de Communication.
  */
 
-// Mapping spécifique des types 'spip_urls' vers la table/colonne réelles
 if (!function_exists('asso_table_col_for_type')) {
     function asso_table_col_for_type($type) {
-        // Cas particuliers connus
-        $special = array(
-            'site' => array('spip_syndic', 'id_syndic'), // spip_sites n'existe pas sur certaines installations
-            // ajouter d'autres mappings si nécessaire
-        );
-        if (isset($special[$type])) return $special[$type];
-        // Valeur par défaut : spip_{type}s et id_{type}
-        return array('spip_' . $type . 's', 'id_' . $type);
+        if (!preg_match('/^[a-z0-9_]+$/i', (string) $type)) {
+            return array();
+        }
+        include_spip('base/objets');
+        $table = table_objet_sql($type);
+        $colonne = id_table_objet($type);
+        $description = $table ? sql_showtable($table, true) : array();
+        if (!$table || !$colonne || empty($description['field'][$colonne])) {
+            return array();
+        }
+        return array($table, $colonne);
     }
 }
 
@@ -93,15 +95,6 @@ function asso_supprimer_urls_obsoletes($dry_run = true, $lot = 1000) {
     if (!$types) return ['supprimees' => 0, 'ignore' => true];
 
     foreach ($types as $type) {
-        // Obtenir table/col réelles (mapping inline, garanti)
-        if ($type === 'site') {
-            $table = 'spip_syndic';
-            $col = 'id_syndic';
-        } else {
-            $table = 'spip_' . $type . 's';
-            $col = 'id_' . $type;
-        }
-
          // Si le type est malformé (ex: contient un point -> base.qualifiee), on nettoie ces urls directement
          if (preg_match('/\./', $type) || !preg_match('/^[a-z0-9_]+$/i', $type)) {
              $res_bad = sql_select('url', 'spip_urls', 'type=' . sql_quote($type), '', '', intval($lot));
@@ -110,6 +103,13 @@ function asso_supprimer_urls_obsoletes($dry_run = true, $lot = 1000) {
              }
              continue;
          }
+
+         $cible = asso_table_col_for_type($type);
+         if (!$cible) {
+            $ignores[] = $type;
+            continue;
+         }
+         list($table, $col) = $cible;
 
          // Tentative protégée : effectuer la requête LEFT JOIN ; si échec SQL (table/colonne absente), on retombe sur la solution de repli
          $join_query = "u.url";
@@ -160,15 +160,6 @@ function asso_supprimer_urls_obsoletes($dry_run = true, $lot = 1000) {
 function asso_supprimer_urls_par_type($type, $dry_run = true, $lot = 1000) {
     $ids = [];
     $ignores = [];
-    // Mapping inline garanti (site -> spip_syndic)
-    if ($type === 'site') {
-        $table = 'spip_syndic';
-        $col = 'id_syndic';
-    } else {
-        $table = 'spip_' . $type . 's';
-        $col = 'id_' . $type;
-    }
-
      // Si type invalide -> supprimer toutes les urls de ce type
      if (preg_match('/\./', $type) || !preg_match('/^[a-z0-9_]+$/i', $type)) {
          $res_all = sql_select('url', 'spip_urls', 'type=' . sql_quote($type), '', '', intval($lot));
@@ -176,6 +167,11 @@ function asso_supprimer_urls_par_type($type, $dry_run = true, $lot = 1000) {
              $ids[] = $r['url'];
          }
      } else {
+        $cible = asso_table_col_for_type($type);
+        if (!$cible) {
+            return array('supprimees' => 0, 'types_ignores' => array($type));
+        }
+        list($table, $col) = $cible;
         // Tentative protégée : JOIN ; si échec SQL (table/colonne absente), on récupère toutes les urls de ce type
         $join_query = "u.url";
         $join_from = "spip_urls AS u LEFT JOIN $table AS o ON o.$col=u.id_objet AND u.type=" . sql_quote($type);
