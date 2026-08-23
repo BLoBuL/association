@@ -96,6 +96,9 @@ function formulaires_editer_asso_ventes_verifier_dist($id_vente) {
 function formulaires_editer_asso_ventes_traiter($id_vente) {
 		//convertir les date au format timedate
 	foreach ($_POST as $champ => $mot) {
+		if (!is_string($mot)) {
+			continue;
+		}
 
 		//verification champs vide ou null
 		if ($_POST[$champ] == ''){ 

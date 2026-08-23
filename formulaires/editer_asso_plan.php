@@ -79,6 +79,9 @@ function formulaires_editer_asso_plan_traiter_dist($id_plan='') {
 	/* partie de code grandement inspiree du code de formulaires_editer_objet_traiter dans ecrire/inc/editer.php */
 	//convertir les date au format timedate
 	foreach ($_POST as $champ => $mot) {
+		if (!is_string($mot)) {
+			continue;
+		}
 
 		//verification champs vide ou null
 		if ($_POST[$champ] == ''){ 

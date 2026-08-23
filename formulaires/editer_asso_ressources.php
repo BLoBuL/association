@@ -63,6 +63,9 @@ function formulaires_editer_asso_ressources_verifier_dist($id_ressource='') {
 function formulaires_editer_asso_ressources_traiter($id_ressource='') {
 		//convertir les date au format timedate
 	foreach ($_POST as $champ => $mot) {
+		if (!is_string($mot)) {
+			continue;
+		}
 
 		//verification champs vide ou null
 		if ($_POST[$champ] == ''){ 

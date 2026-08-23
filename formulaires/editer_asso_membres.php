@@ -29,6 +29,9 @@ function formulaires_editer_asso_membres_verifier_dist($id_auteur) {
 	//UPDATE controle de la date en mode automatise
 	
 	foreach ($_POST as $champ => $mot) {
+		if (!is_string($mot)) {
+			continue;
+		}
 
 		if ($_POST[$champ] == '') {
 		} else {
@@ -53,6 +56,9 @@ function formulaires_editer_asso_membres_traiter($id_auteur) {
 	$checkboxArray = array();
 	
 	foreach ($_POST as $champ => $mot) {
+		if (!is_string($mot)) {
+			continue;
+		}
 
 		//verification champs vide ou null
 		if ($_POST[$champ] == ''){ 

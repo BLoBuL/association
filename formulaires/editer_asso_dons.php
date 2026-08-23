@@ -93,6 +93,9 @@ function formulaires_editer_asso_dons_verifier_dist($id_don) {
 function formulaires_editer_asso_dons_traiter($id_don) {
 	//convertir les date au format timedate
 	foreach ($_POST as $champ => $mot) {
+		if (!is_string($mot)) {
+			continue;
+		}
 
 		//verification champs vide ou null
 		if ($_POST[$champ] == ''){ 
