@@ -700,3 +700,18 @@ Après actualisation du registre et du cache, l'API servie reconstruit exactemen
 24 options du format v1 : 12 options `evenement.*` fournies par Événements et
 12 options `debug.*` fournies par le socle. Le vérificateur d'installation reste
 valide et aucun fatal ou échec de validation de snapshot n'est journalisé.
+
+## Lot 56 — migrations historiques composables
+
+Le commit `5ad0ab7` a été déployé atomiquement dans le socle et les sept
+modules qui possèdent des migrations historiques depuis l'artefact SHA-256
+`3ab8df82fe5562f32392f1d4e2618ec5acdb2ff64af2f2d2ebed870aef7cefd3`.
+L'actualisation du registre n'avait aucune migration à rejouer sur la base déjà
+à jour.
+
+Sur le SPIP servi, le pipeline reconstruit 55 jalons ; le jalon 1.1.0 contient
+ses 7 opérations dans l'ordre attendu et la sérialisation complète possède
+l'empreinte historique
+`aeefc0bcd675e66c3ad52eeb6b033c031f59508cad4c8460a9e0641b91982670`.
+Le vérificateur d'installation reste valide et aucun fatal ni message de
+migration anormal n'est présent dans les journaux de la recette.
