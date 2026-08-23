@@ -661,3 +661,19 @@ Le fichier PHP servi passe le lint et ne contient plus le helper ni le bloc
 global morts. L’assemblage réel conserve ses 19 champs ; le dry-run charge
 toujours 12 actions et 12 résultats sans modifier les six tables contrôlées.
 Aucune erreur SPIP n’est relevée sur la fenêtre du déploiement.
+
+## Lot 53 — registre CLI composable
+
+Le commit `6d22162` a été déployé atomiquement dans le socle, Adhésions,
+Événements, Comptabilité, Paiements et Communication depuis l’artefact
+SHA-256 `40618e9c5a569a6aede36327402392d4c12e18afd167c91101853e31214fa14b`.
+Le registre des plugins et le cache ont été actualisés avec le binaire SPIP
+CLI canonique.
+
+La commande servie `association:config:lire --format=json` retourne les 135
+options attendues. Les six échantillons couvrant le socle et chacun des cinq
+fournisseurs sont présents : `maintenance.active`, `adhesion.validite`,
+`evenement.inscription`, `paiement.modes_adhesion`, `affichage.segments` et
+`comptabilite.active`. `spip test:spip` valide encore PDO, SPIP et la version
+4.4.21 ; aucun fatal, appel non capturé ou doublon du registre n’apparaît dans
+les journaux de la fenêtre de recette.
