@@ -81,7 +81,7 @@ function association_justificatifs_cotisation_supprimer($id_compte, $id_document
         if (sql_countsel('spip_documents_liens', $autres_liens)) {
             return array('ok' => false, 'message' => _T('association:justificatifs_suppression_document_partage'));
         }
-        if (!autoriser('supprimer', 'document', $document_id)) {
+        if (!autoriser('modifier', 'document', $document_id)) {
             return array('ok' => false, 'message' => _T('association:justificatifs_suppression_interdite'));
         }
     }
@@ -91,6 +91,8 @@ function association_justificatifs_cotisation_supprimer($id_compte, $id_document
     foreach ($documents as $document_id) {
         supprimer_lien_document($document_id, 'compte', $id_compte, false, false);
         if (!action_supprimer_document_dist($document_id)) {
+            include_spip('action/editer_liens');
+            objet_associer(array('document' => $document_id), array('compte' => $id_compte));
             return array('ok' => false, 'message' => _T('association:justificatifs_suppression_echec'));
         }
     }

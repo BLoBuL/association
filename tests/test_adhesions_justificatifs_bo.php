@@ -58,12 +58,24 @@ function supprimer_lien_document($id_document, $objet, $id_objet, $supprime, $ch
     return true;
 }
 function action_supprimer_document_dist($id_document) {
+	if (!empty($GLOBALS['test_echec_suppression'])) {
+		return false;
+	}
     $GLOBALS['test_liens'] = array_values(array_filter(
         $GLOBALS['test_liens'],
         fn($l) => $l['id_document'] !== $id_document
     ));
     $GLOBALS['test_documents_supprimes'][] = $id_document;
     return true;
+}
+function objet_associer($source, $cible) {
+	$GLOBALS['test_liens'][] = array(
+		'id_document' => intval($source['document']),
+		'id_objet' => intval($cible['compte']),
+		'objet' => 'compte',
+		'vu' => 'non',
+	);
+	return true;
 }
 function suivre_invalideur($quoi) { return true; }
 function test_assert($condition, $message) {
@@ -83,7 +95,11 @@ $GLOBALS['test_liens'] = array_slice($GLOBALS['test_liens'], 0, 1);
 test_assert(!association_justificatifs_cotisation_marquer(20, true)['ok'], 'un dossier incomplet ne peut pas être validé');
 $source_squelette = file_get_contents(PLUGIN_ROOT . '/prive/inclure/justificatifs_cotisation.html');
 $source_helper = file_get_contents(PLUGIN_ROOT . '/inc/justificatifs_cotisation.php');
-test_assert(str_contains($source_helper, "autoriser('supprimer', 'document', \$document_id)"), 'la suppression prévalide l autorisation exacte avant de détacher un document');
+test_assert(
+    str_contains($source_helper, "autoriser('modifier', 'document', \$document_id)")
+        && str_contains($source_helper, "objet_associer(array('document' => \$document_id), array('compte' => \$id_compte))"),
+    'un échec de suppression réassocie le document après le contrôle préalable'
+);
 test_assert(str_contains($source_squelette, 'justificatifs-entete') && str_contains($source_squelette, 'justificatifs-pied'), 'le bloc de contrôle possède une hiérarchie visuelle dédiée');
 test_assert(str_contains($source_squelette, 'justificatif-description') && str_contains($source_squelette, 'justificatif-statut'), 'chaque document sépare description et statut');
 test_assert(str_contains($source_squelette, 'supprimer_justificatifs_cotisation') && str_contains($source_squelette, 'justificatifs_suppression_confirmation'), 'la suppression définitive exige une confirmation');
@@ -108,4 +124,10 @@ $GLOBALS['test_liens'] = array(
 );
 $resultat = association_justificatifs_cotisation_supprimer(20);
 test_assert(!$resultat['ok'] && count($GLOBALS['test_liens']) === 2, 'un document partagé bloque toute suppression destructive');
+$GLOBALS['test_liens'] = array(
+	array('id_document' => 4, 'id_objet' => 20, 'objet' => 'compte', 'vu' => 'oui'),
+);
+$GLOBALS['test_echec_suppression'] = true;
+$resultat = association_justificatifs_cotisation_supprimer(20);
+test_assert(!$resultat['ok'] && count($GLOBALS['test_liens']) === 1, 'un échec SPIP réassocie le justificatif à sa cotisation');
 echo "Tests BO justificatifs terminés.\n";
