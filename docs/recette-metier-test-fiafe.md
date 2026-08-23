@@ -19,16 +19,18 @@ ne suffit pas à valider son parcours métier.
 | --- | --- | --- | --- |
 | Socle | accueil privé webmaster | H1, navigation et menus métier servis sans erreur fatale | validé |
 | Socle | autorisations rédacteur | activités et bénévoles accessibles ; adhérents, cotisations, comptabilité, dons, prêts, ressources, ventes, destinations et configuration interdits | validé |
-| Adhésions | listes adhérents et cotisations | pages privées servies et protections contrôlées | partiel : création/renouvellement réel à rejouer |
-| Événements | événement public 230 | page canonique et URL propre, formulaire `inscription_evenement_public`, affichage bureau et mobile | partiel : soumission volontairement arrêtée avant paiement |
-| Comptabilité | liste des opérations | page et opération historique servies sans erreur | partiel : écriture synthétique complète à rejouer |
-| Dons | liste et formulaire de création | pages servies sans erreur | partiel : cycle création/suppression à rejouer |
-| Ventes | liste et formulaire de création | pages servies sans erreur | partiel : cycle création/suppression à rejouer |
+| Adhésions | cotisation gratuite documentée | auteur sans email, catégorie gratuite, refus sans deux justificatifs, création avec deux PNG synthétiques et notification désactivée | validé |
+| Adhésions | nettoyage de recette | documents physiques et SQL, cotisation, compte et auteur synthétiques supprimés ; relecture à zéro | validé |
+| Événements | inscription gratuite à l'événement public 230 | auteur synthétique sans email, responsable synthétique, soumission publique, activité créée sans transaction ni notification, contrôle BO puis nettoyage ciblé | validé |
+| Événements | nettoyage de recette | activité et auteurs synthétiques supprimés, responsable d'origine restauré ; relecture à zéro | validé |
+| Comptabilité | écriture manuelle | montant nul et champs obligatoires refusés ; création à 0,01, redirection vers `exec=comptes`, puis suppression ciblée relue | validé |
+| Dons | création et comptabilisation | date impossible et montant négatif refusés ; création à montant nul, écriture liée puis suppression ciblée relue | validé |
+| Ventes | création et comptabilisation | date, quantité et montants invalides refusés ; création à montant nul, écriture liée puis suppression ciblée relue | validé |
 | Prêts | liste globale | toutes les ressources sont listées sans faux message « ressource introuvable » | validé |
 | Prêts | ressource puis réservation | création BO d'une ressource à 0 EUR, affichage public, réservation de 7 jours et affichage public de l'état | validé |
 | Prêts | état sans restitution | « Non restituée » remplace la date SQL sentinelle `0000-00-00` | validé |
 | Prêts | nettoyage | suppression transactionnelle ciblée, puis relecture : 0 prêt et 0 ressource synthétiques | validé |
-| Communication | abonnement newsletter | squelette public et formulaire natif Newsletter servis, sans envoi | partiel : validation négative à rejouer |
+| Communication | abonnement newsletter | squelette public et formulaire natif Newsletter servis ; adresse invalide bloquée nativement, sans inscription ni envoi | validé sans envoi réel |
 | Front office | accueil, profil, inscription, événement, ressources et newsletter | H1, absence d'erreur fatale et absence de débordement horizontal sur les pages contrôlées | validé pour le rendu ; scénarios métier encore détaillés ci-dessus |
 
 ## Défauts trouvés et corrigés pendant la recette
@@ -41,20 +43,60 @@ ne suffit pas à valider son parcours métier.
    « Aucune ressource ». Ce bloc est désormais limité au mode liste globale.
 3. Un prêt en cours exposait `0000` comme date de retour. Le catalogue affiche
    désormais l'état traduit « Non restituée ».
+4. Les traitements de dons, ventes, ressources, plan comptable et membres
+   appliquaient une expression régulière aux champs POST tableaux. Sous PHP 8,
+   la création d'un don provoquait un `TypeError`. Les normalisations de dates
+   ignorent désormais explicitement les valeurs non textuelles.
+5. Les crochets de `name="drop[]"` fermaient prématurément un bloc optionnel du
+   squelette des ventes et exposaient `[( |oui)]`. Ils sont encodés dans le
+   source et restitués par le navigateur sous le nom attendu `drop[]`.
+6. Une écriture comptable valide redirigeait vers la page legacy
+   `exec=asso_comptes`. La cible est désormais la page SPIP 4 `exec=comptes`.
+7. Les routes de création et d'édition de cotisation ne possédaient aucun H1.
+   Elles servent désormais exactement un titre privé « Ajout de cotisation ».
+8. L'API de cotisation écrasait la justification préparée par le formulaire avec
+   une chaîne codée en dur et mal encodée (`nÂ°`). Elle conserve désormais le
+   libellé fourni, avec repli sur la traduction métier.
+9. Un échec de suppression SPIP après dissociation pouvait laisser un
+   justificatif orphelin. Le helper réassocie désormais le document à la
+   cotisation avant de retourner l'erreur.
+10. Le détail des participants d'une inscription événement recevait aussi des
+    identifiants POST vides ou non scalaires et déclenchait une dépréciation
+    sous PHP 8. Le générateur ignore désormais ces valeurs avant toute lecture.
+11. Le tableau de bord d'un événement ne possédait pas le titre principal
+    attendu par les pages privées SPIP 4. Il sert désormais exactement un H1
+    portant le titre de l'événement.
+12. Les pipelines d'extension `association_inscription_evenement_verifier` et
+    `association_inscription_evenement_traiter` étaient appelés sans être
+    déclarés par le module Événements. SPIP consignait donc une fonction
+    `execute_pipeline_*` absente à chaque inscription. Les trois pipelines
+    charger, vérifier et traiter sont désormais déclarés comme points
+    d'extension sans handler interne.
+13. Les traces diagnostiques `IE_*` d'un parcours événementiel normal étaient
+    écrites au niveau `CRITIQUE`. Elles passent au niveau `DEBUG` ; seule une
+    impossibilité métier réelle de créer une liste de diffusion reste critique.
 
 ## Non-régression
 
-- 52 tests PHP autonomes réussis ;
-- 269 fichiers PHP contrôlés sans erreur de syntaxe ;
+- 56 tests PHP autonomes sont présents ; leur dernière passe complète est
+  consignée lors de la clôture ci-dessous ;
+- 272 fichiers PHP contrôlés sans erreur de syntaxe ;
 - compilation réelle des squelettes vérifiée par les pages privées et publiques
   après purge du cache ;
-- aucune donnée synthétique du parcours prêts/ressources ne subsiste.
+- aucune donnée synthétique des parcours prêts/ressources, dons, ventes et
+  comptabilité ne subsiste, y compris dans `spip_asso_comptes`.
 
 ## Journaux
 
 L'erreur SQL `Unknown column 'date_acquisitionDESC'` du 23 août à 03:21 est
 antérieure au correctif du modèle et ne se reproduit plus. Les parcours suivants
 n'ont produit aucune nouvelle erreur SQL Association.
+
+La recette événementielle synthétique a volontairement utilisé un auteur sans
+email afin qu'aucun message réel ne puisse partir. Le job public de notification
+a donc consigné l'absence de destinataire, sans envoi. Ce résultat ne constitue
+pas un échec d'envoi réel ; les tests automatisés couvrent séparément la création
+unique du job attendu pour une inscription publique.
 
 Deux messages restent observés immédiatement après certaines purges globales de
 cache : pipeline `taches_generales_cron` momentanément indisponible et connexion
@@ -64,9 +106,5 @@ restent fonctionnels.
 
 ## Reste à clôturer
 
-- adhésion et cotisation avec données synthétiques, sans paiement réel ;
-- création et suppression réversibles d'une écriture comptable, d'un don et
-  d'une vente ;
-- validation négative de la newsletter sans destinataire réel ;
 - nouvelle passe multi-profils et responsive après ces scénarios ;
 - scan final des journaux à partir de l'heure de cette dernière passe.

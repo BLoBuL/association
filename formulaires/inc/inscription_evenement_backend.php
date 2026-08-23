@@ -114,7 +114,7 @@ function ie_log_formater_multi($trace_id, $mode, $post, $data_form, $phase) {
         'categories_selectionnees' => $categories_selectionnees,
         'premier_inscrit_nom_present' => in_array('nom', $champs_reconstruits, true) ? 1 : 0,
         'premier_inscrit_complete' => count($champs_reconstruits) === 4 ? 1 : 0,
-    )), 'association' . _LOG_CRITIQUE);
+    )), 'association' . _LOG_DEBUG);
 }
 
 /**
@@ -539,7 +539,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
         // --- CAS FAMILLE + PAYANT + AVEC ACCOMPAGNANTS ---
         // Un radio par membre de la famille pour sélectionner son tarif.
         } elseif ($saisie_famille_active == 'oui' && !empty($id_auteur_connecte) && !empty($affichage_dans_activites['accompagnants'])) {
-            spip_log('[IE_CHARGER][CAS_FAMILLE_PAYANT_ACCOMPAGNANTS] famille_active=oui id_auteur=' . intval($id_auteur_connecte) . ' nb_membres=' . count((array)$data_famille), 'association' . _LOG_CRITIQUE);
+            spip_log('[IE_CHARGER][CAS_FAMILLE_PAYANT_ACCOMPAGNANTS] famille_active=oui id_auteur=' . intval($id_auteur_connecte) . ' nb_membres=' . count((array)$data_famille), 'association' . _LOG_DEBUG);
             $datas_categories_filtrees = generer_array_categories_participation($tableau_categories, 'datas', $array_type_adherents, 1);
             if (empty($datas_categories_filtrees)) {
                 $datas_categories_filtrees = $datas_categories;
@@ -1615,7 +1615,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
             'post_normalise_has_nom_participants' => (is_array($post_normalise) && array_key_exists('nom_participants', $post_normalise)) ? 'oui' : 'non',
             'nom_participants_longueur' => strlen($nom_participants),
             'nom_participants_vide' => ($nom_participants === '' ? 'oui' : 'non'),
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
 
         if ($nom_participants === '') {
             $erreurs['nom_participants'] = _T('association:erreur_nom_participants');
@@ -1739,8 +1739,8 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
             'erreurs' => array_keys($erreurs),
         );
 
-        spip_log('[IE_VERIFY_BLOCK][' . $trace_id . '] ' . json_encode($payload_debug), 'association' . _LOG_CRITIQUE);
-        spip_log('[IE_VERIFY_RETURN][' . $trace_id . '] retour=' . (empty($erreurs) ? 'OK' : 'KO_' . count($erreurs) . '_erreurs'), 'association' . _LOG_CRITIQUE);
+        spip_log('[IE_VERIFY_BLOCK][' . $trace_id . '] ' . json_encode($payload_debug), 'association' . _LOG_DEBUG);
+        spip_log('[IE_VERIFY_RETURN][' . $trace_id . '] retour=' . (empty($erreurs) ? 'OK' : 'KO_' . count($erreurs) . '_erreurs'), 'association' . _LOG_DEBUG);
     }
 
     spip_log('[IE_VERIFY_RETURN_FINAL][' . $trace_id . '] ' . json_encode(array(
@@ -1749,9 +1749,9 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
         'erreurs_count' => count($erreurs),
         'erreurs_keys' => array_keys($erreurs),
         'will_block_form' => (count($erreurs) > 0 ? 'oui' : 'non'),
-    )), 'association' . _LOG_CRITIQUE);
+    )), 'association' . _LOG_DEBUG);
 
-    spip_log('[IE_VERIFY_ERREURS_ARRAY][' . $trace_id . '] erreurs_complet=' . json_encode($erreurs), 'association' . _LOG_CRITIQUE);
+    spip_log('[IE_VERIFY_ERREURS_ARRAY][' . $trace_id . '] erreurs_complet=' . json_encode($erreurs), 'association' . _LOG_DEBUG);
 
     // Validation du nombre d'invités hors famille (si feature activée pour cet événement)
     if (!empty($affichage_dans_activites['invites'])) {
@@ -1832,7 +1832,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
     }
     $consolidated['message_erreur'] = $message_top;
 
-    spip_log('[IE_VERIFY_ERREURS_CONSOLIDE][' . $trace_id . '] retour=' . json_encode($consolidated), 'association' . _LOG_CRITIQUE);
+    spip_log('[IE_VERIFY_ERREURS_CONSOLIDE][' . $trace_id . '] retour=' . json_encode($consolidated), 'association' . _LOG_DEBUG);
 
     return $consolidated;
 }
@@ -1972,7 +1972,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
             'participants_reels' => $participants_reels,
             'quantite_incoherente' => $quantite_incoherente ? 'oui' : 'non',
             'nom_premier_inscrit_present' => ($nom_premier_inscrit !== '' ? 'oui' : 'non'),
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
         return array(
             'editable' => true,
             'message_erreur' => _T('association:erreur_message_erreur'),
@@ -1992,7 +1992,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
             'raison' => 'tarif_invalide_ou_incoherent',
             'nombre_participants' => $nombre_participants,
             'nombre_tarifs' => intval($analyse_tarifs['nombre_participants'] ?? 0),
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
         return array(
             'editable' => true,
             'message_erreur' => _T('association:erreur_paiement_inscription_incoherent'),
@@ -2010,7 +2010,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
                 'mode' => $mode,
                 'id_evenement' => intval($id_evenement),
                 'raison' => 'aucune_categorie_selectionnee',
-            )), 'association' . _LOG_CRITIQUE);
+            )), 'association' . _LOG_DEBUG);
             return array(
                 'editable' => true,
                 'message_erreur' => _T('association:erreur_nb_inscrits_categorie'),
@@ -2026,7 +2026,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         'categorie_result' => $data_form['categorie_result'] ?? null,
         'montant_total_data_form' => floatval($data_form['montant_total'] ?? 0),
         'transaction_data_form' => $data_form['transaction'] ?? array(),
-    )), 'association' . _LOG_CRITIQUE);
+    )), 'association' . _LOG_DEBUG);
 
     // Calcul du statut d'enregistrement
     // Résoudre id_activite depuis toutes les sources disponibles
@@ -2074,7 +2074,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
             'transaction_calc_tr' => $calc_tr['transaction'] ?? array(),
             'transaction_data_form' => $data_form['transaction'] ?? array(),
             'id_transaction_avant' => intval($id_transaction),
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
         $handle = ie_handle_transaction($montant_total, $data_form['id_auteur'] ?? 0, $id_transaction);
         $id_transaction = $handle['id_transaction'];
         $transaction_persistante = $id_transaction > 0
@@ -2088,7 +2088,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         spip_log('[IE_TRAITER_TRANSACTION][' . $trace_id . '] ' . json_encode(array(
             'id_transaction_apres' => intval($id_transaction),
             'transaction_created' => !empty($handle['created']) ? 'oui' : 'non',
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
     }
 
     // Message journal (appel direct)
@@ -2112,7 +2112,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         'id_activite_result' => intval($id_activite_result),
         'statut_calcule' => $cal_result['statut'] ?? '',
         'id_transaction' => intval($id_transaction),
-    )), 'association' . _LOG_CRITIQUE);
+    )), 'association' . _LOG_DEBUG);
 
     // Post-processing : notifications, mail subscriber, comptes
     if (!empty($id_activite_result)) {
@@ -2320,7 +2320,7 @@ function ie_calculer_transaction($id_evenement, $data_form) {
             'id_evenement' => intval($id_evenement),
             'montant_total_data_form' => floatval($data_form['montant_total'] ?? 0),
             'transaction_data_form' => $data_form['transaction'] ?? array(),
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
         return array(
             'montant_total' => isset($data_form['montant_total']) ? $data_form['montant_total'] : 0,
             'transaction' => isset($data_form['transaction']) ? $data_form['transaction'] : array()
@@ -2333,7 +2333,7 @@ function ie_calculer_transaction($id_evenement, $data_form) {
         'id_evenement' => intval($id_evenement),
         'categorie_result' => $categorie_result,
         'nombre_participants' => intval($nombre_participants),
-    )), 'association' . _LOG_CRITIQUE);
+    )), 'association' . _LOG_DEBUG);
     $res = calculer_montant_total($id_evenement, $categorie_result, $nombre_participants);
     return array(
         'montant_total' => isset($res['montant_total']) ? $res['montant_total'] : 0,
@@ -2359,7 +2359,7 @@ function ie_handle_transaction($montant_total, $id_auteur, $id_transaction = nul
             'montant_total' => floatval($montant_total),
             'id_auteur' => intval($id_auteur),
             'id_transaction' => intval($id_new),
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
         return array('id_transaction' => $id_new, 'created' => true);
     } else {
         // modifier
@@ -2368,7 +2368,7 @@ function ie_handle_transaction($montant_total, $id_auteur, $id_transaction = nul
             'montant_total' => floatval($montant_total),
             'id_auteur' => intval($id_auteur),
             'id_transaction' => intval($id_transaction),
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
         return array('id_transaction' => $id_transaction, 'created' => false);
     }
 }

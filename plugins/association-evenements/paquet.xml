@@ -19,5 +19,7 @@
 	<pipeline nom="declarer_tables_auxiliaires" inclure="base/association_evenements.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_evenements.php" />
 	<pipeline nom="association_inscription_evenement_charger" action="" />
+	<pipeline nom="association_inscription_evenement_verifier" action="" />
+	<pipeline nom="association_inscription_evenement_traiter" action="" />
 	<chemin path="squelettes" type="public" />
 </paquet>

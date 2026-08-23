@@ -687,7 +687,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
             'categorie_brut_type' => isset($data_form['categorie']) ? gettype($data_form['categorie']) : 'absent',
             'categorie_brut' => $data_form['categorie'] ?? null,
             'nom_participants_longueur' => strlen(trim((string)($data_form['nom_participants'] ?? ''))),
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
 
         if (isset($data_form['association']) && $data_form['association'] == 'autre_association') {
             $data_form['association'] = $data_form['autre_association'];
@@ -785,7 +785,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
             spip_log('[IE_FORMATER_CATEGORIE_NORMALISEE][' . $trace_id . '] ' . json_encode(array(
                 'categorie_result_type' => gettype($categorie_result),
                 'categorie_result' => $categorie_result,
-            )), 'association' . _LOG_CRITIQUE);
+            )), 'association' . _LOG_DEBUG);
 
             if (is_array($categorie_result) && !empty($categorie_result)) {
                 $querie_categorie_activite = sql_select("*", "spip_asso_categories_activites AS b JOIN spip_asso_categories_activites_liens as a ON(a.id_categorie=b.id_categorie)", "a.id_evenement=$id_evenement AND b.statut='ok' AND a.montant!=''", '', "montant DESC");
@@ -833,7 +833,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
                             'nombre_participants_cumule' => intval($nombre_participants),
                             'montant_unitaire' => floatval($montant_prepa),
                             'montant_total_cumule' => floatval($montant_total),
-                        )), 'association' . _LOG_CRITIQUE);
+                        )), 'association' . _LOG_DEBUG);
 
                         $transaction[$id_categorie] = array(
                             'nombre' => $nombre_inscrits,
@@ -863,7 +863,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
                                 'id_categorie' => intval($id_categorie),
                                 'nombre_inscrits_categorie' => intval($nb),
                                 'nombre_participants_cumule' => intval($nombre_participants),
-                            )), 'association' . _LOG_CRITIQUE);
+                            )), 'association' . _LOG_DEBUG);
                         } else {
                             $nb = intval($vals);
                             $nombre_participants += $nb;
@@ -878,7 +878,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
                 spip_log('[IE_FORMATER_CATEGORIE_VIDE][' . $trace_id . '] ' . json_encode(array(
                     'id_evenement' => intval($id_evenement),
                     'categorie_result' => $categorie_result,
-                )), 'association' . _LOG_CRITIQUE);
+                )), 'association' . _LOG_DEBUG);
             }
         }
 
@@ -915,7 +915,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
             'categorie_result' => $categorie_result,
             'montant_total' => floatval($montant_total),
             'transaction' => $transaction,
-        )), 'association' . _LOG_CRITIQUE);
+        )), 'association' . _LOG_DEBUG);
         return $data_form;
     }
 /**
