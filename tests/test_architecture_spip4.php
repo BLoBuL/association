@@ -50,6 +50,21 @@ $verifier(strpos($schema, "spip_asso_dons") === false, 'Le socle ne doit plus po
 $verifier(strpos($schema, "spip_asso_ventes") === false, 'Le socle ne doit plus posseder les ventes.');
 $verifier(strpos($schema, "spip_asso_prets") === false, 'Le socle ne doit plus posseder les prets.');
 $verifier(!preg_match('/\"(?:reinscription|statut_cotisation)\"\s*=>/', $schema), 'Le schema des comptes ne doit plus declarer de champs metier de cotisation.');
+$administration_socle = file_get_contents($racine . '/association_administrations.php');
+$migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
+$verifier(
+	strpos($administration_socle, 'function association_migrer_cotisations_depuis_comptes') === false,
+	'Le socle ne doit plus implementer la migration metier des cotisations.'
+);
+$verifier(
+	strpos($migration_adhesions, 'function association_migrer_cotisations_depuis_comptes') !== false,
+	'La migration historique des cotisations doit appartenir au module Adhesions.'
+);
+$verifier(
+	!is_file($racine . '/genie/association_taches_generales.php')
+		&& is_file($racine . '/plugins/association-adhesions/genie/association_taches_generales.php'),
+	'Le cron des echeances doit appartenir exclusivement au module Adhesions.'
+);
 $evenements_pipelines = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
 $verifier(
 	strpos($evenements_pipelines, "base/association_champs_extras.php") !== false,

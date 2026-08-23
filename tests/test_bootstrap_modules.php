@@ -10,6 +10,7 @@ $interdites = array(
 	'inc/fonctions/comptes',
 	'inc/comptes',
 	'inc/notifications_emails',
+	'association_paiements_fonctions',
 );
 foreach ($interdites as $include) {
 	if (strpos($options . $pipelines, "include_spip('{$include}'") !== false) {

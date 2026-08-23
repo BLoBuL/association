@@ -139,6 +139,20 @@ cotisations, paiements ou comptes. Chaque plugin les charge depuis son propre
 fichier `*_options.php`. La balise `#EDITEUR_DESTINATIONS` réside également
 dans Comptabilité avec le formulaire qu'elle utilise.
 
+## Lot 9 : cycle de vie des adhésions
+
+Le cron qui contrôle les échéances, retire les privilèges expirés et programme
+les notifications appartient désormais à Adhésions. Ce module déclare lui-même
+le pipeline `taches_generales_cron` et fournit le génie correspondant ; le socle
+ne planifie plus que sa maintenance transversale hebdomadaire.
+
+La copie historique des cotisations depuis `spip_asso_comptes` est également
+implémentée dans Adhésions. Son schéma 1.2.0 adopte la table, complète les
+devises et maintient le lien comptable de manière idempotente. Le socle conserve
+uniquement un chargement de compatibilité afin que ses callbacks 1.6.0 et 1.6.1
+déjà publiés puissent déléguer cette migration sans rupture. Enfin, le fichier
+de fonctions globales ne précharge plus les filtres du module Paiements.
+
 ## État résiduel du socle
 
 Le socle conserve uniquement :
@@ -156,9 +170,15 @@ de rupture de compatibilité.
 
 ## Lots restant après la migration et la première recette distante
 
-1. remplacer ou déplacer les alias historiques `modifier/asso` ;
-2. achever l'audit des inclusions inter-modules et des contrats publics ;
-3. rejouer la passe navigateur responsive finale sur test-fiafe.
+1. distribuer les anciennes migrations 1.1 à 1.5 encore regroupées dans le
+   fichier d'administration du socle, en préservant les montées de version
+   directes depuis les installations 2.1 et 2.2 ;
+2. répartir les blocs métier du grand formulaire de configuration ;
+3. remplacer ou déplacer les alias historiques `modifier/asso` ;
+4. achever l'audit des inclusions inter-modules et des contrats publics.
+
+La passe Chrome authentifiée et responsive a été rejouée après le lot 8 ; elle
+est consignée dans `docs/recette-metier-test-fiafe.md`.
 
 Chaque lot doit passer les tests autonomes, le staging des dix plugins, puis une
 compilation et une recette SPIP réelle avant déploiement.

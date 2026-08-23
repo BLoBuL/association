@@ -12,6 +12,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  */
 function association_adhesions_upgrade($nom_meta_base_version, $version_cible) {
 	include_spip('base/upgrade');
+	include_spip('inc/association_adhesions_migration');
 	$maj = array();
 	$maj['create'] = array(
 		array('maj_tables', array(
@@ -20,6 +21,10 @@ function association_adhesions_upgrade($nom_meta_base_version, $version_cible) {
 		)),
 	);
 	$maj['1.1.0'] = $maj['create'];
+	$maj['1.2.0'] = array(
+		array('maj_tables', array('spip_asso_cotisations')),
+		array('association_completer_migration_cotisations'),
+	);
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
 

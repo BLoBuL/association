@@ -2,6 +2,14 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+/**
+ * Planifie le contrôle des échéances et privilèges d'adhésion.
+ */
+function association_adhesions_taches_generales_cron($taches) {
+	$taches['association_taches_generales'] = 60 * 60 * 6;
+	return $taches;
+}
+
 function association_adhesions_saisies_retirer_obligatoire(array $saisies): array {
     foreach ($saisies as &$saisie) {
         if (isset($saisie['options']['obligatoire'])) {

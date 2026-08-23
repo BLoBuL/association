@@ -41,7 +41,6 @@ function association_jqueryui_plugins($scripts) {
  */
 function association_taches_generales_cron($flux)
 {
-    $flux['association_taches_generales'] = 60*60*6; //Toutes les six heures
     $flux['association_maintenance_bdd'] = 60*60*24*7; //Tous les 7 jours
     return $flux;
 }

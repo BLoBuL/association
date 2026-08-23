@@ -2,20 +2,25 @@
 
 $racine = dirname(__DIR__);
 $administration = file_get_contents($racine . '/association_administrations.php');
+$migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
 $stockage = file_get_contents($racine . '/plugins/association-adhesions/inc/cotisations_stockage.php');
 $paquet = file_get_contents($racine . '/paquet.xml');
 $documentation = file_get_contents($racine . '/docs/migration-inscription4-et-cotisations.md');
 
 $erreurs = array();
 
+if (strpos($administration, "\$maj['1.6.1']") === false
+	|| strpos($administration, "include_spip('inc/association_adhesions_migration')") === false) {
+	$erreurs[] = 'Le pont de compatibilité 1.6.1 du socle est incomplet.';
+}
+
 foreach (array(
-	"\$maj['1.6.1']",
 	"association_cotisation_devise_historique(\$compte)",
 	"sql_getfetsel('devise', 'spip_transactions'",
 	"sql_getfetsel('devise', 'spip_asso_categories_adherents'",
 	"array('id_objet' => (int) \$id_cotisation)",
 ) as $attendu) {
-	if (strpos($administration, $attendu) === false) {
+	if (strpos($migration_adhesions, $attendu) === false) {
 		$erreurs[] = 'Migration incomplète : ' . $attendu;
 	}
 }
