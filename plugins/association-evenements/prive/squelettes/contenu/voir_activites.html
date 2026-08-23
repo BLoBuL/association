@@ -30,7 +30,7 @@
         ]
         ]
         [(#AUTORISER{onglet_activites, evenement, #ENV{id}, '', #ARRAY{onglet,comptabilite}}|oui)
-        [(#META{/association/comptes}|et{#GET{affichage_dans_activites/payant}|oui})
+        [(#CONFIG{association_metas/comptes}|et{#GET{affichage_dans_activites/payant}|oui})
             [(#ENV{affichage}|=={comptabilite}|oui)
                 <li class="comptabilite"><strong class="on" aria-current="page"><:association:voir_activites_onglet_comptabilite:></strong></li>
             ]

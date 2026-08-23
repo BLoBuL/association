@@ -68,6 +68,22 @@ foreach (array(
 		'Le reliquat Inscription2 ou Inscription3 doit rester supprime : ' . $reliquat_inscription
 	);
 }
+$verifier(
+	!is_file($racine . '/balise/meta.php')
+		&& strpos(file_get_contents($racine . '/association_options.php'), "include_spip('balise/meta')") === false,
+	'Le socle ne doit plus surcharger la balise META native de SPIP.'
+);
+$meta_association_restant = [];
+$iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
+foreach ($iterateur_meta as $fichier_meta) {
+	if ($fichier_meta->isFile() && preg_match('/\.(?:html|php)$/', $fichier_meta->getFilename())) {
+		$contenu_meta = file_get_contents($fichier_meta->getPathname());
+		if (strpos($contenu_meta, '#META{/association/') !== false) {
+			$meta_association_restant[] = $fichier_meta->getPathname();
+		}
+	}
+}
+$verifier(!$meta_association_restant, 'Les squelettes doivent utiliser CONFIG pour les metas Association.');
 foreach (array(
 	'style.css',
 	'prive/themes/spip/images/numbers-line.svg',

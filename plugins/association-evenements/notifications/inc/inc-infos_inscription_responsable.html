@@ -28,7 +28,7 @@
                     <BOUCLE_transaction_a_payer(TRANSACTIONS){id_transaction}{!statut = ok}>
                         [<li><b><:notifications:montant_adherent_a_regler:></b> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})</li>]
                             <B_mode_paiement_participation>
-                            <li><b><:notifications:mode_paiement_possible:></b><BOUCLE_mode_paiement_participation(DATA){source tableau, #META{/association/mode_paiement_participation}|unserialize}{', '}>[
+                            <li><b><:notifications:mode_paiement_possible:></b><BOUCLE_mode_paiement_participation(DATA){source tableau, #CONFIG{association_metas/mode_paiement_participation}|unserialize}{', '}>[
                                                     (#VALEUR|=={simu}|oui)<:bank:label_presta_simulation:>][
                                                     (#VALEUR|=={cheque}|oui)<:bank:label_presta_cheque:>][
                                                     (#VALEUR|=={virement}|oui)<:bank:label_presta_virement:>][

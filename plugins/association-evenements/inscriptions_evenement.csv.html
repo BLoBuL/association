@@ -10,7 +10,7 @@
 [(#VAL{<:association:export_evenements_total_paiement_attente:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|gestions_places|table_valeur{total_paiement_attente})];
 [(#VAL{<:association:export_evenements_encaisse:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|gestions_places|table_valeur{total_encaisse})];]
 "[(#VAL{<:association:export_evenements_responsables:>}|textebrut|utf8_decode)]";
-[(#SET{tableau_mode_de_paiement, [(#MODE_PAIEMENT|explode{','})]})][(#SET{mode_paiement_disponible_evenement,[(#GET{tableau_mode_de_paiement}|sinon{#META{/association/mode_paiement_participation}|unserialize})]})
+[(#SET{tableau_mode_de_paiement, [(#MODE_PAIEMENT|explode{','})]})][(#SET{mode_paiement_disponible_evenement,[(#GET{tableau_mode_de_paiement}|sinon{#CONFIG{association_metas/mode_paiement_participation}|unserialize})]})
 ]<B_mode_paiement_participation>[(#VAL{<:association:export_evenements_mode_paiement:>}|textebrut|utf8_decode)];"<BOUCLE_mode_paiement_participation(POUR){tableau #VAL{acte}|bank_lister_configs}>[(#VALEUR{actif}|oui|et{#VALEUR|bank_config_id|in_any{#GET{mode_paiement_disponible_evenement}}|oui})[(#VALEUR{presta}|bank_titre_type_paiement) [ ((#VALEUR{label}))]]]</BOUCLE_mode_paiement_participation>"</B_mode_paiement_participation>;"";<//B_mode_paiement_participation>
 <B_responsables_activites>"[(#VAL{<:association:export_evenements_responsables:>}|textebrut|utf8_decode)]";"<BOUCLE_responsables_activites(AUTEURS){id_auteur IN #ID_EVENEMENT|liste_responsables_evenement{#ENV{id_article}}}{statut_interne=ok}{tout}{par nom_famille}>[(#NOM_FAMILLE)] [(#PRENOM)] [ - (#MOBILE)][ - (#INPUT_EMAIL_MEMBRES_ASSO|sinon{#EMAIL})]</BOUCLE_responsables_activites>"</B_responsables_activites><//B_responsables_activites>;
     
@@ -26,7 +26,7 @@
 [(#VAL{<:association:export_inscriptions_evenement_label_liste_participants:>}|textebrut|utf8_decode)];
     
 [(#VAL{<:association:export_inscriptions_evenement_num_evenement:>}|textebrut|utf8_decode)];[(#VAL{<:association:export_inscriptions_evenement_prenom:>}|textebrut|utf8_decode)];[(#VAL{<:association:export_inscriptions_evenement_nom:>}|textebrut|utf8_decode)];[(#VAL{<:association:export_inscriptions_evenement_email:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|lister_label_info_supplementaire|utf8_decode)]
-<BOUCLE_asso_activites_liste_participants(ASSO_ACTIVITES){si #META{/association/meta_cfg_event_form_info_supp}|=={oui}}{si #SESSION{id_auteur}}{id_evenement}{statut = ok}{par statut}>[(#ID_ACTIVITE|generer_detail_inscription_accompagnant|utf8_decode)]</BOUCLE_asso_activites_liste_participants>
+<BOUCLE_asso_activites_liste_participants(ASSO_ACTIVITES){si #CONFIG{association_metas/meta_cfg_event_form_info_supp}|=={oui}}{si #SESSION{id_auteur}}{id_evenement}{statut = ok}{par statut}>[(#ID_ACTIVITE|generer_detail_inscription_accompagnant|utf8_decode)]</BOUCLE_asso_activites_liste_participants>
 </B_asso_activites> 
 <//B_asso_activites> 
 </BOUCLE_evenement>[(#SESSION{id_auteur}|non)

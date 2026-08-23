@@ -411,6 +411,11 @@ quatorze entrées attendues dans le bon ordre et le squelette produit 2283
 octets de HTML avec les URLs Adhésions et Notifications. Les anciennes erreurs
 du journal précèdent le dernier correctif et ne se reproduisent plus.
 
+## Lot 29 — balises de configuration SPIP
+
+Tous les accès à la table `association_metas` emploient désormais la balise
+native `#CONFIG`. La surcharge historique de `#META` est supprimée du socle.
+
 Le commit `ccd9fdf` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `129a059ead47adac15277ba045b21f171929488ae284108fb49ae00d365822ae`.

@@ -40,7 +40,7 @@
         <BOUCLE_condition_payant(CONDITION){si #PAYANT|=={1}}>
        <div class="tooltip "><i class="fas fa-coins" ></i><span class="tooltiptext">
             [(#SET{tableau_mode_de_paiement, [(#MODE_PAIEMENT|explode{','})]})]                 
-            [(#SET{mode_paiement_disponible_evenement,[(#GET{tableau_mode_de_paiement}|sinon{#META{/association/mode_paiement_participation}|unserialize})]})]  
+            [(#SET{mode_paiement_disponible_evenement,[(#GET{tableau_mode_de_paiement}|sinon{#CONFIG{association_metas/mode_paiement_participation}|unserialize})]})]
             <BOUCLE_mode_paiement_participation(POUR){tableau #VAL{acte}|bank_lister_configs}>[(#VALEUR{actif}|oui|et{#VALEUR|bank_config_id|in_any{#GET{mode_paiement_disponible_evenement}}|oui})
                            [<div>-> (#VALEUR{presta}|bank_titre_type_paiement) [ ((#VALEUR{label}))]</div>]
                         ]  

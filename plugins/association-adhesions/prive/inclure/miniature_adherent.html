@@ -12,7 +12,7 @@
                 <BOUCLE_nom(DATA){si #ENV{participants_json}}{source table,#ENV{participants_json}}{'<br>'} >
                     <span class="prenom #CLE" [((#VALEUR{date_naissance}|annee|replace{'0000',''}))]>[<b>(#VALEUR{nom}|strtoupper)</b>][ (#VALEUR{prenom})] </span>
                 </BOUCLE_nom>
-                <BOUCLE_nom_participants(CONDITION){si #ENV{nom_participants}}{si #META{/association/meta_cfg_event_config_accompagnants}|=={membre_famille}}>
+                <BOUCLE_nom_participants(CONDITION){si #ENV{nom_participants}}{si #CONFIG{association_metas/meta_cfg_event_config_accompagnants}|=={membre_famille}}>
                     <span class="nom_famille">[<b>(#ENV{nom_participants})</b> ]</span>
                  </BOUCLE_nom_participants>
                     <span class="nom_famille"><b>[(#NOM_FAMILLE|strtoupper)]</b> </span>

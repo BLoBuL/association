@@ -33,7 +33,7 @@
 		</li>
 
 		<li class="editer_solde_anterieur">
-			<label for="solde_anterieur"><strong><:association:solde_reporte_en_euros{devise=#META{/association/symbole}}:></strong></label>
+			<label for="solde_anterieur"><strong><:association:solde_reporte_en_euros{devise=#CONFIG{association_metas/symbole}}:></strong></label>
 			<input type="number" min="0" name="solde_anterieur" [value="(#ENV{solde_anterieur})"] id="solde_anterieur"  class='formo'/>
 		</li>
 

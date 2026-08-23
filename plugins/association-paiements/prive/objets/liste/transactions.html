@@ -18,7 +18,7 @@
 				<th class="nom" ><:bank:justification_transaction:></th>
 				<th class='mode' >[(#TRI{mode,<:bank:label_tri_mode:>,ajax})]</th>
 				[(#REM)<!--<th class='autorisation_id' >[(#TRI{autorisation_id,<:bank:label_tri_autorisation:>,ajax})]</th>-->]
-				[(#META{/association/meta_cfg_taxe_evenement}|ou{#META{/association/meta_cfg_taxe}}|oui)
+				[(#CONFIG{association_metas/meta_cfg_taxe_evenement}|ou{#CONFIG{association_metas/meta_cfg_taxe}}|oui)
                     <th class='montant_ht' >[(#TRI{montant_ht,<:bank:label_tri_montant_ht:>,ajax})]</th>]
 				<th class='montant' >[(#TRI{montant,<:bank:label_tri_montant_ttc:>,ajax})]</th>
 				<th class='regle' >[(#TRI{montant_regle,<:bank:label_tri_montant_paye:>,ajax})]</th>
@@ -109,7 +109,7 @@
                 [(#MODE|association_paiements_mode_icone)]
             </td>
             [(#REM)<!--<td class="autorisation_id"><abbr title="#AUTORISATION_ID">[(#AUTORISATION_ID|couper{15})]</abbr></td>-->]
-            [(#META{/association/meta_cfg_taxe}|ou{#META{/association/meta_cfg_taxe_evenement}}|oui)<td class="montant_ht">[(#MONTANT_HT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</td>]
+            [(#CONFIG{association_metas/meta_cfg_taxe}|ou{#CONFIG{association_metas/meta_cfg_taxe_evenement}}|oui)<td class="montant_ht">[(#MONTANT_HT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</td>]
             <td class="montant">[(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</td>
             <td class="regle">[(#MONTANT_REGLE|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</td>
             <td class="statut">

@@ -410,6 +410,16 @@ statut webmestre. Communication porte également le lien vers la page autonome
 des notifications. Cette composition suit le modèle des pipelines SPIP et
 permet à chaque plugin de rester autonome.
 
+## Lot 29 : configuration native SPIP dans les squelettes
+
+Les appels historiques `#META{/association/...}` ont été remplacés par
+`#CONFIG{association_metas/...}` dans les modules. La surcharge locale de la
+balise `META` et son préchargement global sont supprimés. Les usages SPIP
+standards comme `#META{timezone}` restent inchangés.
+
+La suite utilise ainsi la balise native de lecture de configuration, sans
+modifier globalement le comportement de `#META` pour les autres plugins.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

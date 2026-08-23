@@ -31,7 +31,7 @@
         <b><:association:email_notification_mode_paiement:></b><br>
         <ul class="spip">
             <BOUCLE_mode_paiement_adhesion(POUR){tableau #VAL{acte}|bank_lister_configs}{valeur != simu}{si #ENV{ajouter_information_paiement}|=={oui}}>
-                [(#VALEUR{actif}|oui|et{#VALEUR|bank_config_id|in_any{#META{/association/mode_paiement_adhesion}}|oui})
+                [(#VALEUR{actif}|oui|et{#VALEUR|bank_config_id|in_any{#CONFIG{association_metas/mode_paiement_adhesion}}|oui})
                        [<li>(#VALEUR{presta}|bank_titre_type_paiement) [(#VALEUR{iban}|oui)- <small>([ <:notifications:label_iban:> <b>(#VALEUR{iban})</b>] [ <:notifications:label_bic:> <b>(#VALEUR{bic})</b>])</small>]</li>]
                 ]
             </BOUCLE_mode_paiement_adhesion>

@@ -18,7 +18,6 @@ if (defined('_DIR_PLUGIN_ASSOCIATION')) {
 	_chemin([rtrim(_DIR_PLUGIN_ASSOCIATION, '/\\') . '/']);
 }
 
-include_spip('balise/meta');
 include_spip('inc/association_log');
 
 $GLOBALS['association_metas'] = $GLOBALS['association_metas'] ?? [];

@@ -15,7 +15,7 @@
         [(#SET{nom_inscrit,#NOM_INSCRIT|strtoupper #PRENOM_INSCRIT})]
         [(#SET{id_activite,#ID_ACTIVITE})]
     </BOUCLE_activite>                       
-        [(#SET{pourcentage_taxe,#META{/association/meta_cfg_taxe_evenement}})]
+        [(#SET{pourcentage_taxe,#CONFIG{association_metas/meta_cfg_taxe_evenement}})]
     <title><:association:email_recu_remboursement_participation_title:></title>
     <intro><:association:email_recu_remboursement_participation_intro{numero_recu=#ENV{numero_recu}}:></intro>
 </head>
