@@ -49,8 +49,11 @@ class AssociationInstallationVerifier extends Command
 				$erreurs[] = "Plugin inactif : $prefixe";
 			}
 		}
+		$tablesInstallees = sql_alltable('%');
+		$prefixe = $GLOBALS['connexions'][0]['prefixe'] ?? 'spip';
 		foreach ($tablesAttendues as $table) {
-			if (!sql_showtable($table, true)) {
+			$tableReelle = preg_replace('/^spip(?=_)/', $prefixe, $table);
+			if (!in_array($tableReelle, $tablesInstallees, true)) {
 				$erreurs[] = "Table absente : $table";
 			}
 		}
