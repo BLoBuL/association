@@ -342,6 +342,12 @@ Le fragment historique `formulaires/update/options.html`, sans appel ni code
 CVT associé, est supprimé plutôt que déplacé dans Comptabilité : ses réglages
 sont déjà servis par la configuration modulaire actuelle.
 
+## Lot 23 — retrait des surcharges Inscription2 et Inscription3
+
+Les deux fonds intégralement commentés et la balise de configuration sans code
+actif sont supprimés. Aucun appel n'existait dans le monorepo ; la matrice
+d'architecture contrôle désormais leur absence au profit d'Inscription4.
+
 Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.

@@ -360,6 +360,14 @@ CVT, pipeline ou squelette ne l'appelait encore ; il lisait directement les
 tables Comptabilité et dupliquait les panneaux modulaires actuels. Son absence
 est maintenant contrôlée par la matrice d'architecture.
 
+## Lot 23 : reliquats Inscription2 et Inscription3 supprimés
+
+Les fonds `inscription2_association` et `visuel_cextras` ne contenaient plus
+que du HTML commenté lié à Inscription2/Inscription3. L'ancienne balise
+`CONFIGURER_METAS` ne déclarait elle aussi aucune fonction active. Ces trois
+fichiers sont supprimés : la suite cible exclusivement Inscription4 et ses
+pipelines déclarés par Adhésions.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

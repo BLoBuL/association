@@ -58,6 +58,16 @@ $verifier(
 	!is_file($racine . '/formulaires/update/options.html'),
 	'L ancien fragment de configuration comptable update/options doit rester supprime.'
 );
+foreach (array(
+	'fonds/inscription2_association.html',
+	'fonds/visuel_cextras.html',
+	'balise/configurer_metas.php',
+) as $reliquat_inscription) {
+	$verifier(
+		!is_file($racine . '/' . $reliquat_inscription),
+		'Le reliquat Inscription2 ou Inscription3 doit rester supprime : ' . $reliquat_inscription
+	);
+}
 $verifier(!preg_match('/\"(?:reinscription|statut_cotisation)\"\s*=>/', $schema), 'Le schema des comptes ne doit plus declarer de champs metier de cotisation.');
 $administration_socle = file_get_contents($racine . '/association_administrations.php');
 $migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
