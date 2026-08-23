@@ -97,6 +97,12 @@ $verifier(
 		&& strpos($communication_paquet, 'nom="declarer_tables_objets_sql"') !== false,
 	'La personnalisation SQL de Mailsubscribers doit appartenir à Communication.'
 );
+$verifier(
+	strpos($paquet, 'nom="declarer_tables_principales"') === false
+		&& strpos($paquet, 'nom="declarer_tables_objets_sql"') === false
+		&& strpos($schema, 'function association_declarer_tables_principales(') === false,
+	'Le socle ne doit pas déclarer de pipelines SQL sans traitement.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

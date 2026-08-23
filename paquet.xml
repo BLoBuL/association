@@ -16,9 +16,7 @@
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
 
 	<pipeline nom="autoriser" inclure="association_autoriser.php" />
-	<pipeline nom="declarer_tables_principales" inclure="base/association.php" />
 	<pipeline nom="declarer_tables_auxiliaires" inclure="base/association.php" />
-	<pipeline nom="declarer_tables_objets_sql" inclure="base/association.php" />
 
 	<pipeline nom="taches_generales_cron" inclure="association_pipelines.php" />
 	<pipeline nom="ajouter_menus" inclure="association_pipelines.php" />

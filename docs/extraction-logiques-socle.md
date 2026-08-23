@@ -449,6 +449,13 @@ désormais appliquée par le pipeline `declarer_tables_objets_sql` de
 Communication. La déclaration SQL du socle ne connaît plus Mailsubscribers et
 reste centrée sur la table de métas transversale.
 
+## Lot 34 : manifeste SQL minimal du socle
+
+Le socle ne déclare plus les pipelines SQL `declarer_tables_principales` et
+`declarer_tables_objets_sql`, désormais sans responsabilité racine. Son unique
+pipeline de schéma conserve la table auxiliaire de métas partagée. Le callback
+principal vide et la documentation orpheline associée sont supprimés.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
