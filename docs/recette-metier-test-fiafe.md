@@ -621,3 +621,18 @@ et la fonction historique `verifier_site_fiafe()` n’est plus fournie : les deu
 panneaux conditionnels sont donc correctement absents, sans notice ni erreur.
 Le formulaire racine reste exécutable dans ce contexte autonome et
 `spip test:spip` valide SPIP, PDO, la base et la version 4.4.21.
+
+## Lot 50 — réglages de maintenance distribués
+
+Le commit `818e14a` a été déployé atomiquement dans le socle, Adhésions,
+Événements, Comptabilité, Paiements et Communication depuis l’artefact
+SHA-256 `4af2f722bb07d3b44ec2ae3657f7c0b8a2879426bc673ce0e39a0cc92517caed`.
+Les sept fichiers de configuration contrôlés ont exactement les empreintes de
+l’état Git. Le formulaire servi expose 19 champs de maintenance et rattache les
+réglages représentatifs aux cinq fieldsets métier attendus, tandis que les
+réglages globaux restent dans le socle.
+
+Un dry-run réel charge les cinq fournisseurs, retourne 12 clés de résultat et
+laisse inchangés les effectifs des six tables contrôlées. Les six plugins sont
+actifs, `spip test:spip` reste sain et le journal SPIP ne contient aucune erreur
+sur les quinze minutes couvrant le déploiement et la recette.
