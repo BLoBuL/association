@@ -52,6 +52,18 @@ $verifier(strpos($schema, "spip_asso_prets") === false, 'Le socle ne doit plus p
 $verifier(!preg_match('/\"(?:reinscription|statut_cotisation)\"\s*=>/', $schema), 'Le schema des comptes ne doit plus declarer de champs metier de cotisation.');
 $administration_socle = file_get_contents($racine . '/association_administrations.php');
 $migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
+$configuration_socle = file_get_contents($racine . '/formulaires/configurer_association.php');
+$configuration_evenements = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc/configurer_association_evenements.php');
+$verifier(
+	strpos($configuration_socle, "config == 'evenement'") === false
+		&& strpos($configuration_socle, "config == 'evenement_defaut'") === false,
+	'Le socle ne doit plus declarer les panneaux de configuration des evenements.'
+);
+$verifier(
+	strpos($configuration_evenements, "config == 'evenement'") !== false
+		&& strpos($configuration_evenements, "config == 'evenement_defaut'") !== false,
+	'Le module Evenements doit declarer ses panneaux de configuration.'
+);
 $verifier(
 	strpos($administration_socle, 'function association_migrer_cotisations_depuis_comptes') === false,
 	'Le socle ne doit plus implementer la migration metier des cotisations.'

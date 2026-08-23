@@ -197,6 +197,15 @@ préserver les mises à jour directes depuis les branches 2.1 et 2.2. Leur code 
 leurs opérations SQL résident toutefois dans Adhésions, Événements,
 Comptabilité, Communication, Dons, Ventes ou Prêts selon leur responsabilité.
 
+## Lot 12 : début de la configuration distribuée
+
+Les panneaux `evenement` et `evenement_defaut` du formulaire commun sont
+déclarés par le module Événements. Le socle conserve l'orchestration CVT, l'URL
+historique et le stockage dans `spip_association_metas`, puis agrège les saisies
+du module sans modifier leurs noms ni leurs valeurs existantes. Cette première
+extraction établit le contrat utilisé pour répartir progressivement les autres
+panneaux métier.
+
 ## Lots restant après la migration et la première recette distante
 
 1. répartir les blocs métier du grand formulaire de configuration ;
