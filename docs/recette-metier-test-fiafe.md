@@ -551,3 +551,13 @@ commit `0d524fb` a été déployé atomiquement depuis l'artefact SHA-256
 Le serveur confirme les clés statiques, la famille dynamique des sujets
 d'événements et la clé Newsletter préexistante, puis compile le formulaire de
 gabarit en 387 octets sans erreur.
+
+## Lot 43 — domaine de langue Prêts
+
+Prêts utilise désormais son domaine `association_prets`. Le commit `472476a`
+a été déployé atomiquement dans le seul plugin Prêts depuis l'artefact SHA-256
+`2957c681f59ded9cb0c09e7362f374df8f4624e9c364da5387125ba1b496017b`.
+Le serveur restitue les libellés « Liste des ressources » et « Liste des
+réservations », compile le CVT d'édition d'une ressource en 2103 octets et
+valide l'installation complète : 10 plugins actifs, 14 tables, 12 objets SQL
+SPIP et 7 schémas à jour.
