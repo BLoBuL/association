@@ -89,6 +89,14 @@ $verifier(
 		&& is_file($racine . '/plugins/association-communication/formulaires/inc-formidable-boutons.html'),
 	'Le composant de boutons Formidable doit appartenir au plugin Communication.'
 );
+$communication_pipelines_sql = file_get_contents($racine . '/plugins/association-communication/association_communication_pipelines.php');
+$verifier(
+	strpos($schema, 'spip_mailsubscribers') === false
+		&& strpos($communication_pipelines_sql, 'function association_communication_declarer_tables_objets_sql(') !== false
+		&& strpos($communication_pipelines_sql, 'spip_mailsubscribers') !== false
+		&& strpos($communication_paquet, 'nom="declarer_tables_objets_sql"') !== false,
+	'La personnalisation SQL de Mailsubscribers doit appartenir à Communication.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

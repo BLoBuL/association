@@ -2,6 +2,21 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+/**
+ * Empêche Mailsubscribers d'exposer une page publique dédiée.
+ *
+ * @param array $tables
+ * @return array
+ */
+function association_communication_declarer_tables_objets_sql($tables) {
+    if (isset($tables['spip_mailsubscribers'])) {
+        unset($tables['spip_mailsubscribers']['url']);
+        $tables['spip_mailsubscribers']['page'] = '';
+    }
+
+    return $tables;
+}
+
 
 function association_mailsubscriber_formater_informations_liees($champs_extra, $liste_informations_segmentables)
 {

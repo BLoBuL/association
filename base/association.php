@@ -8,24 +8,6 @@
  */
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
-/**
- * Complète la déclaration des objets SQL utilisés par Association.
- *
- * Le plugin Mailsubscribers ne doit pas exposer de page publique dédiée sur
- * les sites Association.
- *
- * @param array $tables
- * @return array
- */
-function association_declarer_tables_objets_sql($tables) {
-	if (isset($tables['spip_mailsubscribers'])) {
-		unset($tables['spip_mailsubscribers']['url']);
-		$tables['spip_mailsubscribers']['page'] = '';
-	}
-
-	return $tables;
-}
-
 ## TABLES PRINCIPALES
 function association_declarer_tables_principales($tables_principales) {
 	return $tables_principales;

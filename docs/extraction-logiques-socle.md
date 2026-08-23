@@ -442,6 +442,13 @@ Communication, sous le même chemin SPIP. Les parcours Communication,
 Événements et Comptabilité conservent leurs inclusions existantes tandis que
 le socle ne porte plus ce fragment d'intégration métier.
 
+## Lot 33 : déclaration Mailsubscribers dans Communication
+
+La suppression de la page publique de l'objet `spip_mailsubscribers` est
+désormais appliquée par le pipeline `declarer_tables_objets_sql` de
+Communication. La déclaration SQL du socle ne connaît plus Mailsubscribers et
+reste centrée sur la table de métas transversale.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
