@@ -16,6 +16,7 @@ include_spip('inc/association_adhesions_migration');
 include_spip('inc/association_adhesions_migration_legacy');
 include_spip('inc/association_evenements_migration_legacy');
 include_spip('inc/association_compta_migration_legacy');
+include_spip('inc/association_communication_migration_legacy');
 function association_upgrade($nom_meta_base_version, $version_cible) {
     include_spip('inc/meta');
     include_spip('inc/cextras');
@@ -135,95 +136,36 @@ $maj['1.2.0'] = array(		array('sql_alter', "TABLE spip_asso_categories RENAME TO
                                                         'spip_asso_categories_activites_liens')),
 );
 #1.2.1
-$maj['1.2.1'] = array(
-                            array('sql_alter', "TABLE spip_asso_categories_activites DROP gratuit"),
-                            array('sql_alter', "TABLE spip_evenements ADD COLUMN payant BOOLEAN NOT NULL AFTER validation"),
-);
+$maj['1.2.1'] = array(array('association_evenements_migration_legacy', '1.2.1'));
 #1.2.2
-$maj['1.2.2'] = array(
-    array('sql_alter', "TABLE spip_asso_categories_adherents DROP deleted"),
-    array('maj_tables',array(	'spip_asso_categories_adherents'))
-);
+$maj['1.2.2'] = array(array('association_adhesions_migration_legacy', '1.2.2'));
 #1.2.3
-$maj['1.2.3'] = array(
-    array('maj_tables',array(	'spip_asso_categories_activites'))
-);
+$maj['1.2.3'] = array(array('association_evenements_migration_legacy', '1.2.3'));
 #1.2.3
-$maj['1.2.4'] = array(
-  array('maj_tables',array(	'spip_asso_comptes')),
-  array('association_maj_124'),
-  array('sql_alter', "TABLE spip_asso_comptes DROP id_journal"),
-);
+$maj['1.2.4'] = array(array('association_compta_migration_legacy', '1.2.4'));
 #1.2.5
-$maj['1.2.5'] = array(
-/*     array('sql_alter', "TABLE spip_asso_activites ADD COLUMN notify_the_members BOOLEAN DEFAULT '1' NOT NULL AFTER maj"), */
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN mute BOOLEAN DEFAULT '0' NOT NULL")
-);
+$maj['1.2.5'] = array(array('association_evenements_migration_legacy', '1.2.5'));
 #1.2.6
-$maj['1.2.6'] = array(
-    array('sql_alter', "TABLE spip_asso_categories_activites DROP gratuit"),
-    array('sql_alter', "TABLE spip_asso_activites DROP notify_the_members"),
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN show_list_members BOOLEAN DEFAULT '0' NOT NULL AFTER maj"),
-    array('sql_alter', "TABLE spip_asso_activites ADD COLUMN visible_in_list_members BOOLEAN DEFAULT '1' NOT NULL AFTER maj"),
-);
+$maj['1.2.6'] = array(array('association_evenements_migration_legacy', '1.2.6'));
 #1.2.7
-$maj['1.2.7'] = array(
-    //array('sql_alter', "TABLE spip_evenements ADD COLUMN mute BOOLEAN DEFAULT '0' NOT NULL")
-);
+$maj['1.2.7'] = array();
 #1.2.8
-$maj['1.2.8'] = array(
-    array('sql_alter', "TABLE spip_asso_activites ADD COLUMN notify_the_members BOOLEAN DEFAULT '1' NOT NULL")
-);
+$maj['1.2.8'] = array(array('association_evenements_migration_legacy', '1.2.8'));
 #1.2.9
-$maj['1.2.9'] = array(
-    array('sql_alter', "TABLE spip_mailshots ADD COLUMN id_auteur BIGINT(21) AFTER id_mailshot"),
-    array('sql_alter', "TABLE spip_mailshots ADD COLUMN id_evenement BIGINT(21) AFTER id")
+$maj['1.2.9'] = array(array('association_communication_migration_legacy', '1.2.9'));
+$maj['1.3.0'] = array(array('association_evenements_migration_legacy', '1.3.0'));
+$maj['1.3.1'] = array(array('association_evenements_migration_legacy', '1.3.1'));
+$maj['1.3.2'] = array(array('association_evenements_migration_legacy', '1.3.2'));
+$maj['1.3.3'] = array(
+	array('association_evenements_migration_legacy', '1.3.3'),
+	array('association_adhesions_migration_legacy', '1.3.3'),
 );
-$maj['1.3.0'] = array(
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN mode_paiement varchar(124) NOT NULL"),
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN type_inscrits_evenement varchar(30) NOT NULL DEFAULT 'strict'"),
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN fermeture_inscription varchar(30) NOT NULL DEFAULT 'last_minute'")
-);
- $maj['1.3.1'] = array(
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN validation_sur_paiement char(3) NOT NULL DEFAULT 'non'"),
-    array('sql_alter', "TABLE spip_evenements CHANGE show_list_members afficher_liste_inscrits BOOLEAN")
-);
-  $maj['1.3.2'] = array(
-      array('sql_alter', "TABLE spip_asso_activites DROP en_attente"),
-      array('sql_alter', "TABLE spip_asso_activites DROP valider"),
-      array('sql_alter', "TABLE spip_asso_activites ADD COLUMN nom_inscrit varchar(255) AFTER id_auteur"),
-      array('sql_alter', "TABLE spip_asso_activites ADD COLUMN prenom_inscrit varchar(255) AFTER id_auteur"),
-      array('sql_alter', "TABLE spip_asso_activites ADD COLUMN email_inscrit varchar(255) AFTER id_auteur")
-);
-  $maj['1.3.3'] = array(
-    array('association_maj_spip_asso_activites'),
-    array('sql_alter', "TABLE spip_asso_categories_activites ADD COLUMN type_inscrit varchar(255) NOT NULL DEFAULT 'indifferent' AFTER statut"),
-    array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN type_adherent varchar(255) NOT NULL DEFAULT 'adherent' AFTER statut"),
-);
-  $maj['1.3.4'] = array(
-      array('sql_alter', "TABLE spip_asso_activites MODIFY date DATETIME NULL AFTER commentaire"),
-      array('sql_alter', "TABLE spip_asso_activites ADD COLUMN log TEXT AFTER commentaire"),
-      array('sql_alter', "TABLE spip_asso_activites ADD COLUMN tel_inscrit varchar(255) AFTER email_inscrit")
-);
-   $maj['1.3.5'] = array(
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN validation_attente_automatique char(3) NOT NULL DEFAULT 'non'"),
-);
-    $maj['1.3.6'] = array(
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN info_supplementaire varchar(255) NULL"),
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN responsables varchar(255) NULL"),
-);
-    $maj['1.3.7'] = array(
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN ouverture_differe_date datetime NULL AFTER ouverture_differe"),
-);
-    $maj['1.3.8'] = array(
-    array('sql_alter', "TABLE spip_asso_activites ADD COLUMN journal varchar(255) NULL"),
-    array('sql_alter', "TABLE spip_asso_activites ADD COLUMN annotation varchar(255) NULL"),
-);
-    $maj['1.3.9'] = array(
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN presentiel varchar(12) NULL DEFAULT 'oui'"),
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN lien varchar(255) AFTER lieu"),
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN reseau_fiafe varchar(3) NULL DEFAULT 'non'"),
-);
+$maj['1.3.4'] = array(array('association_evenements_migration_legacy', '1.3.4'));
+$maj['1.3.5'] = array(array('association_evenements_migration_legacy', '1.3.5'));
+$maj['1.3.6'] = array(array('association_evenements_migration_legacy', '1.3.6'));
+$maj['1.3.7'] = array(array('association_evenements_migration_legacy', '1.3.7'));
+$maj['1.3.8'] = array(array('association_evenements_migration_legacy', '1.3.8'));
+$maj['1.3.9'] = array(array('association_evenements_migration_legacy', '1.3.9'));
 	$maj['1.4.0'] = array(array('association_evenements_migration_legacy', '1.4.0'));
 	$maj['1.4.1'] = array(array('association_evenements_migration_legacy', '1.4.1'));
 	$maj['1.4.2'] = array(array('association_adhesions_migration_legacy', '1.4.2'));

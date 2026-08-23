@@ -51,6 +51,8 @@ function association_import_champs_extras() {
  */
 function association_adhesions_migration_legacy($version) {
 	$operations = array(
+		'1.2.2' => array('TABLE spip_asso_categories_adherents DROP deleted'),
+		'1.3.3' => array("TABLE spip_asso_categories_adherents ADD COLUMN type_adherent varchar(255) NOT NULL DEFAULT 'adherent' AFTER statut"),
 		'1.4.2' => array("TABLE spip_asso_categories_adherents ALTER type_adherent SET DEFAULT 'adherent'"),
 		'1.5.0' => array(
 			"TABLE spip_asso_categories_adherents ADD COLUMN date_debut_validite VARCHAR(5) NULL DEFAULT NULL",
@@ -72,5 +74,8 @@ function association_adhesions_migration_legacy($version) {
 	}
 	if ((string) $version === '1.4.2') {
 		association_maj_142();
+	}
+	if ((string) $version === '1.2.2') {
+		maj_tables(array('spip_asso_categories_adherents'));
 	}
 }

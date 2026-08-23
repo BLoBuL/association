@@ -57,6 +57,55 @@ function association_maj_spip_asso_activites() {
  */
 function association_evenements_migration_legacy($version) {
 	$operations = array(
+		'1.2.1' => array(
+			'TABLE spip_asso_categories_activites DROP gratuit',
+			'TABLE spip_evenements ADD COLUMN payant BOOLEAN NOT NULL AFTER validation',
+		),
+		'1.2.5' => array("TABLE spip_evenements ADD COLUMN mute BOOLEAN DEFAULT '0' NOT NULL"),
+		'1.2.6' => array(
+			'TABLE spip_asso_categories_activites DROP gratuit',
+			'TABLE spip_asso_activites DROP notify_the_members',
+			"TABLE spip_evenements ADD COLUMN show_list_members BOOLEAN DEFAULT '0' NOT NULL AFTER maj",
+			"TABLE spip_asso_activites ADD COLUMN visible_in_list_members BOOLEAN DEFAULT '1' NOT NULL AFTER maj",
+		),
+		'1.2.8' => array("TABLE spip_asso_activites ADD COLUMN notify_the_members BOOLEAN DEFAULT '1' NOT NULL"),
+		'1.3.0' => array(
+			'TABLE spip_evenements ADD COLUMN mode_paiement varchar(124) NOT NULL',
+			"TABLE spip_evenements ADD COLUMN type_inscrits_evenement varchar(30) NOT NULL DEFAULT 'strict'",
+			"TABLE spip_evenements ADD COLUMN fermeture_inscription varchar(30) NOT NULL DEFAULT 'last_minute'",
+		),
+		'1.3.1' => array(
+			"TABLE spip_evenements ADD COLUMN validation_sur_paiement char(3) NOT NULL DEFAULT 'non'",
+			'TABLE spip_evenements CHANGE show_list_members afficher_liste_inscrits BOOLEAN',
+		),
+		'1.3.2' => array(
+			'TABLE spip_asso_activites DROP en_attente',
+			'TABLE spip_asso_activites DROP valider',
+			'TABLE spip_asso_activites ADD COLUMN nom_inscrit varchar(255) AFTER id_auteur',
+			'TABLE spip_asso_activites ADD COLUMN prenom_inscrit varchar(255) AFTER id_auteur',
+			'TABLE spip_asso_activites ADD COLUMN email_inscrit varchar(255) AFTER id_auteur',
+		),
+		'1.3.3' => array("TABLE spip_asso_categories_activites ADD COLUMN type_inscrit varchar(255) NOT NULL DEFAULT 'indifferent' AFTER statut"),
+		'1.3.4' => array(
+			'TABLE spip_asso_activites MODIFY date DATETIME NULL AFTER commentaire',
+			'TABLE spip_asso_activites ADD COLUMN log TEXT AFTER commentaire',
+			'TABLE spip_asso_activites ADD COLUMN tel_inscrit varchar(255) AFTER email_inscrit',
+		),
+		'1.3.5' => array("TABLE spip_evenements ADD COLUMN validation_attente_automatique char(3) NOT NULL DEFAULT 'non'"),
+		'1.3.6' => array(
+			'TABLE spip_evenements ADD COLUMN info_supplementaire varchar(255) NULL',
+			'TABLE spip_evenements ADD COLUMN responsables varchar(255) NULL',
+		),
+		'1.3.7' => array('TABLE spip_evenements ADD COLUMN ouverture_differe_date datetime NULL AFTER ouverture_differe'),
+		'1.3.8' => array(
+			'TABLE spip_asso_activites ADD COLUMN journal varchar(255) NULL',
+			'TABLE spip_asso_activites ADD COLUMN annotation varchar(255) NULL',
+		),
+		'1.3.9' => array(
+			"TABLE spip_evenements ADD COLUMN presentiel varchar(12) NULL DEFAULT 'oui'",
+			'TABLE spip_evenements ADD COLUMN lien varchar(255) AFTER lieu',
+			"TABLE spip_evenements ADD COLUMN reseau_fiafe varchar(3) NULL DEFAULT 'non'",
+		),
 		'1.4.0' => array("TABLE spip_asso_activites ADD COLUMN association varchar(255) NULL AFTER nom_inscrit"),
 		'1.4.1' => array(
 			"TABLE spip_evenements ADD COLUMN condition_inscription varchar(3) NULL DEFAULT 'non'",
@@ -80,5 +129,11 @@ function association_evenements_migration_legacy($version) {
 	);
 	foreach ($operations[(string) $version] ?? array() as $operation) {
 		sql_alter($operation);
+	}
+	if ((string) $version === '1.2.3') {
+		maj_tables(array('spip_asso_categories_activites'));
+	}
+	if ((string) $version === '1.3.3') {
+		association_maj_spip_asso_activites();
 	}
 }
