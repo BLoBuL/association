@@ -727,3 +727,17 @@ autorisations, cotisations, notifications, inscriptions, comptabilité,
 adhérents, cron, spam, email, GIS, migration et synchronisation. Le registre
 CLI conserve simultanément ses 135 options. L'installation reste valide et
 aucun fatal ou défaut du pipeline n'est journalisé.
+
+## Lot 58 — navigation privée distribuée
+
+Le commit `8bd2c3b` a été déployé atomiquement dans le socle, Adhésions,
+Comptabilité, Dons, Événements, Groupes et Prêts depuis l'artefact SHA-256
+`bc16e45a243a0b23c42f3b4121d280c12d98f20862b16c04618a43286b3051af`.
+
+Le pipeline servi retourne exactement les huit entrées dans l'ordre attendu :
+Adhérents, Cotisations, Activités, Bénévoles, Dons, Comptes, Prêts et
+Paramètres. Le vérificateur des dix plugins reste valide et aucun fatal ou
+défaut de composition n'est journalisé. Chrome expose une session privée
+test-fiafe authentifiée, mais son contrôle a expiré deux fois lors de la
+première lecture DOM, y compris sans navigation : la preuve visuelle du menu
+rendu reste donc à reprendre, sans remettre en cause les preuves serveur.
