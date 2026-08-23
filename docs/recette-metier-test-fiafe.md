@@ -398,6 +398,19 @@ La navigation privée est désormais composée par le pipeline
 déclarent leurs entrées et le squelette racine ne contient plus de liste métier
 codée en dur.
 
+Le registre a été déployé dans les six emplacements actifs depuis le commit
+`a8ebbd4` et l'artefact SHA-256
+`d24638d8e7b8f7ea9d3815740f7af3c919890db6fbce14a236a52765b9d317d0`.
+L'actualisation des métadonnées de plugins a été exécutée avec
+`plugins:maj:bdd`, nécessaire après l'ajout d'un pipeline dans les manifests.
+
+Deux défauts détectés par la première compilation réelle ont été corrigés : le
+retour `data` natif de `pipeline()` dans `4ea5487`, puis l'autonomie du
+fournisseur Compta dans `4218eac`. Après redéploiement, le registre expose les
+quatorze entrées attendues dans le bon ordre et le squelette produit 2283
+octets de HTML avec les URLs Adhésions et Notifications. Les anciennes erreurs
+du journal précèdent le dernier correctif et ne se reproduisent plus.
+
 Le commit `ccd9fdf` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `129a059ead47adac15277ba045b21f171929488ae284108fb49ae00d365822ae`.
