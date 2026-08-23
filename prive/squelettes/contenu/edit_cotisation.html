@@ -1,7 +1,8 @@
 [(#AUTORISER{adherents_menu}|sinon_interdire_acces)]
+<h1 class="grostitre"><:association:ajout_de_cotisation:></h1>
 #SET{id_compte,#ENV{id_compte,new}}
 <BOUCLE_compte(ASSO_COMPTES){id_compte=#GET{id_compte}}{0,1}>#SET{id_auteur,#ID_AUTEUR}</BOUCLE_compte>
 #SET{id_auteur,#ENV{id_auteur,#GET{id_auteur}}}
 [(#BOITE_OUVRIR{<:association:ajout_de_cotisation:>,'simple'})]
-<INCLURE{fond=prive/squelettes/contenu/editer_asso_cotisation,id_auteur=#GET{id_auteur},id_compte=#GET{id_compte},env}>
+<INCLURE{fond=prive/squelettes/contenu/editer_asso_cotisation,id_auteur=#GET{id_auteur},id_compte=#GET{id_compte},titre=non,env}>
 [(#BOITE_FERMER)]

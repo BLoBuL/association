@@ -29,4 +29,13 @@ if (str_contains($formulaire_compte, "generer_url_ecrire('asso_comptes')")
 	exit(1);
 }
 
+$edit_cotisation = file_get_contents($racine . 'edit_cotisation.html');
+$editer_cotisation = file_get_contents($racine . 'editer_asso_cotisation.html');
+if (!str_contains($edit_cotisation, '<h1 class="grostitre"><:association:ajout_de_cotisation:></h1>')
+	|| !str_contains($edit_cotisation, 'titre=non')
+	|| !str_contains($editer_cotisation, '#ENV{titre,oui}|=={oui}|oui)<h1 class="grostitre">')) {
+	fwrite(STDERR, "Les routes d'édition de cotisation n'ont pas de titre privé SPIP sans doublon.\n");
+	exit(1);
+}
+
 echo "Titres des pages privées conformes\n";
