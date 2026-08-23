@@ -12,33 +12,24 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
 include_spip('base/abstract_sql');
 function association_upgrade($nom_meta_base_version, $version_cible) {
     include_spip('inc/meta');
-    //include_once('base/association.php');
     include_spip('inc/cextras');
+    include_spip('base/association');
     include_spip('public/interfaces');
-    if (!lire_config('association_base_version')) {
-        $schema = '1.0.0';
-        ecrire_config('association_base_version', $schema);
-        sql_delete('spip_association_metas', "nom='base_version'");
-    }
     $maj = array();
 #CREATE
-    //cextras_api_upgrade(association_declarer_champs_extras(), $maj['create']);
-    $maj['create'][] = array(
-            array('maj_tables',array('spip_asso_categories',
-                                            'spip_asso_dons',
-                                            'spip_asso_ventes',
-											'spip_asso_comptes',
-											'spip_asso_cotisations',
-                                            'spip_asso_plan',
-                                            'spip_asso_destination',
-                                            'spip_asso_destination_op',
-                                            'spip_asso_ressources',
-                                            'spip_asso_prets',
-                                            'spip_asso_ressources',
-                                            'spip_asso_activites',
-                                            'spip_association_metas',
-                                            'spip_evenements')),
+    // Une installation sans meta doit suivre la branche `create` native de
+    // maj_plugin(). Ne surtout pas fabriquer une ancienne version de schema :
+    // cela rejouerait les migrations historiques destructives sur une base
+    // neuve. Le socle ne possede plus que sa table de configuration ; les
+    // tables metier sont installees par leurs plugins proprietaires.
+    $maj['create'] = array(
+        array('maj_tables', array('spip_association_metas')),
     );
+    cextras_api_upgrade(association_declarer_champs_extras(array()), $maj['create']);
+    // Les champs auteurs historiques ne sont pas encore tous portes par la
+    // declaration PHP ci-dessus. Leur description YAML versionnee reste la
+    // source de compatibilite et passe par l'importeur Champs Extras officiel.
+    $maj['create'][] = array('association_import_champs_extras');
 #V1.1.0
     $maj['1.1.0'] = array(
         //MAJ des tables

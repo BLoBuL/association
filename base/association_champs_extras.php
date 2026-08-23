@@ -336,7 +336,7 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
             "options" => array(
                 "nom" => 'places',
                 "label" =>  _T('association:label_places'),
-                "sql" => "int(11)  DEFAUT '0' NOT NULL",
+                "sql" => "int(11) DEFAULT '0' NOT NULL",
                 "explication" => _T('association:label_places_explication'),
             )
         ),
@@ -811,7 +811,7 @@ if($condition_inscription_defaut == 'jamais') {
     $champs['spip_evenements']['condition_inscription'] = array(
         "saisie" => 'hidden',
         "options" => array(
-            "sql" => "varchar(3) DEFAUT 'non' NULL",
+            "sql" => "varchar(3) DEFAULT 'non' NULL",
             "nom" => "condition_inscription",
             "label" => _T('association:case_condition_inscription_label'),
             "defaut" => 'non',
@@ -842,7 +842,7 @@ if($condition_inscription_defaut == 'jamais') {
                 "options" => array(
                     "label" => _T('association:case_condition_inscription_label'),
                     "nom" => 'condition_inscription',
-                    "sql" => "varchar(3) DEFAUT 'non' NULL",
+                    "sql" => "varchar(3) DEFAULT 'non' NULL",
                     "explication" => _T('association:case_condition_inscription_explication'),
                     "defaut" => ($condition_inscription_defaut == 'toujours' ||
                                  $condition_inscription_defaut == 'oui') ? 'oui' : 'non',
@@ -931,7 +931,7 @@ $champs['spip_evenements']['reseau_fiafe'] = array(
     "options" => array(
         "label" => _T('association:reseau_fiafe_label'),
         "nom" => 'reseau_fiafe',
-        "sql" => "varchar(3) DEFAUT 'non' NULL",
+        "sql" => "varchar(3) DEFAULT 'non' NULL",
         "explication" => _T('association:reseau_fiafe_explication'),
         "defaut" => 'non',
         "datas" => array(
