@@ -12,7 +12,14 @@ $racine = realpath($racine) ?: $racine;
 $racines = array('association' => $racine);
 foreach (array(
 	'adhesions' => '_DIR_PLUGIN_ASSOCIATION_ADHESIONS',
+	'communication' => '_DIR_PLUGIN_ASSOCIATION_COMMUNICATION',
+	'compta' => '_DIR_PLUGIN_ASSOCIATION_COMPTA',
+	'dons' => '_DIR_PLUGIN_ASSOCIATION_DONS',
 	'evenements' => '_DIR_PLUGIN_ASSOCIATION_EVENEMENTS',
+	'groupes' => '_DIR_PLUGIN_ASSOCIATION_GROUPES',
+	'paiements' => '_DIR_PLUGIN_ASSOCIATION_PAIEMENTS',
+	'prets' => '_DIR_PLUGIN_ASSOCIATION_PRETS',
+	'ventes' => '_DIR_PLUGIN_ASSOCIATION_VENTES',
 ) as $module => $constante) {
 	if (defined($constante)) {
 		$racine_module = rtrim(constant($constante), '/\\');
@@ -23,6 +30,10 @@ $repertoires = array(
 	'prives' => array('racine_fond' => $racine, 'chemin' => $racine . '/prive'),
 );
 foreach ($racines as $module => $racine_module) {
+	$repertoires['prives_' . $module] = array(
+		'racine_fond' => $racine_module,
+		'chemin' => $racine_module . '/prive',
+	);
 	$repertoires['publics_' . $module] = array(
 		'racine_fond' => $racine_module . '/squelettes',
 		'chemin' => $racine_module . '/squelettes',
@@ -111,5 +122,6 @@ if ($echecs) {
 	exit(1);
 }
 
+$prives = array_sum(array_filter($compiles, fn($nombre, $type) => str_starts_with($type, 'prives'), ARRAY_FILTER_USE_BOTH));
 $publics = array_sum(array_filter($compiles, fn($nombre, $type) => str_starts_with($type, 'publics_'), ARRAY_FILTER_USE_BOTH));
-echo "OK: {$compiles['prives']} squelettes prives et {$publics} squelettes publics compiles sous SPIP " . $GLOBALS['spip_version_branche'] . ".\n";
+echo "OK: {$prives} squelettes prives et {$publics} squelettes publics compiles sous SPIP " . $GLOBALS['spip_version_branche'] . ".\n";
