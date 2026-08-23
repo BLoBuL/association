@@ -478,3 +478,13 @@ a été déployé atomiquement dans le socle depuis l'artefact SHA-256
 puis le registre des plugins a été actualisé. Le serveur confirme que le socle
 ne déclare plus les pipelines principal et objets, que sa table auxiliaire de
 métas reste déclarée et que le pipeline objet de Communication reste actif.
+
+## Lot 35 — export CSV des événements
+
+L'API CSV et son fragment privé sont désormais fournis par Événements. Le
+commit `bec3ba7` a été déployé atomiquement dans le socle et Événements depuis
+l'artefact SHA-256
+`a95fb2cfb01b073999fe15ef145ea9dc5aed719b2cf7bdf7cefe09265fb808ca`.
+Le serveur résout les deux ressources depuis Événements, charge réellement
+`inc_exporter_csv_dist`, produit une ligne CSV conforme et compile le fragment
+en 495 octets sans erreur.
