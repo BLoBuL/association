@@ -6,6 +6,10 @@ $evenements = file_get_contents($racine . '/plugins/association-evenements/inc/a
 $communication = file_get_contents($racine . '/plugins/association-communication/inc/association_communication_maintenance.php');
 $compta = file_get_contents($racine . '/plugins/association-compta/inc/association_compta_maintenance.php');
 $paiements = file_get_contents($racine . '/plugins/association-paiements/inc/association_paiements_maintenance.php');
+$pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
+$pipelines_communication = file_get_contents($racine . '/plugins/association-communication/association_communication_pipelines.php');
+$pipelines_compta = file_get_contents($racine . '/plugins/association-compta/association_compta_pipelines.php');
+$pipelines_paiements = file_get_contents($racine . '/plugins/association-paiements/association_paiements_pipelines.php');
 
 $fonctions_evenements = array(
 	'asso_trouver_inscriptions_non_validees_anciennes',
@@ -27,8 +31,9 @@ foreach ($fonctions_evenements as $fonction) {
 	}
 }
 
-if (strpos($socle, "include_spip('inc/association_evenements_maintenance');") === false) {
-	fwrite(STDERR, "Le cron du socle ne charge pas l'API de maintenance Événements.\n");
+if (strpos($socle, "include_spip('inc/association_evenements_maintenance');") !== false
+	|| strpos($pipelines_evenements, 'function association_evenements_association_maintenance_bdd_executer(') === false) {
+	fwrite(STDERR, "La maintenance Événements n'est pas fournie par son pipeline.\n");
 	exit(1);
 }
 
@@ -45,8 +50,9 @@ foreach ($fonctions_communication as $fonction) {
 		exit(1);
 	}
 }
-if (strpos($socle, "include_spip('inc/association_communication_maintenance');") === false) {
-	fwrite(STDERR, "Le cron du socle ne charge pas l'API de maintenance Communication.\n");
+if (strpos($socle, "include_spip('inc/association_communication_maintenance');") !== false
+	|| strpos($pipelines_communication, 'function association_communication_association_maintenance_bdd_executer(') === false) {
+	fwrite(STDERR, "La maintenance Communication n'est pas fournie par son pipeline.\n");
 	exit(1);
 }
 
@@ -71,11 +77,17 @@ foreach ($proprietaires as $domaine => $definition) {
 		}
 	}
 }
-foreach (array('association_compta_maintenance', 'association_paiements_maintenance') as $api) {
-	if (strpos($socle, "include_spip('inc/{$api}');") === false) {
-		fwrite(STDERR, "API de maintenance non chargée: {$api}.\n");
-		exit(1);
-	}
+if (strpos($socle, "include_spip('inc/association_compta_maintenance');") !== false
+	|| strpos($socle, "include_spip('inc/association_paiements_maintenance');") !== false
+	|| strpos($pipelines_compta, 'function association_compta_association_maintenance_bdd_executer(') === false
+	|| strpos($pipelines_paiements, 'function association_paiements_association_maintenance_bdd_executer(') === false) {
+	fwrite(STDERR, "Comptabilité ou Paiements ne fournit pas sa maintenance par pipeline.\n");
+	exit(1);
+}
+
+if (strpos($socle, "pipeline('association_maintenance_bdd_executer'") === false) {
+	fwrite(STDERR, "Le cron transversal n'appelle pas le pipeline de maintenance métier.\n");
+	exit(1);
 }
 
 foreach (array('association_maintenance_auteurs_encaisses', 'association_maintenance_supprimer_donnees_auteurs') as $pipeline) {

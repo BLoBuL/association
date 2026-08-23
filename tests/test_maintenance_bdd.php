@@ -23,6 +23,12 @@ function pipeline($nom, $flux) {
             'association_paiements_association_maintenance_supprimer_donnees_auteurs',
             'association_compta_association_maintenance_supprimer_donnees_auteurs',
         ),
+		'association_maintenance_bdd_executer' => array(
+			'association_evenements_association_maintenance_bdd_executer',
+			'association_compta_association_maintenance_bdd_executer',
+			'association_paiements_association_maintenance_bdd_executer',
+			'association_communication_association_maintenance_bdd_executer',
+		),
     );
     foreach ($handlers[$nom] ?? array() as $handler) {
         $flux = $handler($flux);
@@ -268,6 +274,7 @@ include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_c
 include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/association_compta_pipelines.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_pipelines.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/association_paiements_pipelines.php';
 include_once PLUGIN_ROOT . '/plugins/association-communication/association_communication_pipelines.php';
 include_once PLUGIN_ROOT . '/genie/association_maintenance_bdd.php';

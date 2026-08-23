@@ -463,6 +463,14 @@ consommés par l'export des participants, sont fournis par Événements. Leurs
 chemins logiques restent inchangés afin de préserver les appels SPIP et les
 éventuelles surcharges existantes.
 
+## Lot 36 : exécution de maintenance distribuée
+
+Après le traitement transversal des auteurs, le cron appelle le pipeline
+`association_maintenance_bdd_executer`. Événements, Comptabilité, Paiements et
+Communication exécutent chacun leurs nettoyages et enrichissent le même
+rapport. Le socle ne charge plus leurs quatre bibliothèques et ne connaît plus
+les fonctions de nettoyage propres aux tables métier.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

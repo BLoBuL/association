@@ -65,3 +65,19 @@ function association_compta_association_configuration_navigation($flux) {
 	}
 	return $flux;
 }
+
+function association_compta_association_maintenance_bdd_executer($flux) {
+	include_spip('inc/association_compta_maintenance');
+	$options = (array) ($flux['args']['options'] ?? array());
+	$actions = (array) ($options['actions'] ?? array());
+	$dry_run = (bool) ($options['dry_run'] ?? true);
+	$lot = intval($options['lot'] ?? 1000);
+	$maintenant = intval($flux['args']['maintenant'] ?? time());
+	$flux['data']['supprimer_cotisations_orphelines'] = !empty($actions['supprimer_cotisations_orphelines'])
+		? asso_supprimer_cotisations_orphelines($dry_run, $lot)
+		: array('skipped' => true);
+	$flux['data']['supprimer_cotisations_non_encaissees_anciennes'] = !empty($actions['supprimer_cotisations_non_encaissees'])
+		? asso_supprimer_cotisations_non_encaissees_anciennes($maintenant, intval($options['mois_non_encaisse'] ?? 6), $dry_run, $lot)
+		: array('skipped' => true);
+	return $flux;
+}

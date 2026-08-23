@@ -7,10 +7,6 @@
 if (!defined('_ECRIRE_INC_VERSION')) return;
 
 include_spip('base/abstract_sql');
-include_spip('inc/association_evenements_maintenance');
-include_spip('inc/association_communication_maintenance');
-include_spip('inc/association_compta_maintenance');
-include_spip('inc/association_paiements_maintenance');
 
 
 
@@ -167,87 +163,15 @@ function association_maintenance_bdd_run($maintenant = null, array $opt = []) {
         }
     }
 
-    // 2) INSCRIPTIONS AUX ACTIVITÉS
-    $limite_inscriptions = date('Y-m-d H:i:s', $maintenant - ($opt['jours_inscriptions_en_attente'] * 86400));
-    $anciennes_non_validees = function_exists('asso_trouver_inscriptions_non_validees_anciennes')
-        ? asso_trouver_inscriptions_non_validees_anciennes($limite_inscriptions, $opt['lot'])
-        : array();
-    $resume['inscriptions_non_validees_anciennes'] = [
-        'nombre' => count($anciennes_non_validees),
-        'ids_activite' => array_column($anciennes_non_validees, 'id_activite'),
-    ];
-    if (!empty($opt['actions']['supprimer_inscriptions_non_validees']) && $anciennes_non_validees) {
-        $resume['supprimer_transactions_inscriptions'] = asso_supprimer_transactions_inscriptions($anciennes_non_validees, $opt['dry_run']);
-        if (asso_resultat_en_echec($resume['supprimer_transactions_inscriptions'])) {
-            $resume['supprimer_inscriptions_non_validees'] = array(
-                'skipped' => true,
-                'raison' => 'suppression_transactions_echec',
-            );
-        } else {
-            $resume['supprimer_inscriptions_non_validees'] = asso_supprimer_inscriptions_par_ids(array_column($anciennes_non_validees, 'id_activite'), $opt['dry_run']);
-        }
-    } else {
-        $resume['supprimer_transactions_inscriptions'] = array('skipped' => true);
-        $resume['supprimer_inscriptions_non_validees'] = array('skipped' => true);
-    }
-
-    if (!empty($inactifs)) {
-        if (!empty($opt['actions']['anonymiser_inscriptions_inactifs']) && function_exists('asso_anonymiser_inscriptions_auteurs')) {
-            $resume['anonymiser_inscriptions_inactifs'] = asso_anonymiser_inscriptions_auteurs($inactifs, $opt['dry_run']);
-        } else {
-            $resume['anonymiser_inscriptions_inactifs'] = array('skipped' => true);
-        }
-    }
-
-    // 3) NETTOYAGE ORPHELINS / OBSOLÈTES
-    if (!empty($opt['actions']['supprimer_cotisations_orphelines']) && function_exists('asso_supprimer_cotisations_orphelines')) {
-        $resume['supprimer_cotisations_orphelines'] = asso_supprimer_cotisations_orphelines($opt['dry_run'], $opt['lot']);
-    } else {
-        $resume['supprimer_cotisations_orphelines'] = array('skipped' => true);
-    }
-
-    if (!empty($opt['actions']['supprimer_cotisations_non_encaissees']) && function_exists('asso_supprimer_cotisations_non_encaissees_anciennes')) {
-        $resume['supprimer_cotisations_non_encaissees_anciennes'] = asso_supprimer_cotisations_non_encaissees_anciennes($maintenant, $opt['mois_non_encaisse'], $opt['dry_run'], $opt['lot']);
-    } else {
-        $resume['supprimer_cotisations_non_encaissees_anciennes'] = array('skipped' => true);
-    }
-
-    if (!empty($opt['actions']['supprimer_transactions_orphelines']) && function_exists('asso_supprimer_transactions_orphelines')) {
-        $resume['supprimer_transactions_orphelines'] = asso_supprimer_transactions_orphelines($opt['dry_run'], $opt['lot']);
-    } else {
-        $resume['supprimer_transactions_orphelines'] = array('skipped' => true);
-    }
-
-    if (!empty($opt['actions']['supprimer_participations_orphelines']) && function_exists('asso_supprimer_participations_evenements_orphelines')) {
-        $resume['supprimer_participations_evenements_orphelines'] = asso_supprimer_participations_evenements_orphelines($opt['dry_run'], $opt['lot']);
-    } else {
-        $resume['supprimer_participations_evenements_orphelines'] = array('skipped' => true);
-    }
-
-    if (!empty($opt['actions']['supprimer_participations_obsoletes']) && function_exists('asso_supprimer_participations_evenements_obsoletes')) {
-        $resume['supprimer_participations_evenements_obsoletes'] = asso_supprimer_participations_evenements_obsoletes($opt['dry_run'], $opt['lot'], $opt['jours_inscriptions_en_attente']);
-    } else {
-        $resume['supprimer_participations_evenements_obsoletes'] = array('skipped' => true);
-    }
-
-    // 4) NETTOYAGE URLS
-    if (!empty($opt['actions']['supprimer_urls_mailsubscriber']) && function_exists('asso_supprimer_urls_par_type')) {
-        $resume['supprimer_urls_mailsubscriber'] = asso_supprimer_urls_par_type('mailsubscriber', $opt['dry_run'], 10000);
-    } else {
-        $resume['supprimer_urls_mailsubscriber'] = array('skipped' => true);
-    }
-    if (!empty($opt['actions']['supprimer_urls_obsoletes']) && function_exists('asso_supprimer_urls_obsoletes')) {
-        $resume['supprimer_urls_obsoletes'] = asso_supprimer_urls_obsoletes($opt['dry_run'], 10000);
-    } else {
-        $resume['supprimer_urls_obsoletes'] = array('skipped' => true);
-    }
-
-    // 5) NETTOYAGE MAILSUBSCRIBERS
-    if (!empty($opt['actions']['supprimer_mailsubscribers_orphelines']) && function_exists('asso_supprimer_mailsubscribers_orphelines')) {
-        $resume['supprimer_mailsubscribers_orphelines'] = asso_supprimer_mailsubscribers_orphelines($opt['dry_run'], $opt['lot']);
-    } else {
-        $resume['supprimer_mailsubscribers_orphelines'] = array('skipped' => true);
-    }
+    $resume = pipeline('association_maintenance_bdd_executer', array(
+        'args' => array(
+            'maintenant' => $maintenant,
+            'options' => $opt,
+            'inactifs' => $inactifs,
+        ),
+        'data' => $resume,
+    ));
+    $resume = is_array($resume) ? $resume : array();
 
     association_log('cron', 'Associaspip: Maintenance - résumé: ' . json_encode($resume), 'info');
     return $resume;

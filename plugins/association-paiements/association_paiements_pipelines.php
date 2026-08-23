@@ -168,3 +168,13 @@ function association_paiements_association_configuration_navigation($flux) {
 	$flux['data']['mode_paiement'] = ['ordre' => 60, 'label' => 'association_config:navigation_config_mode_paiement'];
 	return $flux;
 }
+
+function association_paiements_association_maintenance_bdd_executer($flux) {
+	include_spip('inc/association_paiements_maintenance');
+	$options = (array) ($flux['args']['options'] ?? array());
+	$actions = (array) ($options['actions'] ?? array());
+	$flux['data']['supprimer_transactions_orphelines'] = !empty($actions['supprimer_transactions_orphelines'])
+		? asso_supprimer_transactions_orphelines((bool) ($options['dry_run'] ?? true), intval($options['lot'] ?? 1000))
+		: array('skipped' => true);
+	return $flux;
+}

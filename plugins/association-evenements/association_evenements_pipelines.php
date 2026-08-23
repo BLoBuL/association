@@ -25,6 +25,49 @@ function association_evenements_association_configuration_navigation($flux) {
 	return $flux;
 }
 
+function association_evenements_association_maintenance_bdd_executer($flux) {
+	include_spip('inc/association_evenements_maintenance');
+	$options = (array) ($flux['args']['options'] ?? array());
+	$actions = (array) ($options['actions'] ?? array());
+	$inactifs = (array) ($flux['args']['inactifs'] ?? array());
+	$maintenant = intval($flux['args']['maintenant'] ?? time());
+	$lot = intval($options['lot'] ?? 1000);
+	$dry_run = (bool) ($options['dry_run'] ?? true);
+	$jours = intval($options['jours_inscriptions_en_attente'] ?? 90);
+	$limite = date('Y-m-d H:i:s', $maintenant - ($jours * 86400));
+	$anciennes = asso_trouver_inscriptions_non_validees_anciennes($limite, $lot);
+
+	$flux['data']['inscriptions_non_validees_anciennes'] = array(
+		'nombre' => count($anciennes),
+		'ids_activite' => array_column($anciennes, 'id_activite'),
+	);
+	if (!empty($actions['supprimer_inscriptions_non_validees']) && $anciennes) {
+		$transactions = asso_supprimer_transactions_inscriptions($anciennes, $dry_run);
+		$flux['data']['supprimer_transactions_inscriptions'] = $transactions;
+		if (asso_resultat_en_echec($transactions)) {
+			$flux['data']['supprimer_inscriptions_non_validees'] = array('skipped' => true, 'raison' => 'suppression_transactions_echec');
+		} else {
+			$flux['data']['supprimer_inscriptions_non_validees'] = asso_supprimer_inscriptions_par_ids(array_column($anciennes, 'id_activite'), $dry_run);
+		}
+	} else {
+		$flux['data']['supprimer_transactions_inscriptions'] = array('skipped' => true);
+		$flux['data']['supprimer_inscriptions_non_validees'] = array('skipped' => true);
+	}
+	if ($inactifs) {
+		$flux['data']['anonymiser_inscriptions_inactifs'] = !empty($actions['anonymiser_inscriptions_inactifs'])
+			? asso_anonymiser_inscriptions_auteurs($inactifs, $dry_run)
+			: array('skipped' => true);
+	}
+	$flux['data']['supprimer_participations_evenements_orphelines'] = !empty($actions['supprimer_participations_orphelines'])
+		? asso_supprimer_participations_evenements_orphelines($dry_run, $lot)
+		: array('skipped' => true);
+	$flux['data']['supprimer_participations_evenements_obsoletes'] = !empty($actions['supprimer_participations_obsoletes'])
+		? asso_supprimer_participations_evenements_obsoletes($dry_run, $lot, $jours)
+		: array('skipped' => true);
+
+	return $flux;
+}
+
 function association_evenements_taches_generales_cron($taches) {
 	$taches['association_expiration_auto_evenement'] = 30 * 60;
 	return $taches;

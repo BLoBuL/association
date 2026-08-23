@@ -256,3 +256,21 @@ function association_communication_association_configuration_navigation($flux) {
 	];
 	return $flux;
 }
+
+function association_communication_association_maintenance_bdd_executer($flux) {
+	include_spip('inc/association_communication_maintenance');
+	$options = (array) ($flux['args']['options'] ?? array());
+	$actions = (array) ($options['actions'] ?? array());
+	$dry_run = (bool) ($options['dry_run'] ?? true);
+	$lot = intval($options['lot'] ?? 1000);
+	$flux['data']['supprimer_urls_mailsubscriber'] = !empty($actions['supprimer_urls_mailsubscriber'])
+		? asso_supprimer_urls_par_type('mailsubscriber', $dry_run, 10000)
+		: array('skipped' => true);
+	$flux['data']['supprimer_urls_obsoletes'] = !empty($actions['supprimer_urls_obsoletes'])
+		? asso_supprimer_urls_obsoletes($dry_run, 10000)
+		: array('skipped' => true);
+	$flux['data']['supprimer_mailsubscribers_orphelines'] = !empty($actions['supprimer_mailsubscribers_orphelines'])
+		? asso_supprimer_mailsubscribers_orphelines($dry_run, $lot)
+		: array('skipped' => true);
+	return $flux;
+}
