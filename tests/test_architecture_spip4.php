@@ -229,6 +229,27 @@ $verifier(
 		&& strpos($albums_evenements_front, 'association_evenements:') !== false,
 	'Les albums Événements doivent être autonomes vis-à-vis de Blobul CORE.'
 );
+$emails_communication_front = array(
+	'texte.html',
+	'inc-button.html',
+	'inc/inc-header.html',
+	'inc/inc-logo_site.html',
+	'inc/inc-title.html',
+	'inc/inc-content.html',
+	'inc/inc-footer.html',
+);
+$sources_emails_communication = '';
+foreach ($emails_communication_front as $email_communication_front) {
+	$chemin_email_communication = $racine . '/plugins/association-communication/emails/' . $email_communication_front;
+	$verifier(is_file($chemin_email_communication), 'Communication doit fournir emails/' . $email_communication_front . '.');
+	$sources_emails_communication .= file_get_contents($chemin_email_communication);
+}
+$verifier(
+	strpos($sources_emails_communication, 'zblobul') === false
+		&& strpos($sources_emails_communication, 'logo_blobul') === false
+		&& strpos($sources_emails_communication, 'association_communication:notification_automatique') !== false,
+	'Le gabarit email Communication doit être autonome vis-à-vis de Blobul CORE.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

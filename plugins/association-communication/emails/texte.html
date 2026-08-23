@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="#LANG" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="x-apple-disable-message-reformatting">
+	<meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
+	[<title>(#ENV*{sujet}|textebrut)</title>]
+	<style>
+		html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+		table, td { border-collapse: collapse !important; }
+		img { border: 0; display: block; height: auto; max-width: 100%; }
+		a { color: #0b5c58; }
+		@media screen and (max-width: 680px) {
+			.association-email-shell { width: 100% !important; }
+			.association-email-gutter { padding: 12px !important; }
+			.association-email-title { font-size: 28px !important; }
+		}
+	</style>
+</head>
+<body style="margin:0; padding:0; background:#f3f5f7; width:100% !important;">
+	[<div style="display:none; visibility:hidden; opacity:0; height:0; overflow:hidden;">(#ENV{intro}|textebrut)</div>]
+	<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background:#f3f5f7;">
+		<tr><td class="association-email-gutter" align="center" style="padding:24px 12px;">
+			<table role="presentation" class="association-email-shell" border="0" cellpadding="0" cellspacing="0" width="640" style="width:100%; max-width:640px; background:#fff; border:1px solid #dfe5e8; border-radius:14px;">
+				<INCLURE{fond=emails/inc/inc-header,type_notification=#ENV{type_notification,<:association_communication:notification_automatique:>},env}>
+				<INCLURE{fond=emails/inc/inc-title,env}>
+				<INCLURE{fond=emails/inc/inc-content,env}>
+				<INCLURE{fond=emails/inc/inc-footer,env}>
+			</table>
+		</td></tr>
+	</table>
+</body>
+</html>

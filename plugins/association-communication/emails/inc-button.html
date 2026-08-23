@@ -1,0 +1,6 @@
+[(#REM) Bouton robuste pour clients de messagerie. Paramètres : url, label, color, bgcolor, bordercolor, borderradius.]
+<span style="display:inline-block;"><!--[if mso]>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#ENV*{url}" style="height:40px;v-text-anchor:middle;width:220px;" arcsize="10%" strokecolor="#ENV{bordercolor,#1e3650}" fillcolor="#ENV{bgcolor,#556270}">
+	<w:anchorlock/><center style="color:#ENV{color,#ffffff};font-family:Arial,sans-serif;font-size:13px;font-weight:bold;">#ENV*{label}</center>
+</v:roundrect>
+<![endif]--><!--[if !mso]><!--><a href="#ENV*{url}" style="background:#ENV{bgcolor,#556270};border:1px solid #ENV{bordercolor,#1e3650};border-radius:#ENV{borderradius,4px};color:#ENV{color,#ffffff};display:inline-block;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;line-height:40px;padding:0 25px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;">#ENV*{label}</a><!--<![endif]--></span>

@@ -80,5 +80,6 @@ Suite à la validation de ce formulaire vous serez redirigé vers la page vous p
 	'notifications_metiers_contexte_absent' => 'Aucun exemple disponible',
 	'notifications_metiers_previsualiser' => 'Prévisualiser',
 	'notifications_metiers_titre' => 'Notifications métier',
+	'notification_automatique' => 'Notification automatique',
 	'titre_newsletter' => 'Inscription à la newsletter',
 );

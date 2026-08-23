@@ -537,6 +537,15 @@ Les albums photo public et public verrouillé issus de `blobul-ASSO_FO` sont
 fournis par `association-evenements/squelettes/inclure`. Leurs libellés utilisent
 le domaine `association_evenements`; aucune référence à `zblobul_core` ne reste.
 
+## Lot 46 : gabarit email autonome Communication
+
+Le gabarit responsive de `blobul-CORE` est repris dans
+`association-communication/emails` selon les conventions de découverte SPIP.
+Il fournit la coque HTML, l’en-tête, le logo du site avec repli textuel, le
+titre, le contenu, le pied et le bouton compatible Outlook. Les métas, langues,
+assets et signatures propres à Blobul CORE ont été retirés : Communication peut
+produire ses emails sans charger ce plugin historique.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
