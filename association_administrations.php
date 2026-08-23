@@ -13,6 +13,9 @@ include_spip('base/abstract_sql');
 // Pont de compatibilité : les callbacks 1.6.x du socle historique délèguent
 // désormais leur traitement au plugin propriétaire des cotisations.
 include_spip('inc/association_adhesions_migration');
+include_spip('inc/association_adhesions_migration_legacy');
+include_spip('inc/association_evenements_migration_legacy');
+include_spip('inc/association_compta_migration_legacy');
 function association_upgrade($nom_meta_base_version, $version_cible) {
     include_spip('inc/meta');
     include_spip('inc/cextras');
@@ -296,103 +299,6 @@ $maj['1.3.0'] = array(
 	);
   include_spip('base/upgrade');
   maj_plugin($nom_meta_base_version, $version_cible, $maj);
-}
-
-// MAJ CREATE
-function association_maj_create() {
-    // Renomage des colonnes
-    sql_update('spip_asso_activites', array(
-        'id_auteur'=>'nom',
-        'nombre_inscrits'=>'inscrits',
-        'nom_participants'=>'non_membres',
-        'responsable'=>'participant',
-    ));
-    // Import de champs extras
-    association_import_champs_extras(); // En cas de nécessité sur les mise à jour. Ne sera pas nécessaire.
-}
-// MAJ 112
-function association_maj_112() {
-    // Valeur par defaut dans spip_evenements
-    $sql_evenements = sql_select('*', 'spip_evenements', "validation='' OR accompagnants='' OR file_attentes=''");
-    while($maj_evenement = sql_fetch($sql_evenements)){
-        $id_evenement = $maj_evenement['id_evenement'];
-        $validation = (empty($maj_evenement['validation']))? "non" : $maj_evenement['validation'];
-        $accompagnants = (empty($maj_evenement['accompagnants']))? "non" : $maj_evenement['accompagnants'];
-        $file_attentes = (empty($maj_evenement['file_attentes']))? "non" : $maj_evenement['file_attentes'];
-        sql_updateq('spip_evenements', array(
-            'validation' => $validation,
-            'accompagnants' => $accompagnants,
-            'file_attentes' => $file_attentes),
-            "id_evenement=$id_evenement");
-    }
-}
-// MAJ 124
-function association_maj_124() {
-    sql_update('spip_asso_comptes', array(
-        'id_auteur'=>'id_journal',
-    ));
-}
-function association_maj_spip_asso_activites(){
-    $query_asso_activites = sql_select("id_activite,id_auteur", "spip_asso_activites", "email_inscrit IS NULL");
-    while($asso_activite = sql_fetch($query_asso_activites)){
-        $id_auteur =$asso_activite['id_auteur'];
-        $id_activite = $asso_activite['id_activite'];
-        $query_auteur = sql_fetsel("prenom,nom_famille,email","spip_auteurs","id_auteur= $id_auteur");
-        sql_updateq('spip_asso_activites', array(
-            'prenom_inscrit' => $query_auteur['prenom'],
-            'nom_inscrit' => $query_auteur['nom_famille'],
-            'email_inscrit' => $query_auteur['email']),
-            "id_activite=$id_activite");
-    }
-}
-function association_maj_142(){
-
-    sql_updateq('spip_asso_categories_adherents', array(
-        'type_adherent' => 'adherent'),
-        "type_adherent IS NULL");
-
-    sql_delete("spip_asso_categories_adherents", "statut='supprime'");
-
-
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- * FONCTION NECESSAIRE AUX MISE A JOUR
- */
-## IMPORT DE FICHIER POUR CHAMPS EXTRAS
-function association_import_champs_extras(){
-    // Repris de 'importer_champs_extras.php' du plugin 'champs extras' ##
-    // Importe dans champs extrat les champs nécessaire au fonctionnement du plugin
-    $res = array('editable' => true);
-    $fichier = find_in_path('yaml/association.yaml');
-	// Les champs sont désormais déclarés en PHP par
-	// association_declarer_champs_extras(). Le YAML n'existe plus sur une
-	// installation neuve : les anciennes étapes d'upgrade doivent alors rester
-	// idempotentes et ne surtout pas appeler lire_fichier(false), fatal en PHP 8.
-	if (!$fichier || !is_file($fichier)) {
-		$res['message_ok'] = 'Aucun ancien fichier YAML à importer.';
-		return $res;
-	}
-    lire_fichier($fichier, $yaml);
-    if (!$yaml) {
-        $res['message_erreur'] = "Lecture du fichier en erreur.";
-        return $res;
-    }
-    include_spip('inc/yaml');
-    $description = yaml_decode($yaml, true);
-    if (!$description OR !is_array($description)) {
-        $res['message_erreur'] = "Pas de champ trouvé dans le fichier.";
-        return $res;
-    }
-    include_spip('formulaires/importer_champs_extras');
-    // true si on fusionne les champs présents dans la sauvegarde et aussi présents sur le site. False pour les ignorer.
-    if (iextras_importer_description($description, $message, false)) {
-        $res['message_ok'] = $message;
-    } else {
-        $res['message_erreur'] = $message;
-    }
-    return $res;
 }
 
 function association_vider_tables($nom_meta_base_version) {

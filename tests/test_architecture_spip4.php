@@ -61,6 +61,17 @@ $verifier(
 	'La migration historique des cotisations doit appartenir au module Adhesions.'
 );
 $verifier(
+	!preg_match('/function association_(?:maj_create|maj_112|maj_124|maj_spip_asso_activites|maj_142|import_champs_extras)\s*\(/', $administration_socle),
+	'Le socle ne doit plus implementer les callbacks de migration metier historiques.'
+);
+foreach (array(
+	'association-adhesions/inc/association_adhesions_migration_legacy.php',
+	'association-evenements/inc/association_evenements_migration_legacy.php',
+	'association-compta/inc/association_compta_migration_legacy.php',
+) as $migration_module) {
+	$verifier(is_file($racine . '/plugins/' . $migration_module), 'Migration metier absente : ' . $migration_module . '.');
+}
+$verifier(
 	!is_file($racine . '/genie/association_taches_generales.php')
 		&& is_file($racine . '/plugins/association-adhesions/genie/association_taches_generales.php'),
 	'Le cron des echeances doit appartenir exclusivement au module Adhesions.'
