@@ -22,9 +22,12 @@ function formulaires_editer_asso_destinations_charger_dist($id_destination='') {
 
 function formulaires_editer_asso_destinations_verifier_dist($id_destination='') {
 	$erreurs = [];
+	if (trim((string) _request('intitule')) === '') {
+		$erreurs['intitule'] = _T('info_obligatoire');
+	}
 
 	if (count($erreurs)) {
-		$erreurs['erreur_message'] = _T('association:erreur_titre');
+		$erreurs['message_erreur'] = _T('association:erreur_titre');
 	}
 	return $erreurs;
 }
