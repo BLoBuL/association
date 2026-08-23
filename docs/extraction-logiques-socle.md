@@ -661,6 +661,18 @@ signaler à la fois un plugin inactif et l'absence de sa contribution. Les totau
 historiques restent calculés à partir du registre : 10 plugins, 14 tables, 12
 objets SQL et 7 schémas.
 
+## Lot 55 : compatibilité des snapshots CLI v1
+
+Le format historique `association-config-snapshot-v1` contenait douze options
+d'Événements et les catégories de debug du socle. Cette liste n'est plus codée
+dans l'API centrale : Événements fournit ses douze noms par le pipeline
+`association_config_cli_snapshot_v1_options`, tandis que le socle ajoute
+uniquement ses options `debug.*` persistantes.
+
+La validation reste stricte : les doublons sont éliminés, un snapshot partiel
+est refusé et la liste obtenue est identique au format v1 publié. Le découplage
+ne modifie donc ni les sauvegardes existantes ni leur restauration.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

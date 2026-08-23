@@ -56,6 +56,7 @@ include_once PLUGIN_ROOT . '/inc/association_log.php';
 include_once PLUGIN_ROOT . '/inc/association_config_cli_registre.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_config_cli.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_pipelines.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_communication_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_config_cli.php';
@@ -121,6 +122,9 @@ function pipeline($nom, $flux) {
 		) as $fournisseur) {
 			$data = association_config_cli_ajouter_definitions($data, $fournisseur());
 		}
+	}
+	if ($nom === 'association_config_cli_snapshot_v1_options') {
+		$data = association_evenements_association_config_cli_snapshot_v1_options($data);
 	}
 	return $data;
 }

@@ -475,26 +475,14 @@ function association_config_cli_valider_snapshot($snapshot) {
 }
 
 function association_config_cli_snapshot_v1_options($registre) {
-	$options = array(
-		'evenement.inscription',
-		'evenement.selection_famille',
-		'evenement.informations_supplementaires',
-		'evenement.accompagnants',
-		'evenement.invites',
-		'evenement.limite_accompagnants',
-		'evenement.type_inscrits',
-		'evenement.validation',
-		'evenement.quota',
-		'evenement.liste_attente',
-		'evenement.validation_liste_attente',
-		'evenement.limite_liste_attente',
-	);
+	$options = array();
 	foreach ($registre as $nom => $definition) {
 		if (strpos($nom, 'debug.') === 0 && !empty($definition['path'])) {
 			$options[] = $nom;
 		}
 	}
-	return $options;
+	$options = pipeline('association_config_cli_snapshot_v1_options', $options);
+	return array_values(array_unique($options));
 }
 
 function association_config_cli_code_sortie($resultat) {

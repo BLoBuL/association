@@ -476,6 +476,14 @@ $verifier(
 	'Le registre CLI du socle ne doit plus déclarer les domaines métier.'
 );
 $verifier(
+	strpos($paquet, 'nom="association_config_cli_snapshot_v1_options"') !== false
+		&& strpos($api_cli_socle, "pipeline('association_config_cli_snapshot_v1_options'") !== false
+		&& strpos($api_cli_socle, "'evenement.inscription'") === false
+		&& strpos($pipelines_evenements, 'function association_evenements_association_config_cli_snapshot_v1_options') !== false
+		&& strpos($pipelines_evenements, "'evenement.inscription'") !== false,
+	'La compatibilite du snapshot CLI v1 doit etre fournie par Evenements.'
+);
+$verifier(
 	strpos($configuration_socle, 'FILTER_VALIDATE_EMAIL') === false
 		&& strpos($verification_communication, 'FILTER_VALIDATE_EMAIL') !== false,
 	'La validation des destinataires doit appartenir au module Communication.'

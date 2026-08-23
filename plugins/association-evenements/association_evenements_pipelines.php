@@ -10,6 +10,23 @@ function association_evenements_association_config_cli_registre($flux) {
 	return $flux;
 }
 
+function association_evenements_association_config_cli_snapshot_v1_options($flux) {
+	return array_merge($flux, array(
+		'evenement.inscription',
+		'evenement.selection_famille',
+		'evenement.informations_supplementaires',
+		'evenement.accompagnants',
+		'evenement.invites',
+		'evenement.limite_accompagnants',
+		'evenement.type_inscrits',
+		'evenement.validation',
+		'evenement.quota',
+		'evenement.liste_attente',
+		'evenement.validation_liste_attente',
+		'evenement.limite_liste_attente',
+	));
+}
+
 /**
  * Résout l'événement associé à une inscription sans exposer sa table aux autres modules.
  */

@@ -34,6 +34,7 @@
 	<pipeline nom="association_configuration_listes_diffusion" action="" />
 	<pipeline nom="association_configuration_navigation" action="" />
 	<pipeline nom="association_config_cli_registre" action="" />
+	<pipeline nom="association_config_cli_snapshot_v1_options" action="" />
 	<pipeline nom="association_installation_inventaire" action="" />
 
 	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
