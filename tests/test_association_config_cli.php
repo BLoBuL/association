@@ -107,6 +107,8 @@ function association_config_cli_test_collecter_saisies($saisies, &$noms) {
 
 $GLOBALS['visiteur_session'] = array('statut' => '0minirezo', 'webmestre' => 'oui');
 include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/configurer_association_evenements.php';
+include_once PLUGIN_ROOT . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php';
+include_once PLUGIN_ROOT . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php';
 include_once PLUGIN_ROOT . '/formulaires/configurer_association.php';
 $saisies_persistantes = array();
 $saisies_par_segment = array();

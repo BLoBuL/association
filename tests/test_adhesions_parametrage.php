@@ -78,7 +78,9 @@ $charge = formulaires_editer_asso_categorie_cotisation_charger_dist(7);
 test_assert($charge['devise'] === 'CNY', 'une catégorie historique sans devise reprend la configuration Intl lors de son édition');
 $GLOBALS['test_lecture'] = false;
 
-$source_config = file_get_contents(PLUGIN_ROOT . '/formulaires/configurer_association.php');
+$source_config = file_get_contents(PLUGIN_ROOT . '/formulaires/configurer_association.php')
+	. file_get_contents(PLUGIN_ROOT . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php')
+	. file_get_contents(PLUGIN_ROOT . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php');
 $parametres_globaux = array(
     'validite',
     'meta_cfg_cotisations_multidevises',

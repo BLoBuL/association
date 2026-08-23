@@ -54,6 +54,8 @@ $administration_socle = file_get_contents($racine . '/association_administration
 $migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
 $configuration_socle = file_get_contents($racine . '/formulaires/configurer_association.php');
 $configuration_evenements = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc/configurer_association_evenements.php');
+$configuration_paiements = file_get_contents($racine . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php');
+$configuration_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php');
 $verifier(
 	strpos($configuration_socle, "config == 'evenement'") === false
 		&& strpos($configuration_socle, "config == 'evenement_defaut'") === false,
@@ -63,6 +65,16 @@ $verifier(
 	strpos($configuration_evenements, "config == 'evenement'") !== false
 		&& strpos($configuration_evenements, "config == 'evenement_defaut'") !== false,
 	'Le module Evenements doit declarer ses panneaux de configuration.'
+);
+$verifier(
+	strpos($configuration_socle, "config == 'mode_paiement'") === false
+		&& strpos($configuration_paiements, "config == 'mode_paiement'") !== false,
+	'Le panneau des modes de paiement doit appartenir au module Paiements.'
+);
+$verifier(
+	strpos($configuration_socle, "config == 'comptabilite'") === false
+		&& strpos($configuration_compta, "config == 'comptabilite'") !== false,
+	'Le panneau comptable doit appartenir au module Comptabilite.'
 );
 $verifier(
 	strpos($administration_socle, 'function association_migrer_cotisations_depuis_comptes') === false,

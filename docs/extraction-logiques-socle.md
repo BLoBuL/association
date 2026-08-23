@@ -206,6 +206,11 @@ du module sans modifier leurs noms ni leurs valeurs existantes. Cette première
 extraction établit le contrat utilisé pour répartir progressivement les autres
 panneaux métier.
 
+Le même contrat couvre maintenant `mode_paiement` et `comptabilite`. Paiements
+porte les moyens de règlement, les taxes et l'autorisation d'encaissement ;
+Comptabilité porte l'exercice, le plan, les destinations et les imputations des
+différents métiers. Le socle ne fait qu'agréger leurs tableaux de saisies.
+
 ## Lots restant après la migration et la première recette distante
 
 1. répartir les blocs métier du grand formulaire de configuration ;
