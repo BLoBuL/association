@@ -449,3 +449,13 @@ socle et Communication depuis l'artefact SHA-256
 Le SPIP servi résout les fichiers HTML et YAML depuis
 `plugins/association-communication/saisies`, ne conserve aucune copie dans le
 socle et compile le champ de sélection sans erreur.
+
+## Lot 32 — boutons CVT Formidable dans Communication
+
+Le composant partagé de boutons CVT est désormais fourni par Communication.
+Le commit `0933240` a été déployé atomiquement dans le socle et Communication
+depuis l'artefact SHA-256
+`c15f2ee6a1dfa31f269a2fd04b5c66482ce54b9be18738f5434f605a8ee09a3d`.
+Le serveur le résout depuis Communication, confirme les trois consommateurs
+Communication, Événements et Comptabilité, puis le compile sans erreur en 214
+octets.
