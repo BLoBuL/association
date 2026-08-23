@@ -57,6 +57,10 @@ $verifier(
 	'Le socle ne doit plus implementer la migration metier des cotisations.'
 );
 $verifier(
+	!preg_match('/spip_asso_(?!ciation_metas)|spip_evenements|spip_mailshots/', $administration_socle),
+	'Le fichier d administration du socle ne doit plus nommer de table metier.'
+);
+$verifier(
 	strpos($migration_adhesions, 'function association_migrer_cotisations_depuis_comptes') !== false,
 	'La migration historique des cotisations doit appartenir au module Adhesions.'
 );
@@ -69,17 +73,20 @@ foreach (array(
 	'association-evenements/inc/association_evenements_migration_legacy.php',
 	'association-compta/inc/association_compta_migration_legacy.php',
 	'association-communication/inc/association_communication_migration_legacy.php',
+	'association-dons/inc/association_dons_migration_legacy.php',
+	'association-ventes/inc/association_ventes_migration_legacy.php',
+	'association-prets/inc/association_prets_migration_legacy.php',
 ) as $migration_module) {
 	$verifier(is_file($racine . '/plugins/' . $migration_module), 'Migration metier absente : ' . $migration_module . '.');
 }
-$debut_migrations_tardives = strpos($administration_socle, "\$maj['1.2.1']");
+$debut_migrations_tardives = strpos($administration_socle, "\$maj['1.1.0']");
 $fin_migrations_tardives = strpos($administration_socle, "\$maj['1.6.0']");
 $migrations_tardives = ($debut_migrations_tardives !== false && $fin_migrations_tardives !== false)
 	? substr($administration_socle, $debut_migrations_tardives, $fin_migrations_tardives - $debut_migrations_tardives)
 	: '';
 $verifier(
-	$migrations_tardives !== '' && !preg_match('/spip_asso_|spip_evenements/', $migrations_tardives),
-	'Les migrations 1.2.1 a 1.5 du socle doivent seulement deleguer aux modules.'
+	$migrations_tardives !== '' && !preg_match('/spip_asso_(?!ciation_metas)|spip_evenements|spip_mailshots/', $migrations_tardives),
+	'Les migrations 1.1 a 1.5 du socle doivent seulement deleguer aux modules.'
 );
 $verifier(
 	!is_file($racine . '/genie/association_taches_generales.php')

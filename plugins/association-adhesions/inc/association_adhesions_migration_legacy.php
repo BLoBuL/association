@@ -51,6 +51,11 @@ function association_import_champs_extras() {
  */
 function association_adhesions_migration_legacy($version) {
 	$operations = array(
+		'1.2.0' => array(
+			'TABLE spip_asso_categories RENAME TO spip_asso_categories_adherents',
+			'TABLE spip_asso_categories_adherents DROP libelle',
+			'TABLE spip_asso_categories_adherents DROP duree',
+		),
 		'1.2.2' => array('TABLE spip_asso_categories_adherents DROP deleted'),
 		'1.3.3' => array("TABLE spip_asso_categories_adherents ADD COLUMN type_adherent varchar(255) NOT NULL DEFAULT 'adherent' AFTER statut"),
 		'1.4.2' => array("TABLE spip_asso_categories_adherents ALTER type_adherent SET DEFAULT 'adherent'"),
@@ -71,6 +76,18 @@ function association_adhesions_migration_legacy($version) {
 	);
 	foreach ($operations[(string) $version] ?? array() as $operation) {
 		sql_alter($operation);
+	}
+	if ((string) $version === '1.1.0') {
+		maj_tables(array('spip_asso_categories'));
+	}
+	if (in_array((string) $version, array('1.1.3', '1.1.4', '1.1.5', '1.1.6', '1.1.9', '1.1.13'), true)) {
+		association_import_champs_extras();
+	}
+	if (in_array((string) $version, array('1.1.7', '1.1.8'), true)) {
+		maj_tables(array('spip_asso_categories'));
+	}
+	if ((string) $version === '1.2.0') {
+		maj_tables(array('spip_asso_categories_adherents'));
 	}
 	if ((string) $version === '1.4.2') {
 		association_maj_142();

@@ -183,14 +183,25 @@ Ces alias ne créent ni ne modifient de données métier. Leur suppression exige
 une recherche sur les squelettes des sites migrés et constitue le dernier lot
 de rupture de compatibilité.
 
+## Lot 11 : migrations historiques distribuées
+
+Les montées de schéma 1.1 à 1.5 sont désormais exécutées par les modules qui
+possèdent les tables concernées. Le fichier d'administration du socle conserve
+la chronologie publiée et la table transversale `spip_association_metas`, mais
+ne nomme plus aucune table métier. Adhésions prend aussi en charge la création
+de sa table de cotisations lors du passage en 1.6.0 avant la copie idempotente
+de l'historique comptable.
+
+Les callbacks historiques restent chargeables sous leurs noms d'origine pour
+préserver les mises à jour directes depuis les branches 2.1 et 2.2. Leur code et
+leurs opérations SQL résident toutefois dans Adhésions, Événements,
+Comptabilité, Communication, Dons, Ventes ou Prêts selon leur responsabilité.
+
 ## Lots restant après la migration et la première recette distante
 
-1. distribuer les anciennes migrations 1.1 à 1.5 encore regroupées dans le
-   fichier d'administration du socle, en préservant les montées de version
-   directes depuis les installations 2.1 et 2.2 ;
-2. répartir les blocs métier du grand formulaire de configuration ;
-3. remplacer ou déplacer les alias historiques `modifier/asso` ;
-4. achever l'audit des inclusions inter-modules et des contrats publics.
+1. répartir les blocs métier du grand formulaire de configuration ;
+2. remplacer ou déplacer les alias historiques `modifier/asso` ;
+3. achever l'audit des inclusions inter-modules et des contrats publics.
 
 La passe Chrome authentifiée et responsive a été rejouée après le lot 8 ; elle
 est consignée dans `docs/recette-metier-test-fiafe.md`.

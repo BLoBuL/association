@@ -5,6 +5,14 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 /**
+ * Crée ou adopte la table séparée avant d'y recopier l'historique comptable.
+ */
+function association_adhesions_migration_cotisations_creer() {
+	maj_tables(array('spip_asso_cotisations'));
+	association_migrer_cotisations_depuis_comptes();
+}
+
+/**
  * Copie idempotente des données métier de cotisation hors du journal comptable.
  *
  * Les anciennes colonnes restent lisibles pendant la transition 4.0 afin que

@@ -57,6 +57,41 @@ function association_maj_spip_asso_activites() {
  */
 function association_evenements_migration_legacy($version) {
 	$operations = array(
+		'1.1.0' => array(
+			'TABLE spip_asso_activites DROP telephone',
+			'TABLE spip_asso_activites DROP adresse',
+			'TABLE spip_asso_activites DROP email',
+			'TABLE spip_asso_activites DROP DATE_paiement',
+			'TABLE spip_asso_activites DROP id_adherent',
+			'TABLE spip_asso_activites DROP membres',
+			'TABLE spip_asso_activites DROP nom',
+			'TABLE spip_asso_activites DROP participant',
+			'TABLE spip_asso_activites DROP non_membres',
+			'TABLE spip_asso_activites DROP inscrits',
+			'TABLE spip_asso_activites MODIFY id_auteur BIGINT NOT NULL AFTER id_evenement',
+			'TABLE spip_asso_activites MODIFY statut TEXT NOT NULL AFTER id_auteur',
+			'TABLE spip_asso_activites MODIFY ORGANISATEUR BOOLEAN NOT NULL AFTER statut',
+			'TABLE spip_asso_activites MODIFY valider BOOLEAN NOT NULL AFTER ORGANISATEUR',
+			"TABLE spip_asso_activites MODIFY nombre_inscrits BIGINT NOT NULL DEFAULT '1' AFTER valider",
+			'TABLE spip_asso_activites MODIFY nom_participants TEXT NOT NULL AFTER nombre_inscrits',
+			"TABLE spip_asso_activites MODIFY montant BIGINT NOT NULL DEFAULT '0' AFTER nom_participants",
+			'TABLE spip_asso_activites MODIFY montant_payer BOOLEAN NOT NULL AFTER montant',
+			'TABLE spip_asso_activites MODIFY commentaire TEXT NOT NULL AFTER montant_payer',
+			'TABLE spip_asso_activites MODIFY date TIMESTAMP NOT NULL AFTER commentaire',
+		),
+		'1.1.5' => array('TABLE spip_asso_activites DROP ORGANISATEUR'),
+		'1.1.13' => array("TABLE spip_evenements ADD COLUMN date_ouverture datetime DEFAULT '0000-00-00 00:00:00' NOT NULL AFTER descriptif_securise"),
+		'1.1.15' => array(
+			'TABLE spip_evenements DROP date_ouverture',
+			"TABLE spip_evenements ADD COLUMN ouverture_differe tinytext DEFAULT '0' NOT NULL AFTER descriptif_securise",
+		),
+		'1.2.0' => array(
+			'TABLE spip_asso_categories_activites DROP cotisation',
+			'TABLE spip_evenements ADD COLUMN gratuit BOOLEAN NOT NULL AFTER validation',
+			'TABLE spip_evenements DROP montant',
+			'TABLE spip_asso_activites DROP montant',
+			'TABLE spip_asso_activites DROP montant_payer',
+		),
 		'1.2.1' => array(
 			'TABLE spip_asso_categories_activites DROP gratuit',
 			'TABLE spip_evenements ADD COLUMN payant BOOLEAN NOT NULL AFTER validation',
@@ -127,8 +162,25 @@ function association_evenements_migration_legacy($version) {
 		),
 		'1.5.8' => array("TABLE spip_evenements ADD COLUMN fermeture_inscription_date DATETIME NULL DEFAULT NULL AFTER fermeture_inscription"),
 	);
+	if ((string) $version === '1.1.0') {
+		maj_tables(array('spip_asso_activites', 'spip_evenements'));
+		association_maj_create();
+		foreach ($operations['1.1.0'] as $operation) {
+			sql_alter($operation);
+		}
+		return;
+	}
 	foreach ($operations[(string) $version] ?? array() as $operation) {
 		sql_alter($operation);
+	}
+	if ((string) $version === '1.1.1') {
+		maj_tables(array('spip_evenements'));
+	}
+	if ((string) $version === '1.1.2') {
+		association_maj_112();
+	}
+	if ((string) $version === '1.2.0') {
+		maj_tables(array('spip_asso_categories_activites', 'spip_asso_activites', 'spip_asso_categories_activites_liens'));
 	}
 	if ((string) $version === '1.2.3') {
 		maj_tables(array('spip_asso_categories_activites'));

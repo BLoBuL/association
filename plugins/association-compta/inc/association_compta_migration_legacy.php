@@ -16,6 +16,10 @@ function association_maj_124() {
  */
 function association_compta_migration_legacy($version) {
 	$operations = array(
+		'1.1.9' => array(
+			'TABLE spip_asso_comptes DROP type_paiement',
+			'TABLE spip_asso_comptes DROP type_cotisation',
+		),
 		'1.2.4' => array('TABLE spip_asso_comptes DROP id_journal'),
 		'1.4.7' => array(
 			"TABLE spip_asso_comptes ADD COLUMN objet varchar(30) DEFAULT 'cotisation'",
@@ -30,7 +34,17 @@ function association_compta_migration_legacy($version) {
 		sql_alter($operations['1.2.4'][0]);
 		return;
 	}
+	if ((string) $version === '1.1.0') {
+		maj_tables(array('spip_asso_comptes', 'spip_asso_plan', 'spip_asso_destination', 'spip_asso_destination_op'));
+		return;
+	}
 	foreach ($operations[(string) $version] ?? array() as $operation) {
 		sql_alter($operation);
+	}
+	if (in_array((string) $version, array('1.1.7', '1.1.8', '1.1.10'), true)) {
+		maj_tables(array('spip_asso_comptes'));
+	}
+	if ((string) $version === '1.1.9') {
+		maj_tables(array('spip_asso_comptes'));
 	}
 }
