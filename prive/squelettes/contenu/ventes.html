@@ -20,11 +20,12 @@
 			<th scope="col"><:association:qte:></th><th scope="col"><:association:montant:></th><th scope="col"><:association:action:></th><th scope="col"><:association:selection:></th>
 		</tr></thead><tbody>
 		<BOUCLE_ventes(ASSO_VENTES){date_vente>=#GET{debut}}{date_vente<#GET{fin}}{par date_vente,id_vente}{inverse}{pagination 25}>
+		#SET{peut_supprimer,#AUTORISER{supprimer,vente,#ID_VENTE}}
 		<tr class="[(#DATE_ENVOI|!={0000-00-00}|?{row_even,row_odd})]">
 			<td>#ID_VENTE</td><td>[(#DATE_VENTE|affdate)]</td><td class="principale">#ARTICLE</td><td>#CODE</td><td>#ACHETEUR</td><td>#ID_ACHETEUR</td>
 			<td>#QUANTITE</td><td>[(#QUANTITE|mult{#PRIX_VENTE}|number_format{2,',',' '})]&nbsp;&euro;</td>
 			<td class="action">[(#AUTORISER{modifier,vente,#ID_VENTE}|oui)<a href="[(#URL_ECRIRE{edit_vente,id_vente=#ID_VENTE})]" class="btn btn_mini"><:association:mettre_a_jour_la_vente:></a>]</td>
-			<td>[(#AUTORISER{supprimer,vente,#ID_VENTE}|oui)<input type="checkbox" name="drop[]" value="#ID_VENTE" aria-label="<:association:selectionner_vente{numero=#ID_VENTE}|attribut_html:>" />]</td>
+			<td>[(#GET{peut_supprimer}|oui)<input type="checkbox" name="drop[]" value="#ID_VENTE" aria-label="<:association:selectionner_vente{numero=#ID_VENTE}|attribut_html:>" />]</td>
 		</tr>
 		</BOUCLE_ventes>
 		</tbody></table>
