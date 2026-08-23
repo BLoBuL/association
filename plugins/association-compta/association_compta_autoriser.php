@@ -89,11 +89,10 @@ function association_obtenir_evenement_contexte($id_compte = 0, $opt = array()){
 		$id_activite = intval(_request('id_activite'));
 	}
 	if ($id_activite > 0) {
-		$contexte = pipeline('association_evenement_resoudre_contexte', array(
+		$id_evenement = (int) pipeline('association_evenement_resoudre_contexte', array(
 			'args' => array('id_activite' => $id_activite),
 			'data' => 0,
 		));
-		$id_evenement = (int) ($contexte['data'] ?? 0);
 		if ((int) $id_evenement > 0) {
 			return (int) $id_evenement;
 		}

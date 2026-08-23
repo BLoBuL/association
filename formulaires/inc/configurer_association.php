@@ -2,11 +2,10 @@
 
 // Function to check if at least one categorie_adherent of type 'entreprise' exists, if yes return 'true'
 function verifier_categorie_adherent_entreprise(){
-    $flux = pipeline('association_configuration_categorie_entreprise', array(
+    return (bool) pipeline('association_configuration_categorie_entreprise', array(
         'args' => array(),
         'data' => false,
     ));
-    return (bool) ($flux['data'] ?? false);
 
 }
 
@@ -45,11 +44,10 @@ function preparer_liste_zones(){
 }
 // Function to prepare the list of mail subscribing lists starting by "liste_
 function preparer_liste_mailsubscribinglists(){
-    $flux = pipeline('association_configuration_listes_diffusion', array(
+    $listes = pipeline('association_configuration_listes_diffusion', array(
         'args' => array(),
         'data' => array(),
     ));
-    $listes = $flux['data'] ?? array();
     return saisies_tableau2chaine(is_array($listes) ? $listes : array());
 }
 

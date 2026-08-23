@@ -93,11 +93,6 @@ $verifier(
 	'Le formulaire du socle ne doit pas precharger les bibliotheques de Comptabilite.'
 );
 $verifier(
-	strpos($configuration_helpers_socle, "\$flux['data'] ?? false") !== false
-		&& strpos($configuration_helpers_socle, "\$flux['data'] ?? array()") !== false,
-	'Les contrats de configuration doivent lire la cle data retournee par les pipelines SPIP.'
-);
-$verifier(
 	strpos($autorisation_compta, "include_spip('inc/association_evenements_autorisations')") === false
 		&& strpos($autorisation_compta, 'spip_asso_activites') === false
 		&& strpos($autorisation_compta, "pipeline('association_evenement_resoudre_contexte'") !== false,

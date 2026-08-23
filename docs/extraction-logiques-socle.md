@@ -234,8 +234,9 @@ Comptabilité ne charge plus la bibliothèque d'autorisation d'Événements et n
 lit plus `spip_asso_activites`. Lorsqu'une écriture est identifiée par une
 inscription, un pipeline Événements résout son contexte ; l'autorisation finale
 reste demandée à SPIP avec l'objet typé `evenement`. Les retours des pipelines
-catégorie entreprise et listes de diffusion sont aussi lus via leur clé `data`,
-conformément au contrat SPIP, au lieu de traiter par erreur l'enveloppe complète.
+catégorie entreprise et listes de diffusion utilisent le retour direct de
+`pipeline()`, après dépouillement automatique de l'enveloppe `args`/`data` par
+SPIP.
 
 Enfin, les helpers Bank/trésorier résident dans Paiements et les bibliothèques
 plan/destinations sont chargées par Comptabilité, plus par le formulaire du
