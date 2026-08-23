@@ -9,4 +9,5 @@
 	<pipeline nom="association_maintenance_auteurs_encaisses" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" inclure="association_paiements_pipelines.php" />
+	<pipeline nom="association_configuration_navigation" inclure="association_paiements_pipelines.php" />
 </paquet>

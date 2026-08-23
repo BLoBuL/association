@@ -391,6 +391,13 @@ depuis l'artefact SHA-256
 Le SPIP servi résout le squelette depuis `plugins/association-compta` et y
 retrouve les raccourcis d'import du plan et de migration.
 
+## Lot 28 — navigation de configuration distribuée
+
+La navigation privée est désormais composée par le pipeline
+`association_configuration_navigation`. Les cinq plugins propriétaires
+déclarent leurs entrées et le squelette racine ne contient plus de liste métier
+codée en dur.
+
 Le commit `ccd9fdf` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `129a059ead47adac15277ba045b21f171929488ae284108fb49ae00d365822ae`.

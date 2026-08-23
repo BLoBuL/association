@@ -30,6 +30,7 @@
 	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" action="" />
 	<pipeline nom="association_configuration_categorie_entreprise" action="" />
 	<pipeline nom="association_configuration_listes_diffusion" action="" />
+	<pipeline nom="association_configuration_navigation" action="" />
 
 	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
 	<necessite nom="association_adhesions" compatibilite="[4.0.0;4.*]" />

@@ -19,6 +19,12 @@ function association_evenements_association_evenement_resoudre_contexte($flux) {
 	return $flux;
 }
 
+function association_evenements_association_configuration_navigation($flux) {
+	$flux['data']['evenement'] = ['ordre' => 40, 'label' => 'association_config:navigation_config_evenement'];
+	$flux['data']['evenement_defaut'] = ['ordre' => 50, 'label' => 'association_config:navigation_config_evenement_defaut'];
+	return $flux;
+}
+
 function association_evenements_taches_generales_cron($taches) {
 	$taches['association_expiration_auto_evenement'] = 30 * 60;
 	return $taches;

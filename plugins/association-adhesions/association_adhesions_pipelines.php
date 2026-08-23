@@ -73,6 +73,14 @@ function association_adhesions_association_configuration_categorie_entreprise($f
 	return $flux;
 }
 
+function association_adhesions_association_configuration_navigation($flux) {
+	$flux['data']['adhesion'] = ['ordre' => 20, 'label' => 'association_config:navigation_config_adhesion'];
+	$flux['data']['entreprise'] = ['ordre' => 30, 'label' => 'association_config:navigation_config_entreprise'];
+	$flux['data']['affichage_prive'] = ['ordre' => 70, 'label' => 'association_config:navigation_config_affichage_prive'];
+	$flux['data']['affichage_public'] = ['ordre' => 80, 'label' => 'association_config:navigation_config_affichage_public'];
+	return $flux;
+}
+
 function association_adhesions_pre_insertion($flux) {
     if (($flux['args']['table'] ?? '') === 'spip_auteurs') {
         $flux['data']['inscription'] = date('Y-m-d H:i:s');

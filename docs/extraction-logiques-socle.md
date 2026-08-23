@@ -397,6 +397,19 @@ imports du plan, des destinations et de la migration comptable, appartient
 désormais à Comptabilité. Son chemin privé reste identique et SPIP le charge
 depuis le module actif sur la page de configuration du socle.
 
+## Lot 28 : navigation de configuration extensible
+
+Le squelette de navigation ne connaît plus les onglets Adhésions, Événements,
+Paiements, Comptabilité ou Communication. Il parcourt un registre construit par
+le pipeline `association_configuration_navigation`. Chaque plugin contribue ses
+propres entrées, leur ordre et leur destination ; le socle conserve seulement
+Informations, Modules, Maintenance et Debug.
+
+La visibilité de Comptabilité continue de dépendre de son activation ou du
+statut webmestre. Communication porte également le lien vers la page autonome
+des notifications. Cette composition suit le modèle des pipelines SPIP et
+permet à chaque plugin de rester autonome.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

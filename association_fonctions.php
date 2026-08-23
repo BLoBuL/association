@@ -85,3 +85,38 @@ function filtre_scalar_val($val, $defaut = '') {
 	}
 	return (string) $val;
 }
+
+/**
+ * Construire la navigation de configuration fournie par les modules actifs.
+ *
+ * @param mixed $webmestre
+ * @return array
+ */
+function association_configuration_navigation($webmestre = false) {
+	$webmestre = in_array($webmestre, [true, 1, '1', 'oui', 'on'], true);
+	$flux = [
+		'args' => ['webmestre' => $webmestre],
+		'data' => [
+			'info' => ['ordre' => 10, 'label' => 'association_config:navigation_config_info'],
+			'modules' => ['ordre' => 90, 'label' => 'association_config:navigation_config_modules'],
+		],
+	];
+	if ($webmestre) {
+		$flux['data']['maintenance_bdd'] = ['ordre' => 110, 'label' => 'association_config:navigation_config_maintenance_bdd'];
+		$flux['data']['debug'] = ['ordre' => 120, 'label' => 'association_config:navigation_config_debug'];
+	}
+
+	$flux = pipeline('association_configuration_navigation', $flux);
+	$navigation = !empty($flux['data']) && is_array($flux['data']) ? $flux['data'] : [];
+	foreach ($navigation as $config => &$entree) {
+		$page = $entree['page'] ?? 'configurer_association';
+		$entree['url'] = generer_url_ecrire(
+			$page,
+			$page === 'configurer_association' ? 'config=' . urlencode($config) : ''
+		);
+	}
+	unset($entree);
+	uasort($navigation, static fn ($a, $b) => ($a['ordre'] ?? 999) <=> ($b['ordre'] ?? 999));
+
+	return $navigation;
+}

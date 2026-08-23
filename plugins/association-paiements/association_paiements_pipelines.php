@@ -163,3 +163,8 @@ function association_paiements_association_rgpd_anonymiser_auteur($flux) {
 	)), '(' . implode(' OR ', $where) . ')');
 	return $flux;
 }
+
+function association_paiements_association_configuration_navigation($flux) {
+	$flux['data']['mode_paiement'] = ['ordre' => 60, 'label' => 'association_config:navigation_config_mode_paiement'];
+	return $flux;
+}

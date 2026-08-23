@@ -100,6 +100,11 @@ $options_evenements = file_get_contents($racine . '/plugins/association-evenemen
 $compta_script_destinations = $racine . '/plugins/association-compta/javascript/jquery.destinations_form.js';
 $compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
+$pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
+$pipelines_paiements = file_get_contents($racine . '/plugins/association-paiements/association_paiements_pipelines.php');
+$pipelines_compta = file_get_contents($racine . '/plugins/association-compta/association_compta_pipelines.php');
+$pipelines_communication = file_get_contents($racine . '/plugins/association-communication/association_communication_pipelines.php');
+$navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
 $verifier(
@@ -196,8 +201,8 @@ $verifier(
 	strpos($fonctions_socle, "include_spip('inc/actions')") === false
 		&& strpos($fonctions_socle, "include_spip('inc/editer')") === false
 		&& strpos($fonctions_socle, "include_spip('inc/autoriser')") === false
-		&& substr_count($fonctions_socle, 'function ') === 6,
-	'Le fichier de fonctions du socle doit rester limite aux cinq fonctions transversales.'
+		&& substr_count($fonctions_socle, 'function ') === 7,
+	'Le fichier de fonctions du socle doit rester limite aux six fonctions transversales.'
 );
 $verifier(
 	!is_file($racine . '/inc/association_familles.php')
@@ -230,6 +235,23 @@ $verifier(
 	strpos($pipelines_socle, 'association_saisies_lister_disponibles') === false
 		&& strpos($pipelines_socle, 'Enregistrer les informations des') === false,
 	'Le fichier de pipelines du socle ne doit plus exposer de hooks morts ni de documentation metier orpheline.'
+);
+$verifier(
+	strpos($paquet, 'nom="association_configuration_navigation"') !== false
+		&& strpos($navigation_configuration, 'association_configuration_navigation') !== false
+		&& strpos($navigation_configuration, 'config,adhesion') === false
+		&& strpos($navigation_configuration, 'config,evenement') === false
+		&& strpos($navigation_configuration, 'config,comptabilite') === false,
+	'La navigation de configuration doit etre composee par pipeline et non coder les domaines dans le squelette.'
+);
+$verifier(
+	strpos($pipelines_adhesions, "['data']['adhesion']") !== false
+		&& strpos($pipelines_evenements, "['data']['evenement']") !== false
+		&& strpos($pipelines_paiements, "['data']['mode_paiement']") !== false
+		&& strpos($pipelines_compta, "['data']['comptabilite']") !== false
+		&& strpos($pipelines_communication, "['data']['segments']") !== false
+		&& strpos($pipelines_communication, "['data']['notifications']") !== false,
+	'Chaque plugin doit fournir ses propres entrees de navigation de configuration.'
 );
 $verifier(
 	strpos($options_socle, 'association_cotisation_statuts') === false

@@ -2,6 +2,15 @@
 
 define('_ECRIRE_INC_VERSION', true);
 $GLOBALS['meta']['adresse_site'] = 'https://www.Exemple-Asso.test/espace/';
+function pipeline($nom, $flux) {
+	if ($nom === 'association_configuration_navigation') {
+		$flux['data']['test_module'] = ['ordre' => 25, 'label' => 'test:module'];
+	}
+	return $flux;
+}
+function generer_url_ecrire($page, $args = '') {
+	return $page . ($args !== '' ? '?' . $args : '');
+}
 require dirname(__DIR__) . '/association_fonctions.php';
 
 $erreurs = array();
@@ -25,6 +34,20 @@ $verifier(
 $verifier(filtre_scalar_val(array('', array('ignore'), 'valeur'), 'defaut') === 'valeur', 'Le premier scalaire utile doit être retourné.');
 $verifier(filtre_scalar_val(array(array('a', 'b')), 'defaut') === 'a,b', 'Les tableaux imbriqués doivent être aplatis.');
 $verifier(filtre_scalar_val(null, 'defaut') === 'defaut', 'La valeur par défaut doit être conservée.');
+$navigation_admin = association_configuration_navigation(false);
+$navigation_webmestre = association_configuration_navigation('oui');
+$verifier(
+	array_keys($navigation_admin) === ['info', 'test_module', 'modules'],
+	'La navigation doit fusionner et ordonner les contributions des modules.'
+);
+$verifier(
+	$navigation_admin['test_module']['url'] === 'configurer_association?config=test_module',
+	'Une entree modulaire doit recevoir son URL de configuration.'
+);
+$verifier(
+	isset($navigation_webmestre['maintenance_bdd'], $navigation_webmestre['debug']),
+	'Les entrees techniques doivent rester reservees au webmestre.'
+);
 
 if ($erreurs) {
 	foreach ($erreurs as $erreur) {

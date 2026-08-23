@@ -231,3 +231,13 @@ function association_communication_association_configuration_listes_diffusion($f
 	}
 	return $flux;
 }
+
+function association_communication_association_configuration_navigation($flux) {
+	$flux['data']['segments'] = ['ordre' => 65, 'label' => 'association_config:navigation_config_segments'];
+	$flux['data']['notifications'] = [
+		'ordre' => 130,
+		'label' => 'association_config:navigation_config_notifications',
+		'page' => 'notifications',
+	];
+	return $flux;
+}
