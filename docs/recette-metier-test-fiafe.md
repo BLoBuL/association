@@ -636,3 +636,19 @@ Un dry-run réel charge les cinq fournisseurs, retourne 12 clés de résultat et
 laisse inchangés les effectifs des six tables contrôlées. Les six plugins sont
 actifs, `spip test:spip` reste sain et le journal SPIP ne contient aucune erreur
 sur les quinze minutes couvrant le déploiement et la recette.
+
+## Lot 51 — options d’exécution et validations distribuées
+
+Le commit `55b9ae9` a été déployé atomiquement dans le socle et les cinq
+fournisseurs de maintenance depuis l’artefact SHA-256
+`ec7540c959752eaaf568abf0f1c0dd10884157aa447d7f6df022d28f4dbe9370`.
+Le registre des plugins a ensuite été actualisé afin de charger les deux
+nouveaux pipelines.
+
+Dans le SPIP servi, un jeu synthétique confirme les trois seuils, les douze
+actions, les conversions oui/non et le dry-run forcé. Le pipeline de validation
+refuse zéro pour Adhésions et une valeur non numérique pour Événements, tout en
+acceptant le seuil comptable valide. Un dry-run construit depuis les métas
+réelles charge 12 actions et retourne 12 résultats sans modifier les six tables
+contrôlées. `spip test:spip` est fonctionnel malgré son code de sortie historique
+et aucun journal d’erreur n’est présent sur la fenêtre de recette.
