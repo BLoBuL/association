@@ -222,3 +222,23 @@ au niveau de l'extension avant même la lecture du DOM. Cette indisponibilité n
 remet pas en cause la passe visuelle précédente ; elle empêche seulement de
 produire une nouvelle preuve visuelle postérieure à `713e752c` tant que la
 connexion Chrome n'est pas rétablie.
+
+## Lot 15 — migration Familles portée par Adhésions
+
+Le socle et la copie active du plugin `association_adhesions` ont été déployés
+depuis `7308ffd`, puis le correctif de compatibilité et de dégradation contrôlée
+depuis `a02d4a7`. Les deux emplacements servis possèdent l'empreinte SHA-256
+`e33087d098fe9665b4df486f19cf709d6e8c83e0d28e2c94a1e105dd90728619`
+pour `inc/association_familles.php`.
+
+La preuve SPIP réelle confirme que le formulaire CVT, le contenu privé, le lien
+privé et la bibliothèque sont tous résolus depuis `plugins/association-adhesions`.
+L'autorisation est accordée à un administrateur complet et le pipeline actif
+contient `association_adhesions_affiche_milieu`.
+
+Le plugin Familles n'est pas installé sur test-fiafe : l'intégration annonce
+donc `disponible=false`, ne rend pas le lien de migration et retourne un rapport
+vide sans fatal PHP. La migration positive et son idempotence restent couvertes
+par les tests autonomes contre l'API Familles 0.2.25. L'accueil public répond
+`200`; la page privée non authentifiée répond normalement `302` vers la
+connexion.
