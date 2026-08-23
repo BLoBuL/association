@@ -561,3 +561,14 @@ Le serveur restitue les libellés « Liste des ressources » et « Liste des
 réservations », compile le CVT d'édition d'une ressource en 2103 octets et
 valide l'installation complète : 10 plugins actifs, 14 tables, 12 objets SQL
 SPIP et 7 schémas à jour.
+
+## Lot 44 — domaine de langue Comptabilité
+
+Comptabilité utilise désormais son domaine `association_compta`. Le commit
+`23431b9` a été déployé atomiquement dans le seul plugin Comptabilité depuis
+l'artefact SHA-256
+`5da78ab6aeed5703c99cb548977ab593746f94a1ec700e82dc89dbe668cc76e6`.
+Le serveur restitue une clé historique et deux des nouveaux libellés français,
+compile le CVT du plan comptable en 2596 octets et valide encore l'installation
+complète. L'accès direct au squelette privé sans session conserve son garde 404
+normal ; sa recette visuelle authentifiée reste dans la campagne navigateur.
