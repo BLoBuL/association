@@ -390,6 +390,13 @@ famille sont fournis par Adhésions. Le modèle du champ événementiel
 identique : la migration Adhésions qui emploie `find_in_path()` reste compatible.
 Le socle ne possède plus de dossier YAML métier.
 
+## Lot 27 : raccourcis de configuration Comptabilité
+
+Le squelette privé `extra/configurer_association.html`, composé uniquement des
+imports du plan, des destinations et de la migration comptable, appartient
+désormais à Comptabilité. Son chemin privé reste identique et SPIP le charge
+depuis le module actif sur la page de configuration du socle.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

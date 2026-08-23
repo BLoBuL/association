@@ -257,6 +257,11 @@ $verifier(
 	'Le script des destinations et l icone des comptes doivent appartenir a Comptabilite.'
 );
 $verifier(
+	!is_file($racine . '/prive/squelettes/extra/configurer_association.html')
+		&& is_file($racine . '/plugins/association-compta/prive/squelettes/extra/configurer_association.html'),
+	'Les raccourcis comptables de la configuration doivent appartenir a Comptabilite.'
+);
+$verifier(
 	!is_file($racine . '/yaml/association.yaml')
 		&& !is_file($racine . '/yaml/champs_auteurs_4_enfants.yaml')
 		&& !is_file($racine . '/yaml/champs_auteurs_4_enfants_et_2_invites.yaml')

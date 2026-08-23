@@ -380,6 +380,11 @@ Les trois modèles de champs auteurs sont déplacés dans Adhésions et le modè
 `webinaire_fiafe` dans Événements, tout en conservant leurs chemins logiques
 pour les imports et migrations existants.
 
+## Lot 27 — raccourcis de configuration comptables
+
+Les raccourcis de la colonne extra de la configuration sont fournis par
+Comptabilité sous le même chemin de squelette privé.
+
 Le commit `ccd9fdf` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `129a059ead47adac15277ba045b21f171929488ae284108fb49ae00d365822ae`.
