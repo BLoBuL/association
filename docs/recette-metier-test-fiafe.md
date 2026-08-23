@@ -690,3 +690,13 @@ contributions et confirme 10 plugins actifs, 14 tables présentes, 12 objets SQL
 SPIP complets et 7 versions de schéma exactes. `spip test:spip` confirme PDO,
 SPIP et la version 4.4.21. Aucun fatal, fournisseur absent ou conflit de schéma
 n'apparaît dans les journaux couvrant le déploiement et la recette.
+
+## Lot 55 — compatibilité des snapshots CLI v1
+
+Le commit `67d897d` a été déployé atomiquement dans le socle et Événements
+depuis l'artefact SHA-256
+`154d18d58cb11949613cbaa6685c63343a40eae02de8bf556a7b33b2202fddba`.
+Après actualisation du registre et du cache, l'API servie reconstruit exactement
+24 options du format v1 : 12 options `evenement.*` fournies par Événements et
+12 options `debug.*` fournies par le socle. Le vérificateur d'installation reste
+valide et aucun fatal ou échec de validation de snapshot n'est journalisé.
