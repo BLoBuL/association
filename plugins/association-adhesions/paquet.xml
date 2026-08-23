@@ -30,6 +30,7 @@
 	<pipeline nom="post_edition" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="afficher_contenu_objet" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_compta_cotisation_synchroniser" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="association_maintenance_bdd_preparer" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="formulaire_saisies" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="saisies_afficher_si_saisies" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="i3_definition_champs" inclure="association_adhesions_pipelines.php" />

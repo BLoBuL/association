@@ -2,6 +2,31 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+function association_adhesions_association_maintenance_bdd_preparer($flux) {
+	include_spip('inc/association_adhesions_maintenance');
+	$options = (array) ($flux['args']['options'] ?? array());
+	$actions = (array) ($options['actions'] ?? array());
+	$maintenant = intval($flux['args']['maintenant'] ?? time());
+	$limite = date('Y-m-d H:i:s', $maintenant - (intval($options['jours_inactivite'] ?? 365) * 86400));
+	$inactifs = asso_recuperer_auteurs_inactifs($limite, intval($options['lot'] ?? 1000));
+	$resume = is_array($flux['data']['resume'] ?? null) ? $flux['data']['resume'] : array();
+	$resume['auteurs_inactifs'] = array('nombre' => count($inactifs), 'ids' => $inactifs);
+	if ($inactifs) {
+		list($sans_paiements, $avec_paiements) = asso_separer_auteurs_par_encaissements($inactifs);
+		$resume['auteurs_sans_paiements'] = array('nombre' => count($sans_paiements), 'ids' => $sans_paiements);
+		$resume['supprimer_auteurs'] = !empty($actions['supprimer_auteurs_sans_paiements']) && $sans_paiements
+			? asso_supprimer_auteurs($sans_paiements, (bool) ($options['dry_run'] ?? true))
+			: array('skipped' => true);
+		$resume['auteurs_avec_paiements'] = array('nombre' => count($avec_paiements), 'ids' => $avec_paiements);
+		$resume['anonymiser_auteurs'] = !empty($actions['anonymiser_auteurs_avec_paiements']) && $avec_paiements
+			? asso_anonymiser_auteurs($avec_paiements, (bool) ($options['dry_run'] ?? true))
+			: array('skipped' => true);
+	}
+	$flux['data']['resume'] = $resume;
+	$flux['data']['inactifs'] = $inactifs;
+	return $flux;
+}
+
 /**
  * Planifie le contrôle des échéances et privilèges d'adhésion.
  */

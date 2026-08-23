@@ -471,6 +471,14 @@ Communication exécutent chacun leurs nettoyages et enrichissent le même
 rapport. Le socle ne charge plus leurs quatre bibliothèques et ne connaît plus
 les fonctions de nettoyage propres aux tables métier.
 
+## Lot 37 : maintenance des auteurs dans Adhésions
+
+La détection, la séparation selon les encaissements, la suppression et
+l'anonymisation des auteurs inactifs appartiennent à Adhésions. Une phase
+`association_maintenance_bdd_preparer` s'exécute avant les fournisseurs de
+nettoyage et transmet au socle uniquement le résumé et les identifiants utiles
+aux autres modules.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

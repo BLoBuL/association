@@ -6,10 +6,24 @@ $evenements = file_get_contents($racine . '/plugins/association-evenements/inc/a
 $communication = file_get_contents($racine . '/plugins/association-communication/inc/association_communication_maintenance.php');
 $compta = file_get_contents($racine . '/plugins/association-compta/inc/association_compta_maintenance.php');
 $paiements = file_get_contents($racine . '/plugins/association-paiements/inc/association_paiements_maintenance.php');
+$adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_maintenance.php');
 $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
 $pipelines_communication = file_get_contents($racine . '/plugins/association-communication/association_communication_pipelines.php');
 $pipelines_compta = file_get_contents($racine . '/plugins/association-compta/association_compta_pipelines.php');
 $pipelines_paiements = file_get_contents($racine . '/plugins/association-paiements/association_paiements_pipelines.php');
+$pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
+
+foreach (array('asso_recuperer_auteurs_inactifs', 'asso_separer_auteurs_par_encaissements', 'asso_supprimer_auteurs', 'asso_anonymiser_auteurs') as $fonction) {
+	if (strpos($adhesions, 'function ' . $fonction . '(') === false || strpos($socle, 'function ' . $fonction . '(') !== false) {
+		fwrite(STDERR, "La maintenance des auteurs n'appartient pas entièrement à Adhésions: {$fonction}.\n");
+		exit(1);
+	}
+}
+if (strpos($pipelines_adhesions, 'function association_adhesions_association_maintenance_bdd_preparer(') === false
+	|| strpos($socle, "pipeline('association_maintenance_bdd_preparer'") === false) {
+	fwrite(STDERR, "La préparation de maintenance Adhésions n'est pas branchée.\n");
+	exit(1);
+}
 
 $fonctions_evenements = array(
 	'asso_trouver_inscriptions_non_validees_anciennes',
@@ -91,7 +105,7 @@ if (strpos($socle, "pipeline('association_maintenance_bdd_executer'") === false)
 }
 
 foreach (array('association_maintenance_auteurs_encaisses', 'association_maintenance_supprimer_donnees_auteurs') as $pipeline) {
-	if (strpos($socle, "pipeline('{$pipeline}'") === false) {
+	if (strpos($adhesions, "pipeline('{$pipeline}'") === false) {
 		fwrite(STDERR, "Orchestration SPIP absente pour {$pipeline}.\n");
 		exit(1);
 	}

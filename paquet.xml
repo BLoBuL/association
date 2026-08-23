@@ -27,6 +27,7 @@
 	<pipeline nom="association_maintenance_auteurs_encaisses" action="" />
 	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" action="" />
 	<pipeline nom="association_maintenance_bdd_executer" action="" />
+	<pipeline nom="association_maintenance_bdd_preparer" action="" />
 	<pipeline nom="association_configuration_categorie_entreprise" action="" />
 	<pipeline nom="association_configuration_listes_diffusion" action="" />
 	<pipeline nom="association_configuration_navigation" action="" />

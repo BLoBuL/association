@@ -14,6 +14,9 @@ $GLOBALS['association_test_fail_update_tables'] = array();
 function include_spip($path) { return true; }
 function pipeline($nom, $flux) {
     $handlers = array(
+		'association_maintenance_bdd_preparer' => array(
+			'association_adhesions_association_maintenance_bdd_preparer',
+		),
         'association_maintenance_auteurs_encaisses' => array(
             'association_compta_association_maintenance_auteurs_encaisses',
             'association_paiements_association_maintenance_auteurs_encaisses',
@@ -270,10 +273,12 @@ function association_test_reset_tables() {
 }
 
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_maintenance.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_communication_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/association_compta_pipelines.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/association_adhesions_pipelines.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_pipelines.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/association_paiements_pipelines.php';
 include_once PLUGIN_ROOT . '/plugins/association-communication/association_communication_pipelines.php';

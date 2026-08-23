@@ -110,6 +110,11 @@ $verifier(
 		&& is_file($racine . '/plugins/association-evenements/inc/csv_generer.html'),
 	'Les utilitaires CSV des participants doivent appartenir à Événements.'
 );
+$verifier(
+	is_file($racine . '/plugins/association-adhesions/inc/association_adhesions_maintenance.php')
+		&& strpos(file_get_contents($racine . '/genie/association_maintenance_bdd.php'), 'function asso_recuperer_auteurs_inactifs(') === false,
+	'La maintenance des auteurs doit appartenir à Adhésions.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {
