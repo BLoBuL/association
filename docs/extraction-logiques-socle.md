@@ -564,6 +564,18 @@ dynamiques de type de cotisation et les douze mois, ainsi que les libellés
 historiquement absents des formulaires et notifications. Les pages publiques,
 CVT, modèles et écrans privés n’utilisent plus le domaine racine.
 
+## Lot 49 : réglages GIS et réseau FIAFE
+
+Le socle ne décrit plus les réglages métier placés historiquement dans son
+panneau « modules ». Les destinataires et événements déclencheurs des
+notifications GIS sont maintenant fournis par Adhésions. L’activation des
+événements et profils du réseau FIAFE est fournie par Événements.
+
+Les noms de métas historiques sont conservés afin que la migration ne modifie
+aucune valeur existante. Le fournisseur Événements vérifie explicitement la
+présence de `verifier_site_fiafe()` avant de l’appeler, ce qui rend le formulaire
+utilisable sans le plugin historique qui fournissait cette fonction.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

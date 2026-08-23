@@ -9,6 +9,47 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  */
 function association_evenements_configurer_saisies($config, $disable_meta_admin = true) {
 	$saisies = array();
+	if (($config === 'modules' || empty($config))
+		&& function_exists('verifier_site_fiafe')
+		&& verifier_site_fiafe() === true) {
+		$saisies[] = array(
+			'saisie' => 'fieldset',
+			'options' => array(
+				'nom' => 'config_evenement_fiafe',
+				'label' => _T('association_config:config_evenement_fiafe'),
+			),
+			'saisies' => array(
+				array(
+					'saisie' => 'selection',
+					'options' => array(
+						'nom' => 'meta_cfg_event_reseau_fiafe',
+						'label' => _T('association_config:evenement_reseau_fiafe_label'),
+						'explication' => _T('association_config:evenement_reseau_fiafe_explication'),
+						'data' => array(
+							'active' => _T('association_config:evenement_reseau_fiafe_active'),
+							'desactive' => _T('association_config:evenement_reseau_fiafe_desactive'),
+						),
+						'cacher_option_intro' => 'oui',
+						'defaut' => 'desactive',
+					),
+				),
+				array(
+					'saisie' => 'selection',
+					'options' => array(
+						'nom' => 'meta_cfg_event_profil_reseau_fiafe',
+						'label' => _T('association_config:evenement_profil_reseau_fiafe_label'),
+						'explication' => _T('association_config:evenement_profil_reseau_fiafe_explication'),
+						'data' => array(
+							'active' => _T('association_config:evenement_reseau_profil_fiafe_active'),
+							'desactive' => _T('association_config:evenement_reseau_profil_fiafe_desactive'),
+						),
+						'cacher_option_intro' => 'oui',
+						'defaut' => 'desactive',
+					),
+				),
+			),
+		);
+	}
 if($config == 'evenement' OR empty($config)) {
 
     $saisies[] = array(

@@ -419,6 +419,20 @@ $verifier(
 	'L affichage prive des adherents doit appartenir au module Adhesions.'
 );
 $verifier(
+	strpos($configuration_socle, 'config_gis_fieldset') === false
+		&& strpos($configuration_socle, 'notification_gis_config_email') === false
+		&& strpos($configuration_adhesions, 'config_gis_fieldset') !== false
+		&& strpos($configuration_adhesions, 'notification_gis_config_email') !== false,
+	'La configuration des notifications GIS doit appartenir au module Adhesions.'
+);
+$verifier(
+	strpos($configuration_socle, 'config_evenement_fiafe') === false
+		&& strpos($configuration_socle, 'meta_cfg_event_reseau_fiafe') === false
+		&& strpos($configuration_evenements, 'config_evenement_fiafe') !== false
+		&& strpos($configuration_evenements, 'meta_cfg_event_reseau_fiafe') !== false,
+	'La configuration du reseau FIAFE doit appartenir au module Evenements.'
+);
+$verifier(
 	strpos($configuration_adhesions, 'association_evenements_configurer_saisies') === false
 		&& strpos($configuration_adhesions, 'association_paiements_configurer_saisies') === false,
 	'Adhesions ne doit pas orchestrer la configuration des autres modules.'

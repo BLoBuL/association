@@ -33,6 +33,38 @@ function preparer_liste_mailsubscribinglists() {
  */
 function association_adhesions_configurer_saisies($config, $disable_meta_admin = true) {
 	$saisies = array();
+	if (($config === 'modules' || empty($config)) && test_plugin_actif('gis')) {
+		$actions_gis = saisies_tableau2chaine(array(
+			'modification_adherent' => _T('association_config:filtre_modification_adherent'),
+			'echec_adherent' => _T('association_config:filtre_echec_adherent'),
+		));
+		$saisies[] = array(
+			'saisie' => 'fieldset',
+			'options' => array(
+				'nom' => 'config_gis_fieldset',
+				'label' => _T('association_config:config_gis_fieldset'),
+			),
+			'saisies' => array(
+				array(
+					'saisie' => 'input',
+					'options' => array(
+						'nom' => 'notification_gis_config_email',
+						'label' => _T('association_config:notification_gis_config_email_label'),
+						'explication' => _T('association_config:notification_gis_config_email_explication'),
+						'type' => 'text',
+					),
+				),
+				array(
+					'saisie' => 'checkbox',
+					'options' => array(
+						'nom' => 'notification_gis_config_action',
+						'label' => _T('association_config:notification_gis_config_action_label'),
+						'data' => $actions_gis,
+					),
+				),
+			),
+		);
+	}
 if($config == 'adhesion' OR empty($config)) {
 // *****************************************
 //   Fieldset for cotisation configuration
