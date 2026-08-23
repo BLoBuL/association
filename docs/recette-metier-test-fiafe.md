@@ -118,8 +118,8 @@ résiduel du socle. Une seconde copie fraîche a ensuite validé :
 
 ## Non-régression
 
-- 59 points d'entrée `tests/test_*.php` réussis, y compris les tests propres aux
-  neuf modules ;
+- 66 points d'entrée `tests/test_*.php` réussis, y compris les tests propres aux
+  modules métier ;
 - 274 fichiers PHP contrôlés sans erreur de syntaxe ;
 - compilation réelle des squelettes vérifiée par les pages privées et publiques
   après purge du cache ;
@@ -177,8 +177,26 @@ Après ce redéploiement complet :
 - aucun journal contrôlé depuis 10:55 ne contient d'erreur, dépréciation,
   erreur SQL ou trace critique.
 
-La recette serveur et la migration historique sont validées. La passe responsive
-visuelle finale reste à rejouer après rétablissement du contrôleur Chrome. Le
-débordement propre à l'accueil du thème et le code de sortie non nul de la
+La recette serveur et la migration historique sont validées.
+
+## Passe Chrome authentifiée après extraction du socle
+
+Après le déploiement `b994ae2a`, une nouvelle passe authentifiée a contrôlé les
+pages privées adhérents, cotisations, activités, comptes, dons, prêts, ventes,
+bénévoles, notifications, configuration et gestion des plugins. Chacune sert
+son titre métier sans fatal PHP ni bloc d'erreur.
+
+La route réelle `exec=editer_asso_cotisation&id_compte=957` sert le formulaire
+métier complet : catégorie, statut, première inscription ou renouvellement,
+justification, notification et trois justificatifs. La régression du formulaire
+simplifié n'est donc plus présente sur le code déployé.
+
+Le formulaire de cotisation a été observé à 390 et 768 px dans Chrome : aucun
+débordement horizontal n'est mesuré. Les pages publiques accueil, événement,
+profil et inscription ont été rejouées, puis l'événement a été contrôlé à 390,
+768 et 1440 px. Aucun fatal n'est rendu et les consoles Chrome des parcours BO
+et FO ne contiennent ni avertissement ni erreur.
+
+Le débordement propre à l'accueil du thème et le code de sortie non nul de la
 commande externe `spip test:spip` malgré tous ses contrôles affichés en vert
 restent consignés hors périmètre Association.
