@@ -13,6 +13,6 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 function association_pret_compte_where($id_pret) {
 	$id_pret = (int) $id_pret;
 	$legacy = 'id_journal=' . $id_pret
-		. ' AND justification LIKE ' . sql_quote(_T('association:pret_nd') . '%');
+		. ' AND justification LIKE ' . sql_quote(_T('association_prets:pret_nd') . '%');
 	return "(objet='pret' AND id_objet=$id_pret) OR ($legacy)";
 }

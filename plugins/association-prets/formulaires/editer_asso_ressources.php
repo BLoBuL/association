@@ -33,7 +33,7 @@ function formulaires_editer_asso_ressources_charger_dist($id_ressource='') {
 		$contexte['pu'] = association_nbrefr($contexte['pu']);
 	}
 
-	$contexte['title'] = $id_ressource === '' ? _T('association:ressources_nav_ajouter') : _T('association:ressources_nav_editer');
+	$contexte['title'] = $id_ressource === '' ? _T('association_prets:ressources_nav_ajouter') : _T('association_prets:ressources_nav_editer');
 	$contexte['devise'] = strtoupper(trim((string) (function_exists('intl_devise_defaut') ? intl_devise_defaut() : lire_config('intl/devise_defaut'))));
 
 	return $contexte;
@@ -45,7 +45,7 @@ function formulaires_editer_asso_ressources_verifier_dist($id_ressource='') {
 	$pu = association_recupere_montant(_request('pu'));
 
 	if ($pu<0) {
-		$erreurs['pu'] = _T('association:erreur_montant');
+		$erreurs['pu'] = _T('association_prets:erreur_montant');
 	}
 
 	/* verifier la date */
@@ -54,7 +54,7 @@ function formulaires_editer_asso_ressources_verifier_dist($id_ressource='') {
 	}
 
 	if (count($erreurs)) {
-		$erreurs['message_erreur'] = _T('association:erreur_titre');
+		$erreurs['message_erreur'] = _T('association_prets:erreur_titre');
 	}
 	
 	return $erreurs;
@@ -81,4 +81,3 @@ function formulaires_editer_asso_ressources_traiter($id_ressource='') {
 	}
 	return formulaires_editer_objet_traiter('asso_ressources', $id_ressource, '', '',  generer_url_ecrire('ressources'), '');
 }
-

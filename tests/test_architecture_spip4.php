@@ -180,6 +180,19 @@ $verifier(
 		&& strpos($communication_lang, "'notifications_metiers_titre'") !== false,
 	'Le plugin Communication doit utiliser son propre domaine de langue Association.'
 );
+$prets_lang = file_get_contents($racine . '/plugins/association-prets/lang/association_prets_fr.php');
+$prets_sources_lang = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-prets')) as $prets_source_lang) {
+	if ($prets_source_lang->isFile() && preg_match('/\.(?:php|html)$/', $prets_source_lang->getFilename()) && strpos($prets_source_lang->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$prets_sources_lang .= file_get_contents($prets_source_lang->getPathname());
+	}
+}
+$verifier(
+	!preg_match('/(?:<:|[\'\"]|\{)association:/', $prets_sources_lang)
+		&& strpos($prets_sources_lang, 'association_prets:') !== false
+		&& strpos($prets_lang, "'ressources_titre_liste_ressources'") !== false,
+	'Le plugin Prêts doit utiliser son propre domaine de langue.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

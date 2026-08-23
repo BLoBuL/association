@@ -57,20 +57,20 @@ function formulaires_editer_asso_pret_verifier_dist($id_pret = 0, $id_ressource 
 	}
 	$id_emprunteur = (int) _request('id_emprunteur');
 	if ($id_emprunteur && !sql_countsel('spip_auteurs', 'id_auteur=' . $id_emprunteur)) {
-		$erreurs['id_emprunteur'] = _T('association:pret_emprunteur_introuvable');
+		$erreurs['id_emprunteur'] = _T('association_prets:pret_emprunteur_introuvable');
 	}
 	if ((int) _request('duree') < 0) {
-		$erreurs['duree'] = _T('association:erreur_montant');
+		$erreurs['duree'] = _T('association_prets:erreur_montant');
 	}
 	$montant = association_recupere_montant(_request('montant'));
 	if ($montant < 0) {
-		$erreurs['montant'] = _T('association:erreur_montant');
+		$erreurs['montant'] = _T('association_prets:erreur_montant');
 	}
 	if ($montant > 0 && empty($GLOBALS['association_metas']['pc_prets'])) {
-		$erreurs['montant'] = _T('association:pret_imputation_obligatoire');
+		$erreurs['montant'] = _T('association_prets:pret_imputation_obligatoire');
 	}
 	if ($erreurs) {
-		$erreurs['message_erreur'] = _T('association:erreur_titre');
+		$erreurs['message_erreur'] = _T('association_prets:erreur_titre');
 	}
 	return $erreurs;
 }
@@ -117,7 +117,7 @@ function formulaires_editer_asso_pret_traiter_dist($id_pret = 0, $id_ressource =
 			$compte['objet'] = 'pret';
 			$compte['id_objet'] = $id_pret;
 			$compte['id_journal'] = $id_pret;
-			$compte['justification'] = _T('association:pret_nd') . $id_ressource . '/' . $id_pret;
+			$compte['justification'] = _T('association_prets:pret_nd') . $id_ressource . '/' . $id_pret;
 			$ok = ($ok !== false) && (bool) sql_insertq('spip_asso_comptes', $compte);
 		} elseif ($id_compte) {
 			$ok = ($ok !== false) && sql_delete('spip_asso_comptes', 'id_compte=' . (int) $id_compte) !== false;
@@ -126,7 +126,7 @@ function formulaires_editer_asso_pret_traiter_dist($id_pret = 0, $id_ressource =
 		$id_pret = (int) sql_insertq('spip_asso_prets', $pret);
 		$ok = (bool) $id_pret;
 		if ($ok && $montant > 0) {
-			$compte['justification'] = _T('association:pret_nd') . $id_ressource . '/' . $id_pret;
+			$compte['justification'] = _T('association_prets:pret_nd') . $id_ressource . '/' . $id_pret;
 			$compte['id_journal'] = $id_pret;
 			$compte['objet'] = 'pret';
 			$compte['id_objet'] = $id_pret;
@@ -136,11 +136,11 @@ function formulaires_editer_asso_pret_traiter_dist($id_pret = 0, $id_ressource =
 	$ok = $ok && sql_updateq('spip_asso_ressources', array('statut' => 'reserve'), 'id_ressource=' . $id_ressource) !== false;
 	if (!$ok) {
 		sql_query('ROLLBACK');
-		return array('message_erreur' => _T('association:pret_enregistrement_erreur'));
+		return array('message_erreur' => _T('association_prets:pret_enregistrement_erreur'));
 	}
 	sql_query('COMMIT');
 	return array(
-		'message_ok' => _T('association:pret_enregistrement_ok'),
+		'message_ok' => _T('association_prets:pret_enregistrement_ok'),
 		'redirect' => generer_url_ecrire('prets', 'id_ressource=' . $id_ressource),
 	);
 }

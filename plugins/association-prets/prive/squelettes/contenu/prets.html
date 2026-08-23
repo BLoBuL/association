@@ -1,16 +1,16 @@
 [(#AUTORISER{prets_menu}|sinon_interdire_acces)]
-<h1 class="grostitre"><:association:prets_titre_liste_reservations:></h1>
+<h1 class="grostitre"><:association_prets:prets_titre_liste_reservations:></h1>
 #SET{id_ressource,#ENV{id_ressource,#ENV{id}}}
 <B_ressource_cible>
 <BOUCLE_ressource_cible(ASSO_RESSOURCES){id_ressource=#GET{id_ressource}}{si #GET{id_ressource}}{0,1}>
 <INCLURE{fond=prive/squelettes/inclure/prets_ressource,id_ressource}>
 </BOUCLE_ressource_cible>
 </B_ressource_cible>
-[(#GET{id_ressource}|oui)<div class="error"><:association:ressource_introuvable:></div>]
+[(#GET{id_ressource}|oui)<div class="error"><:association_prets:ressource_introuvable:></div>]
 <//B_ressource_cible>
 
 <BOUCLE_ressources_toutes(ASSO_RESSOURCES){par intitule}{si #GET{id_ressource}|non}>
 <INCLURE{fond=prive/squelettes/inclure/prets_ressource,id_ressource}>
 </BOUCLE_ressources_toutes>
-[(#GET{id_ressource}|non)<div class="notice"><:association:ressource_aucune:></div>]
+[(#GET{id_ressource}|non)<div class="notice"><:association_prets:ressource_aucune:></div>]
 <//B_ressources_toutes>

@@ -6,8 +6,8 @@ $pages = array(
 	'destinations' => array($racine_depot . '/plugins/association-compta/prive/squelettes/contenu/', 'association:destination_comptable'),
 	'dons' => array($racine_depot . '/plugins/association-dons/prive/squelettes/contenu/', 'association_dons:tous_les_dons'),
 	'ventes' => array($racine_depot . '/plugins/association-ventes/prive/squelettes/contenu/', 'association_ventes:toutes_les_ventes'),
-	'ressources' => array($racine_depot . '/plugins/association-prets/prive/squelettes/contenu/', 'association:ressources_titre_liste_ressources'),
-	'prets' => array($racine_depot . '/plugins/association-prets/prive/squelettes/contenu/', 'association:prets_titre_liste_reservations'),
+	'ressources' => array($racine_depot . '/plugins/association-prets/prive/squelettes/contenu/', 'association_prets:ressources_titre_liste_ressources'),
+	'prets' => array($racine_depot . '/plugins/association-prets/prive/squelettes/contenu/', 'association_prets:prets_titre_liste_reservations'),
 	'plan_comptable' => array($racine_depot . '/plugins/association-compta/prive/squelettes/contenu/', 'association:plan_comptable'),
 	'bilan' => array($racine_depot . '/plugins/association-compta/prive/squelettes/contenu/', 'association:bilans_comptables'),
 );

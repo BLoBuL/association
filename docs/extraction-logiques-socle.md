@@ -513,6 +513,12 @@ sont fournis par `association_communication_fr.php`. Ils complètent les domaine
 de notifications déjà propres au module. Tous les consommateurs utilisent le
 domaine `association_communication` avec repli SPIP vers le français.
 
+## Lot 43 : domaine de langue Prêts
+
+Les cinquante-neuf libellés des ressources et réservations sont fournis par
+`association_prets_fr.php`. Les pages publiques, modèles, CVT et écrans privés
+utilisent exclusivement le domaine `association_prets` avec repli français.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

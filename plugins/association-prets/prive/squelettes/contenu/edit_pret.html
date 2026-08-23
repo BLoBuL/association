@@ -1,8 +1,8 @@
 [(#AUTORISER{prets_menu}|sinon_interdire_acces)]
-<h1 class="grostitre"><:association:prets_titre_edition_prets:></h1>
+<h1 class="grostitre"><:association_prets:prets_titre_edition_prets:></h1>
 #SET{id_pret,#ENV{id_old,#ENV{id_pret,0}}}
 #SET{id_ressource,#ENV{id_objet,#ENV{id_ressource,0}}}
 <BOUCLE_pret(ASSO_PRETS){id_pret=#GET{id_pret}}{0,1}>#SET{id_ressource,#ID_RESSOURCE}</BOUCLE_pret>
-[(#BOITE_OUVRIR{<:association:prets_titre_edition_prets:>,'simple'})]
+[(#BOITE_OUVRIR{<:association_prets:prets_titre_edition_prets:>,'simple'})]
 #FORMULAIRE_EDITER_ASSO_PRET{#GET{id_pret},#GET{id_ressource}}
 [(#BOITE_FERMER)]

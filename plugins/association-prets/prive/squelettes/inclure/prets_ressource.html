@@ -1,15 +1,15 @@
 <BOUCLE_ressource(ASSO_RESSOURCES){id_ressource}{0,1}>
-[(#BOITE_OUVRIR{<:association:prets_titre_liste_reservations:>,'simple'})]
-<h2>[(#INTITULE|sinon{<:association:ressources_num:> #ID_RESSOURCE})]</h2>
-<p><strong><:association:ressources_libelle_code:></strong> : #CODE</p>
+[(#BOITE_OUVRIR{<:association_prets:prets_titre_liste_reservations:>,'simple'})]
+<h2>[(#INTITULE|sinon{<:association_prets:ressources_num:> #ID_RESSOURCE})]</h2>
+<p><strong><:association_prets:ressources_libelle_code:></strong> : #CODE</p>
 <div class="liste-objets prets">
 	<B_prets>
 	<table class="spip liste">
-		[<caption><strong class="caption">(#GRAND_TOTAL|singulier_ou_pluriel{association:pret_compteur_un,association:pret_compteur_plusieurs})</strong></caption>]
+		[<caption><strong class="caption">(#GRAND_TOTAL|singulier_ou_pluriel{association_prets:pret_compteur_un,association_prets:pret_compteur_plusieurs})</strong></caption>]
 		<thead><tr class="first_row">
-			<th scope="col"><:lien_trier_statut:></th><th scope="col"><:association:entete_id:></th>
-			<th scope="col"><:association:prets_entete_date_sortie:></th><th class="principale" scope="col"><:association:prets_entete_nom:></th>
-			<th scope="col"><:association:prets_entete_duree:></th><th scope="col"><:association:prets_entete_date_retour:></th><th scope="col"><:association:entete_action:></th>
+			<th scope="col"><:lien_trier_statut:></th><th scope="col"><:association_prets:entete_id:></th>
+			<th scope="col"><:association_prets:prets_entete_date_sortie:></th><th class="principale" scope="col"><:association_prets:prets_entete_nom:></th>
+			<th scope="col"><:association_prets:prets_entete_duree:></th><th scope="col"><:association_prets:prets_entete_date_retour:></th><th scope="col"><:association_prets:entete_action:></th>
 		</tr></thead>
 		<tbody>
 		<BOUCLE_prets(ASSO_PRETS){id_ressource}{par date_sortie}{inverse}{pagination 25}>
@@ -18,8 +18,8 @@
 			<td class="principale">[(#INFO_NOM{auteur,#ID_EMPRUNTEUR})] [(#INFO_PRENOM{auteur,#ID_EMPRUNTEUR})]</td>
 			<td>#DUREE</td><td>[(#DATE_RETOUR|=={0000-00-00}|non)[(#DATE_RETOUR|affdate)]]</td>
 			<td class="action">
-				[(#AUTORISER{modifier,pret,#ID_PRET}|oui)<a href="[(#URL_ECRIRE{edit_pret,id_old=#ID_PRET})]" class="btn btn_mini"><:association:prets_nav_editer:></a>]
-				[(#AUTORISER{supprimer,pret,#ID_PRET}|oui)[(#BOUTON_ACTION{<:association:prets_nav_annuler:>,#URL_ACTION_AUTEUR{supprimer_prets,#ID_PRET-#ID_RESSOURCE,#SELF},btn_mini btn_danger,<:association:confirmer_suppression:>})]]
+				[(#AUTORISER{modifier,pret,#ID_PRET}|oui)<a href="[(#URL_ECRIRE{edit_pret,id_old=#ID_PRET})]" class="btn btn_mini"><:association_prets:prets_nav_editer:></a>]
+				[(#AUTORISER{supprimer,pret,#ID_PRET}|oui)[(#BOUTON_ACTION{<:association_prets:prets_nav_annuler:>,#URL_ACTION_AUTEUR{supprimer_prets,#ID_PRET-#ID_RESSOURCE,#SELF},btn_mini btn_danger,<:association_prets:confirmer_suppression:>})]]
 			</td>
 		</tr>
 		</BOUCLE_prets>
@@ -27,7 +27,7 @@
 	</table>
 	[<nav class="pagination" role="navigation">(#PAGINATION{prive})</nav>]
 	</B_prets>
-	<div class="notice"><:association:pret_aucun:></div>
+	<div class="notice"><:association_prets:pret_aucun:></div>
 	<//B_prets>
 </div>
 [(#BOITE_FERMER)]
