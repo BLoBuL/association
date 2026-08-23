@@ -1,4 +1,5 @@
 [(#AUTORISER{prets_menu}|sinon_interdire_acces)]
+<h1 class="grostitre"><:association:prets_titre_edition_prets:></h1>
 #SET{id_pret,#ENV{id_old,#ENV{id_pret,0}}}
 #SET{id_ressource,#ENV{id_objet,#ENV{id_ressource,0}}}
 <BOUCLE_pret(ASSO_PRETS){id_pret=#GET{id_pret}}{0,1}>#SET{id_ressource,#ID_RESSOURCE}</BOUCLE_pret>
