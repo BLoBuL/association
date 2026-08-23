@@ -26,7 +26,10 @@ function update_destination_contexte_from_compte(& $contexte, $id_compte, $defau
         $contexte['montant_dest'] = '';
     }
     $contexte['unique_dest'] = '';
-    $contexte['defaut_dest'] = strlen($default_destination) > 0 ? $GLOBALS['association_metas'][`dc_$default_destination`] : '';
+    $cle_destination = 'dc_' . $default_destination;
+    $contexte['defaut_dest'] = strlen($default_destination) > 0
+        ? ($GLOBALS['association_metas'][$cle_destination] ?? '')
+        : '';
 }
 
 // recupere dans la table de comptes et celle des destinations la liste des destinations associees a une operation
