@@ -341,3 +341,11 @@ frontières sont verrouillées par la matrice d'architecture.
 Le fragment historique `formulaires/update/options.html`, sans appel ni code
 CVT associé, est supprimé plutôt que déplacé dans Comptabilité : ses réglages
 sont déjà servis par la configuration modulaire actuelle.
+
+Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
+Événements depuis l'artefact SHA-256
+`9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.
+Le SPIP servi résout chaque fichier `options` depuis son plugin actif, expose
+les cinq statuts adhérents, trois statuts de cotisation et cinq statuts
+d'activité attendus. Les conversions de date, heure et montant restent
+conformes ; le fragment supprimé n'est plus résolu par le path SPIP.
