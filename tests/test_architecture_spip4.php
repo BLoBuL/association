@@ -103,6 +103,13 @@ $verifier(
 		&& strpos($schema, 'function association_declarer_tables_principales(') === false,
 	'Le socle ne doit pas déclarer de pipelines SQL sans traitement.'
 );
+$verifier(
+	!is_file($racine . '/inc/exporter_csv.php')
+		&& !is_file($racine . '/inc/csv_generer.html')
+		&& is_file($racine . '/plugins/association-evenements/inc/exporter_csv.php')
+		&& is_file($racine . '/plugins/association-evenements/inc/csv_generer.html'),
+	'Les utilitaires CSV des participants doivent appartenir à Événements.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

@@ -456,6 +456,13 @@ Le socle ne déclare plus les pipelines SQL `declarer_tables_principales` et
 pipeline de schéma conserve la table auxiliaire de métas partagée. Le callback
 principal vide et la documentation orpheline associée sont supprimés.
 
+## Lot 35 : export CSV dans Événements
+
+L'API `inc/exporter_csv` et le fragment `inc/csv_generer`, exclusivement
+consommés par l'export des participants, sont fournis par Événements. Leurs
+chemins logiques restent inchangés afin de préserver les appels SPIP et les
+éventuelles surcharges existantes.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
