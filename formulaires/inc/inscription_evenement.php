@@ -508,6 +508,13 @@ function generer_detail_participants($id_participants, $query_auteur) {
 
     try {
         foreach ($id_participants as $id_participant) {
+            if (!is_scalar($id_participant)) {
+                continue;
+            }
+            $id_participant = trim((string) $id_participant);
+            if ($id_participant === '') {
+                continue;
+            }
             // Vérifier si le type de participant est valide
             if (!isset($participants_mapping[$id_participant])) {
                 continue;
