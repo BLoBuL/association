@@ -3,11 +3,11 @@
 #ANCRE_PAGINATION
 <table class="spip asso_tablo" width="100%">
 	<tr class="row_first">
-		<th scope="col"><:association:adherent_libelle_nom_famille:></th>
-		<th scope="col"><:association:adherent_libelle_telephone:></th>
-		<th scope="col"><:association:adherent_libelle_email:></th>
-		<th scope="col"><:association:adherent_libelle_mobile:></th>
-		<th scope="col"><:association:adherent_libelle_activite:></th>
+		<th scope="col"><:association_groupes:adherent_libelle_nom_famille:></th>
+		<th scope="col"><:association_groupes:adherent_libelle_telephone:></th>
+		<th scope="col"><:association_groupes:adherent_libelle_email:></th>
+		<th scope="col"><:association_groupes:adherent_libelle_mobile:></th>
+		<th scope="col"><:association_groupes:adherent_libelle_activite:></th>
 
 	</tr>
 [(#REM)<!-- //!\ "inclusion de fragments" <http://microformats.org/wiki/include-pattern> -->]
@@ -17,7 +17,7 @@
 	{pagination #ENV{pagination,10} assoequipe}
 	>
 	<tr class="agent vcard [row_(#COMPTEUR_BOUCLE|alterner{'odd','even'})]">
-		<td><a class="spip_in fn" title="<:association:adherent_label_modifier_visiteur:>" href="[(#ID_AUTEUR|generer_objet_url{auteur})]">[(#SEXE|association_calculer_nom_membre{#PRENOM, #NOM_FAMILLE})]</a></td>
+		<td><a class="spip_in fn" title="<:association_groupes:adherent_label_modifier_visiteur:>" href="[(#ID_AUTEUR|generer_objet_url{auteur})]">[(#SEXE|association_calculer_nom_membre{#PRENOM, #NOM_FAMILLE})]</a></td>
 		<td>[<a class="spip_out email" href="mailto:(#EMAIL)">#EMAIL</a>]</td>
 		<td>[<a class="spip_out tel" href="tel:[(#TELEPHONE|replace{\D})]">(#TELEPHONE|association_telfr)</a>]</td>
 		<td>[<a class="spip_out tel" href="tel:[(#MOBILE|replace{\D})]">(#MOBILE|association_telfr)</a>]</td>

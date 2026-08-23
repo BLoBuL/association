@@ -12,11 +12,11 @@
     <thead>
       <tr>
         <th>#</th>
-        <th><:association:activite_entete_nom:></th>
+        <th><:association_groupes:activite_entete_nom:></th>
         <th></th>
-        <th><:association:adherent_libelle_contact:></th>
-        <th><:association:adherent_libelle_activites:></th>
-        <th colspan="2" class="col_actions"><:association:activite_entete_voir:></th>
+        <th><:association_groupes:adherent_libelle_contact:></th>
+        <th><:association_groupes:adherent_libelle_activites:></th>
+        <th colspan="2" class="col_actions"><:association_groupes:activite_entete_voir:></th>
         [(#ENV{checkbox_auteurs}|oui)
         <th class="checkbox">
           <input id="check_all_[(#GET{nom_role})]_[(#COMPTEUR_BOUCLE)]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);">
@@ -47,11 +47,11 @@
   <thead>
     <tr>
       <th>#</th>
-      <th><:association:activite_entete_nom:></th>
+      <th><:association_groupes:activite_entete_nom:></th>
       <th></th>
-      <th><:association:adherent_libelle_contact:></th>
-      <th><:association:adherent_libelle_activites:></th>
-      <th colspan="2" class="col_actions"><:association:activite_entete_voir:></th>
+      <th><:association_groupes:adherent_libelle_contact:></th>
+      <th><:association_groupes:adherent_libelle_activites:></th>
+      <th colspan="2" class="col_actions"><:association_groupes:activite_entete_voir:></th>
     </tr>
   </thead>
   <tbody>

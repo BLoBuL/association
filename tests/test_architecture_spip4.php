@@ -141,6 +141,19 @@ $verifier(
 		&& strpos($ventes_lang, "'ajouter_une_vente'") !== false,
 	'Le plugin Ventes doit utiliser son propre domaine de langue.'
 );
+$groupes_lang = file_get_contents($racine . '/plugins/association-groupes/lang/association_groupes_fr.php');
+$groupes_sources = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-groupes')) as $groupes_source) {
+	if ($groupes_source->isFile() && preg_match('/\.(?:php|html)$/', $groupes_source->getFilename()) && strpos($groupes_source->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$groupes_sources .= file_get_contents($groupes_source->getPathname());
+	}
+}
+$verifier(
+	strpos($groupes_sources, 'association:') === false
+		&& strpos($groupes_sources, 'association_groupes:') !== false
+		&& strpos($groupes_lang, "'titre_page_benevoles'") !== false,
+	'Le plugin Groupes doit utiliser son propre domaine de langue.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

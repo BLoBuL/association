@@ -494,6 +494,12 @@ Les trente-quatre libellés consommés par Ventes sont fournis par
 le domaine `association_ventes`, avec repli SPIP vers le français lorsqu'une
 traduction locale n'existe pas encore.
 
+## Lot 40 : domaine de langue Groupes
+
+Les seize libellés des bénévoles et responsables sont fournis par
+`association_groupes_fr.php`. Les modèles et squelettes privés emploient le
+domaine `association_groupes`, avec repli français pour les autres langues.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

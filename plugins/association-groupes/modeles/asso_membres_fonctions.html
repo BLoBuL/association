@@ -2,12 +2,12 @@
 <B_equipe>
 <table class="tableau_asso tableau_equipe ">
 	<tr>
-        <th><:association:adherent_libelle_photo:></th>
-		<th><:association:adherent_libelle_nom_famille:></th>
-		<th><:association:adherent_libelle_fonction:></th>
-		<th><:association:adherent_libelle_statut:></th>
-		<th><:association:adherent_libelle_telephone:></th>
-		<th><:association:adherent_libelle_email:></th>
+        <th><:association_groupes:adherent_libelle_photo:></th>
+		<th><:association_groupes:adherent_libelle_nom_famille:></th>
+		<th><:association_groupes:adherent_libelle_fonction:></th>
+		<th><:association_groupes:adherent_libelle_statut:></th>
+		<th><:association_groupes:adherent_libelle_telephone:></th>
+		<th><:association_groupes:adherent_libelle_email:></th>
 	</tr>
 [(#REM)<!-- //!\ "inclusion de fragments" <http://microformats.org/wiki/include-pattern> -->]
 <BOUCLE_equipe(AUTEURS)
@@ -16,12 +16,12 @@
                                             >
 	<tr>
 		<td>
-            <a class="fn" title="<:association:adherent_label_modifier_visiteur:>" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
+            <a class="fn" title="<:association_groupes:adherent_label_modifier_visiteur:>" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
                [(#LOGO_AUTEUR|image_passe_partout{70}|image_recadre{70,70})]
             </a>
         </td>
 		<td>
-            <a class="fn" title="<:association:adherent_label_modifier_visiteur:>" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
+            <a class="fn" title="<:association_groupes:adherent_label_modifier_visiteur:>" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
                #PRENOM <span class="text-transform:uppercase">#NOM_FAMILLE</span>
             </a>
         </td>
