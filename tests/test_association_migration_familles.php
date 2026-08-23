@@ -22,7 +22,10 @@ function sql_allfetsel($select, $table, $where = '', $groupby = '', $orderby = '
 }
 function _T($cle, $vars = array()) { return $cle; }
 function spip_log($message, $categorie) {}
-function familles_lister_familles_auteur($id_auteur, $options = array()) {
+function familles_objet_lister_familles($objet, $id_auteur, $options = array()) {
+	if ($objet !== 'auteur') {
+		return array();
+	}
 	return $GLOBALS['familles_test'][$id_auteur] ?? array();
 }
 function familles_creer($set = array()) {

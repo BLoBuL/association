@@ -255,6 +255,11 @@ chargeur SPIP. Le socle ne connaît plus ni le plugin Familles ni cette opérati
 de migration métier. Familles reste une intégration facultative déclarée par
 `utilise`, et non une dépendance obligatoire de la suite.
 
+La migration consomme l'API publique actuelle de Familles,
+`familles_objet_lister_familles('auteur', ...)`. L'ancien helper spécialisé
+`familles_lister_familles_auteur()` n'existe plus dans Familles 0.2.25 et ne
+doit pas être réintroduit.
+
 ## État après le lot 15
 
 La répartition du grand formulaire de configuration est achevée pour les

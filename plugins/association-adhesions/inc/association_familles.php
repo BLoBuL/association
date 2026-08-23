@@ -77,7 +77,7 @@ function association_familles_previsualiser_migration() {
 
 	foreach (association_familles_lister_groupes() as $groupe) {
 		$id_principal = intval($groupe['id_principal']);
-		$familles = familles_lister_familles_auteur($id_principal, array('inclure_inactifs' => true));
+		$familles = familles_objet_lister_familles('auteur', $id_principal, array('inclure_inactifs' => true));
 		if (count($familles) > 1) {
 			$groupe['alertes'][] = _T('association:migration_familles_plusieurs_familles');
 		}

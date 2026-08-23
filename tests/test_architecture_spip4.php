@@ -69,6 +69,7 @@ $pipelines_socle = file_get_contents($racine . '/association_pipelines.php');
 $autorisation_socle = file_get_contents($racine . '/association_autoriser.php');
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
+$migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
 $verifier(
 	strpos($configuration_socle, "config == 'evenement'") === false
 		&& strpos($configuration_socle, "config == 'evenement_defaut'") === false,
@@ -142,6 +143,11 @@ $verifier(
 		&& strpos($autorisation_socle, 'migrerfamilles') === false
 		&& strpos($autorisation_adhesions, 'migrerfamilles') !== false,
 	'Le socle ne doit plus orchestrer ni autoriser la migration vers Familles.'
+);
+$verifier(
+	strpos($migration_familles, "familles_objet_lister_familles('auteur'") !== false
+		&& strpos($migration_familles, 'familles_lister_familles_auteur') === false,
+	'La migration Adhesions doit utiliser l API objet actuelle du plugin Familles.'
 );
 $verifier(
 	strpos($administration_socle, 'function association_migrer_cotisations_depuis_comptes') === false,
