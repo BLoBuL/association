@@ -439,3 +439,13 @@ Comptabilité, Événements et Groupes depuis l'artefact SHA-256
 Le serveur ne résout plus la balise supprimée. Les cinq squelettes privés
 représentatifs utilisent l'inclusion native et compilent sans erreur, avec des
 sorties comprises entre 602 et 606 octets.
+
+## Lot 31 — saisie Formidable dans Communication
+
+La saisie auto-découverte `formulaires` est déplacée sans modification dans le
+plugin Communication. Le commit `136f654` a été déployé atomiquement dans le
+socle et Communication depuis l'artefact SHA-256
+`3a721490b43f9149ff61433d68781115bf90c850778fbb495654c5caec52e671`.
+Le SPIP servi résout les fichiers HTML et YAML depuis
+`plugins/association-communication/saisies`, ne conserve aucune copie dans le
+socle et compile le champ de sélection sans erreur.
