@@ -73,6 +73,10 @@ $verifier(
 		&& strpos(file_get_contents($racine . '/association_options.php'), "include_spip('balise/meta')") === false,
 	'Le socle ne doit plus surcharger la balise META native de SPIP.'
 );
+$verifier(
+	!is_file($racine . '/balise/onglets_association.php'),
+	'Le socle ne doit plus compiler une balise personnalisee pour inclure ses onglets.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {
@@ -84,6 +88,17 @@ foreach ($iterateur_meta as $fichier_meta) {
 	}
 }
 $verifier(!$meta_association_restant, 'Les squelettes doivent utiliser CONFIG pour les metas Association.');
+$onglets_historiques = [];
+$iterateur_onglets = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine));
+foreach ($iterateur_onglets as $fichier_onglets) {
+	if ($fichier_onglets->isFile() && $fichier_onglets->getExtension() === 'html') {
+		$contenu_onglets = file_get_contents($fichier_onglets->getPathname());
+		if (strpos($contenu_onglets, '#ONGLETS_ASSOCIATION') !== false) {
+			$onglets_historiques[] = $fichier_onglets->getPathname();
+		}
+	}
+}
+$verifier(!$onglets_historiques, 'Les pages privees doivent inclure le squelette des onglets avec la syntaxe SPIP native.');
 $profil_association = file_get_contents($racine . '/plugins/association-adhesions/modeles/asso_profil.html');
 $verifier(
 	strpos($profil_association, "#CONFIG{association_metas/rue}|sinon{''}|nl2br") !== false,

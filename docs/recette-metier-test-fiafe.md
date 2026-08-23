@@ -416,6 +416,23 @@ du journal précèdent le dernier correctif et ne se reproduisent plus.
 Tous les accès à la table `association_metas` emploient désormais la balise
 native `#CONFIG`. La surcharge historique de `#META` est supprimée du socle.
 
+Le commit `11ef25e` a été déployé dans les six emplacements actifs depuis
+l'artefact SHA-256
+`64d9a3e424e71ecbd3d65babe4880c97b3395f5510c39ae68f5e699ecb974817`.
+Le serveur ne résout plus `balise/meta.php` et les quatre familles de
+squelettes contrôlées utilisent toutes `#CONFIG`. Le modèle public et la
+navigation privée compilent réellement.
+
+La compilation a révélé puis permis de corriger `nl2br(null)` sous PHP 8 dans
+le modèle de profil. Le correctif `20a009f`, déployé depuis l'artefact SHA-256
+`a54326579f7b60a6d73989015375878c5e9c9b3a6b1394674660290c63447e7c`,
+supprime l'avertissement ; la compilation est désormais propre.
+
+## Lot 30 — onglets privés natifs
+
+Les dix-huit pages privées remplacent `#ONGLETS_ASSOCIATION` par une inclusion
+SPIP explicite. Le compilateur de balise historique est supprimé.
+
 Le commit `ccd9fdf` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `129a059ead47adac15277ba045b21f171929488ae284108fb49ae00d365822ae`.

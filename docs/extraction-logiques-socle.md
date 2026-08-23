@@ -420,6 +420,14 @@ standards comme `#META{timezone}` restent inchangés.
 La suite utilise ainsi la balise native de lecture de configuration, sans
 modifier globalement le comportement de `#META` pour les autres plugins.
 
+## Lot 30 : inclusion native des onglets privés
+
+Les pages privées incluent désormais directement
+`prive/squelettes/top/inc-top_association` avec leur contexte métier. La balise
+personnalisée `#ONGLETS_ASSOCIATION`, qui ne faisait que déléguer à ce squelette,
+est supprimée. Les dix-huit pages concernées utilisent ainsi la syntaxe
+`INCLURE` native de SPIP.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
