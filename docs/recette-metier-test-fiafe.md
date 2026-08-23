@@ -590,3 +590,13 @@ l’artefact SHA-256
 `6e5c56ff09ccac5739bfb1fb71569681fc6cee2b9a8121d72fd028d4698b6fe1`.
 Le rendu serveur du gabarit autonome produit 2837 octets, contient la coque
 responsive et le contenu injecté, et ne contient aucune référence `zblobul`.
+
+## Lot 47 — domaine de langue Événements
+
+Le commit `4bb0937` a été déployé atomiquement dans Événements depuis
+l’artefact SHA-256
+`0891c1d5f24811d1485f7a321cd1aeab51892881c81f761a46b1ea3e215acdb5`.
+Le serveur résout les clés historique, export dynamique et montant gratuit,
+compile le CVT de catégorie, puis valide encore les 10 plugins et leurs schémas.
+Les formulaires publics sans événement retournent normalement une sortie vide ;
+leurs parcours avec données restent couverts par la recette navigateur.
