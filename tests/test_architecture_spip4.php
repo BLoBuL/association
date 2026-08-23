@@ -197,6 +197,11 @@ $verifier(
 	'Le fichier d autorisations du socle ne doit plus contenir de logique metier extraite.'
 );
 $verifier(
+	strpos($pipelines_socle, 'association_saisies_lister_disponibles') === false
+		&& strpos($pipelines_socle, 'Enregistrer les informations des') === false,
+	'Le fichier de pipelines du socle ne doit plus exposer de hooks morts ni de documentation metier orpheline.'
+);
+$verifier(
 	strpos($migration_familles, "familles_objet_lister_familles('auteur'") !== false
 		&& strpos($migration_familles, 'familles_lister_familles_auteur') === false,
 	'La migration Adhesions doit utiliser l API objet actuelle du plugin Familles.'

@@ -316,3 +316,10 @@ Le SPIP servi résout le fichier depuis `plugins/association`, charge les quatre
 contrats transverses attendus et délègue encore correctement les menus
 Adhérents et Comptes à leurs plugins actifs. Les erreurs retrouvées dans les
 journaux concernent les anciens plugins Blobul le 22 août et non ce lot.
+
+## Lot 21 — pipelines transversaux du socle
+
+Le fichier de pipelines racine ne conserve que les cinq fonctions réellement
+utilisées par le paquet. Le hook mort de déclaration d'une saisie et toute la
+documentation des traitements déjà déplacés ont été supprimés. La matrice
+d'architecture interdit leur réintroduction.

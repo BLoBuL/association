@@ -329,7 +329,19 @@ modules : normalisation de l'auteur, lecture d'activation historique et
 journalisation contrôlée. L'autorisation éditoriale générique d'ajout de
 document est conservée sans dépendre d'un domaine métier.
 
-## État après le lot 20
+## Lot 21 : pipelines racine normalisés
+
+`association_pipelines.php` est limité aux pipelines réellement déclarés par
+le paquet : ressources privées, composants jQuery UI, cron de maintenance et
+composition du menu de la suite. Plus de trois cents lignes de commentaires
+orphelins et le hook de saisie non déclaré ont été retirés.
+
+La construction du menu emploie un chemin commun pour SPIP 4.0/4.1 et SPIP
+4.2+, tout en laissant les autorisations et l'activation métier aux plugins
+propriétaires. Le calcul d'icône utilise désormais les retours des API SPIP au
+lieu d'appeler `file_exists()` sur une valeur potentiellement vide.
+
+## État après le lot 21
 
 La répartition du grand formulaire de configuration est achevée pour les
 domaines actuellement extraits : Adhésions, Événements, Paiements,
