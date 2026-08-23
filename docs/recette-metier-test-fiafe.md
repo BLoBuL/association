@@ -488,3 +488,13 @@ l'artefact SHA-256
 Le serveur résout les deux ressources depuis Événements, charge réellement
 `inc_exporter_csv_dist`, produit une ligne CSV conforme et compile le fragment
 en 495 octets sans erreur.
+
+## Lot 36 — maintenance distribuée
+
+Le cron transversal délègue désormais les nettoyages métier à quatre
+fournisseurs. Le commit `98b8815` a été déployé dans le socle, Événements,
+Comptabilité, Paiements et Communication depuis l'artefact SHA-256
+`0fefe8702fdcee77ea981a2f24822208388940918830a133604599e27287825a`,
+puis le registre des plugins a été actualisé. Un dry-run réel sur la base
+test-fiafe charge les quatre fournisseurs, produit les onze clés métier
+attendues et laisse inchangés les effectifs des six tables contrôlées.
