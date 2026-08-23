@@ -102,6 +102,19 @@ pipeline public `association_rgpd_export_auteur` reçoit `id_auteur` et `email` 
 Cette séparation rend l'export extensible et empêche le socle de reprendre la
 propriété implicite des tables des modules.
 
+## Lot 7 : maintenance BDD distribuée
+
+La première tranche déplace dans Événements toutes les opérations qui lisent
+ou modifient `spip_asso_activites` : détection et suppression des inscriptions
+non validées, anonymisation, ainsi que nettoyage des participations orphelines
+ou obsolètes. Le cron commun conserve l'ordre des traitements, le `dry_run`,
+les seuils et le rapport consolidé. Il charge l'API du module uniquement quand
+celui-ci est actif et ignore proprement cette tranche sinon.
+
+Les tranches Comptabilité/Paiements puis Communication doivent suivre le même
+contrat avant que le fichier du cron puisse devenir un orchestrateur sans
+requête métier.
+
 ## État résiduel du socle
 
 Le socle conserve uniquement :
@@ -120,8 +133,8 @@ de rupture de compatibilité.
 ## Lots restant après la migration et la première recette distante
 
 1. remplacer ou déplacer les alias historiques `modifier/asso` ;
-2. distribuer la maintenance BDD entre les modules en conservant un
-   orchestrateur `dry_run` transversal ;
+2. terminer la distribution de la maintenance BDD pour Comptabilité,
+   Paiements et Communication en conservant l'orchestrateur `dry_run` ;
 3. achever l'audit des inclusions inter-modules et des contrats publics ;
 4. rejouer la passe navigateur responsive finale sur test-fiafe.
 

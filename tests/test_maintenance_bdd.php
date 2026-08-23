@@ -246,6 +246,7 @@ function association_test_reset_tables() {
     $GLOBALS['association_test_fail_update_tables'] = array();
 }
 
+include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_maintenance.php';
 include_once PLUGIN_ROOT . '/genie/association_maintenance_bdd.php';
 
 function association_test_assert($condition, $message) {
