@@ -216,6 +216,11 @@ les règles de validité, privilèges, cotisations, notifications d'échéance e
 options multidevises. Les listes de diffusion restent obtenues par le contrat
 public de Communication sans réintroduire de dépendance Blobul historique.
 
+Les validations CVT suivent désormais la même frontière : Comptabilité vérifie
+le format de l'exercice et les références comptables, Communication contrôle
+les listes d'adresses de notification, et le socle agrège leurs erreurs avec
+les seuls seuils de sa maintenance transversale.
+
 ## Lots restant après la migration et la première recette distante
 
 1. répartir les blocs métier du grand formulaire de configuration ;

@@ -588,123 +588,27 @@ function formulaires_configurer_association_charger_dist($config) {
     return $contexte;
 }
 // Fonction pour vérifier les valeurs du formulaire
-function formulaires_configurer_association_verifier_dist($config){
-    $erreurs = array();
-    $erreur = false;
-    // Validation JJ/MM des champs exercice comptable (si présents dans le POST)
-    $debut = trim((string)_request('exercice_comptable_debut'));
-    $regex = '/^([0-9]{2})\/([0-9]{2})$/';
-    if ($debut !== '') {
-        if (!preg_match($regex, $debut, $m)) {
-            $erreurs['exercice_comptable_debut'] = _T('association_config:erreur_exercice_comptable_format');
-        } else {
-            $j = intval($m[1]); $mo = intval($m[2]);
-            if ($j < 1 || $j > 31 || $mo < 1 || $mo > 12) {
-                $erreurs['exercice_comptable_debut'] = _T('association_config:erreur_exercice_comptable_jour_mois');
-            }
-        }
-    }
+function formulaires_configurer_association_verifier_dist($config) {
+	$erreurs = array();
 
-    // TODO Ces vérifications sont à revoir, elles ne prennent pas en compte tous les cas de figures et ne place par les erreurs au bon endroit
-    $ref_attribuee = array();
-    // on verifie qu'il n'a pas deux fois la meme reference comptable en incluant celle des cotisations
-    $ref_attribuee[_request('pc_cotisations')]=0;
-    if ((_request('dons') == 'on') AND $ref_dons = _request('pc_dons')) {
-        if (!array_key_exists($ref_dons,$ref_attribuee)) {
-            $ref_attribuee[$ref_dons]=0;
-        }
-        else $erreur = true;
-    }
+	include_spip('formulaires/inc/configurer_association_compta_verifier');
+	$erreurs = array_merge($erreurs, association_compta_configurer_verifier($config));
 
-    if ((_request('ventes') == 'on' AND $ref_ventes = _request('pc_ventes'))) {
+	include_spip('formulaires/inc/configurer_association_communication_verifier');
+	$erreurs = array_merge($erreurs, association_communication_configurer_verifier($config));
 
-        $ref_frais_envoi = _request('pc_frais_envoi');
-        if (!array_key_exists($ref_ventes,$ref_attribuee)) {
-            $ref_attribuee[$ref_ventes]=0;
-        }
-        else $erreur = true;
-        if ($ref_ventes != $ref_frais_envoi) {
-            /* vente et frais_envoi peuvent etre associes a la meme reference comptable meme si c'est deconseille d'un point de vue comptable */
-            if (!array_key_exists($ref_frais_envoi,$ref_attribuee)) {
-                $ref_attribuee[$ref_frais_envoi]=0;
-            }
-            else $erreur = true;
-        }
-    }
+	foreach (array('meta_cfg_maintenance_jours_inactivite', 'meta_cfg_maintenance_jours_inscriptions_attente', 'meta_cfg_maintenance_mois_non_encaisse', 'meta_cfg_maintenance_lot') as $numfield) {
+		$valeur = trim((string) _request($numfield));
+		if ($valeur !== '' && !ctype_digit($valeur)) {
+			$erreurs[$numfield] = _T('association_config:erreur_entier_positif');
+		}
+	}
 
-    if ((_request('prets') == 'on') AND $ref_prets = _request('pc_prets')){
-        if (!array_key_exists($ref_prets,$ref_attribuee)) {
-            $ref_attribuee[$ref_prets]=0;
-        }
-        else $erreur = true;
-    }
+	if ($erreurs && !isset($erreurs['message_erreur'])) {
+		$erreurs['message_erreur'] = _T('association:erreur_configurer_association_titre');
+	}
 
-    if ((_request('activites') == 'on') AND $ref_activites = _request('pc_activites')) {
-        if (!array_key_exists($ref_activites,$ref_attribuee)) {
-            $ref_attribuee[$ref_activites]=0;
-        }
-        else $erreur = true;
-    }
-    if ($erreur) {
-        $erreurs['message_erreur'] = _T('association:erreur_configurer_association_titre').'<br/>'._T('association:erreur_configurer_association_reference_multiple');
-    } elseif (count($erreurs)) {
-        // message générique si uniquement erreurs de format
-        $erreurs['message_erreur'] = _T('association:erreur_configurer_association_titre');
-    }
-
-    // Validation des adresses e-mail pour les destinataires de création de cotisation
-    $emails_principal = trim((string)_request('email'));
-    $emails_adh = trim((string)_request('config_destinataires_creation_cotisation_adh'));
-    $emails_tres = trim((string)_request('config_destinataires_creation_cotisation_tresorier'));
-    $emails_notif_defaut = trim((string)_request('config_envoi_email_notif_defaut'));
-    $emails_gis = trim((string)_request('notification_gis_config_email'));
-    $emails_adhesion_cc = trim((string)_request('config_envoi_recu_adhesion_cc'));
-    $emails_participation_cc = trim((string)_request('config_envoi_recu_participation_cc'));
-    $invalid = array();
-    $invalid_field = '';
-
-    foreach (array(
-        'principal' => array('value' => $emails_principal, 'field' => 'email'),
-        'adh' => array('value' => $emails_adh, 'field' => 'config_destinataires_creation_cotisation_adh'),
-        'tres' => array('value' => $emails_tres, 'field' => 'config_destinataires_creation_cotisation_tresorier'),
-        'notif_defaut' => array('value' => $emails_notif_defaut, 'field' => 'config_envoi_email_notif_defaut'),
-        'gis' => array('value' => $emails_gis, 'field' => 'notification_gis_config_email'),
-        'adhesion_cc' => array('value' => $emails_adhesion_cc, 'field' => 'config_envoi_recu_adhesion_cc'),
-        'participation_cc' => array('value' => $emails_participation_cc, 'field' => 'config_envoi_recu_participation_cc'),
-    ) as $k => $data) {
-        $list = $data['value'];
-        $field_name = $data['field'];
-
-        if ($list !== '') {
-            // Sépare sur virgule, point-virgule et espaces
-            $parts = preg_split('/[;,\s]+/', $list, -1, PREG_SPLIT_NO_EMPTY);
-            foreach ($parts as $e) {
-                $e = trim($e);
-                if ($e === '') continue;
-                // Validation avec filter_var
-                if (!filter_var($e, FILTER_VALIDATE_EMAIL)) {
-                    $invalid[] = $e;
-                    if (empty($invalid_field)) {
-                        $invalid_field = $field_name;
-                    }
-                }
-            }
-        }
-    }
-
-    // Validation des champs numériques de la maintenance BDD
-    foreach (array('meta_cfg_maintenance_jours_inactivite','meta_cfg_maintenance_jours_inscriptions_attente','meta_cfg_maintenance_mois_non_encaisse','meta_cfg_maintenance_lot') as $numfield) {
-        $v = trim((string)_request($numfield));
-        if ($v !== '' && !ctype_digit($v)) {
-            $erreurs[$numfield] = _T('association_config:erreur_entier_positif');
-        }
-    }
-
-    if (count($invalid)) {
-        // On associe l'erreur au premier champ ayant une email invalide pour affichage
-        $erreurs[$invalid_field] = _T('association_config:erreur_emails_invalides');
-    }
-    return $erreurs;
+	return $erreurs;
 }
 // Fonction pour traiter les valeurs du formulaire
 function formulaires_configurer_association_traiter_dist($config){

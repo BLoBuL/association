@@ -57,6 +57,8 @@ $configuration_evenements = file_get_contents($racine . '/plugins/association-ev
 $configuration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/formulaires/inc/configurer_association_adhesions.php');
 $configuration_paiements = file_get_contents($racine . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php');
 $configuration_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php');
+$verification_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta_verifier.php');
+$verification_communication = file_get_contents($racine . '/plugins/association-communication/formulaires/inc/configurer_association_communication_verifier.php');
 $verifier(
 	strpos($configuration_socle, "config == 'evenement'") === false
 		&& strpos($configuration_socle, "config == 'evenement_defaut'") === false,
@@ -83,6 +85,16 @@ $verifier(
 		&& strpos($configuration_adhesions, "config == 'adhesion'") !== false
 		&& strpos($configuration_adhesions, "config == 'entreprise'") !== false,
 	'Les panneaux adhesion et entreprise doivent appartenir au module Adhesions.'
+);
+$verifier(
+	strpos($configuration_socle, 'function association_compta_configurer_verifier') === false
+		&& strpos($verification_compta, 'function association_compta_configurer_verifier') !== false,
+	'Les validations comptables doivent appartenir au module Comptabilite.'
+);
+$verifier(
+	strpos($configuration_socle, 'FILTER_VALIDATE_EMAIL') === false
+		&& strpos($verification_communication, 'FILTER_VALIDATE_EMAIL') !== false,
+	'La validation des destinataires doit appartenir au module Communication.'
 );
 $verifier(
 	strpos($administration_socle, 'function association_migrer_cotisations_depuis_comptes') === false,

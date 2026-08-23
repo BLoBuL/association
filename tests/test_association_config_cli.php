@@ -110,6 +110,8 @@ include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/conf
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/formulaires/inc/configurer_association_adhesions.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php';
+include_once PLUGIN_ROOT . '/plugins/association-compta/formulaires/inc/configurer_association_compta_verifier.php';
+include_once PLUGIN_ROOT . '/plugins/association-communication/formulaires/inc/configurer_association_communication_verifier.php';
 include_once PLUGIN_ROOT . '/formulaires/configurer_association.php';
 $saisies_persistantes = array();
 $saisies_par_segment = array();
