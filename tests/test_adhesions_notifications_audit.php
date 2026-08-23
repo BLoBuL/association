@@ -66,6 +66,11 @@ test_assert($audit_recu[0]['statut'] === 'attention', 'un recu desactive est sig
 $source_cotisations = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations.php');
 $source_action = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/action/valider_justificatifs_cotisation.php');
 $source_action = str_replace("\r\n", "\n", $source_action);
+$source_page_notifications = file_get_contents(PLUGIN_ROOT . '/plugins/association-communication/prive/squelettes/contenu/notifications.html');
+$source_pipelines_adhesions = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/association_adhesions_pipelines.php');
+test_assert(!str_contains($source_page_notifications, '|notifications_cotisations_audit_html'), 'la page Communication ne depend plus directement du domaine Adhesions');
+test_assert(str_contains($source_page_notifications, '|association_notifications_audits_html'), 'la page Communication utilise le contrat d audit extensible');
+test_assert(str_contains($source_pipelines_adhesions, 'association_notifications_audit_html'), 'Adhesions contribue a l audit commun par pipeline');
 test_assert(!str_contains($source_cotisations, "bank_paiement/email_ticket_admin"), 'les notifications de cotisation ne dependent plus de email_ticket_admin');
 test_assert(str_contains($source_cotisations, "'documents_recus'") && str_contains($source_cotisations, "'justificatifs_controles'"), 'le contexte email expose l etat documentaire');
 test_assert(str_contains($source_action, "'justificatifs-a-revoir'") && !str_contains($source_action, "'justificatifs-valides'"), 'seul le retour A revoir programme une notification adherent');

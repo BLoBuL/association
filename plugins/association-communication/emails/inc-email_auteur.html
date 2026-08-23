@@ -1,0 +1,26 @@
+<BOUCLE_auteur_email(AUTEURS){id_auteur}{tout}>
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;margin:0">
+	<tr>
+		[<td style="width:100px;height:100px;vertical-align:middle;padding:0">
+			<a href="[(#URL_AUTEUR|url_absolue)]">(#LOGO_AUTEUR
+				|image_passe_partout{100,100}
+				|image_recadre{100,100,top center}
+				|vider_attribut{class}
+				|vider_attribut{width}
+				|vider_attribut{height}
+				|inserer_attribut{style,display:block;width:100px;height:100px;object-fit:cover}
+				|inserer_attribut{alt,''}
+				|liens_absolus)
+			</a>
+		</td>]
+		<td style="padding:0 0 0 15px;vertical-align:middle">
+			<a href="[(#URL_AUTEUR|url_absolue)]" style="text-decoration:none;color:#555;display:block;padding-bottom:10px">
+				<strong style="text-transform:uppercase">#NOM_FAMILLE</strong>
+				<span>#PRENOM</span>
+			</a>
+			[<div style="color:#555">(#MOBILE)</div>]
+			[<div><a href="mailto:[(#INPUT_EMAIL_MEMBRES_ASSO|sinon{#EMAIL}|attribut_html)]">(#INPUT_EMAIL_MEMBRES_ASSO|sinon{#EMAIL})</a></div>]
+		</td>
+	</tr>
+</table>
+</BOUCLE_auteur_email>

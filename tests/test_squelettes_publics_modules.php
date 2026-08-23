@@ -30,6 +30,19 @@ if (!file_exists($racine . '/plugins/association-prets/modeles/asso_ressources.h
 	exit(1);
 }
 
+$auteur_email = $racine . '/plugins/association-communication/emails/inc-email_auteur.html';
+if (!file_exists($auteur_email)) {
+	fwrite(STDERR, "Le composant email d'auteur requis par Événements est absent de Communication.\n");
+	exit(1);
+}
+foreach (glob($racine . '/plugins/association-evenements/notifications/*.html') as $notification) {
+	$contenu = file_get_contents($notification);
+	if (str_contains($contenu, 'emails/inc-email_auteur') && !file_exists($auteur_email)) {
+		fwrite(STDERR, "Dépendance email non satisfaite : $notification.\n");
+		exit(1);
+	}
+}
+
 $modele_ressources = file_get_contents($racine . '/plugins/association-prets/modeles/asso_ressources.html');
 if (!str_contains($modele_ressources, 'match{^0000}') || !str_contains($modele_ressources, 'prets_retour_attente')) {
 	fwrite(STDERR, "Le catalogue public expose encore la date SQL nulle d'un prêt non restitué.\n");

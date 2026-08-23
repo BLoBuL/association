@@ -10,6 +10,15 @@ function association_adhesions_taches_generales_cron($taches) {
 	return $taches;
 }
 
+/**
+ * Ajoute l'audit sans envoi des notifications de cotisation à la page commune.
+ */
+function association_adhesions_association_notifications_audit_html($flux) {
+	include_spip('inc/notifications_cotisations_audit');
+	$flux['data'] = ($flux['data'] ?? '') . notifications_cotisations_audit_html();
+	return $flux;
+}
+
 function association_adhesions_saisies_retirer_obligatoire(array $saisies): array {
     foreach ($saisies as &$saisie) {
         if (isset($saisie['options']['obligatoire'])) {

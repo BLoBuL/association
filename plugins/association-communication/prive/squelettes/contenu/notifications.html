@@ -90,7 +90,7 @@ L'étoile <strong>*</strong> permets d'identifier les notifications personnalis�
 <!-- Zone de contenu : inclure le tableau correspondant au tab sélectionné -->
 <div class="notifications-content">
     [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|oui)
-        [(#VAL|notifications_cotisations_audit_html)]
+        [(#VAL|association_notifications_audits_html)]
     ]
     <!-- Lien debug pour forcer l'affichage des notifications Activités -->
 

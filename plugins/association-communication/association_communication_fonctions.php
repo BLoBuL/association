@@ -7,6 +7,14 @@ if (!defined('_ECRIRE_INC_VERSION')) { return; }
 // a SPIP de les connaitre avant de compiler chaque squelette inclus.
 include_spip('prive/squelettes/contenu/notifications_fonctions');
 
+/**
+ * Assemble les audits de notifications fournis par les plugins métier.
+ */
+function association_notifications_audits_html() {
+	$flux = pipeline('association_notifications_audit_html', array('data' => ''));
+	return is_array($flux) ? (string) ($flux['data'] ?? '') : '';
+}
+
 
 function association_condition_auteurs_newsletter($statut_interne) {
     return "statut IN ('6forum','1comite','0minirezo') AND statut_interne=" . sql_quote($statut_interne);
