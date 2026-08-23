@@ -14,6 +14,7 @@ include_spip('inc/editer');
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
 \***************************************************************************/
 function formulaires_editer_asso_ressources_charger_dist($id_ressource='') {
+	include_spip('inc/cotisations_devises');
 
 	//TODO: bug id ressource oui
 	/* cet appel va charger dans $contexte tous les champs de la table spip_asso_dons associes a l'id_don passe en param */
@@ -33,6 +34,7 @@ function formulaires_editer_asso_ressources_charger_dist($id_ressource='') {
 	}
 
 	$contexte['title'] = $id_ressource === '' ? _T('association:ressources_nav_ajouter') : _T('association:ressources_nav_editer');
+	$contexte['devise'] = association_cotisation_devise_defaut();
 
 	return $contexte;
 }

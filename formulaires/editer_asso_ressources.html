@@ -24,7 +24,7 @@
 		#SET{erreurs,#ENV**{erreurs}|table_valeur{pu}}
 		<li class="editer_pu">
 			[<span class='erreur_message'>(#GET{erreurs})</span>]
-			<label for="pu"><strong><:association:ressources_libelle_prix_location{devise=#META{/association/symbole}}:></strong></label>
+			<label for="pu"><strong><:association:ressources_libelle_prix_location{devise=#ENV{devise}}:></strong></label>
 			<input type="text" name="pu" [value="(#ENV{pu})"] id="pu"  class='formo'/>
 		</li>
 
