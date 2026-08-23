@@ -305,7 +305,19 @@ L'action ne tente plus de charger `inc/fonctions/generer_exporter_csv`, fichier
 qui n'existait pas et n'apportait aucune fonction. Le moteur CSV générique reste
 dans le socle car il est également consommé par Événements.
 
-## État après le lot 18
+## Lot 19 : fichier de fonctions du socle normalisé
+
+`association_fonctions.php` ne contient plus les commentaires orphelins des
+fonctions Événements, Communication et Adhésions déjà déplacées. Il expose
+uniquement l'agrégateur RGPD, le nommage des exports, la désérialisation de
+configuration et le filtre scalaire partagés.
+
+Les préchargements globaux de `inc/actions`, `inc/editer` et `inc/autoriser`
+ont été supprimés : aucune des fonctions restantes ne les consomme. Une matrice
+dédiée verrouille le comportement de sérialisation, de nommage et de conversion
+scalaire.
+
+## État après le lot 19
 
 La répartition du grand formulaire de configuration est achevée pour les
 domaines actuellement extraits : Adhésions, Événements, Paiements,

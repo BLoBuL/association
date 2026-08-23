@@ -68,6 +68,7 @@ $verification_compta = file_get_contents($racine . '/plugins/association-compta/
 $verification_communication = file_get_contents($racine . '/plugins/association-communication/formulaires/inc/configurer_association_communication_verifier.php');
 $pipelines_socle = file_get_contents($racine . '/association_pipelines.php');
 $autorisation_socle = file_get_contents($racine . '/association_autoriser.php');
+$fonctions_socle = file_get_contents($racine . '/association_fonctions.php');
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
@@ -160,6 +161,13 @@ $verifier(
 	strpos($configuration_socle, 'FILTER_VALIDATE_EMAIL') === false
 		&& strpos($verification_communication, 'FILTER_VALIDATE_EMAIL') !== false,
 	'La validation des destinataires doit appartenir au module Communication.'
+);
+$verifier(
+	strpos($fonctions_socle, "include_spip('inc/actions')") === false
+		&& strpos($fonctions_socle, "include_spip('inc/editer')") === false
+		&& strpos($fonctions_socle, "include_spip('inc/autoriser')") === false
+		&& substr_count($fonctions_socle, 'function ') === 6,
+	'Le fichier de fonctions du socle doit rester limite aux cinq fonctions transversales.'
 );
 $verifier(
 	!is_file($racine . '/inc/association_familles.php')
