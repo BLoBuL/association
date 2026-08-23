@@ -534,3 +534,11 @@ Groupes utilise désormais son domaine `association_groupes`. Le commit
 `81dbc9c2b71c21d36cad80512ef8fd8679301c638bc913001daab631581670e1`.
 Le serveur résout le domaine depuis Groupes, restitue les libellés Bénévoles et
 Activité puis compile le modèle représentatif en 1023 octets sans erreur.
+
+## Lot 41 — domaine de langue Paiements
+
+Paiements utilise désormais son domaine `association_paiements`. Le commit
+`ee70131` a été déployé atomiquement depuis l'artefact SHA-256
+`0219a18559119fade822f023bb531c41f3b49e0d116dfa101497699f0b42fc28`.
+Le serveur résout le domaine depuis Paiements, restitue les libellés de statut
+et remboursement puis compile le formulaire en 1292 octets sans erreur.
