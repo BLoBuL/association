@@ -81,10 +81,45 @@ ne suffit pas à valider son parcours métier.
 14. La page canonique d'ajout d'une écriture comptable cumulait le H1 de sa
     composition et celui de l'ancien fragment inclus. La composition réutilise
     désormais le titre métier unique du fragment, y compris sur la route legacy.
+15. Les filtres partagés de la page Notifications restaient dans le compagnon
+    d'un seul squelette. Les inclusions fournies par Adhésions et Événements
+    étaient donc compilées sans `listes_notifications`,
+    `exemple_adherent_par_type` ni le catalogue métier. Communication charge
+    désormais ce compagnon depuis son fichier global de fonctions.
+16. L'installation du socle sur une base historique appelait encore la fonction
+    supprimée `association_declarer_champs_extras()`. Le socle n'installe et ne
+    désinstalle désormais que `spip_association_metas`; chaque module reste seul
+    propriétaire de ses tables et Champs Extras.
+
+## Migration isolée depuis la base dev
+
+Le 23 août 2026, la base de `dev.blobul.com` a été exportée sans aucune écriture
+sur la base source, puis restaurée dans une base SQLite confinée à un répertoire
+non publié. L'exporteur SPIP ne créait pas `spip_asso_activites`; les 41 lignes
+ont été ajoutées au dump à partir d'une lecture directe de la table source avant
+la restauration. Ce contournement concerne le protocole de copie, pas la
+migration du plugin.
+
+La première exécution a détecté puis permis de corriger l'appel Champs Extras
+résiduel du socle. Une seconde copie fraîche a ensuite validé :
+
+- activation d'Inscription 4.1.14 et des dix plugins de la suite ;
+- mise à jour de tous les schémas, puis seconde exécution idempotente sans mise
+  à jour restante ;
+- 26 écritures comptables, 41 inscriptions d'événements, 14 catégories
+  d'activités, 6 catégories d'adhésion, 3 ventes et 156 métas historiques
+  conservées ;
+- 10 écritures historiques reconnues comme cotisations et exactement 10 lignes
+  créées dans `spip_asso_cotisations` ; aucune cotisation sans compte, aucun
+  compte de cotisation non lié et aucune devise vide ;
+- vérificateur final conforme : 10 plugins, 14 tables, 12 objets SQL et 7
+  schémas ; compilation de 186 squelettes privés et 10 publics sous SPIP
+  4.4.21.
 
 ## Non-régression
 
-- 69 tests PHP autonomes réussis, y compris les tests propres aux neuf modules ;
+- 59 points d'entrée `tests/test_*.php` réussis, y compris les tests propres aux
+  neuf modules ;
 - 274 fichiers PHP contrôlés sans erreur de syntaxe ;
 - compilation réelle des squelettes vérifiée par les pages privées et publiques
   après purge du cache ;
@@ -142,7 +177,8 @@ Après ce redéploiement complet :
 - aucun journal contrôlé depuis 10:55 ne contient d'erreur, dépréciation,
   erreur SQL ou trace critique.
 
-La recette de la suite Association est clôturée. Le débordement propre à
-l'accueil du thème et le code de sortie non nul de la commande externe
-`spip test:spip` malgré tous ses contrôles affichés en vert sont consignés hors
-périmètre Association.
+La recette serveur et la migration historique sont validées. La passe responsive
+visuelle finale reste à rejouer après rétablissement du contrôleur Chrome. Le
+débordement propre à l'accueil du thème et le code de sortie non nul de la
+commande externe `spip test:spip` malgré tous ses contrôles affichés en vert
+restent consignés hors périmètre Association.
