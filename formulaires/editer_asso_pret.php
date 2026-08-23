@@ -4,6 +4,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+include_spip('inc/prets');
+
 function formulaires_editer_asso_pret_charger_dist($id_pret = 0, $id_ressource = 0) {
 	$id_pret = (int) $id_pret;
 	$id_ressource = (int) $id_ressource;
@@ -22,7 +24,7 @@ function formulaires_editer_asso_pret_charger_dist($id_pret = 0, $id_ressource =
 	if (!$ressource) {
 		return false;
 	}
-	$compte = $id_pret ? sql_fetsel('journal,recette', 'spip_asso_comptes', 'id_journal=' . $id_pret) : array();
+	$compte = $id_pret ? sql_fetsel('journal,recette', 'spip_asso_comptes', association_pret_compte_where($id_pret)) : array();
 
 	return array(
 		'id_pret' => $id_pret,
@@ -60,8 +62,12 @@ function formulaires_editer_asso_pret_verifier_dist($id_pret = 0, $id_ressource 
 	if ((int) _request('duree') < 0) {
 		$erreurs['duree'] = _T('association:erreur_montant');
 	}
-	if (association_recupere_montant(_request('montant')) < 0) {
+	$montant = association_recupere_montant(_request('montant'));
+	if ($montant < 0) {
 		$erreurs['montant'] = _T('association:erreur_montant');
+	}
+	if ($montant > 0 && empty($GLOBALS['association_metas']['pc_prets'])) {
+		$erreurs['montant'] = _T('association:pret_imputation_obligatoire');
 	}
 	if ($erreurs) {
 		$erreurs['message_erreur'] = _T('association:erreur_titre');
@@ -98,16 +104,34 @@ function formulaires_editer_asso_pret_traiter_dist($id_pret = 0, $id_ressource =
 		'recette' => association_recupere_montant(_request('montant')),
 		'imputation' => $GLOBALS['association_metas']['pc_prets'] ?? '',
 	);
+	$montant = (float) $compte['recette'];
 
 	sql_query('START TRANSACTION');
 	if ($id_pret) {
 		$ok = sql_updateq('spip_asso_prets', $pret, 'id_pret=' . $id_pret);
-		$ok = ($ok !== false) && sql_updateq('spip_asso_comptes', $compte, 'id_journal=' . $id_pret) !== false;
+		$where_compte = association_pret_compte_where($id_pret);
+		$id_compte = sql_getfetsel('id_compte', 'spip_asso_comptes', $where_compte);
+		if ($montant > 0 && $id_compte) {
+			$ok = ($ok !== false) && sql_updateq('spip_asso_comptes', $compte, 'id_compte=' . (int) $id_compte) !== false;
+		} elseif ($montant > 0) {
+			$compte['objet'] = 'pret';
+			$compte['id_objet'] = $id_pret;
+			$compte['id_journal'] = $id_pret;
+			$compte['justification'] = _T('association:pret_nd') . $id_ressource . '/' . $id_pret;
+			$ok = ($ok !== false) && (bool) sql_insertq('spip_asso_comptes', $compte);
+		} elseif ($id_compte) {
+			$ok = ($ok !== false) && sql_delete('spip_asso_comptes', 'id_compte=' . (int) $id_compte) !== false;
+		}
 	} else {
 		$id_pret = (int) sql_insertq('spip_asso_prets', $pret);
-		$compte['justification'] = _T('association:pret_nd') . $id_ressource . '/' . $id_pret;
-		$compte['id_journal'] = $id_pret;
-		$ok = $id_pret && sql_insertq('spip_asso_comptes', $compte);
+		$ok = (bool) $id_pret;
+		if ($ok && $montant > 0) {
+			$compte['justification'] = _T('association:pret_nd') . $id_ressource . '/' . $id_pret;
+			$compte['id_journal'] = $id_pret;
+			$compte['objet'] = 'pret';
+			$compte['id_objet'] = $id_pret;
+			$ok = (bool) sql_insertq('spip_asso_comptes', $compte);
+		}
 	}
 	$ok = $ok && sql_updateq('spip_asso_ressources', array('statut' => 'reserve'), 'id_ressource=' . $id_ressource) !== false;
 	if (!$ok) {

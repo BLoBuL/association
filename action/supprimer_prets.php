@@ -12,6 +12,8 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
+include_spip('inc/prets');
+
 function action_supprimer_prets_dist() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
 	$arg = $securiser_action();
@@ -24,11 +26,13 @@ function action_supprimer_prets_dist() {
 			echo minipres();
 			exit;
 		}
-		sql_delete('spip_asso_prets', 'id_pret=' . $id_pret);
-		sql_delete('spip_asso_comptes', 'id_journal=' . $id_pret);
-		sql_updateq('spip_asso_ressources',
+		sql_query('START TRANSACTION');
+		$ok = sql_delete('spip_asso_prets', 'id_pret=' . $id_pret) !== false;
+		$ok = $ok && sql_delete('spip_asso_comptes', association_pret_compte_where($id_pret)) !== false;
+		$ok = $ok && sql_updateq('spip_asso_ressources',
 			array('statut'=>'ok'),
-			'id_ressource=' . $id_ressource);
+			'id_ressource=' . $id_ressource) !== false;
+		sql_query($ok ? 'COMMIT' : 'ROLLBACK');
 	}
 }
 
