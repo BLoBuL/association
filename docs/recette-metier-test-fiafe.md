@@ -242,3 +242,24 @@ vide sans fatal PHP. La migration positive et son idempotence restent couvertes
 par les tests autonomes contre l'API Familles 0.2.25. L'accueil public répond
 `200`; la page privée non authentifiée répond normalement `302` vers la
 connexion.
+
+## Lot 16 — panneaux d'affichage et segments distribués
+
+Le commit `ad5f4eb` a été déployé atomiquement dans les quatre emplacements
+actifs concernés : socle, Adhésions, Événements et Communication. L'artefact
+unique possède l'empreinte SHA-256
+`08c7ea62e8f6ff7021aa195aba2904b8f6ead7ad66373f3b4154700d9de91dc0`.
+
+Dans le SPIP réellement servi, `segments` expose toujours `selection_segment` ;
+`affichage_public` compose `config_filtres_annuaire` depuis Adhésions et
+`config_statuts_liste_publique_inscrits` depuis Événements ; `affichage_prive`
+expose toujours les filtres et colonnes des adhérents. Les trois fichiers
+fournisseurs sont résolus depuis leurs plugins actifs et leurs fonctions sont
+chargées.
+
+Le nombre exact de champs disponibles sur le serveur varie avec les plugins
+facultatifs actifs, mais les cinq clés déplacées sont présentes. La matrice
+autonome, qui fixe le périmètre complet attendu, conserve exactement ses 122
+configurations persistantes. L'accueil public répond `200` après purge ; les
+seules erreurs SQL retrouvées dans les fichiers de log sont antérieures de plus
+de six heures au déploiement.
