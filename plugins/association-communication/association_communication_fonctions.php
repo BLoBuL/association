@@ -2,6 +2,11 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+// Les tableaux de notifications sont inclus depuis plusieurs plugins metier.
+// Charger leurs filtres depuis le fichier de fonctions global du plugin permet
+// a SPIP de les connaitre avant de compiler chaque squelette inclus.
+include_spip('prive/squelettes/contenu/notifications_fonctions');
+
 
 function association_condition_auteurs_newsletter($statut_interne) {
     return "statut IN ('6forum','1comite','0minirezo') AND statut_interne=" . sql_quote($statut_interne);
