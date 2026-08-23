@@ -1,6 +1,6 @@
 <div class="formulaire_spip formulaire_asso formulaire_editer_cotisation">
     [<p class="formulaire_erreur erreur_message">(#ENV*{message_erreur})</p>]
-    [(#EDITABLE|oui)]
+    [(#EDITABLE|oui)
     <form action="#ENV{action}" method="post">
         #ACTION_FORMULAIRE{#ENV{action}}
         <div>
@@ -12,4 +12,5 @@
             <input type="submit" name="ok" value="<:association:bouton_enregistrer:>" class="submit" id="form_enregistrer" />
         </p>
     </form>
+    ]
 </div>

@@ -3,6 +3,7 @@
 $racine = dirname(__DIR__);
 $navigation = file_get_contents($racine . '/prive/squelettes/navigation/voir_adherent.html');
 $formulaire = file_get_contents($racine . '/formulaires/editer_asso_cotisation.php');
+$squelette = file_get_contents($racine . '/formulaires/editer_asso_cotisation.html');
 
 $erreurs = array();
 
@@ -21,6 +22,10 @@ if (strpos($formulaire, "\$id_compte == 'new' && !\$id_auteur") === false
 	|| strpos($formulaire, "'editable' => false") === false
 	|| strpos($formulaire, "'message_erreur' => _T('association:erreur_id_auteur_invalide')") === false) {
 	$erreurs[] = 'Le formulaire ne bloque pas explicitement une création sans auteur.';
+}
+
+if (!preg_match('/\[\(#EDITABLE\|oui\)\s*<form[\s\S]*<\/form>\s*\]/', $squelette)) {
+	$erreurs[] = 'Le formulaire HTML reste affiché lorsque le contexte CVT est non éditable.';
 }
 
 if ($erreurs) {
