@@ -526,3 +526,11 @@ Ventes utilise désormais son domaine `association_ventes`. Le commit
 SHA-256 `e2e38b379650817fc8cb0e683c510ea2ae8e96faf3b224ad683280dfe9ef4c53`.
 Le serveur résout le domaine depuis Ventes, restitue les libellés de liste et
 d'ajout attendus puis compile le CVT en 2369 octets sans erreur.
+
+## Lot 40 — domaine de langue Groupes
+
+Groupes utilise désormais son domaine `association_groupes`. Le commit
+`868b9ab` a été déployé atomiquement depuis l'artefact SHA-256
+`81dbc9c2b71c21d36cad80512ef8fd8679301c638bc913001daab631581670e1`.
+Le serveur résout le domaine depuis Groupes, restitue les libellés Bénévoles et
+Activité puis compile le modèle représentatif en 1023 octets sans erreur.
