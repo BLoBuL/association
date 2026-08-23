@@ -2,8 +2,10 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
 
-function association_compta_declarer_tables_principales($tables) {
+function association_compta_declarer_tables_objets_sql($tables) {
 	$tables['spip_asso_comptes'] = array(
+		'principale' => 'oui',
+		'titre' => 'justification AS titre, "" AS lang',
 		'field' => array(
 			'id_compte' => 'BIGINT NOT NULL',
 			'id_auteur' => 'BIGINT NOT NULL',
@@ -27,6 +29,8 @@ function association_compta_declarer_tables_principales($tables) {
 		),
 	);
 	$tables['spip_asso_plan'] = array(
+		'principale' => 'oui',
+		'titre' => 'intitule AS titre, "" AS lang',
 		'field' => array(
 			'id_plan' => 'INT NOT NULL',
 			'code' => 'TEXT NOT NULL',
@@ -42,6 +46,8 @@ function association_compta_declarer_tables_principales($tables) {
 		'key' => array('PRIMARY KEY' => 'id_plan'),
 	);
 	$tables['spip_asso_destination'] = array(
+		'principale' => 'oui',
+		'titre' => 'intitule AS titre, "" AS lang',
 		'field' => array(
 			'id_destination' => 'INT NOT NULL',
 			'intitule' => 'TEXT NOT NULL',
@@ -50,6 +56,8 @@ function association_compta_declarer_tables_principales($tables) {
 		'key' => array('PRIMARY KEY' => 'id_destination'),
 	);
 	$tables['spip_asso_destination_op'] = array(
+		'principale' => 'oui',
+		'titre' => 'CONCAT("Affectation ", id_dest_op) AS titre, "" AS lang',
 		'field' => array(
 			'id_dest_op' => 'INT NOT NULL',
 			'id_compte' => 'INT NOT NULL',

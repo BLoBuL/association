@@ -15,7 +15,7 @@
 	<necessite nom="saisies" compatibilite="[4.0.0;[" />
 	<necessite nom="verifier" compatibilite="[2.1.0;[" />
 
-	<pipeline nom="declarer_tables_principales" inclure="base/association_evenements.php" />
+	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_evenements.php" />
 	<pipeline nom="declarer_tables_auxiliaires" inclure="base/association_evenements.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_evenements.php" />
 	<pipeline nom="association_inscription_evenement_charger" action="" />

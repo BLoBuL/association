@@ -4,8 +4,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-function association_evenements_declarer_tables_principales($tables) {
+function association_evenements_declarer_tables_objets_sql($tables) {
 	$tables['spip_asso_categories_activites'] = array(
+		'principale' => 'oui',
+		'titre' => 'valeur AS titre, "" AS lang',
 		'field' => array(
 			'id_categorie' => 'INT NOT NULL',
 			'valeur' => 'TINYTEXT NOT NULL',
@@ -20,6 +22,8 @@ function association_evenements_declarer_tables_principales($tables) {
 		'key' => array('PRIMARY KEY' => 'id_categorie'),
 	);
 	$tables['spip_asso_activites'] = array(
+		'principale' => 'oui',
+		'titre' => 'CONCAT(prenom_inscrit, " ", nom_inscrit) AS titre, "" AS lang',
 		'field' => array(
 			'id_activite' => 'BIGINT NOT NULL',
 			'id_evenement' => 'BIGINT NOT NULL',

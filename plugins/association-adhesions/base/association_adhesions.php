@@ -10,8 +10,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * @param array $tables
  * @return array
  */
-function association_adhesions_declarer_tables_principales($tables) {
+function association_adhesions_declarer_tables_objets_sql($tables) {
 	$tables['spip_asso_categories_adherents'] = array(
+		'principale' => 'oui',
+		'titre' => 'valeur AS titre, "" AS lang',
 		'field' => array(
 			'id_categorie' => "INT NOT NULL",
 			'valeur' => 'TINYTEXT NOT NULL',
@@ -34,6 +36,8 @@ function association_adhesions_declarer_tables_principales($tables) {
 	);
 
 	$tables['spip_asso_cotisations'] = array(
+		'principale' => 'oui',
+		'titre' => 'CONCAT("Cotisation ", id_cotisation) AS titre, "" AS lang',
 		'field' => array(
 			'id_cotisation' => 'BIGINT NOT NULL',
 			'id_compte' => "BIGINT NOT NULL DEFAULT '0'",

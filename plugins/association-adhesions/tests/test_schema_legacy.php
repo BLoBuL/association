@@ -12,7 +12,7 @@ $socle = association_declarer_tables_principales(array());
 
 unset($GLOBALS['association_schema_test_loaded']);
 require dirname(__DIR__) . '/base/association_adhesions.php';
-$module = association_adhesions_declarer_tables_principales(array());
+$module = association_adhesions_declarer_tables_objets_sql(array());
 
 $erreurs = array();
 foreach (array('spip_asso_categories_adherents', 'spip_asso_cotisations') as $table) {
