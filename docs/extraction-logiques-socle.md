@@ -134,6 +134,11 @@ de Communication via deux pipelines dédiés. Hors migrations de compatibilité,
 le code exécutable du socle ne contient plus de requête SQL vers une table
 métier de la suite.
 
+Le bootstrap du socle ne précharge plus les bibliothèques des inscriptions,
+cotisations, paiements ou comptes. Chaque plugin les charge depuis son propre
+fichier `*_options.php`. La balise `#EDITEUR_DESTINATIONS` réside également
+dans Comptabilité avec le formulaire qu'elle utilise.
+
 ## État résiduel du socle
 
 Le socle conserve uniquement :

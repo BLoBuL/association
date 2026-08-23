@@ -4,10 +4,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
     return;
 }
 
-include_spip('inc/comptes');
 include_spip('inc/boutons');
-// inclure le nouvel utilitaire de notifications
-include_spip('inc/notifications_emails');
 
 /**
  * Complète les ressources chargées dans l'espace privé.

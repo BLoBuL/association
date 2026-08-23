@@ -4,6 +4,17 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+foreach (array(
+	'affichage_dans_activites', 'eligibilite_inscription_evenement',
+	'eligibilite_desinscription_evenement', 'eligibilite_modification_evenement',
+	'alerte_inscription_evenement', 'gestion_places', 'liste_responsables_evenement',
+	'ouverture_inscription_evenement', 'validation_attente_automatique',
+	'facteur_envoyer_mail_activites', 'facteur_envoyer_recu_participation',
+) as $bibliotheque) {
+	include_spip('inc/fonctions/' . $bibliotheque);
+}
+include_spip('formulaires/inc/inscription_evenement');
+
 $GLOBALS['table_des_tables']['asso_categories_activites'] = 'asso_categories_activites';
 $GLOBALS['table_des_tables']['asso_activites'] = 'asso_activites';
 

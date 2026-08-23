@@ -4,6 +4,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+include_spip('inc/fonctions/comptes');
+
 $GLOBALS['table_des_tables']['asso_comptes'] = 'asso_comptes';
 $GLOBALS['table_des_tables']['comptes'] = 'asso_comptes';
 $GLOBALS['table_des_tables']['asso_plan'] = 'asso_plan';

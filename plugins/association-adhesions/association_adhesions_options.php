@@ -4,6 +4,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+include_spip('inc/fonctions/priviliges_adherent');
+include_spip('inc/fonctions/association_job_notifier_echeance');
+include_spip('inc/fonctions/facteur_envoyer_recu_adhesion');
+
 $GLOBALS['table_des_tables']['asso_categories_adherents'] = 'asso_categories_adherents';
 
 function generer_url_asso_membre($id, $param = '', $ancre = '') {

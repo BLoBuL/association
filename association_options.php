@@ -46,26 +46,6 @@ $GLOBALS['association_cotisation_statuts'] =
 $GLOBALS['association_activites_statuts'] =
     array('','ok','preinscrit','liste_attente','desinscrit');
 
-/*Fonctions liées aux inscriptions aux événements*/
-include_spip('inc/fonctions/priviliges_adherent');
-include_spip('inc/fonctions/affichage_dans_activites');
-include_spip('inc/fonctions/eligibilite_inscription_evenement');
-include_spip('inc/fonctions/eligibilite_desinscription_evenement');
-include_spip('inc/fonctions/eligibilite_modification_evenement');
-include_spip('inc/fonctions/alerte_inscription_evenement');
-include_spip('inc/fonctions/gestion_places');
-include_spip('inc/fonctions/liste_responsables_evenement');
-include_spip('inc/fonctions/ouverture_inscription_evenement');
-include_spip('inc/fonctions/validation_attente_automatique');
-include_spip('formulaires/inc/inscription_evenement');
-include_spip('inc/fonctions/facteur_envoyer_app');
-include_spip('inc/fonctions/facteur_envoyer_mail_activites');
-include_spip('inc/fonctions/association_job_notifier_echeance');
-include_spip('inc/fonctions/facteur_envoyer_recu_adhesion');
-include_spip('inc/fonctions/facteur_envoyer_recu_participation');
-
-include_spip('inc/fonctions/comptes');
-
 include_spip('inc/association_log');
 
 
