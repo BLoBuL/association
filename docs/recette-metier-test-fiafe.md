@@ -121,7 +121,26 @@ page d'accueil fournie par le thème actif conserve un débordement de 8 px à
 390 px ; ce défaut ne se reproduit sur aucun squelette public Association et
 reste hors du dépôt de la suite.
 
-## Reste à clôturer
+## Audit final de déploiement
 
-- audit final de cohérence entre cette matrice, l'installation à blanc, le
-  sommet Git poussé et les fichiers réellement déployés.
+Le staging des dix plugins a été reconstruit depuis le commit `b97fd9e`, puis
+les dix dossiers actifs ont été remplacés ensemble sur test-fiafe. Les SHA-256
+des 742 fichiers du staging concordent avec les fichiers servis. L'ancien
+ensemble temporaire et l'archive de transfert ont été supprimés après les
+contrôles.
+
+Après ce redéploiement complet :
+
+- `plugins:maj:bdd` n'annonce aucune mise à jour nécessaire ;
+- `association:installation:verifier` confirme les 10 plugins, 14 tables,
+  12 objets SQL et 7 schémas ;
+- les pages accueil privé, adhérents, activités, comptabilité, événement public
+  et ressources publiques ont été rejouées sans fatal ;
+- Font Awesome reste servi par `Font Awesome 6 Free` ;
+- aucun journal contrôlé depuis 10:55 ne contient d'erreur, dépréciation,
+  erreur SQL ou trace critique.
+
+La recette de la suite Association est clôturée. Le débordement propre à
+l'accueil du thème et le code de sortie non nul de la commande externe
+`spip test:spip` malgré tous ses contrôles affichés en vert sont consignés hors
+périmètre Association.
