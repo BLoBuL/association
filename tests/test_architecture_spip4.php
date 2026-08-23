@@ -86,6 +86,8 @@ $fonctions_socle = file_get_contents($racine . '/association_fonctions.php');
 $options_socle = file_get_contents($racine . '/association_options.php');
 $options_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_options.php');
 $options_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_options.php');
+$compta_script_destinations = $racine . '/plugins/association-compta/javascript/jquery.destinations_form.js';
+$compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
@@ -235,6 +237,13 @@ $verifier(
 		&& strpos($options_socle, 'association_bouton_public_fa') === false
 		&& strpos($options_socle, 'association_flottant') === false,
 	'Le fichier options du socle ne doit plus contenir de helpers ni de branchements inutilises.'
+);
+$verifier(
+	!is_file($racine . '/javascript/jquery.destinations_form.js')
+		&& is_file($compta_script_destinations)
+		&& !is_file($racine . '/prive/themes/spip/images/comptes-xx.svg')
+		&& is_file($compta_icone),
+	'Le script des destinations et l icone des comptes doivent appartenir a Comptabilite.'
 );
 $verifier(
 	strpos($migration_familles, "familles_objet_lister_familles('auteur'") !== false

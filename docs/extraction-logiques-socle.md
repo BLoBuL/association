@@ -368,6 +368,13 @@ que du HTML commenté lié à Inscription2/Inscription3. L'ancienne balise
 fichiers sont supprimés : la suite cible exclusivement Inscription4 et ses
 pipelines déclarés par Adhésions.
 
+## Lot 24 : actifs Comptabilité déplacés
+
+Le script d'ajout dynamique des destinations et l'icône privée `comptes` sont
+maintenant fournis par Comptabilité. Leurs noms et chemins logiques SPIP ne
+changent pas : les deux bibliothèques comptables existantes continuent de les
+résoudre par `find_in_path()` et le menu du socle par `find_in_theme()`.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

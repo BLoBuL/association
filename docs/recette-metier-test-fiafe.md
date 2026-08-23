@@ -353,6 +353,11 @@ SHA-256 `526eab5216f6e61d2e2b0be29fdab83927e16c2fd0f1542493b850f6ba17645a`.
 Le path SPIP ne résout plus aucun des trois reliquats. Inscription4 4.1.14 et
 Association-Adhésions 4.0.0 restent tous deux actifs après purge du cache.
 
+## Lot 24 — actifs statiques de Comptabilité
+
+Le script des destinations analytiques et l'icône du menu Comptes quittent le
+socle pour le plugin Comptabilité, sans changement de leur chemin logique SPIP.
+
 Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.
