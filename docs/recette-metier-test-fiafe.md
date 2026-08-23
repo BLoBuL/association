@@ -508,3 +508,13 @@ puis le registre des plugins a été actualisé. Le dry-run serveur charge la
 phase Adhésions, produit le résumé auteurs et les résumés métier, confirme
 l'absence de l'API auteurs dans le cron racine et laisse inchangés les
 effectifs des six tables contrôlées.
+
+## Lot 38 — domaine de langue Dons
+
+Dons utilise désormais son domaine `association_dons`. Le commit `43770f4` a
+été déployé atomiquement dans le plugin Dons depuis l'artefact SHA-256
+`501cacfa1cb9b6991bb23e711bb58c353b662ec8704eb7b3d7f882adfe7f5163`.
+Le serveur résout le fichier français depuis Dons, restitue les trois libellés
+représentatifs attendus et compile le CVT en 2038 octets sans erreur. La page
+privée complète conserve son garde d'autorisation, observé en CLI par sa 404
+normale hors session.
