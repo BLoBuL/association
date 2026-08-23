@@ -741,6 +741,16 @@ appliquées comme auparavant.
 L'inventaire reste à 122 configurations persistantes uniques et le registre
 CLI couvre toujours exactement leurs 135 options publiques et techniques.
 
+## Lot 60 : statuts internes rattachés à Adhésions
+
+La liste `sorti`, `prospect`, `ok`, `echu`, `relance` n'est plus initialisée
+dans `association_options.php`. Elle appartient désormais aux options
+d'Adhésions, avec les autres statuts et styles du cycle de cotisation.
+
+Communication consulte cette liste pour filtrer les destinataires collectifs,
+mais utilise désormais un accès défensif lorsque l'intégration Adhésions n'est
+pas chargée. Le socle ne possède donc plus de catalogue de statuts d'adhérent.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

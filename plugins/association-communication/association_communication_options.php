@@ -33,7 +33,8 @@ function parser_emails_depuis_config($valeur) {
 
 function request_statut_interne_table_destinataire_mail_collectif() {
     $statut_interne = _request('statut_interne');
-    if (in_array($statut_interne, $GLOBALS['association_liste_des_statuts'] ))
+    $statuts_adherents = $GLOBALS['association_liste_des_statuts'] ?? array();
+    if (in_array($statut_interne, $statuts_adherents, true))
         return "statut_interne=" . sql_quote($statut_interne);
     elseif ($statut_interne == 'tous')
         return "statut_interne LIKE '%' ";

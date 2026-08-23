@@ -13,6 +13,7 @@ if (test_plugin_actif('gis')) {
 }
 
 $GLOBALS['association_cotisation_statuts'] = ['demande', 'attente', 'ok'];
+$GLOBALS['association_liste_des_statuts'] = ['sorti', 'prospect', 'ok', 'echu', 'relance'];
 $GLOBALS['association_styles_des_statuts'] = [
 	'echu' => 'echu',
 	'ok' => 'ok',

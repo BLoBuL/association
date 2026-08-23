@@ -24,8 +24,6 @@ $GLOBALS['association_metas'] = $GLOBALS['association_metas'] ?? [];
 $charger_meta = charger_fonction('meta', 'inc');
 $charger_meta('association_metas');
 
-$GLOBALS['association_liste_des_statuts'] = ['sorti', 'prospect', 'ok', 'echu', 'relance'];
-
 $GLOBALS['table_des_tables']['association_metas'] = 'association_metas';
 
 if (!defined('_DIR_PLUGIN_ASSOCIATION_ICONES')) {

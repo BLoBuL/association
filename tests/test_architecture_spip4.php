@@ -513,6 +513,13 @@ $verifier(
 		&& substr_count($fonctions_socle, 'function ') === 7,
 	'Le fichier de fonctions du socle doit rester limite aux six fonctions transversales.'
 );
+$options_socle = file_get_contents($racine . '/association_options.php');
+$options_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_options.php');
+$verifier(
+	strpos($options_socle, 'association_liste_des_statuts') === false
+		&& strpos($options_adhesions, "'sorti', 'prospect', 'ok', 'echu', 'relance'") !== false,
+	'La liste des statuts internes des adhérents doit appartenir à Adhésions.'
+);
 $verifier(
 	!is_file($racine . '/inc/association_familles.php')
 		&& is_file($racine . '/plugins/association-adhesions/inc/association_familles.php')
