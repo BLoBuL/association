@@ -3,14 +3,16 @@
 $racine = dirname(__DIR__);
 $administration = file_get_contents($racine . '/association_administrations.php');
 $migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
+$migrations_socle_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migrations_socle.php');
 $stockage = file_get_contents($racine . '/plugins/association-adhesions/inc/cotisations_stockage.php');
 $paquet = file_get_contents($racine . '/paquet.xml');
 $documentation = file_get_contents($racine . '/docs/migration-inscription4-et-cotisations.md');
 
 $erreurs = array();
 
-if (strpos($administration, "\$maj['1.6.1']") === false
-	|| strpos($administration, "include_spip('inc/association_adhesions_migration')") === false) {
+if (strpos($administration, 'association_migrations_construire()') === false
+	|| strpos($migrations_socle_adhesions, "array('1.6.1', array('association_completer_migration_cotisations')") === false
+	|| strpos($migrations_socle_adhesions, "include_spip('inc/association_adhesions_migration')") === false) {
 	$erreurs[] = 'Le pont de compatibilité 1.6.1 du socle est incomplet.';
 }
 

@@ -2,6 +2,7 @@
 
 $racine = dirname(__DIR__);
 $administration = file_get_contents($racine . '/association_administrations.php');
+$migrations_socle = file_get_contents($racine . '/inc/association_migrations.php');
 $documentation = file_get_contents($racine . '/docs/installation-base-sans-tables-association.md');
 $inventaire = file_get_contents($racine . '/inc/association_installation.php');
 foreach (glob($racine . '/plugins/*/inc/*_installation.php') as $fichier_inventaire) {
@@ -11,7 +12,7 @@ $erreurs = array();
 
 $debut_historique = strpos($administration, '#V1.1.0');
 $branche_create = $debut_historique === false ? $administration : substr($administration, 0, $debut_historique);
-if (strpos($branche_create, "array('maj_tables', array('spip_association_metas'))") === false) {
+if (strpos($administration . $migrations_socle, "array('maj_tables', array('spip_association_metas'))") === false) {
 	$erreurs[] = 'la création du socle doit installer sa table de configuration';
 }
 if (preg_match('/spip_asso_(?!ciation_metas)/', $branche_create)) {

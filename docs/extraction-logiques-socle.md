@@ -673,6 +673,26 @@ La validation reste stricte : les doublons sont éliminés, un snapshot partiel
 est refusé et la liste obtenue est identique au format v1 publié. Le découplage
 ne modifie donc ni les sauvegardes existantes ni leur restauration.
 
+## Lot 56 : migrations historiques composables
+
+Les 55 jalons du schéma historique du socle sont désormais assemblés par le
+pipeline `association_migrations_historiques`. Chaque module enregistre ses
+propres callbacks et charge lui-même son code de migration : Adhésions,
+Événements, Comptabilité, Communication, Dons, Prêts et Ventes.
+
+Le socle conserve uniquement :
+
+- la branche `create` native, limitée à `spip_association_metas` ;
+- la création de cette même table au jalon 1.1.0 ;
+- le jalon vide 1.2.7 nécessaire à la continuité historique ;
+- l'appel transversal à `maj_plugin()`.
+
+Les contributions portent une priorité explicite, indépendante de l'ordre de
+chargement des plugins. L'empreinte SHA-256 de la sérialisation complète reste
+`aeefc0bcd675e66c3ad52eeb6b033c031f59508cad4c8460a9e0641b91982670` :
+versions, callbacks et ordre d'exécution sont strictement identiques au plan
+historique précédant l'extraction.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

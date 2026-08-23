@@ -19,6 +19,25 @@ $GLOBALS['association_installation_test'] = array(
 
 function include_spip($fichier) {
 	$GLOBALS['association_installation_test']['inclusions'][] = $fichier;
+	if ($fichier === 'inc/association_migrations') {
+		require_once dirname(__DIR__) . '/inc/association_migrations.php';
+	}
+}
+
+function pipeline($nom, $flux) {
+	if ($nom !== 'association_migrations_historiques') { return $flux; }
+	$modules = array(
+		'association-adhesions' => 'association_adhesions', 'association-communication' => 'association_communication',
+		'association-compta' => 'association_compta', 'association-dons' => 'association_dons',
+		'association-evenements' => 'association_evenements', 'association-prets' => 'association_prets',
+		'association-ventes' => 'association_ventes',
+	);
+	foreach ($modules as $module => $prefixe) {
+		require_once dirname(__DIR__) . '/plugins/' . $module . '/inc/' . $prefixe . '_migrations_socle.php';
+		$fonction = $prefixe . '_association_migrations_historiques';
+		$flux = $fonction($flux);
+	}
+	return $flux;
 }
 
 function cextras_api_upgrade($champs, &$operations) {

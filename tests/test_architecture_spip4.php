@@ -621,14 +621,12 @@ foreach (array(
 ) as $migration_module) {
 	$verifier(is_file($racine . '/plugins/' . $migration_module), 'Migration metier absente : ' . $migration_module . '.');
 }
-$debut_migrations_tardives = strpos($administration_socle, "\$maj['1.1.0']");
-$fin_migrations_tardives = strpos($administration_socle, "\$maj['1.6.0']");
-$migrations_tardives = ($debut_migrations_tardives !== false && $fin_migrations_tardives !== false)
-	? substr($administration_socle, $debut_migrations_tardives, $fin_migrations_tardives - $debut_migrations_tardives)
-	: '';
 $verifier(
-	$migrations_tardives !== '' && !preg_match('/spip_asso_(?!ciation_metas)|spip_evenements|spip_mailshots/', $migrations_tardives),
-	'Les migrations 1.1 a 1.5 du socle doivent seulement deleguer aux modules.'
+	strpos($administration_socle, 'association_migrations_construire()') !== false
+		&& strpos($administration_socle, '_migration_legacy') === false
+		&& strpos($paquet, 'nom="association_migrations_historiques"') !== false
+		&& is_file($racine . '/inc/association_migrations.php'),
+	'Les migrations historiques du socle doivent etre composees par les modules.'
 );
 $verifier(
 	!is_file($racine . '/genie/association_taches_generales.php')

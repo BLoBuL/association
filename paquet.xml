@@ -36,6 +36,7 @@
 	<pipeline nom="association_config_cli_registre" action="" />
 	<pipeline nom="association_config_cli_snapshot_v1_options" action="" />
 	<pipeline nom="association_installation_inventaire" action="" />
+	<pipeline nom="association_migrations_historiques" action="" />
 
 	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
 	<necessite nom="association_adhesions" compatibilite="[4.0.0;4.*]" />
