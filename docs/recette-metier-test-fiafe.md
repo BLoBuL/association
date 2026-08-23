@@ -358,6 +358,12 @@ Association-Adhésions 4.0.0 restent tous deux actifs après purge du cache.
 Le script des destinations analytiques et l'icône du menu Comptes quittent le
 socle pour le plugin Comptabilité, sans changement de leur chemin logique SPIP.
 
+Le commit `6cfbdbb` a été déployé atomiquement dans le socle et Comptabilité
+depuis l'artefact SHA-256
+`fbda5fc1b40650c4e634c5e6dcb31e1b075788a5a6cbe36485481c30cfc32644`.
+Le path SPIP résout désormais le script et l'icône exclusivement depuis
+`plugins/association-compta`; la fonction JavaScript d'ajout reste présente.
+
 Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.
