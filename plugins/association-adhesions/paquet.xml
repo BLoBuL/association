@@ -16,7 +16,6 @@
 	<necessite nom="intl" compatibilite="[1.3.0;[" />
 	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
 	<necessite nom="association_communication" compatibilite="[4.0.0;4.*]" />
-	<options>association_adhesions_options.php</options>
 	<pipeline nom="autoriser" inclure="association_adhesions_autoriser.php" />
 	<pipeline nom="formulaire_charger" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="formulaire_verifier" inclure="association_adhesions_pipelines.php" />

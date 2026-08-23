@@ -10,7 +10,6 @@
 	<!-- Journal, plan comptable et destinations analytiques -->
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
-	<options>association_compta_options.php</options>
 	<pipeline nom="autoriser" inclure="association_compta_autoriser.php" />
 	<pipeline nom="post_insertion" inclure="association_compta_pipelines.php" />
 	<pipeline nom="post_edition" inclure="association_compta_pipelines.php" />
