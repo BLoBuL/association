@@ -346,34 +346,3 @@ function association_saisies_lister_disponibles($flux) {
     return $flux;
 }
 
-/**
- * Pipeline `corbeille_table_infos` : déclare les objets mailsubscribers gérables via le plugin Corbeille.
- *
- * @param array $flux Tableau des objets corbeille déjà déclarés
- * @return array
- */
-
-
-/**
- * Ajouter l'accès à la migration Association sur la page des familles.
- *
- * La logique métier reste dans Association, propriétaire de la relation
- * `auteur_compte_principal`. Le socle Familles n'est pas spécialisé.
- *
- * @param array $flux
- * @return array
- */
-function association_affiche_milieu($flux) {
-	if (($flux['args']['exec'] ?? '') !== 'familles') {
-		return $flux;
-	}
-
-	include_spip('inc/association_familles');
-	if (!association_familles_integration_disponible()) {
-		return $flux;
-	}
-
-	$flux['data'] .= recuperer_fond('prive/objets/contenu/lien_migration_familles_association');
-	return $flux;
-}
-

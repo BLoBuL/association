@@ -242,7 +242,20 @@ Enfin, les helpers Bank/trésorier résident dans Paiements et les bibliothèque
 plan/destinations sont chargées par Comptabilité, plus par le formulaire du
 socle.
 
-## État après le lot 14
+## Lot 15 : intégration Familles rattachée aux adhésions
+
+La prévisualisation et l'exécution idempotente de la migration des anciens
+comptes principal/secondaires vers le plugin Familles appartiennent désormais
+à Adhésions. Le module porte la bibliothèque, le formulaire CVT, les squelettes
+privés, l'autorisation et sa contribution à `affiche_milieu`.
+
+Les noms historiques du formulaire, de la page privée et des fonctions sont
+conservés : les liens et appels existants continuent donc de fonctionner par le
+chargeur SPIP. Le socle ne connaît plus ni le plugin Familles ni cette opération
+de migration métier. Familles reste une intégration facultative déclarée par
+`utilise`, et non une dépendance obligatoire de la suite.
+
+## État après le lot 15
 
 La répartition du grand formulaire de configuration est achevée pour les
 domaines actuellement extraits : Adhésions, Événements, Paiements,

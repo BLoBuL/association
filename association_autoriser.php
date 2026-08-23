@@ -82,14 +82,6 @@ function association_debug_log($message, $contexte = 'association', $niveau = _L
 function association_autoriser(){}
 
 /**
- * Autoriser la migration des comptes Association vers les familles.
- */
-function autoriser_association_migrerfamilles_dist($faire, $type, $id, $qui, $opt) {
-	$qui = association_normalize_qui($qui);
-	return $qui['statut'] === '0minirezo' && empty($qui['restreint']);
-}
-
-/**
  * Récupérer l'id_evenement depuis différents contextes (opt, request, id_compte, id_activite)
  *
  * @param int $id_compte optionnel id_compte à utiliser pour résolution

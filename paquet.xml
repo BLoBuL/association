@@ -22,7 +22,6 @@
 
 	<pipeline nom="taches_generales_cron" inclure="association_pipelines.php" />
 	<pipeline nom="ajouter_menus" inclure="association_pipelines.php" />
-	<pipeline nom="affiche_milieu" inclure="association_pipelines.php" />
 	<pipeline nom="header_prive" inclure="association_pipelines.php" />
 	<pipeline nom="jqueryui_plugins" inclure="association_pipelines.php" />
 	<pipeline nom="association_rgpd_export_auteur" action="" />

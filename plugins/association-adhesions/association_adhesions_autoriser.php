@@ -4,6 +4,14 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+/**
+ * Autoriser la migration des anciens comptes secondaires vers Familles.
+ */
+function autoriser_association_migrerfamilles_dist($faire, $type, $id, $qui, $opt) {
+	include_spip('inc/association_autorisations');
+	return association_est_admin_complet(association_normalize_qui($qui));
+}
+
 function autoriser_adherents_menu_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	return association_est_admin_complet(association_normalize_qui($qui));
 }

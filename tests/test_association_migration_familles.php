@@ -41,7 +41,7 @@ function familles_associer_objet($id_famille, $objet, $id_objet, $role = '', $op
 }
 
 $GLOBALS['familles_test'][20] = array(200);
-require dirname(__DIR__) . '/inc/association_familles.php';
+require dirname(__DIR__) . '/plugins/association-adhesions/inc/association_familles.php';
 
 if (!association_familles_integration_disponible()) {
 	fwrite(STDERR, "L'integration Familles devrait etre disponible\n");

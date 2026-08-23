@@ -65,6 +65,10 @@ $configuration_paiements = file_get_contents($racine . '/plugins/association-pai
 $configuration_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php');
 $verification_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta_verifier.php');
 $verification_communication = file_get_contents($racine . '/plugins/association-communication/formulaires/inc/configurer_association_communication_verifier.php');
+$pipelines_socle = file_get_contents($racine . '/association_pipelines.php');
+$autorisation_socle = file_get_contents($racine . '/association_autoriser.php');
+$pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
+$autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $verifier(
 	strpos($configuration_socle, "config == 'evenement'") === false
 		&& strpos($configuration_socle, "config == 'evenement_defaut'") === false,
@@ -124,6 +128,20 @@ $verifier(
 	strpos($configuration_socle, 'FILTER_VALIDATE_EMAIL') === false
 		&& strpos($verification_communication, 'FILTER_VALIDATE_EMAIL') !== false,
 	'La validation des destinataires doit appartenir au module Communication.'
+);
+$verifier(
+	!is_file($racine . '/inc/association_familles.php')
+		&& is_file($racine . '/plugins/association-adhesions/inc/association_familles.php')
+		&& !is_file($racine . '/formulaires/migrer_familles_association.php')
+		&& is_file($racine . '/plugins/association-adhesions/formulaires/migrer_familles_association.php'),
+	'La migration vers Familles doit appartenir au module Adhesions.'
+);
+$verifier(
+	strpos($pipelines_socle, 'association_familles') === false
+		&& strpos($pipelines_adhesions, 'association_familles') !== false
+		&& strpos($autorisation_socle, 'migrerfamilles') === false
+		&& strpos($autorisation_adhesions, 'migrerfamilles') !== false,
+	'Le socle ne doit plus orchestrer ni autoriser la migration vers Familles.'
 );
 $verifier(
 	strpos($administration_socle, 'function association_migrer_cotisations_depuis_comptes') === false,

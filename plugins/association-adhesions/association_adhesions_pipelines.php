@@ -11,6 +11,23 @@ function association_adhesions_taches_generales_cron($taches) {
 }
 
 /**
+ * Ajouter l'accès à la migration vers Familles depuis sa page privée.
+ */
+function association_adhesions_affiche_milieu($flux) {
+	if (($flux['args']['exec'] ?? '') !== 'familles') {
+		return $flux;
+	}
+
+	include_spip('inc/association_familles');
+	if (!association_familles_integration_disponible()) {
+		return $flux;
+	}
+
+	$flux['data'] .= recuperer_fond('prive/objets/contenu/lien_migration_familles_association');
+	return $flux;
+}
+
+/**
  * Ajoute l'audit sans envoi des notifications de cotisation à la page commune.
  */
 function association_adhesions_association_notifications_audit_html($flux) {

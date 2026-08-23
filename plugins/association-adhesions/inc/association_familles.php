@@ -5,7 +5,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 /**
- * Indiquer si l'intégration entre Association et Familles peut fonctionner.
+ * Indiquer si l'intégration entre Adhésions et Familles peut fonctionner.
  */
 function association_familles_integration_disponible() {
 	include_spip('inc/plugin');
