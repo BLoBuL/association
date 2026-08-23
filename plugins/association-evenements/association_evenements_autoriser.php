@@ -4,6 +4,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+include_spip('inc/association_evenements_autorisations');
+
 function autoriser_activites_menu_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	return true;
 }

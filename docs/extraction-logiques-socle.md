@@ -125,6 +125,15 @@ et coordonnent le nettoyage préalable à une suppression d'auteur. Le cron
 transversal ne requête donc plus que `spip_auteurs` et conserve la responsabilité
 de l'identité, du rapport consolidé et du mode `dry_run`.
 
+## Lot 8 : derniers accès transversaux
+
+Les contrôles d'accès à un événement et leur résolution article/rubrique sont
+portés par Événements. La configuration commune obtient désormais l'existence
+d'une catégorie entreprise auprès d'Adhésions et les listes de diffusion auprès
+de Communication via deux pipelines dédiés. Hors migrations de compatibilité,
+le code exécutable du socle ne contient plus de requête SQL vers une table
+métier de la suite.
+
 ## État résiduel du socle
 
 Le socle conserve uniquement :

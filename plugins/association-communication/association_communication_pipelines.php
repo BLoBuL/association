@@ -223,3 +223,11 @@ function association_communication_association_maintenance_supprimer_donnees_aut
 	$flux['data']['supprimer_mailsubscribers'] = asso_supprimer_mailsubscribers_pour_auteurs($ids, (bool) ($flux['args']['dry_run'] ?? true));
 	return $flux;
 }
+
+function association_communication_association_configuration_listes_diffusion($flux) {
+	$lignes = sql_allfetsel('identifiant,titre', 'spip_mailsubscribinglists', "statut!='poubelle' AND identifiant LIKE '%liste_%'");
+	foreach ($lignes as $ligne) {
+		$flux['data'][(string) $ligne['identifiant']] = (string) $ligne['titre'];
+	}
+	return $flux;
+}

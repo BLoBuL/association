@@ -34,6 +34,11 @@ function association_adhesions_formulaire_charger($flux) {
     return $flux;
 }
 
+function association_adhesions_association_configuration_categorie_entreprise($flux) {
+	$flux['data'] = (bool) sql_getfetsel('id_categorie', 'spip_asso_categories_adherents', "type_adherent='entreprise'");
+	return $flux;
+}
+
 function association_adhesions_pre_insertion($flux) {
     if (($flux['args']['table'] ?? '') === 'spip_auteurs') {
         $flux['data']['inscription'] = date('Y-m-d H:i:s');

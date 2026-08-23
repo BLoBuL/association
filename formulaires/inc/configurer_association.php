@@ -33,8 +33,10 @@ function identifier_tresorier(){
 
 // Function to check if at least one categorie_adherent of type 'entreprise' exists, if yes return 'true'
 function verifier_categorie_adherent_entreprise(){
-    $query_categorie_adherent = sql_fetsel('id_categorie','spip_asso_categories_adherents',"type_adherent = 'entreprise'");
-    return $query_categorie_adherent['id_categorie'] ? true : false;
+    return (bool) pipeline('association_configuration_categorie_entreprise', array(
+        'args' => array(),
+        'data' => false,
+    ));
 
 }
 
@@ -73,16 +75,11 @@ function preparer_liste_zones(){
 }
 // Function to prepare the list of mail subscribing lists starting by "liste_
 function preparer_liste_mailsubscribinglists(){
-    $mailsubscribinglists = sql_allfetsel('identifiant,titre', 'spip_mailsubscribinglists', "statut != 'poubelle' AND identifiant LIKE '%liste_%'");
-// Initialize an empty array
-    $mailsubscribinglists_array = array();
-// Loop through the fetched data and reformat it
-    foreach ($mailsubscribinglists as $mailsubscribinglist) {
-        $mailsubscribinglists_array[$mailsubscribinglist['identifiant']] = $mailsubscribinglist['titre'];
-    }
-    $data_mailsubscribinglists = saisies_tableau2chaine($mailsubscribinglists_array);
-
-    return $data_mailsubscribinglists;
+    $listes = pipeline('association_configuration_listes_diffusion', array(
+        'args' => array(),
+        'data' => array(),
+    ));
+    return saisies_tableau2chaine(is_array($listes) ? $listes : array());
 }
 
 // Function to prepare the list of segments
