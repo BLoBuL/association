@@ -15,6 +15,10 @@ if (!str_contains($page, '#GET{id_ressource}|oui)<div class="error"')) {
 	fwrite(STDERR, "L'erreur ressource introuvable n'est pas limitée à une ressource explicitement demandée.\n");
 	exit(1);
 }
+if (!str_contains($page, '#GET{id_ressource}|non)<div class="notice"')) {
+	fwrite(STDERR, "Le message de liste vide apparaît encore sur une ressource explicitement demandée.\n");
+	exit(1);
+}
 if (!str_contains($include, 'BOUCLE_prets(ASSO_PRETS){id_ressource}')) {
 	fwrite(STDERR, "L'inclusion par ressource ne liste pas les prêts.\n");
 	exit(1);

@@ -12,5 +12,5 @@
 <BOUCLE_ressources_toutes(ASSO_RESSOURCES){par intitule}{si #GET{id_ressource}|non}>
 <INCLURE{fond=prive/squelettes/inclure/prets_ressource,id_ressource}>
 </BOUCLE_ressources_toutes>
-<div class="notice"><:association:ressource_aucune:></div>
+[(#GET{id_ressource}|non)<div class="notice"><:association:ressource_aucune:></div>]
 <//B_ressources_toutes>
