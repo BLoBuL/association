@@ -652,3 +652,12 @@ acceptant le seuil comptable valide. Un dry-run construit depuis les métas
 réelles charge 12 actions et retourne 12 résultats sans modifier les six tables
 contrôlées. `spip test:spip` est fonctionnel malgré son code de sortie historique
 et aucun journal d’erreur n’est présent sur la fenêtre de recette.
+
+## Lot 52 — suppression du prototype global de rapport
+
+Le commit `03eb1fa` a été déployé atomiquement dans le socle depuis l’artefact
+SHA-256 `6e550e6d6b029c756cf4c754ac4e857bb8584486d38c5bba0d4dd3601947adba`.
+Le fichier PHP servi passe le lint et ne contient plus le helper ni le bloc
+global morts. L’assemblage réel conserve ses 19 champs ; le dry-run charge
+toujours 12 actions et 12 résultats sans modifier les six tables contrôlées.
+Aucune erreur SPIP n’est relevée sur la fenêtre du déploiement.
