@@ -206,6 +206,29 @@ $verifier(
 		&& strpos($compta_lang, "'informations_comptables'") !== false,
 	'Le plugin Comptabilité doit utiliser son propre domaine de langue.'
 );
+$paiement_modeles_front = array(
+	'payer_acte.html',
+	'payer_acte_adhesion.html',
+	'payer_acte_formidable.html',
+	'payer_acte_participation.html',
+);
+foreach ($paiement_modeles_front as $modele_paiement_front) {
+	$verifier(
+		is_file($racine . '/plugins/association-paiements/modeles/' . $modele_paiement_front),
+		'Paiements doit fournir le modèle autonome ' . $modele_paiement_front . '.'
+	);
+}
+$albums_evenements_front = '';
+foreach (array('album_photos_evenement.html', 'album_photos_evenement_locked.html') as $album_evenement_front) {
+	$chemin_album_evenement = $racine . '/plugins/association-evenements/squelettes/inclure/' . $album_evenement_front;
+	$verifier(is_file($chemin_album_evenement), 'Événements doit fournir ' . $album_evenement_front . '.');
+	$albums_evenements_front .= file_get_contents($chemin_album_evenement);
+}
+$verifier(
+	strpos($albums_evenements_front, 'zblobul_core:') === false
+		&& strpos($albums_evenements_front, 'association_evenements:') !== false,
+	'Les albums Événements doivent être autonomes vis-à-vis de Blobul CORE.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

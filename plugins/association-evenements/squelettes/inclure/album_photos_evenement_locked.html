@@ -1,0 +1,32 @@
+<BOUCLE_article(ARTICLES){id_article}>
+<div class="documents documents_portfolio locked">
+
+[(#REM) Portfolio : album d'images ]
+<BOUCLE_archive_photo(EVENEMENTS){id_article}{age>0}{!par date_debut}>	
+<B_premiere_image>			
+	[<h2 class="h2">(#VAL{<:association_evenements:galerie_photos:>}|unique)</h2>]	
+		<div id="album_evenement">
+			<div class="info_non_adherent"><:association_evenements:info_non_adherent_galerie:><br /><br />
+				<a href="[(#URL_PAGE{login}|parametre_url{url,#SELF})]"	rel="nofollow" target="_blank"onclick="if (jQuery.modalbox) {jQuery.modalbox('[(#URL_PAGE{login}|parametre_url{url,#SELF}|parametre_url{var_zajax,contenu})]');return false;}">
+					<:association_evenements:s_identifier:>
+				</a>
+			</div>
+				
+			<BOUCLE_premiere_image(DOCUMENTS){id_evenement?}{extension IN png,jpg,gif} {par num titre, date}{vu=non}{0,1}{doublons}>
+			<a href="[(#URL_PAGE{login}|parametre_url{url,#SELF})]"	rel="nofollow" target="_blank"onclick="if (jQuery.modalbox) {jQuery.modalbox('[(#URL_PAGE{login}|parametre_url{url,#SELF}|parametre_url{var_zajax,contenu})]');return false;}">
+			[(#LOGO_EVENEMENT|sinon{#FICHIER}|image_passe_partout{175,120}|image_recadre{175,120}|image_nb{330,330,330}|inserer_attribut{class,spip_logos}|inserer_attribut{title,[(#TITRE|attribut_html|couper{80})]})]
+			</a>
+			</BOUCLE_premiere_image>
+			
+			
+			[<h3 class="date">(#DATE_DEBUT|affdate)</h3>]
+			[<div class="lieu">(#LIEU)</div>]
+		
+		</div>	
+		
+</B_premiere_image>
+
+</BOUCLE_archive_photo>
+</div>
+
+</BOUCLE_article>

@@ -1,0 +1,32 @@
+<BOUCLE_article(ARTICLES){id_article}>
+<div class="documents documents_portfolio">
+#SET{titre_article,#TITRE}
+[(#REM) Portfolio : album d'images ]
+<BOUCLE_archive_photo(EVENEMENTS){id_article}{age>0}{!par date_debut}>	
+
+<B_premiere_image>
+		
+[<h2 class="h2">(#VAL{<:association_evenements:galerie_photos:>}|unique)</h2>]	
+		<div id="album_evenement">						
+			<BOUCLE_premiere_image(DOCUMENTS){id_evenement?}{extension IN png,jpg,gif} {par num titre, date}{0,1}{doublons}>
+			[<a href="(#FICHIER|image_reduire{1000}|extraire_attribut{src})" type="#MIME_TYPE" rel="documents_portfolio[-e(#ID_EVENEMENT)][-a(#ID_ARTICLE)][-r(#ID_RUBRIQUE)]" [ title="(#TITRE|attribut_html|couper{80})"]>]
+			[(#LOGO_EVENEMENT|sinon{#FICHIER}|image_passe_partout{175,120}|image_recadre{175,120}|inserer_attribut{class,spip_logos}|inserer_attribut{title,[(#TITRE|attribut_html|couper{80})]})] 
+			</BOUCLE_premiere_image>
+			</a>
+			[<h3 class="date">(#DATE_DEBUT|affdate)</h3>]
+			[<div class="titre">(#TITRE|!={#GET{titre_article}}|?{#TITRE,''})</div>]
+			[<div class="lieu">(#LIEU)</div>]
+            
+ 		<BOUCLE_liens_images(DOCUMENTS){id_evenement?}{extension IN png,jpg,gif} {par num titre, date}{vu=non}{doublons}>
+			[<a href="(#FICHIER|image_reduire{1000}|extraire_attribut{src})" type="#MIME_TYPE" rel="documents_portfolio[-e(#ID_EVENEMENT)][-a(#ID_ARTICLE)][-r(#ID_RUBRIQUE)]" [ title="(#TITRE|attribut_html|couper{80})"]></a>]
+		</BOUCLE_liens_images>           
+		</div>			
+		
+
+		
+</B_premiere_image>
+
+</BOUCLE_archive_photo>
+
+</div>		
+</BOUCLE_article>

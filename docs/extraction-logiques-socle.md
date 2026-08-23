@@ -527,6 +527,16 @@ exactement ; 29 clés auparavant absentes reçoivent un libellé français
 explicite. Les exports, CVT et écrans privés utilisent exclusivement le domaine
 `association_compta` avec repli français.
 
+## Lot 45 : squelettes front autonomes Paiements et Événements
+
+Les quatre modèles de sélection de paiement historiquement surchargés par
+`blobul-BANK` sont désormais fournis par `association-paiements/modeles`.
+Ils conservent l’API publique du plugin Bank sans dépendre du plugin Blobul.
+
+Les albums photo public et public verrouillé issus de `blobul-ASSO_FO` sont
+fournis par `association-evenements/squelettes/inclure`. Leurs libellés utilisent
+le domaine `association_evenements`; aucune référence à `zblobul_core` ne reste.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
