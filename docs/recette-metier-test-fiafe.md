@@ -498,3 +498,13 @@ Comptabilité, Paiements et Communication depuis l'artefact SHA-256
 puis le registre des plugins a été actualisé. Un dry-run réel sur la base
 test-fiafe charge les quatre fournisseurs, produit les onze clés métier
 attendues et laisse inchangés les effectifs des six tables contrôlées.
+
+## Lot 37 — maintenance des auteurs dans Adhésions
+
+La phase auteurs appartient désormais à Adhésions. Le commit `680868d` a été
+déployé atomiquement dans le socle et Adhésions depuis l'artefact SHA-256
+`1e98e8a8b326c5a9c18ad8c6053817ce841ff01fb2a8bd5d33d59e8ac1598e95`,
+puis le registre des plugins a été actualisé. Le dry-run serveur charge la
+phase Adhésions, produit le résumé auteurs et les résumés métier, confirme
+l'absence de l'API auteurs dans le cron racine et laisse inchangés les
+effectifs des six tables contrôlées.
