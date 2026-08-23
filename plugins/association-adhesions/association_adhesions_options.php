@@ -8,6 +8,20 @@ include_spip('inc/fonctions/priviliges_adherent');
 include_spip('inc/fonctions/association_job_notifier_echeance');
 include_spip('inc/fonctions/facteur_envoyer_recu_adhesion');
 
+if (test_plugin_actif('gis')) {
+	include_spip('inc/fonctions/facteur_envoyer_notification_gis');
+}
+
+$GLOBALS['association_cotisation_statuts'] = ['demande', 'attente', 'ok'];
+$GLOBALS['association_styles_des_statuts'] = [
+	'echu' => 'echu',
+	'ok' => 'ok',
+	'prospect' => 'prospect',
+	'relance' => 'relance',
+	'desactive' => 'desactive',
+];
+$GLOBALS['table_titre']['auteurs'] = "nom_famille AS titre, '' AS lang";
+
 $GLOBALS['table_des_tables']['asso_categories_adherents'] = 'asso_categories_adherents';
 
 function generer_url_asso_membre($id, $param = '', $ancre = '') {

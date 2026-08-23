@@ -15,6 +15,8 @@ foreach (array(
 }
 include_spip('formulaires/inc/inscription_evenement');
 
+$GLOBALS['association_activites_statuts'] = ['', 'ok', 'preinscrit', 'liste_attente', 'desinscrit'];
+
 $GLOBALS['table_des_tables']['asso_categories_activites'] = 'asso_categories_activites';
 $GLOBALS['table_des_tables']['asso_activites'] = 'asso_activites';
 

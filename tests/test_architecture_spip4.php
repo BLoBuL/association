@@ -54,6 +54,10 @@ $verifier(strpos($schema, "spip_asso_plan") === false, 'Le socle ne doit plus po
 $verifier(strpos($schema, "spip_asso_dons") === false, 'Le socle ne doit plus posseder les dons.');
 $verifier(strpos($schema, "spip_asso_ventes") === false, 'Le socle ne doit plus posseder les ventes.');
 $verifier(strpos($schema, "spip_asso_prets") === false, 'Le socle ne doit plus posseder les prets.');
+$verifier(
+	!is_file($racine . '/formulaires/update/options.html'),
+	'L ancien fragment de configuration comptable update/options doit rester supprime.'
+);
 $verifier(!preg_match('/\"(?:reinscription|statut_cotisation)\"\s*=>/', $schema), 'Le schema des comptes ne doit plus declarer de champs metier de cotisation.');
 $administration_socle = file_get_contents($racine . '/association_administrations.php');
 $migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
@@ -69,6 +73,9 @@ $verification_communication = file_get_contents($racine . '/plugins/association-
 $pipelines_socle = file_get_contents($racine . '/association_pipelines.php');
 $autorisation_socle = file_get_contents($racine . '/association_autoriser.php');
 $fonctions_socle = file_get_contents($racine . '/association_fonctions.php');
+$options_socle = file_get_contents($racine . '/association_options.php');
+$options_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_options.php');
+$options_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_options.php');
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
@@ -200,6 +207,24 @@ $verifier(
 	strpos($pipelines_socle, 'association_saisies_lister_disponibles') === false
 		&& strpos($pipelines_socle, 'Enregistrer les informations des') === false,
 	'Le fichier de pipelines du socle ne doit plus exposer de hooks morts ni de documentation metier orpheline.'
+);
+$verifier(
+	strpos($options_socle, 'association_cotisation_statuts') === false
+		&& strpos($options_adhesions, 'association_cotisation_statuts') !== false
+		&& strpos($options_socle, 'facteur_envoyer_notification_gis') === false
+		&& strpos($options_adhesions, 'facteur_envoyer_notification_gis') !== false,
+	'Les statuts de cotisation et l integration GIS des auteurs doivent appartenir a Adhesions.'
+);
+$verifier(
+	strpos($options_socle, 'association_activites_statuts') === false
+		&& strpos($options_evenements, 'association_activites_statuts') !== false,
+	'Les statuts d activite doivent appartenir a Evenements.'
+);
+$verifier(
+	strpos($options_socle, 'insert_jqueryui') === false
+		&& strpos($options_socle, 'association_bouton_public_fa') === false
+		&& strpos($options_socle, 'association_flottant') === false,
+	'Le fichier options du socle ne doit plus contenir de helpers ni de branchements inutilises.'
 );
 $verifier(
 	strpos($migration_familles, "familles_objet_lister_familles('auteur'") !== false

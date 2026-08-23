@@ -341,7 +341,26 @@ La construction du menu emploie un chemin commun pour SPIP 4.0/4.1 et SPIP
 propriétaires. Le calcul d'icône utilise désormais les retours des API SPIP au
 lieu d'appeler `file_exists()` sur une valeur potentiellement vide.
 
-## État après le lot 21
+## Lot 22 : options métier distribuées
+
+Les statuts de cotisation, les styles d'adhérent, le titre enrichi des auteurs
+et le chargement conditionnel de la notification GIS appartiennent désormais à
+Adhésions. Les statuts de participation appartiennent à Événements. Le socle
+conserve uniquement la liste d'états d'adhérent partagée avec Communication,
+afin de ne pas créer le cycle Communication vers Adhésions.
+
+Le fichier `association_options.php` a également perdu ses helpers sans aucun
+appel, ses commentaires de fonctions déjà déplacées et son branchement manuel
+du pipeline jQuery UI, déjà déclaré nativement par `paquet.xml`. Les helpers de
+date, montant, téléphone et liens privés restent transverses car plusieurs
+plugins autonomes les consomment encore.
+
+Le fragment `formulaires/update/options.html` a été supprimé. Aucun formulaire
+CVT, pipeline ou squelette ne l'appelait encore ; il lisait directement les
+tables Comptabilité et dupliquait les panneaux modulaires actuels. Son absence
+est maintenant contrôlée par la matrice d'architecture.
+
+## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
 domaines actuellement extraits : Adhésions, Événements, Paiements,

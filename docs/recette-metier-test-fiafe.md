@@ -330,3 +330,14 @@ Dans le SPIP servi, le cron reste planifié à 604800 secondes, les trois
 composants jQuery UI sont dédupliqués et le menu est une instance native
 `Spip\\Admin\\Bouton`. Ses huit sous-menus autorisés et l'icône du socle sont
 résolus sans erreur depuis les plugins actifs.
+
+## Lot 22 — options métier distribuées
+
+Les constantes d'exécution propres aux cotisations, adhérents et événements
+sont chargées depuis leurs plugins propriétaires. Le socle ne conserve que les
+helpers réellement partagés et le chargement des metas Association. Les
+frontières sont verrouillées par la matrice d'architecture.
+
+Le fragment historique `formulaires/update/options.html`, sans appel ni code
+CVT associé, est supprimé plutôt que déplacé dans Comptabilité : ses réglages
+sont déjà servis par la configuration modulaire actuelle.
