@@ -53,6 +53,10 @@ function spip_log($message, $channel) {
 }
 
 include_once PLUGIN_ROOT . '/inc/association_log.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_log.php';
+include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_communication_log.php';
+include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_log.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_log.php';
 include_once PLUGIN_ROOT . '/inc/association_config_cli_registre.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_config_cli.php';
@@ -125,6 +129,16 @@ function pipeline($nom, $flux) {
 	}
 	if ($nom === 'association_config_cli_snapshot_v1_options') {
 		$data = association_evenements_association_config_cli_snapshot_v1_options($data);
+	}
+	if ($nom === 'association_log_categories') {
+		foreach (array(
+			'association_adhesions_association_log_categories',
+			'association_communication_association_log_categories',
+			'association_compta_association_log_categories',
+			'association_evenements_association_log_categories',
+		) as $fournisseur) {
+			$data = $fournisseur($data);
+		}
 	}
 	return $data;
 }

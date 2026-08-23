@@ -27,6 +27,7 @@
 	<pipeline nom="association_config_cli_registre" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_installation_inventaire" inclure="inc/association_adhesions_installation.php" />
 	<pipeline nom="association_migrations_historiques" inclure="inc/association_adhesions_migrations_socle.php" />
+	<pipeline nom="association_log_categories" inclure="inc/association_adhesions_log.php" />
 	<pipeline nom="association_notifications_audit_html" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="formulaire_verifier" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="pre_insertion" inclure="association_adhesions_pipelines.php" />

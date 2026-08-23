@@ -693,6 +693,23 @@ chargement des plugins. L'empreinte SHA-256 de la sérialisation complète reste
 versions, callbacks et ordre d'exécution sont strictement identiques au plan
 historique précédant l'extraction.
 
+## Lot 57 : catégories de logs distribuées
+
+Le catalogue des catégories de journalisation est désormais composé par le
+pipeline `association_log_categories`. Les propriétaires sont :
+
+- socle : autorisations, cron, migration et synchronisation ;
+- Adhésions : cotisations, adhérents et GIS ;
+- Communication : notifications, spam et email ;
+- Événements : inscriptions ;
+- Comptabilité : comptabilité.
+
+Chaque libellé métier utilise le domaine de langue du module concerné. Les
+priorités 10 à 120 garantissent le même ordre d'affichage quelle que soit la
+séquence de chargement des plugins. Les douze clés publiques restent
+inchangées ; le formulaire de debug, l'écriture globale et le registre CLI
+continuent donc de piloter les mêmes chemins de configuration.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

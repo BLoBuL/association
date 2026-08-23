@@ -222,6 +222,7 @@ $GLOBALS[$GLOBALS["idx_lang"]] = array (
   'validation_inscription' => 'Valider votre inscription',
   'valider_operation' => 'Valider l’opération',
   'valider_selection' => 'Valider la sélection',
+	'log_cat_comptabilite' => 'Comptabilité',
 	'maintenance_titre' => 'Maintenance des écritures de cotisation',
   'voir_details_transaction' => 'Voir les détails de la transaction',
 );

@@ -24,21 +24,29 @@ include_spip('inc/config');
  *
  * @return array<string, string>
  */
+function association_log_categories_ajouter($definitions, $categories) {
+	foreach ($categories as $cle => $definition) {
+		if (!isset($definitions[$cle])) {
+			$definitions[$cle] = $definition;
+		}
+	}
+	return $definitions;
+}
+
 function association_log_categories_defaut() {
-	return array(
-		'autorisations'  => _T('association:log_cat_autorisations'),
-		'cotisations'    => _T('association:log_cat_cotisations'),
-		'notifications'  => _T('association:log_cat_notifications'),
-		'inscriptions'   => _T('association:log_cat_inscriptions'),
-		'comptabilite'   => _T('association:log_cat_comptabilite'),
-		'adherents'      => _T('association:log_cat_adherents'),
-		'cron'           => _T('association:log_cat_cron'),
-		'spam'           => _T('association:log_cat_spam'),
-		'email'          => _T('association:log_cat_email'),
-		'gis'            => _T('association:log_cat_gis'),
-		'migration'      => _T('association:log_cat_migration'),
-		'sync'           => _T('association:log_cat_sync'),
+	$definitions = array(
+		'autorisations' => array('ordre' => 10, 'label' => _T('association:log_cat_autorisations')),
+		'cron' => array('ordre' => 70, 'label' => _T('association:log_cat_cron')),
+		'migration' => array('ordre' => 110, 'label' => _T('association:log_cat_migration')),
+		'sync' => array('ordre' => 120, 'label' => _T('association:log_cat_sync')),
 	);
+	$definitions = pipeline('association_log_categories', $definitions);
+	uasort($definitions, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
+	$categories = array();
+	foreach ($definitions as $cle => $definition) {
+		$categories[$cle] = $definition['label'];
+	}
+	return $categories;
 }
 
 /**
