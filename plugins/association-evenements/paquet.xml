@@ -21,6 +21,7 @@
 	<necessite nom="cextras" compatibilite="[3.0.5;[" />
 	<pipeline nom="autoriser" inclure="association_evenements_autoriser.php" />
 	<pipeline nom="taches_generales_cron" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="association_rgpd_export_auteur" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="declarer_champs_extras" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="formulaire_charger" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="formulaire_traiter" inclure="association_evenements_pipelines.php" />

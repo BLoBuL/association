@@ -23,3 +23,11 @@ function association_compta_post_insertion($flux) {
     }
     return $flux;
 }
+
+function association_compta_association_rgpd_export_auteur($flux) {
+	include_spip('inc/association_compta_rgpd');
+	$flux['data']['operations_comptables'] = association_compta_rgpd_export_operations(
+		intval($flux['args']['id_auteur'] ?? 0)
+	);
+	return $flux;
+}

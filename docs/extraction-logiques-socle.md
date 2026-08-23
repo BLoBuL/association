@@ -85,6 +85,23 @@ donc autonomes au niveau du module.
 Les adaptateurs de notification propres aux adhésions et aux événements restent
 dans leur plugin métier et utilisent Communication comme infrastructure.
 
+## Lot 6 : export RGPD distribué
+
+Le socle conserve l'orchestration de l'export d'un auteur, la date de génération
+et les normalisations transversales. Il ne lit plus aucune table métier. Le
+pipeline public `association_rgpd_export_auteur` reçoit `id_auteur` et `email` :
+
+- Adhésions fournit `cotisations` depuis `spip_asso_cotisations` et ses
+  catégories ;
+- Événements fournit `inscriptions_evenements` ;
+- Comptabilité fournit `operations_comptables` ;
+- Dons, Ventes et Prêts fournissent leur section homonyme ;
+- Paiements expose le formateur public d'une transaction utilisé dans les
+  sections qui possèdent un `id_transaction`.
+
+Cette séparation rend l'export extensible et empêche le socle de reprendre la
+propriété implicite des tables des modules.
+
 ## État résiduel du socle
 
 Le socle conserve uniquement :
@@ -100,14 +117,13 @@ Ces alias ne créent ni ne modifient de données métier. Leur suppression exige
 une recherche sur les squelettes des sites migrés et constitue le dernier lot
 de rupture de compatibilité.
 
-## Lots restant avant recette distante
+## Lots restant après la migration et la première recette distante
 
 1. remplacer ou déplacer les alias historiques `modifier/asso` ;
-2. auditer les inclusions inter-modules et documenter les contrats publics ;
-3. compiler les squelettes avec un SPIP 4 réel et tester installation neuve et
-   migration depuis la copie de la base DEV ;
-4. déployer la suite en staging puis exécuter les recettes BO et FO sur
-   test-fiafe.
+2. distribuer la maintenance BDD entre les modules en conservant un
+   orchestrateur `dry_run` transversal ;
+3. achever l'audit des inclusions inter-modules et des contrats publics ;
+4. rejouer la passe navigateur responsive finale sur test-fiafe.
 
 Chaque lot doit passer les tests autonomes, le staging des dix plugins, puis une
 compilation et une recette SPIP réelle avant déploiement.

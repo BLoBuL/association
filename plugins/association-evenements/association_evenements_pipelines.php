@@ -9,6 +9,15 @@ function association_evenements_taches_generales_cron($taches) {
 	return $taches;
 }
 
+function association_evenements_association_rgpd_export_auteur($flux) {
+	include_spip('inc/association_evenements_rgpd');
+	$flux['data']['inscriptions_evenements'] = association_evenements_rgpd_export_inscriptions(
+		intval($flux['args']['id_auteur'] ?? 0),
+		(string)($flux['args']['email'] ?? '')
+	);
+	return $flux;
+}
+
 function association_evenements_declarer_champs_extras($champs) {
 	include_once __DIR__ . '/base/association_champs_extras.php';
 	$champs = association_declarer_champs_extras_impl($champs);

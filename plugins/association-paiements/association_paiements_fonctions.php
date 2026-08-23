@@ -4,6 +4,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+include_spip('inc/association_paiements_rgpd');
+
 /**
  * Produit une icône accessible pour un mode fourni par le plugin Bank.
  *

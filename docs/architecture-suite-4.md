@@ -78,6 +78,11 @@ centralisé dans une API publique du module propriétaire.
 - wrappers historiques minces et temporaires ;
 - statuts transactionnel, commande et métier toujours distincts.
 
+Le contrat `association_rgpd_export_auteur` illustre l'intégration attendue :
+le socle fournit l'enveloppe, chaque module écrit uniquement sa clé dans
+`$flux['data']`, et aucun collecteur ne parcourt directement la table d'un autre
+module.
+
 ## État de l’extraction 4.0
 
 1. le Socle conserve `spip_association_metas`, la configuration et les

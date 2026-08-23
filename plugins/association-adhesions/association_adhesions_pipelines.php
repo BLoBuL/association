@@ -15,6 +15,14 @@ function association_adhesions_saisies_retirer_obligatoire(array $saisies): arra
     return $saisies;
 }
 
+function association_adhesions_association_rgpd_export_auteur($flux) {
+	include_spip('inc/association_adhesions_rgpd');
+	$flux['data']['cotisations'] = association_adhesions_rgpd_export_cotisations(
+		intval($flux['args']['id_auteur'] ?? 0)
+	);
+	return $flux;
+}
+
 function association_adhesions_formulaire_charger($flux) {
     if (
         ($flux['args']['form'] ?? '') === 'editer_auteur'

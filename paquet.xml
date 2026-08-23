@@ -25,6 +25,7 @@
 	<pipeline nom="affiche_milieu" inclure="association_pipelines.php" />
 	<pipeline nom="header_prive" inclure="association_pipelines.php" />
 	<pipeline nom="jqueryui_plugins" inclure="association_pipelines.php" />
+	<pipeline nom="association_rgpd_export_auteur" action="" />
 
 	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
 	<necessite nom="association_adhesions" compatibilite="[4.0.0;4.*]" />

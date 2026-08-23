@@ -18,6 +18,7 @@
 	<necessite nom="association_communication" compatibilite="[4.0.0;4.*]" />
 	<pipeline nom="autoriser" inclure="association_adhesions_autoriser.php" />
 	<pipeline nom="formulaire_charger" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="association_rgpd_export_auteur" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="formulaire_verifier" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="pre_insertion" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="post_edition" inclure="association_adhesions_pipelines.php" />
