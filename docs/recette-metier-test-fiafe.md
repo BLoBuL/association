@@ -323,3 +323,10 @@ Le fichier de pipelines racine ne conserve que les cinq fonctions réellement
 utilisées par le paquet. Le hook mort de déclaration d'une saisie et toute la
 documentation des traitements déjà déplacés ont été supprimés. La matrice
 d'architecture interdit leur réintroduction.
+
+Le commit `bfb1f26` a été déployé atomiquement depuis l'artefact SHA-256
+`9f342168fb5b89858c8dc5b5ebd78719543b0d591ac53e5af2c3f19544d26e50`.
+Dans le SPIP servi, le cron reste planifié à 604800 secondes, les trois
+composants jQuery UI sont dédupliqués et le menu est une instance native
+`Spip\\Admin\\Bouton`. Ses huit sous-menus autorisés et l'icône du socle sont
+résolus sans erreur depuis les plugins actifs.
