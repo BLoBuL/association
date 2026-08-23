@@ -270,7 +270,9 @@ function autoriser_dons_menu_dist($faire, $type='', $id=0, $qui = NULL, $opt = N
  */
 function autoriser_ressources_menu_dist($faire, $type='', $id=0, $qui = NULL, $opt = NULL){
 	$qui = association_normalize_qui($qui);
-	if (!association_module_actif('ressources')) return false;
+	// Les ressources et les prêts forment un seul module métier autonome.
+	// Il n'existe donc volontairement qu'un seul indicateur de configuration.
+	if (!association_module_actif('prets')) return false;
 	return association_est_admin_complet($qui);
 }
 
