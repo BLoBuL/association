@@ -382,6 +382,14 @@ retirés. Ce dernier n'était déclaré par aucun paquet ou squelette et contena
 des règles propres à un ancien thème public tiers. La feuille privée officielle
 du socle reste `prive/themes/spip/css/asso.css`, déclarée dans `paquet.xml`.
 
+## Lot 26 : modèles YAML distribués
+
+Le modèle historique d'installation des champs auteurs et les deux variantes
+famille sont fournis par Adhésions. Le modèle du champ événementiel
+`webinaire_fiafe` est fourni par Événements. Le chemin logique `yaml/...` reste
+identique : la migration Adhésions qui emploie `find_in_path()` reste compatible.
+Le socle ne possède plus de dossier YAML métier.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

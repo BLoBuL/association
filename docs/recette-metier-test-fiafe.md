@@ -374,6 +374,12 @@ SHA-256 `45a223bf329c271c7c34201036dfc39ca858bff538a85982f292b29411de9ddf`.
 Le serveur confirme leur absence et conserve la feuille privée déclarée
 `prive/themes/spip/css/asso.css`.
 
+## Lot 26 — modèles YAML métier
+
+Les trois modèles de champs auteurs sont déplacés dans Adhésions et le modèle
+`webinaire_fiafe` dans Événements, tout en conservant leurs chemins logiques
+pour les imports et migrations existants.
+
 Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.

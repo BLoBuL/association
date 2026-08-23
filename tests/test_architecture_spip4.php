@@ -257,6 +257,17 @@ $verifier(
 	'Le script des destinations et l icone des comptes doivent appartenir a Comptabilite.'
 );
 $verifier(
+	!is_file($racine . '/yaml/association.yaml')
+		&& !is_file($racine . '/yaml/champs_auteurs_4_enfants.yaml')
+		&& !is_file($racine . '/yaml/champs_auteurs_4_enfants_et_2_invites.yaml')
+		&& !is_file($racine . '/yaml/evenement-webinaire_fiafe.yaml')
+		&& is_file($racine . '/plugins/association-adhesions/yaml/association.yaml')
+		&& is_file($racine . '/plugins/association-adhesions/yaml/champs_auteurs_4_enfants.yaml')
+		&& is_file($racine . '/plugins/association-adhesions/yaml/champs_auteurs_4_enfants_et_2_invites.yaml')
+		&& is_file($racine . '/plugins/association-evenements/yaml/evenement-webinaire_fiafe.yaml'),
+	'Les modeles YAML des auteurs et evenements doivent appartenir a leurs modules metier.'
+);
+$verifier(
 	strpos($migration_familles, "familles_objet_lister_familles('auteur'") !== false
 		&& strpos($migration_familles, 'familles_lister_familles_auteur') === false,
 	'La migration Adhesions doit utiliser l API objet actuelle du plugin Familles.'
