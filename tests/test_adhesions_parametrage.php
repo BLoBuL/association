@@ -79,6 +79,7 @@ test_assert($charge['devise'] === 'CNY', 'une catégorie historique sans devise 
 $GLOBALS['test_lecture'] = false;
 
 $source_config = file_get_contents(PLUGIN_ROOT . '/formulaires/configurer_association.php')
+	. file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/formulaires/inc/configurer_association_adhesions.php')
 	. file_get_contents(PLUGIN_ROOT . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php')
 	. file_get_contents(PLUGIN_ROOT . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php');
 $parametres_globaux = array(

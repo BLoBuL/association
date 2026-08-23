@@ -54,6 +54,7 @@ $administration_socle = file_get_contents($racine . '/association_administration
 $migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
 $configuration_socle = file_get_contents($racine . '/formulaires/configurer_association.php');
 $configuration_evenements = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc/configurer_association_evenements.php');
+$configuration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/formulaires/inc/configurer_association_adhesions.php');
 $configuration_paiements = file_get_contents($racine . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php');
 $configuration_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php');
 $verifier(
@@ -75,6 +76,13 @@ $verifier(
 	strpos($configuration_socle, "config == 'comptabilite'") === false
 		&& strpos($configuration_compta, "config == 'comptabilite'") !== false,
 	'Le panneau comptable doit appartenir au module Comptabilite.'
+);
+$verifier(
+	strpos($configuration_socle, "config == 'adhesion'") === false
+		&& strpos($configuration_socle, "config == 'entreprise'") === false
+		&& strpos($configuration_adhesions, "config == 'adhesion'") !== false
+		&& strpos($configuration_adhesions, "config == 'entreprise'") !== false,
+	'Les panneaux adhesion et entreprise doivent appartenir au module Adhesions.'
 );
 $verifier(
 	strpos($administration_socle, 'function association_migrer_cotisations_depuis_comptes') === false,

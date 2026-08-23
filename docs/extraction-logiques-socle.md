@@ -211,6 +211,11 @@ porte les moyens de règlement, les taxes et l'autorisation d'encaissement ;
 Comptabilité porte l'exercice, le plan, les destinations et les imputations des
 différents métiers. Le socle ne fait qu'agréger leurs tableaux de saisies.
 
+Adhésions déclare également les panneaux `adhesion` et `entreprise`, y compris
+les règles de validité, privilèges, cotisations, notifications d'échéance et
+options multidevises. Les listes de diffusion restent obtenues par le contrat
+public de Communication sans réintroduire de dépendance Blobul historique.
+
 ## Lots restant après la migration et la première recette distante
 
 1. répartir les blocs métier du grand formulaire de configuration ;
