@@ -59,8 +59,8 @@ function asso_supprimer_mailsubscribers_pour_auteurs(array $ids_auteurs, $dry_ru
                 ? sql_countsel('spip_mailsubscriptions', sql_in('id_mailsubscriber', $ids_ms))
                 : sql_delete('spip_mailsubscriptions', sql_in('id_mailsubscriber', $ids_ms));
             $out['mailshots_destinataires_supprimees'] = $dry_run
-                ? sql_countsel('spip_mailshots_destinataires', sql_in('id_mailsubscriber', $ids_ms))
-                : sql_delete('spip_mailshots_destinataires', sql_in('id_mailsubscriber', $ids_ms));
+                ? sql_countsel('spip_mailshots_destinataires', sql_in('email', $emails))
+                : sql_delete('spip_mailshots_destinataires', sql_in('email', $emails));
             $out['mailsubscribers_supprimes'] = $dry_run
                 ? sql_countsel('spip_mailsubscribers', sql_in('id_mailsubscriber', $ids_ms))
                 : sql_delete('spip_mailsubscribers', sql_in('id_mailsubscriber', $ids_ms));
@@ -205,9 +205,10 @@ function asso_supprimer_mailsubscribers_orphelines($dry_run = true, $lot = 1000)
     // on suppose la table spip_mailsubscribers présente
 
     $ids = [];
+    $emails = [];
     // LEFT JOIN sur auteurs via email ; si aucun auteur correspondant alors orphelin
     $res = sql_select(
-        'ms.id_mailsubscriber',
+        'ms.id_mailsubscriber,ms.email',
         'spip_mailsubscribers AS ms LEFT JOIN spip_auteurs AS a ON a.email = ms.email',
         'a.id_auteur IS NULL',
         '',
@@ -216,18 +217,19 @@ function asso_supprimer_mailsubscribers_orphelines($dry_run = true, $lot = 1000)
     );
     while ($row = sql_fetch($res)) {
         $ids[] = intval($row['id_mailsubscriber']);
+        if (!empty($row['email'])) {
+            $emails[] = $row['email'];
+        }
     }
     if (!$ids) return ['supprimees' => 0, 'ids' => []];
 
     $in = sql_in('id_mailsubscriber', $ids);
     $nb = $dry_run ? sql_countsel('spip_mailsubscribers', $in) : sql_delete('spip_mailsubscribers', $in);
 
-    // Supposer la présence de spip_mailshots_destinataires
-    if ($dry_run) {
-        $dest = sql_countsel('spip_mailshots_destinataires', $in);
-    } else {
-        $dest = sql_delete('spip_mailshots_destinataires', $in);
-    }
+    $where_destinataires = $emails ? sql_in('email', array_values(array_unique($emails))) : '0=1';
+    $dest = $dry_run
+        ? sql_countsel('spip_mailshots_destinataires', $where_destinataires)
+        : sql_delete('spip_mailshots_destinataires', $where_destinataires);
 
     return ['supprimees' => intval($nb), 'ids' => $ids, 'mailshots_destinataires_supprimees' => intval($dest)];
 }

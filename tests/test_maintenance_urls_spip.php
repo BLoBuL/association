@@ -17,6 +17,7 @@ function sql_showtable($table, $complet = false) {
 }
 
 require dirname(__DIR__) . '/plugins/association-communication/inc/association_communication_maintenance.php';
+$source = file_get_contents(dirname(__DIR__) . '/plugins/association-communication/inc/association_communication_maintenance.php');
 
 if (asso_table_col_for_type('site') !== array('spip_syndic', 'id_syndic')) {
 	fwrite(STDERR, "Le type site n'utilise pas l'objet SQL natif SPIP.\n");
@@ -28,6 +29,10 @@ if (asso_table_col_for_type('fantome') !== array()) {
 }
 if (asso_table_col_for_type('article.invalide') !== array()) {
 	fwrite(STDERR, "Un type URL malformé doit être rejeté avant résolution SQL.\n");
+	exit(1);
+}
+if (preg_match("/spip_mailshots_destinataires'\s*,\s*sql_in\('id_mailsubscriber'/", $source)) {
+	fwrite(STDERR, "Mailshot doit être nettoyé par email, sa table ne possède pas id_mailsubscriber.\n");
 	exit(1);
 }
 
