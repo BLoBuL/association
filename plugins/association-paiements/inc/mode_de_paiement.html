@@ -1,4 +1,4 @@
-<label for="journal"><strong><:association:prets_libelle_mode_paiement:></strong></label>
+<label for="journal"><strong><:association_paiements:prets_libelle_mode_paiement:></strong></label>
 <B_mode_paiement>
 	<select name="journal" id="journal" class="formo" > 
 <BOUCLE_mode_paiement(ASSO_PLAN){par classe}{par code}{active=1}{classe=#ENV{classe_banques}}>
@@ -7,5 +7,5 @@
 	</select>
 </B_mode_paiement>
 [(#ENV{classe_banques}>{0}|non)
-<span class="erreur_message"><:association:erreur_pas_de_classe_banque:></span>
+<span class="erreur_message"><:association_paiements:erreur_pas_de_classe_banque:></span>
 ]

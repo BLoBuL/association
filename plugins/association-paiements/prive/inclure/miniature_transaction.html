@@ -11,23 +11,23 @@
 
             [(#STATUT|in_array{#LISTE{attente,commande}}|oui)
                 [(#SET{statut_icone,fa-regular fa-clock})]
-                [(#SET{statut_label,<:association:activite_content_cotisation_attente:>})]
+                [(#SET{statut_label,<:association_paiements:activite_content_cotisation_attente:>})]
             ]
             [(#STATUT|=={ok}|oui)
                 [(#SET{statut_icone,fa fa-check-circle})]
-                [(#SET{statut_label,<:association:activite_content_cotisation_paye:>})]
+                [(#SET{statut_label,<:association_paiements:activite_content_cotisation_paye:>})]
             ]
             [(#STATUT|=={echec}|oui)
                 [(#SET{statut_icone,fa fa-warning})]
-                [(#SET{statut_label,<:association:activite_content_cotisation_echec:>})]
+                [(#SET{statut_label,<:association_paiements:activite_content_cotisation_echec:>})]
             ]
             [(#STATUT|=={abandon}|oui)
                 [(#SET{statut_icone,fa-regular fa-trash-can})]
-                [(#SET{statut_label,<:association:activite_content_cotisation_abandon:>})]
+                [(#SET{statut_label,<:association_paiements:activite_content_cotisation_abandon:>})]
             ]
             [(#STATUT|=={rembourse}|oui)
                 [(#SET{statut_icone,fa fa-undo})]
-                [(#SET{statut_label,<:association:activite_content_cotisation_rembourse:>})]
+                [(#SET{statut_label,<:association_paiements:activite_content_cotisation_rembourse:>})]
             ]
 
             [(#GET{espace_prive}|non)
@@ -39,18 +39,18 @@
             [(#GET{espace_prive}|oui)
                 [(#STATUT|in_array{#LISTE{attente,commande}}|et{#AUTORISER{transaction_regler,transaction,#ID_TRANSACTION,#SESSION{id_auteur},#ARRAY{}}}|oui)
                     [(#SET{url_action,[(#URL_ECRIRE{payer}|parametre_url{id_transaction,#ID_TRANSACTION}|parametre_url{transaction_hash,#TRANSACTION_HASH})]})]
-                    [(#SET{titre_action,<:association:activite_content_valider_transaction:>})]
+                    [(#SET{titre_action,<:association_paiements:activite_content_valider_transaction:>})]
                 ]
                 [(#STATUT|in_array{#LISTE{echec,abandon,ok,rembourse}}|oui)
                     [(#SET{url_action,[(#URL_ECRIRE{transactions}|parametre_url{id_transaction,#ID_TRANSACTION})]})]
-                    [(#SET{titre_action,<:association:activite_content_voir_transaction:>})]
+                    [(#SET{titre_action,<:association_paiements:activite_content_voir_transaction:>})]
                 ]
             ]
 
             [(#GET{espace_prive}|non)
                 [(#STATUT|in_array{#LISTE{attente,commande}}|et{#STATUT_ACTIVITE|in_array{#LISTE{ok,preinscrit}}}|oui)
                     [(#SET{url_action,[(#URL_PAGE{paiement}|parametre_url{id_transaction,#ID_TRANSACTION}|parametre_url{transaction_hash,#TRANSACTION_HASH})]})]
-                    [(#SET{titre_action,<:association:activite_content_valider_transaction:>})]
+                    [(#SET{titre_action,<:association_paiements:activite_content_valider_transaction:>})]
                 ]
             ]
 
@@ -77,7 +77,7 @@
 
 
     <BOUCLE_activite_sans_transaction(ASSO_ACTIVITES){id_activite}{tout}>
-        <div class="tooltip no_transaction"><span> <a href="[(#URL_ECRIRE{editer_asso_activite,id_activite=#ID_ACTIVITE})]" title="<:association:activite_bouton_modifier_inscription:>"><i class="fa fa-exclamation-triangle"></i></a></span>
+        <div class="tooltip no_transaction"><span> <a href="[(#URL_ECRIRE{editer_asso_activite,id_activite=#ID_ACTIVITE})]" title="<:association_paiements:activite_bouton_modifier_inscription:>"><i class="fa fa-exclamation-triangle"></i></a></span>
             <span class="tooltiptext">
                 <p>Transaction manquante&nbsp;!<br>Vous devez modifier cette inscription pour générer une transaction.</p>
            </span>

@@ -500,6 +500,12 @@ Les seize libellés des bénévoles et responsables sont fournis par
 `association_groupes_fr.php`. Les modèles et squelettes privés emploient le
 domaine `association_groupes`, avec repli français pour les autres langues.
 
+## Lot 41 : domaine de langue Paiements
+
+Les quinze libellés de transactions et remboursements sont fournis par
+`association_paiements_fr.php`. Les composants et pipelines de Paiements
+emploient le domaine `association_paiements`, avec repli SPIP vers le français.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

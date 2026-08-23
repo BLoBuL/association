@@ -154,6 +154,19 @@ $verifier(
 		&& strpos($groupes_lang, "'titre_page_benevoles'") !== false,
 	'Le plugin Groupes doit utiliser son propre domaine de langue.'
 );
+$paiements_lang = file_get_contents($racine . '/plugins/association-paiements/lang/association_paiements_fr.php');
+$paiements_sources = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-paiements')) as $paiements_source) {
+	if ($paiements_source->isFile() && preg_match('/\.(?:php|html)$/', $paiements_source->getFilename()) && strpos($paiements_source->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$paiements_sources .= file_get_contents($paiements_source->getPathname());
+	}
+}
+$verifier(
+	strpos($paiements_sources, 'association:') === false
+		&& strpos($paiements_sources, 'association_paiements:') !== false
+		&& strpos($paiements_lang, "'label_remboursement_notifier_inscrit'") !== false,
+	'Le plugin Paiements doit utiliser son propre domaine de langue.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

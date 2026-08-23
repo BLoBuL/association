@@ -28,11 +28,11 @@
                <div class="editer editer_[(#GET{name})][ (#GET{obli})][ (#GET{erreurs}|oui)erreur]">
                  [
                  <span class='erreur_message'>(#GET{erreurs})</span>]
-                <label ><:association:label_remboursement_notifier_inscrit:></label>
-                  <p class='explication'><:association:explication_remboursement_notifier_inscrit:></p>   
+                <label ><:association_paiements:label_remboursement_notifier_inscrit:></label>
+                  <p class='explication'><:association_paiements:explication_remboursement_notifier_inscrit:></p>
                    <div class="choix">    
                        <input type="checkbox" name="#GET{name}" class="checkbox" value="#ENV*{#GET{name},#GET{defaut}}" id="#GET{name}" [(#GET{activite}|!={oui}|oui)disable]/>
-                       <label for="#GET{name}"><:association:label_choix_remboursement_notifier_inscrit:></label>
+                       <label for="#GET{name}"><:association_paiements:label_choix_remboursement_notifier_inscrit:></label>
                     </div>
                </div>
                 

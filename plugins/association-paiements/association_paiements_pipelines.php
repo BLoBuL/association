@@ -64,7 +64,7 @@ function mise_a_jour_participation($query_activite, $query_transaction)
 
     // Vérifie si l'inscription doit être validée automatiquement après le paiement
     if ($query_activite['statut'] != 'ok' && $query_evenement['validation_sur_paiement'] == 'oui') {
-        $entree_journal = "$date : " . _T('association:journal_inscription_validation_paiement') . '<br>' . $query_activite['journal'];
+        $entree_journal = "$date : " . _T('association_paiements:journal_inscription_validation_paiement') . '<br>' . $query_activite['journal'];
         sql_updateq('spip_asso_activites', ["statut" => 'ok', "journal" => $entree_journal], "id_transaction=$id_transaction");
 
         // Ajoute une tâche pour envoyer une notification de validation d'inscription
@@ -79,7 +79,7 @@ function mise_a_jour_participation($query_activite, $query_transaction)
         );
     } else {
         // Met à jour le journal pour indiquer l'encaissement du paiement
-        $entree_journal = "$date : " . _T('association:journal_encaissement_paiement') . '<br>' . $query_activite['journal'];
+        $entree_journal = "$date : " . _T('association_paiements:journal_encaissement_paiement') . '<br>' . $query_activite['journal'];
         sql_updateq('spip_asso_activites', ["journal" => $entree_journal], "id_transaction=$id_transaction");
     }
 
