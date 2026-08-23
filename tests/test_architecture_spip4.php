@@ -128,6 +128,19 @@ $verifier(
 		&& strpos($dons_lang, "'ajouter_un_don'") !== false,
 	'Le plugin Dons doit utiliser son propre domaine de langue.'
 );
+$ventes_lang = file_get_contents($racine . '/plugins/association-ventes/lang/association_ventes_fr.php');
+$ventes_sources = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-ventes')) as $ventes_source) {
+	if ($ventes_source->isFile() && preg_match('/\.(?:php|html)$/', $ventes_source->getFilename()) && strpos($ventes_source->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$ventes_sources .= file_get_contents($ventes_source->getPathname());
+	}
+}
+$verifier(
+	strpos($ventes_sources, 'association:') === false
+		&& strpos($ventes_sources, 'association_ventes:') !== false
+		&& strpos($ventes_lang, "'ajouter_une_vente'") !== false,
+	'Le plugin Ventes doit utiliser son propre domaine de langue.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

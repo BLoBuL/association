@@ -1,36 +1,36 @@
 [(#AUTORISER{ventes_menu}|sinon_interdire_acces)]
-<h1 class="grostitre"><:association:toutes_les_ventes:></h1>
+<h1 class="grostitre"><:association_ventes:toutes_les_ventes:></h1>
 #SET{annee,#ENV{annee,#VAL{Y}|date}}
 #SET{debut,#GET{annee}|concat{-01-01}}
 #SET{fin,#GET{annee}|plus{1}|concat{-01-01}}
-[(#BOITE_OUVRIR{<:association:toutes_les_ventes:>,'simple'})]
+[(#BOITE_OUVRIR{<:association_ventes:toutes_les_ventes:>,'simple'})]
 <form method="get" action="[(#SELF|attribut_html)]" class="formulaire_spip formulaire_filtrer">
 	<input type="hidden" name="exec" value="ventes" />
-	<label for="ventes-annee"><:association:annee:></label>
+	<label for="ventes-annee"><:association_ventes:annee:></label>
 	<input type="number" name="annee" id="ventes-annee" min="1900" max="2100" value="[(#GET{annee}|attribut_html)]" />
 	<button type="submit" class="btn btn_secondaire"><:bouton_valider:></button>
 </form>
 <B_ventes>
-<form method="post" action="[(#URL_ACTION_AUTEUR{supprimer_ventes,lot,#SELF}|attribut_html)]" class="formulaire_spip formulaire_supprimer_ventes" onsubmit="return confirm('<:association:confirmer_suppression|attribut_html:>');">
+<form method="post" action="[(#URL_ACTION_AUTEUR{supprimer_ventes,lot,#SELF}|attribut_html)]" class="formulaire_spip formulaire_supprimer_ventes" onsubmit="return confirm('<:association_ventes:confirmer_suppression|attribut_html:>');">
 	<table class="spip liste">
-		[<caption><strong class="caption">(#GRAND_TOTAL|singulier_ou_pluriel{association:vente_compteur_un,association:vente_compteur_plusieurs})</strong></caption>]
+		[<caption><strong class="caption">(#GRAND_TOTAL|singulier_ou_pluriel{association_ventes:vente_compteur_un,association_ventes:vente_compteur_plusieurs})</strong></caption>]
 		<thead><tr class="first_row">
-			<th scope="col"><:association:id:></th><th scope="col"><:association:date:></th><th class="principale" scope="col"><:association:article:></th>
-			<th scope="col"><:association:code:></th><th scope="col"><:association:acheteur:></th><th scope="col"><:association:membre:></th>
-			<th scope="col"><:association:qte:></th><th scope="col"><:association:montant:></th><th scope="col"><:association:action:></th><th scope="col"><:association:selection:></th>
+			<th scope="col"><:association_ventes:id:></th><th scope="col"><:association_ventes:date:></th><th class="principale" scope="col"><:association_ventes:article:></th>
+			<th scope="col"><:association_ventes:code:></th><th scope="col"><:association_ventes:acheteur:></th><th scope="col"><:association_ventes:membre:></th>
+			<th scope="col"><:association_ventes:qte:></th><th scope="col"><:association_ventes:montant:></th><th scope="col"><:association_ventes:action:></th><th scope="col"><:association_ventes:selection:></th>
 		</tr></thead><tbody>
 		<BOUCLE_ventes(ASSO_VENTES){date_vente>=#GET{debut}}{date_vente<#GET{fin}}{par date_vente,id_vente}{inverse}{pagination 25}>
 		#SET{peut_supprimer,#AUTORISER{supprimer,vente,#ID_VENTE}}
 		<tr class="[(#DATE_ENVOI|!={0000-00-00}|?{row_even,row_odd})]">
 			<td>#ID_VENTE</td><td>[(#DATE_VENTE|affdate)]</td><td class="principale">#ARTICLE</td><td>#CODE</td><td>#ACHETEUR</td><td>#ID_ACHETEUR</td>
 			<td>#QUANTITE</td><td>[(#QUANTITE|mult{#PRIX_VENTE}|number_format{2,',',' '})]&nbsp;&euro;</td>
-			<td class="action">[(#AUTORISER{modifier,vente,#ID_VENTE}|oui)<a href="[(#URL_ECRIRE{edit_vente,id_vente=#ID_VENTE})]" class="btn btn_mini"><:association:mettre_a_jour_la_vente:></a>]</td>
-			<td>[(#GET{peut_supprimer}|oui)<input type="checkbox" name="drop&#91;&#93;" value="#ID_VENTE" aria-label="<:association:selectionner_vente{numero=#ID_VENTE}|attribut_html:>" />]</td>
+			<td class="action">[(#AUTORISER{modifier,vente,#ID_VENTE}|oui)<a href="[(#URL_ECRIRE{edit_vente,id_vente=#ID_VENTE})]" class="btn btn_mini"><:association_ventes:mettre_a_jour_la_vente:></a>]</td>
+			<td>[(#GET{peut_supprimer}|oui)<input type="checkbox" name="drop&#91;&#93;" value="#ID_VENTE" aria-label="<:association_ventes:selectionner_vente{numero=#ID_VENTE}|attribut_html:>" />]</td>
 		</tr>
 		</BOUCLE_ventes>
 		</tbody></table>
 	[<nav class="pagination" role="navigation">(#PAGINATION{prive})</nav>]
-	<p class="boutons"><button type="submit" class="btn btn_danger"><:association:bouton_supprimer:></button></p>
+	<p class="boutons"><button type="submit" class="btn btn_danger"><:association_ventes:bouton_supprimer:></button></p>
 </form>
-</B_ventes><div class="notice"><:association:vente_aucune:></div><//B_ventes>
+</B_ventes><div class="notice"><:association_ventes:vente_aucune:></div><//B_ventes>
 [(#BOITE_FERMER)]

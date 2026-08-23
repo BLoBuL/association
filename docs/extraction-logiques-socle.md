@@ -487,6 +487,13 @@ Les vingt-neuf libellés consommés par Dons sont fournis par
 SPIP vers le français. Le domaine historique du socle n'est plus requis par ce
 plugin.
 
+## Lot 39 : domaine de langue Ventes
+
+Les trente-quatre libellés consommés par Ventes sont fournis par
+`association_ventes_fr.php`. Les squelettes et le CVT utilisent exclusivement
+le domaine `association_ventes`, avec repli SPIP vers le français lorsqu'une
+traduction locale n'existe pas encore.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

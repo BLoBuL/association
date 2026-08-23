@@ -64,16 +64,16 @@ function formulaires_editer_asso_ventes_verifier_dist($id_vente) {
 	$frais_envoi = association_recupere_montant(_request('frais_envoi'));
 	$quantite = association_recupere_montant(_request('quantite'));
 
-	if ($prix_vente<0) $erreurs['prix_vente'] = _T('association:erreur_montant');
-	if ($frais_envoi<0) $erreurs['frais_envoi'] = _T('association:erreur_montant');
-	if ($quantite<0) $erreurs['quantite'] = _T('association:erreur_montant');
+	if ($prix_vente<0) $erreurs['prix_vente'] = _T('association_ventes:erreur_montant');
+	if ($frais_envoi<0) $erreurs['frais_envoi'] = _T('association_ventes:erreur_montant');
+	if ($quantite<0) $erreurs['quantite'] = _T('association_ventes:erreur_montant');
 
 	/* verifier si on a un numero d'adherent qu'il existe dans la base */
 	$id_acheteur = _request('id_acheteur');
 	if ($id_acheteur != '') {
 		$id_acheteur = intval($id_acheteur);
 		if (sql_countsel('spip_auteurs', "id_auteur=$id_acheteur")==0) {
-			$erreurs['id_acheteur'] = _T('association:erreur_id_adherent');
+			$erreurs['id_acheteur'] = _T('association_ventes:erreur_id_adherent');
 		}
 		
 	}
@@ -87,7 +87,7 @@ function formulaires_editer_asso_ventes_verifier_dist($id_vente) {
 	}
 
 	if (count($erreurs)) {
-	$erreurs['message_erreur'] = _T('association:erreur_titre');
+	$erreurs['message_erreur'] = _T('association_ventes:erreur_titre');
 	}
 
 	return $erreurs;
@@ -114,4 +114,3 @@ function formulaires_editer_asso_ventes_traiter($id_vente) {
 	}
 	return formulaires_editer_objet_traiter('asso_ventes', $id_vente, '', '',  generer_url_ecrire('ventes'), '');
 }
-
