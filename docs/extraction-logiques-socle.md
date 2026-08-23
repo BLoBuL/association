@@ -519,6 +519,14 @@ Les cinquante-neuf libellés des ressources et réservations sont fournis par
 `association_prets_fr.php`. Les pages publiques, modèles, CVT et écrans privés
 utilisent exclusivement le domaine `association_prets` avec repli français.
 
+## Lot 44 : domaine de langue Comptabilité
+
+Les deux-cent-dix-huit libellés consommés par la comptabilité sont fournis par
+`association_compta_fr.php`. Les 189 traductions historiques sont conservées
+exactement ; 29 clés auparavant absentes reçoivent un libellé français
+explicite. Les exports, CVT et écrans privés utilisent exclusivement le domaine
+`association_compta` avec repli français.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

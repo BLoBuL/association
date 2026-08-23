@@ -1,9 +1,9 @@
-<h1 class="grostitre"><:association:titre_export_activites_compta:></h1>
+<h1 class="grostitre"><:association_compta:titre_export_activites_compta:></h1>
 [(#SET{exercices,#VAL{%}|filtre_calcul_fonction_comptes_lister_exercices{%,''}})]
 [(#SET{exercice,#ENV{exercice,#GET{exercices}|reset}})]
 <div class="asso-filtres">
   <div class="filtre-groupe">
-    <label><:association:label_filtre_exercice_comptable:></label>
+    <label><:association_compta:label_filtre_exercice_comptable:></label>
     <div class="options">
       <BOUCLE_exercices(DATA){source table,#GET{exercices}}>
         <a href="[(#SELF|parametre_url{exercice,#VALEUR})]" class="ajax option[(#GET{exercice}|=={#VALEUR}|oui) selected]">[(#VALEUR)] / [(#VALEUR|plus{1})]</a>
@@ -15,7 +15,7 @@
   <div class="bouton">
     <a href="[(#URL_PAGE{export_activites_compta.csv}|parametre_url{exercice,#GET{exercice}})]" class="btn-export lien_avec_fa">
       <span class="fa_icone"><i class="fa-solid fa-download"></i></span>
-      <span><:association:label_export_csv_compta_activites:></span>
+      <span><:association_compta:label_export_csv_compta_activites:></span>
     </a>
   </div>
 </div>
@@ -27,14 +27,14 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th><:association:col_date_comptable:></th>
-      <th><:association:col_exercice:></th>
-      <th><:association:col_evenement:></th>
-      <th><:association:col_participant:></th>
-      <th><:association:col_imputation:></th>
-      <th><:association:col_montant_recette:></th>
-      <th><:association:col_statut_transaction:></th>
-      <th><:association:col_mode_paiement:></th>
+      <th><:association_compta:col_date_comptable:></th>
+      <th><:association_compta:col_exercice:></th>
+      <th><:association_compta:col_evenement:></th>
+      <th><:association_compta:col_participant:></th>
+      <th><:association_compta:col_imputation:></th>
+      <th><:association_compta:col_montant_recette:></th>
+      <th><:association_compta:col_statut_transaction:></th>
+      <th><:association_compta:col_mode_paiement:></th>
     </tr>
   </thead>
   <tbody>
@@ -57,7 +57,7 @@
   </tbody>
 </table>
 </B_comptes_activites>
-<p><:association:aucune_operation_comptable_activites:></p>
+<p><:association_compta:aucune_operation_comptable_activites:></p>
 <//B_comptes_activites>
 <div class="nettoyeur"></div>
 

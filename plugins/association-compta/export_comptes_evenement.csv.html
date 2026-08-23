@@ -1,17 +1,17 @@
 #CACHE{0}#HTTP_HEADER{Content-Encoding: #CHARSET}#HTTP_HEADER{Content-Type: text/csv; charset=#CHARSET}<BOUCLE_evenement(EVENEMENTS){id_evenement}{si #SESSION{id_auteur}}>[(#HTTP_HEADER{Content-Disposition: attachment; filename=[Comptabilite - (#ID_EVENEMENT)][ - (#TITRE|replace{','}|supprimer_tags|couper{25,''})][ - ((#DATE_DEBUT|affdate{'d-m-y'}))].csv})]
-[(#VAL{<:association:export_evenements_date:>}|textebrut|utf8_decode)];[(#DATE_DEBUT|affdate{'d-m-y H:i'})];
-[(#VAL{<:association:export_evenements_titre:>}|textebrut|utf8_decode)];["(#TITRE|textebrut|utf8_decode)"];
-[(#VAL{<:association:export_evenements_num_evenement:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT)];
+[(#VAL{<:association_compta:export_evenements_date:>}|textebrut|utf8_decode)];[(#DATE_DEBUT|affdate{'d-m-y H:i'})];
+[(#VAL{<:association_compta:export_evenements_titre:>}|textebrut|utf8_decode)];["(#TITRE|textebrut|utf8_decode)"];
+[(#VAL{<:association_compta:export_evenements_num_evenement:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT)];
 
-[(#VAL{<:association:entrees:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|total_recettes_evenement)];
-[(#VAL{<:association:sorties:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|total_depenses_evenement)];
-[(#VAL{<:association:solde:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|solde_evenement)];
+[(#VAL{<:association_compta:entrees:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|total_recettes_evenement)];
+[(#VAL{<:association_compta:sorties:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|total_depenses_evenement)];
+[(#VAL{<:association_compta:solde:>}|textebrut|utf8_decode)];[(#ID_EVENEMENT|solde_evenement)];
 
-[(#VAL{<:association:titre_comptabilite_evenement:>}|textebrut|utf8_decode)];
-[(#VAL{<:association:id:>}|textebrut|utf8_decode)];[(#VAL{<:association:date:>}|textebrut|utf8_decode)];[(#VAL{<:association:id_transaction:>}|textebrut|utf8_decode)];[(#VAL{<:association:compte:>}|textebrut|utf8_decode)];[(#VAL{<:association:montant:>}|textebrut|utf8_decode)];[(#VAL{<:association:justification:>}|textebrut|utf8_decode)];
+[(#VAL{<:association_compta:titre_comptabilite_evenement:>}|textebrut|utf8_decode)];
+[(#VAL{<:association_compta:id:>}|textebrut|utf8_decode)];[(#VAL{<:association_compta:date:>}|textebrut|utf8_decode)];[(#VAL{<:association_compta:id_transaction:>}|textebrut|utf8_decode)];[(#VAL{<:association_compta:compte:>}|textebrut|utf8_decode)];[(#VAL{<:association_compta:montant:>}|textebrut|utf8_decode)];[(#VAL{<:association_compta:justification:>}|textebrut|utf8_decode)];
 
 <BOUCLE_comptes(ASSO_COMPTES){id_evenement=#ID_EVENEMENT}{par date}{inverse}>[#(#ID_COMPTE)];[(#DATE|affdate{'d/m/Y'})];[(#ID_TRANSACTION|?{#ID_TRANSACTION, -})];[#IMPUTATION];[(#RECETTE|montant_signe{#DEPENSE})];["(#JUSTIFICATION|justification_compte{#JOURNAL}|textebrut|replace{'"','""'}|utf8_decode)"]
 </BOUCLE_comptes>
 </BOUCLE_evenement>[(#SESSION{id_auteur}|non)
-[(#VAL{<:association:export_asso_comptes_message_non_connecte:>}|textebrut|utf8_decode)]
+[(#VAL{<:association_compta:export_asso_comptes_message_non_connecte:>}|textebrut|utf8_decode)]
 ]</B_evenement>

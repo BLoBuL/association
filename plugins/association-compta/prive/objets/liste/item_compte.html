@@ -10,11 +10,11 @@
 [(#GET{devise}|non)[(#SET{devise,[(#CONFIG{intl/devise_defaut})]})]]
 <tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})] [(#VU|=={1}|?{compte_valide,compte_valide})] [(#RECETTE|>{0}|?{recette,depense})]">
     <td class="id">
-        <a href="[(#URL_ECRIRE{editer_asso_comptes, id_compte=#ID_COMPTE})]" title="<:association:modifier_operation:>">##ID_COMPTE</a>
+        <a href="[(#URL_ECRIRE{editer_asso_comptes, id_compte=#ID_COMPTE})]" title="<:association_compta:modifier_operation:>">##ID_COMPTE</a>
     </td>
     <td class="transaction">
         [(#ID_TRANSACTION|?{
-        <a href="[(#URL_ECRIRE{voir_transaction, id_transaction=#ID_TRANSACTION})]" title="<:association:voir_details_transaction:>">##ID_TRANSACTION</a>,
+        <a href="[(#URL_ECRIRE{voir_transaction, id_transaction=#ID_TRANSACTION})]" title="<:association_compta:voir_details_transaction:>">##ID_TRANSACTION</a>,
         <span class="text-muted">-</span>
         })]
     </td>
@@ -39,22 +39,22 @@
     </td>
     <td class="action_comptabilite actions">
         <div class="actions_wrap">
-            <a href="[(#URL_ECRIRE{editer_asso_comptes, id_compte=#ID_COMPTE})]" class="lien_fa action-editer" title="<:association:modifier_operation:>">
+            <a href="[(#URL_ECRIRE{editer_asso_comptes, id_compte=#ID_COMPTE})]" class="lien_fa action-editer" title="<:association_compta:modifier_operation:>">
                 <i class="fa-regular fa-pen-to-square"></i>
             </a>
             [(#VU|=={1}|non)
-            <a href="[(#URL_ACTION_AUTEUR{valider_compte,#ID_COMPTE,#SELF})]" class="lien_fa tooltip action-valider" title="<:association:valider_operation:>">
+            <a href="[(#URL_ACTION_AUTEUR{valider_compte,#ID_COMPTE,#SELF})]" class="lien_fa tooltip action-valider" title="<:association_compta:valider_operation:>">
                 <i class="fa fa-toggle-off"></i>
-                <span class="tooltiptext"><:association:valider_operation:></span>
+                <span class="tooltiptext"><:association_compta:valider_operation:></span>
             </a>
             ]
             [(#VU|=={1}|et{#GET{statut_transaction}|!={ok}}|oui)
-            <a href="[(#URL_ACTION_AUTEUR{invalider_compte,#ID_COMPTE,#SELF})]" class="lien_fa tooltip action-devalider" title="<:association:invalider_operation:>">
+            <a href="[(#URL_ACTION_AUTEUR{invalider_compte,#ID_COMPTE,#SELF})]" class="lien_fa tooltip action-devalider" title="<:association_compta:invalider_operation:>">
                 <i class="fa fa-toggle-on"></i>
-                <span class="tooltiptext"><:association:invalider_operation:></span>
+                <span class="tooltiptext"><:association_compta:invalider_operation:></span>
             </a>
             ]
-            <a href="[(#URL_ACTION_AUTEUR{supprimer_compte,#ID_COMPTE,#SELF})]" onclick="return confirm('<:association:confirmer_suppression:>');" class="lien_fa action-supprimer" title="<:association:supprimer_operation:>">
+            <a href="[(#URL_ACTION_AUTEUR{supprimer_compte,#ID_COMPTE,#SELF})]" onclick="return confirm('<:association_compta:confirmer_suppression:>');" class="lien_fa action-supprimer" title="<:association_compta:supprimer_operation:>">
                 <i class="fa fa-trash"></i>
             </a>
         </div>

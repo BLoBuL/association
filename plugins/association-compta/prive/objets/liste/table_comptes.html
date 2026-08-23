@@ -10,7 +10,7 @@
     <div class="filtres">
         <form method="post" action="[(#SELF|parametre_url{imputation,''})]">
         <select name="imputation" class="fondl" onchange="form.submit()">
-            <option value="%" [(#GET{imputation}|=={%}|oui)selected="selected"]><:association:tous:></option>
+            <option value="%" [(#GET{imputation}|=={%}|oui)selected="selected"]><:association_compta:tous:></option>
             <BOUCLE_plans(ASSO_PLAN){par classe}{par code}>
             [(#SET{classe_precedente,#CLASSE_PRECEDENTE})]
             [(#GET{classe_precedente}|!={#CLASSE}|oui)
@@ -30,12 +30,12 @@
 
           <div class="actions-group">
                 <select name="action_groupe" id="action_groupe">
-                      <option value="">&mdash; <:association:action_groupee:> &mdash;</option>
-                      <option value="valider"><:association:valider_selection:></option>
-                      <option value="invalider"><:association:invalider_selection:></option>
-                      <option value="supprimer"><:association:supprimer_selection:></option>
+                      <option value="">&mdash; <:association_compta:action_groupee:> &mdash;</option>
+                      <option value="valider"><:association_compta:valider_selection:></option>
+                      <option value="invalider"><:association_compta:invalider_selection:></option>
+                      <option value="supprimer"><:association_compta:supprimer_selection:></option>
                 </select>
-            <input type="submit" name="appliquer" value="<:association:appliquer:>" class="submit" onclick="return confirm_action();" />
+            <input type="submit" name="appliquer" value="<:association_compta:appliquer:>" class="submit" onclick="return confirm_action();" />
           </div>
 
 
@@ -43,13 +43,13 @@
         <B_comptes>
             <table class="tableau_comptabilite tableau_asso">
                 <tr>
-                    <th><:association:id:></th>
-                    <th><:association:id_transaction:></th>
-                    <th><:association:date:></th>
-                    <th><:association:compte:></th>
-                    <th><:association:justification:></th>
-                    <th><:association:montant:></th>
-                    <th><:association:actions:></th>
+                    <th><:association_compta:id:></th>
+                    <th><:association_compta:id_transaction:></th>
+                    <th><:association_compta:date:></th>
+                    <th><:association_compta:compte:></th>
+                    <th><:association_compta:justification:></th>
+                    <th><:association_compta:montant:></th>
+                    <th><:association_compta:actions:></th>
                     <th class="checkbox">
                       <input id="check_all" name="selecteur_comptes[]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);">
                       <label for="check_all"></label>
@@ -68,7 +68,7 @@
   function confirm_action() {
   var action = document.getElementById('action_groupe').value;
   if (action == 'supprimer') {
-    return confirm('<:association:confirmer_suppression_selection:>');
+    return confirm('<:association_compta:confirmer_suppression_selection:>');
   }
   return true;
   }

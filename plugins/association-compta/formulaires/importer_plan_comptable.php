@@ -39,8 +39,8 @@ function formulaires_importer_plan_comptable_saisies_dist(){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'import_plan_comptable',
-            'label' => '<:association:form_import_pc_fieldset_label:>',
-            'explication' => '<:association:form_import_pc_fieldset_explication:>',
+            'label' => '<:association_compta:form_import_pc_fieldset_label:>',
+            'explication' => '<:association_compta:form_import_pc_fieldset_explication:>',
         ),
         'saisies' => $saisies_classes
     );
@@ -107,7 +107,7 @@ function formulaires_importer_plan_comptable_traiter_dist(){
         }
     }
 
-    $retour['message_ok'] = _T('association:message_import_reussi');
+    $retour['message_ok'] = _T('association_compta:message_import_reussi');
     return $retour;
 }
 
@@ -123,9 +123,9 @@ function decoder_fichier_json($fichier_json){
     $json_data = json_decode($json, true);
 
     if ($file == false) {
-        echo _T('association:erreur_fichier_inexistant');
+        echo _T('association_compta:erreur_fichier_inexistant');
     } elseif ($json_data == false) {
-        echo _T('association:erreur_fichier_invalide');
+        echo _T('association_compta:erreur_fichier_invalide');
     } else {
         return $json_data;
     }

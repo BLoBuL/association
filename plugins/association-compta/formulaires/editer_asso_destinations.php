@@ -16,7 +16,7 @@ include_spip('inc/editer');
 
 function formulaires_editer_asso_destinations_charger_dist($id_destination='') {
     $contexte = formulaires_editer_objet_charger('asso_destinations', $id_destination, '', '',  generer_url_ecrire('destinations'), '');
-    $contexte['title'] = $id_destination == '' ? _T('association:ajouter_destination') : _T('association:modifier_destination');
+    $contexte['title'] = $id_destination == '' ? _T('association_compta:ajouter_destination') : _T('association_compta:modifier_destination');
 	return $contexte;
 }
 
@@ -27,7 +27,7 @@ function formulaires_editer_asso_destinations_verifier_dist($id_destination='') 
 	}
 
 	if (count($erreurs)) {
-		$erreurs['message_erreur'] = _T('association:erreur_titre');
+		$erreurs['message_erreur'] = _T('association_compta:erreur_titre');
 	}
 	return $erreurs;
 }

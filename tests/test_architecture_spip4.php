@@ -193,6 +193,19 @@ $verifier(
 		&& strpos($prets_lang, "'ressources_titre_liste_ressources'") !== false,
 	'Le plugin Prêts doit utiliser son propre domaine de langue.'
 );
+$compta_lang = file_get_contents($racine . '/plugins/association-compta/lang/association_compta_fr.php');
+$compta_sources_lang = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-compta')) as $compta_source_lang) {
+	if ($compta_source_lang->isFile() && preg_match('/\.(?:php|html)$/', $compta_source_lang->getFilename()) && strpos($compta_source_lang->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$compta_sources_lang .= file_get_contents($compta_source_lang->getPathname());
+	}
+}
+$verifier(
+	!preg_match('/(?:<:|[\'\"]|\{)association:/', $compta_sources_lang)
+		&& strpos($compta_sources_lang, 'association_compta:') !== false
+		&& strpos($compta_lang, "'informations_comptables'") !== false,
+	'Le plugin Comptabilité doit utiliser son propre domaine de langue.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

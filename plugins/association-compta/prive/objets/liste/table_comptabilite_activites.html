@@ -1,5 +1,5 @@
 <div class="cadre-formulaire-editer">
-    <h2><:association:titre_comptabilite_evenement:></h2>
+    <h2><:association_compta:titre_comptabilite_evenement:></h2>
     [(#REM) Normalisation du filtre type ]
     [(#SET{type,[(#ENV{type,'toutes'})]})]
     [(#GET{type}|=={''}|?{[(#SET{type,toutes})]})]
@@ -19,36 +19,36 @@
         [(#GET{inclure_non_validees}|=={0}|?{<a class="spip_button inclure-toggle ajax" data-value="1" href="[(#SELF|parametre_url{inclure_non_validees,1})]">Inclure non validées : OFF</a>,})]
     </div>
 
-    <div class="boite_stats_compact boite_stats_expanded" aria-label="<:association:label_stats_comptabilite:>">
+    <div class="boite_stats_compact boite_stats_expanded" aria-label="<:association_compta:label_stats_comptabilite:>">
       <div class="stats-grid">
-        <div class="stat-card" aria-label="<:association:stat_entrees:>">
-          <div class="stat-card-title">&uarr; <:association:stat_entrees:></div>
+        <div class="stat-card" aria-label="<:association_compta:stat_entrees:>">
+          <div class="stat-card-title">&uarr; <:association_compta:stat_entrees:></div>
           <div class="stat-card-main">[(#GET{compta_stats}|table_valeur{total_recettes}|association_nbrefr)] <span class="stat-card-currency">[(#GET{devise})]</span></div>
-          <div class="stat-card-sub">[(#GET{compta_stats}|table_valeur{nb_recettes})] <:association:operations:> • <:association:moy_abbrev:> [(#GET{compta_stats}|table_valeur{avg_recette}|association_nbrefr)]</div>
+          <div class="stat-card-sub">[(#GET{compta_stats}|table_valeur{nb_recettes})] <:association_compta:operations:> • <:association_compta:moy_abbrev:> [(#GET{compta_stats}|table_valeur{avg_recette}|association_nbrefr)]</div>
         </div>
 
-        <div class="stat-card" aria-label="<:association:stat_sorties:>">
-          <div class="stat-card-title">&darr; <:association:stat_sorties:></div>
+        <div class="stat-card" aria-label="<:association_compta:stat_sorties:>">
+          <div class="stat-card-title">&darr; <:association_compta:stat_sorties:></div>
           <div class="stat-card-main">[(#GET{compta_stats}|table_valeur{total_depenses}|association_nbrefr)] <span class="stat-card-currency">[(#GET{devise})]</span></div>
-          <div class="stat-card-sub">[(#GET{compta_stats}|table_valeur{nb_depenses})] <:association:operations:> • <:association:moy_abbrev:> [(#GET{compta_stats}|table_valeur{avg_depense}|association_nbrefr)]</div>
+          <div class="stat-card-sub">[(#GET{compta_stats}|table_valeur{nb_depenses})] <:association_compta:operations:> • <:association_compta:moy_abbrev:> [(#GET{compta_stats}|table_valeur{avg_depense}|association_nbrefr)]</div>
         </div>
 
-          <div class="stat-card" aria-label="<:association:stat_solde:>">
-              <div class="stat-card-title">⚖️ <:association:stat_solde:></div>
+          <div class="stat-card" aria-label="<:association_compta:stat_solde:>">
+              <div class="stat-card-title">⚖️ <:association_compta:stat_solde:></div>
               <div class="stat-card-main stat-solde [(#GET{compta_stats}|table_valeur{total_solde}|>{0}|?{solde_positif,solde_negatif})]">[(#GET{compta_stats}|table_valeur{total_solde}|association_nbrefr)] <span class="stat-card-currency">[(#GET{devise})]</span></div>
-              <div class="stat-card-sub"><:association:recettes_moins_depenses:></div>
+              <div class="stat-card-sub"><:association_compta:recettes_moins_depenses:></div>
           </div>
 
-        <div class="stat-card" aria-label="<:association:stat_total_lignes:>">
-          <div class="stat-card-title">🧾 <:association:stat_total_lignes:></div>
+        <div class="stat-card" aria-label="<:association_compta:stat_total_lignes:>">
+          <div class="stat-card-title">🧾 <:association_compta:stat_total_lignes:></div>
           <div class="stat-card-main">[(#GET{compta_stats}|table_valeur{nb_toutes})]</div>
-          <div class="stat-card-sub"><:association:nombre_total_operations:></div>
+          <div class="stat-card-sub"><:association_compta:nombre_total_operations:></div>
         </div>
 
-        <div class="stat-card" aria-label="<:association:stat_moyenne_op:>">
-          <div class="stat-card-title">🔢 <:association:stat_moyenne_op:></div>
+        <div class="stat-card" aria-label="<:association_compta:stat_moyenne_op:>">
+          <div class="stat-card-title">🔢 <:association_compta:stat_moyenne_op:></div>
           <div class="stat-card-main">[(#GET{compta_stats}|table_valeur{avg_operation}|association_nbrefr)] <span class="stat-card-currency">[(#GET{devise})]</span></div>
-          <div class="stat-card-sub"><:association:moyenne_par_operation:></div>
+          <div class="stat-card-sub"><:association_compta:moyenne_par_operation:></div>
         </div>
       </div>
     </div>
@@ -57,13 +57,13 @@
         <div class="bouton">
             <a href="[(#URL_ECRIRE{editer_asso_comptes,id_evenement=#ENV{id_evenement}})]" class="btn-export lien_avec_fa">
                 <span class="fa_icone"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></span>
-                <span><:association:ajouter_une_operation:></span>
+                <span><:association_compta:ajouter_une_operation:></span>
             </a>
         </div>
         <div class="bouton">
             <a href="[(#URL_PAGE{export_comptes_evenement.csv,id_evenement=#ENV{id_evenement}})]" class="btn-export lien_avec_fa">
                 <span class="fa_icone"><i class="fa-solid fa-file-export"></i></span>
-                <span><:association:exporter:></span>
+                <span><:association_compta:exporter:></span>
             </a>
         </div>
     </div>
@@ -71,11 +71,11 @@
     [(#REM) Filtres d'affichage (Toutes / Recettes / Dépenses) ]
     <div class="asso-filtres">
         <div class="filtre-groupe style-pills">
-            <label><i class="fa-solid fa-filter"></i> <:association:label_filtre_operation:></label>
+            <label><i class="fa-solid fa-filter"></i> <:association_compta:label_filtre_operation:></label>
             <div class="options">
-                <a href="[(#SELF|parametre_url{type,toutes})]" class="ajax option[(#ENV{type}|=={toutes}|oui) selected]"><:association:filtre_operation_toutes:></a>
-                <a href="[(#SELF|parametre_url{type,recette})]" class="ajax option[(#ENV{type}|=={recette}|oui) selected]"><:association:filtre_operation_recettes:></a>
-                <a href="[(#SELF|parametre_url{type,depense})]" class="ajax option[(#ENV{type}|=={depense}|oui) selected]"><:association:filtre_operation_depenses:></a>
+                <a href="[(#SELF|parametre_url{type,toutes})]" class="ajax option[(#ENV{type}|=={toutes}|oui) selected]"><:association_compta:filtre_operation_toutes:></a>
+                <a href="[(#SELF|parametre_url{type,recette})]" class="ajax option[(#ENV{type}|=={recette}|oui) selected]"><:association_compta:filtre_operation_recettes:></a>
+                <a href="[(#SELF|parametre_url{type,depense})]" class="ajax option[(#ENV{type}|=={depense}|oui) selected]"><:association_compta:filtre_operation_depenses:></a>
             </div>
         </div>
     </div>
@@ -83,12 +83,12 @@
     [(#REM) Tableau unique avec filtrage conditionnel ]
     <table class="tableau_comptabilite tableau_asso">
         <tr>
-          <th><:association:id:></th>
-          <th><:association:date:></th>
-          <th><:association:id_transaction:></th>
-          <th><:association:compte:></th>
-          <th><:association:justification:></th>
-          <th><:association:montant:></th>
+          <th><:association_compta:id:></th>
+          <th><:association_compta:date:></th>
+          <th><:association_compta:id_transaction:></th>
+          <th><:association_compta:compte:></th>
+          <th><:association_compta:justification:></th>
+          <th><:association_compta:montant:></th>
           <th class="action">[(#BOUTON_ACTION{synchro,#URL_ACTION_AUTEUR{synchroniser_comptabilite_evenement,id_evenement=#ENV{id_evenement},#SELF,ajax}})]</th>
         </tr>
         [(#REM) Version quand on inclut non-validées (vu >= 0) ]
@@ -123,10 +123,10 @@
 
     </table>
 <!--
-    <p><:association:compta_aucune_operation:></p>
+    <p><:association_compta:compta_aucune_operation:></p>
 
     [(#AUTORISER{modifier, evenement, #ENV{id_evenement}}|oui)
-        [(#BOUTON_ACTION{<:association:compta_synchroniser_evenement:>,#URL_ACTION_AUTEUR{synchroniser_comptabilite_evenement,id_evenement=#ENV{id_evenement},#SELF,ajax}})]
+        [(#BOUTON_ACTION{<:association_compta:compta_synchroniser_evenement:>,#URL_ACTION_AUTEUR{synchroniser_comptabilite_evenement,id_evenement=#ENV{id_evenement},#SELF,ajax}})]
     ]-->
 
     [(#REM) Fin du contenu de la page ]

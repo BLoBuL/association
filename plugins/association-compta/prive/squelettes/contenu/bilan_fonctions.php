@@ -43,7 +43,7 @@ function association_bilan_contexte($inutile = '') {
 		unset($ligne);
 		$bilans[] = array(
 			'id_destination' => $id_destination,
-			'intitule' => $id_destination ? ($libelles[$id_destination] ?? ('#' . $id_destination)) : _T('association:toutes_destination'),
+			'intitule' => $id_destination ? ($libelles[$id_destination] ?? ('#' . $id_destination)) : _T('association_compta:toutes_destination'),
 			'lignes' => $lignes,
 			'totaux' => $totaux,
 		);

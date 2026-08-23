@@ -94,7 +94,7 @@ function _verifier_montant_destinations($montant_attendu)
                 $id_inserted[$id_destination]=0;
             }
             else {
-                $err = _T('association:erreur_destination_dupliquee');
+                $err = _T('association_compta:erreur_destination_dupliquee');
             }
 
             $total_destination += association_recupere_montant($toutesDestinationsMontants[$id]); /* les montants sont dans un autre tableau aux meme cles */
@@ -102,7 +102,7 @@ function _verifier_montant_destinations($montant_attendu)
 
         /* on verifie que la somme des montants des destinations correspond au montant attendu */
         if ($montant_attendu != $total_destination) {
-            $err .= _T('association:erreur_montant_destination');
+            $err .= _T('association_compta:erreur_montant_destination');
         }
 
     } else { /* une seule destination, le montant peut ne pas avoir ete precise, dans ce cas pas de verif, c'est le montant attendu qui sera entre dans la base */
@@ -111,7 +111,7 @@ function _verifier_montant_destinations($montant_attendu)
             $montant = association_recupere_montant($toutesDestinationsMontants[1]);
             /* on verifie que le montant indique correspond au montant attendu */
             if ($montant_attendu != $montant) {
-                $err = _T('association:erreur_montant_destination');
+                $err = _T('association_compta:erreur_montant_destination');
             }
         }
     }
@@ -135,7 +135,7 @@ function association_editeur_destinations($destination, $unique='', $defaut='')
 
     $res = "<script type='text/javascript' src='".find_in_path("javascript/jquery.destinations_form.js")."'></script>";
     $res .= '<label for="destination"><strong>'
-        . _T('association:destination')
+        . _T('association_compta:destination')
         . '&nbsp;:</strong></label>'
         . '<div id="divTxtDestination" class="formulaire_edition_destinations">';
 

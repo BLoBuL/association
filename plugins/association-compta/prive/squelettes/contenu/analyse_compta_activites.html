@@ -1,5 +1,5 @@
 <div class="cadre-formulaire-editer">
-  <h1 class="grostitre"><:association:titre_export_activites_compta:></h1>
+  <h1 class="grostitre"><:association_compta:titre_export_activites_compta:></h1>
 
   [(#SET{exercices,#VAL{%}|filtre_calcul_fonction_comptes_lister_exercices{%,''}})]
   [(#SET{exercice,#ENV{exercice,#GET{exercices}|reset}})]
@@ -17,7 +17,7 @@
   [(#REM) Filtres d'exercice et de type ]
   <div class="asso-filtres">
       <div class="filtre-groupe style-pills">
-      <label><:association:label_filtre_exercice_comptable:></label>
+      <label><:association_compta:label_filtre_exercice_comptable:></label>
       <div class="options">
         <BOUCLE_exercices(DATA){source table,#GET{exercices}}>
           <a href="[(#SELF|parametre_url{exercice,#VALEUR})]" class="ajax option[(#GET{exercice}|=={#VALEUR}|oui) selected]">[(#VALEUR)] / [(#VALEUR|plus{1})]</a>
@@ -31,7 +31,7 @@
     <div class="bouton">
       <a href="[(#URL_PAGE{analyse_compta_activites.csv}|parametre_url{exercice,#GET{exercice}}|parametre_url{type,#GET{type}})]" class="btn-export lien_avec_fa">
         <span class="fa_icone"><i class="fa-solid fa-download" aria-hidden="true"></i></span>
-        <span><:association:label_export_csv_compta_activites:></span>
+        <span><:association_compta:label_export_csv_compta_activites:></span>
       </a>
     </div>
       <div style="text-align:right;margin-bottom:8px;">
@@ -44,37 +44,37 @@
   [(#SET{stats,#GET{exercice}|analyse_compta_activites_stats_exercice{#GET{type},#GET{vu_effectif}}})]
 
   [(#REM) Bloc de statistiques (cards) ]
-  <div class="boite_stats_compact boite_stats_expanded" aria-label="<:association:compta_aria_stats_exercice:>">
-    <h2><:association:compta_activites_totaux_titre:></h2>
+  <div class="boite_stats_compact boite_stats_expanded" aria-label="<:association_compta:compta_aria_stats_exercice:>">
+    <h2><:association_compta:compta_activites_totaux_titre:></h2>
     <div class="stats-grid">
-      <div class="stat-card" aria-label="<:association:compta_aria_entrees:>">
-        <div class="stat-card-title">▲ <:association:compta_card_recettes:></div>
+      <div class="stat-card" aria-label="<:association_compta:compta_aria_entrees:>">
+        <div class="stat-card-title">▲ <:association_compta:compta_card_recettes:></div>
         <div class="stat-card-main">[(#GET{stats}|table_valeur{total_recettes}|association_nbrefr)] <span class="stat-card-currency">€</span></div>
-        <div class="stat-card-sub"><:association:compta_card_recettes_sub:></div>
+        <div class="stat-card-sub"><:association_compta:compta_card_recettes_sub:></div>
       </div>
 
-      <div class="stat-card" aria-label="<:association:compta_aria_sorties:>">
-        <div class="stat-card-title">▼ <:association:compta_card_depenses:></div>
+      <div class="stat-card" aria-label="<:association_compta:compta_aria_sorties:>">
+        <div class="stat-card-title">▼ <:association_compta:compta_card_depenses:></div>
         <div class="stat-card-main">[(#GET{stats}|table_valeur{total_depenses}|association_nbrefr)] <span class="stat-card-currency">€</span></div>
-        <div class="stat-card-sub"><:association:compta_card_depenses_sub:></div>
+        <div class="stat-card-sub"><:association_compta:compta_card_depenses_sub:></div>
       </div>
 
-      <div class="stat-card" aria-label="<:association:compta_aria_solde:>">
-        <div class="stat-card-title">⚖️ <:association:compta_card_solde:></div>
+      <div class="stat-card" aria-label="<:association_compta:compta_aria_solde:>">
+        <div class="stat-card-title">⚖️ <:association_compta:compta_card_solde:></div>
         <div class="stat-card-main stat-solde [(#GET{stats}|table_valeur{solde}|>{0}|?{solde_positif,solde_negatif})]">[(#GET{stats}|table_valeur{solde}|association_nbrefr)] <span class="stat-card-currency">€</span></div>
-        <div class="stat-card-sub"><:association:compta_card_solde_sub:></div>
+        <div class="stat-card-sub"><:association_compta:compta_card_solde_sub:></div>
       </div>
 
-      <div class="stat-card" aria-label="<:association:compta_aria_operations:>">
-        <div class="stat-card-title">🧾 <:association:compta_card_operations:></div>
+      <div class="stat-card" aria-label="<:association_compta:compta_aria_operations:>">
+        <div class="stat-card-title">🧾 <:association_compta:compta_card_operations:></div>
         <div class="stat-card-main">[(#GET{stats}|table_valeur{total_operations})]</div>
-        <div class="stat-card-sub"><:association:compta_card_operations_sub:></div>
+        <div class="stat-card-sub"><:association_compta:compta_card_operations_sub:></div>
       </div>
 
-      <div class="stat-card" aria-label="<:association:compta_aria_moyenne:>">
-        <div class="stat-card-title">🔢 <:association:compta_card_moyenne:></div>
+      <div class="stat-card" aria-label="<:association_compta:compta_aria_moyenne:>">
+        <div class="stat-card-title">🔢 <:association_compta:compta_card_moyenne:></div>
         <div class="stat-card-main">[(#GET{stats}|table_valeur{montant_moyen}|association_nbrefr)] <span class="stat-card-currency">€</span></div>
-        <div class="stat-card-sub"><:association:compta_card_moyenne_sub:></div>
+        <div class="stat-card-sub"><:association_compta:compta_card_moyenne_sub:></div>
       </div>
     </div>
   </div>
@@ -90,13 +90,13 @@
     <thead>
       <tr>
         <th>#</th>
-        <th><:association:date:></th>
-        <th><:association:col_evenement:></th>
-        <th class="right"><:association:entrees:></th>
-        <th class="right"><:association:sorties:></th>
-        <th class="right"><:association:solde:></th>
-        <th class="right"><:association:col_rentabilite:></th>
-        <th class="center"><:association:col_nb_operations:></th>
+        <th><:association_compta:date:></th>
+        <th><:association_compta:col_evenement:></th>
+        <th class="right"><:association_compta:entrees:></th>
+        <th class="right"><:association_compta:sorties:></th>
+        <th class="right"><:association_compta:solde:></th>
+        <th class="right"><:association_compta:col_rentabilite:></th>
+        <th class="center"><:association_compta:col_nb_operations:></th>
       </tr>
     </thead>
     <tbody>
@@ -112,7 +112,7 @@
         ]
         <tr>
             <BOUCLE_evenement(EVENEMENTS){id_evenement=#VALEUR|table_valeur{id_evenement}}{tout}>
-            <td class="id"><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association:activite_bouton_gerer_inscription:>" class="bouton_editer">##ID_EVENEMENT</a></td>
+            <td class="id"><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association_compta:activite_bouton_gerer_inscription:>" class="bouton_editer">##ID_EVENEMENT</a></td>
             <td class="date">[(#DATE_DEBUT|affdate{'d/m/y'})][<br><small>(#DATE_DEBUT|affdate{"H:i"})</small>]</td>
             <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement,date_evenement=non,cat_evenement=oui}/>
             </BOUCLE_evenement>
@@ -128,7 +128,7 @@
   </table>
   </B_events>
   <div class="message-info">
-    <p><i class="fa-solid fa-info-circle" aria-hidden="true"></i> <:association:compta_activites_aucun_evenement_filtre:></p>
+    <p><i class="fa-solid fa-info-circle" aria-hidden="true"></i> <:association_compta:compta_activites_aucun_evenement_filtre:></p>
   </div>
   <//B_events>
 

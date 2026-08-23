@@ -1,5 +1,5 @@
 [(#AUTORISER{comptes_menu}|sinon_interdire_acces)]
-<h1 class="grostitre"><:association:informations_comptables:></h1>
+<h1 class="grostitre"><:association_compta:informations_comptables:></h1>
 
 [(#SET{exercice, #ENV{exercice}|sinon{#ENV{annee}|sinon{#DATE|association_comptes_start_year}}})]
 [(#SET{imputation,#ENV{imputation,%}})]
@@ -19,53 +19,53 @@
 
 
 <div class="cadre-relief">
-    <h2><:association:informations_comptables:></h2>
+    <h2><:association_compta:informations_comptables:></h2>
     [(#SET{exercices,[(#GET{imputation}|calcul_fonction_comptes_lister_exercices{#GET{vu_effectif}})]})]
 
     <!-- Statistiques compactes (inspiré de la comptabilité activités) -->
-    <div class="boite_stats_compact" aria-label="<:association:compta_activites_totaux_titre:>">
+    <div class="boite_stats_compact" aria-label="<:association_compta:compta_activites_totaux_titre:>">
       <div style="text-align:right;margin-bottom:8px;">
         [(#GET{inclure_non_validees}|=={1}|?{<a class="spip_button on inclure-toggle" data-value="0" href="[(#SELF|parametre_url{inclure_non_validees,0})]">Inclure non validées : ON</a>,})]
         [(#GET{inclure_non_validees}|=={0}|?{<a class="spip_button inclure-toggle" data-value="1" href="[(#SELF|parametre_url{inclure_non_validees,1})]">Inclure non validées : OFF</a>,})]
       </div>
       <div class="stats-grid">
         <!-- DEBUG removed -->
-        <div class="stat-card" aria-label="<:association:compta_card_recettes:>">
-          <div class="stat-card-title">&uarr; <:association:compta_card_recettes:> <small class="muted">([(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_recettes_all})],[(#GET{totaux}|table_valeur{count_recettes_vu1})]})])</small></div>
+        <div class="stat-card" aria-label="<:association_compta:compta_card_recettes:>">
+          <div class="stat-card-title">&uarr; <:association_compta:compta_card_recettes:> <small class="muted">([(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_recettes_all})],[(#GET{totaux}|table_valeur{count_recettes_vu1})]})])</small></div>
           <div class="stat-card-main">
             <BOUCLE_totaux_recettes(POUR){tableau #GET{totaux}|table_valeur{par_devise}}{par cle}>
             <span class="stat-currency-line">[(#VALEUR|table_valeur{recettes}|association_nbrefr)] <span class="stat-card-currency">#CLE</span></span>
             </BOUCLE_totaux_recettes>
           </div>
-          <div class="stat-card-sub">[(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_recettes_all})],[(#GET{totaux}|table_valeur{count_recettes_vu1})]})] <:association:operations:>
+          <div class="stat-card-sub">[(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_recettes_all})],[(#GET{totaux}|table_valeur{count_recettes_vu1})]})] <:association_compta:operations:>
             [(#GET{inclure_non_validees}|=={0}|?{[(#GET{imputation}|calcul_fonction_comptes_diff_recettes{#GET{exercice},#GET{vu_effectif}}|>{0}|?{<small style="color:#6b7280;">&nbsp;(+[(#GET{imputation}|calcul_fonction_comptes_diff_recettes{#GET{exercice},#GET{vu_effectif}})] non validées)</small>,})],})]
           </div>
         </div>
 
-        <div class="stat-card" aria-label="<:association:compta_card_depenses:>">
-          <div class="stat-card-title">&darr; <:association:compta_card_depenses:> <small class="muted">([(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_depenses_all})],[(#GET{totaux}|table_valeur{count_depenses_vu1})]})])</small></div>
+        <div class="stat-card" aria-label="<:association_compta:compta_card_depenses:>">
+          <div class="stat-card-title">&darr; <:association_compta:compta_card_depenses:> <small class="muted">([(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_depenses_all})],[(#GET{totaux}|table_valeur{count_depenses_vu1})]})])</small></div>
           <div class="stat-card-main">
             <BOUCLE_totaux_depenses(POUR){tableau #GET{totaux}|table_valeur{par_devise}}{par cle}>
             <span class="stat-currency-line">[(#VALEUR|table_valeur{depenses}|association_nbrefr)] <span class="stat-card-currency">#CLE</span></span>
             </BOUCLE_totaux_depenses>
           </div>
-          <div class="stat-card-sub">[(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_depenses_all})],[(#GET{totaux}|table_valeur{count_depenses_vu1})]})] <:association:operations:>
+          <div class="stat-card-sub">[(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_depenses_all})],[(#GET{totaux}|table_valeur{count_depenses_vu1})]})] <:association_compta:operations:>
             [(#GET{inclure_non_validees}|=={0}|?{[(#GET{imputation}|calcul_fonction_comptes_diff_depenses{#GET{exercice},#GET{vu_effectif}}|>{0}|?{<small style="color:#6b7280;">&nbsp;(+[(#GET{imputation}|calcul_fonction_comptes_diff_depenses{#GET{exercice},#GET{vu_effectif}})] non validées)</small>,})],})]
           </div>
         </div>
 
-        <div class="stat-card" aria-label="<:association:compta_card_solde:>">
-          <div class="stat-card-title">⚖️ <:association:compta_card_solde:></div>
+        <div class="stat-card" aria-label="<:association_compta:compta_card_solde:>">
+          <div class="stat-card-title">⚖️ <:association_compta:compta_card_solde:></div>
           <div class="stat-card-main stat-solde"><BOUCLE_totaux_soldes(POUR){tableau #GET{totaux}|table_valeur{par_devise}}{par cle}>
             <span class="stat-currency-line [(#VALEUR|table_valeur{solde}|>{0}|?{solde_positif,solde_negatif})]">[(#VALEUR|table_valeur{solde}|association_nbrefr)] <span class="stat-card-currency">#CLE</span></span>
           </BOUCLE_totaux_soldes></div>
-          <div class="stat-card-sub"><:association:compta_card_solde_sub:></div>
+          <div class="stat-card-sub"><:association_compta:compta_card_solde_sub:></div>
         </div>
 
-        <div class="stat-card" aria-label="<:association:compta_card_operations:>">
-          <div class="stat-card-title">🧾 <:association:compta_card_operations:></div>
+        <div class="stat-card" aria-label="<:association_compta:compta_card_operations:>">
+          <div class="stat-card-title">🧾 <:association_compta:compta_card_operations:></div>
           <div class="stat-card-main">[(#GET{inclure_non_validees}|=={1}|?{[(#GET{totaux}|table_valeur{count_operations_all})],[(#GET{totaux}|table_valeur{count_operations_vu1})]})]</div>
-          <div class="stat-card-sub"><:association:nombre_total_operations:></div>
+          <div class="stat-card-sub"><:association_compta:nombre_total_operations:></div>
         </div>
       </div>
     </div>

@@ -16,9 +16,9 @@ function formulaires_importer_destination_comptable_saisies_dist(){
         'saisie' => 'radio',
         'options' => array(
             'nom' => 'proposer_sousdestination',
-            'label' => '<:association:form_import_pc_proposer_sousdestination_label:>',
-            'explication' => '<:association:form_import_pc_proposer_sousdestination_explication:>',
-            'datas' => array('oui' => '<:association:oui:>', 'non' => '<:association:non:>'),
+            'label' => '<:association_compta:form_import_pc_proposer_sousdestination_label:>',
+            'explication' => '<:association_compta:form_import_pc_proposer_sousdestination_explication:>',
+            'datas' => array('oui' => '<:association_compta:oui:>', 'non' => '<:association_compta:non:>'),
             'defaut' => 'non',
         ),
     );*/
@@ -45,8 +45,8 @@ function formulaires_importer_destination_comptable_saisies_dist(){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'import_destination_comptable',
-            'label' => '<:association:form_import_pc_fieldset_label:>',
-            'explication' => '<:association:form_import_pc_fieldset_explication:>',
+            'label' => '<:association_compta:form_import_pc_fieldset_label:>',
+            'explication' => '<:association_compta:form_import_pc_fieldset_explication:>',
         ),
         'saisies' => $saisies_destinations
     );
@@ -66,7 +66,7 @@ function formulaires_importer_destination_comptable_charger_dist(){
 function formulaires_importer_destination_comptable_verifier_dist(){
     $erreurs = array();
     /*   if (!$_FILES['fichier']['name']) {
-           $erreurs['fichier'] = _T('association:erreur_fichier_manquant');
+           $erreurs['fichier'] = _T('association_compta:erreur_fichier_manquant');
        }*/
     return $erreurs;
 }
@@ -94,7 +94,7 @@ function formulaires_importer_destination_comptable_traiter_dist(){
         }
     }
     // On retourne un message de succès
-    $retour['message_ok'] = _T('association:message_import_reussi');
+    $retour['message_ok'] = _T('association_compta:message_import_reussi');
     // On renvoi vers la page de gestion des destinations
     $retour['redirect'] = generer_url_ecrire('destinations');
 
@@ -108,10 +108,10 @@ function decoder_fichier_json($fichier_json){
     // On décode le contenu du fichier JSON
     $json_data = json_decode($json, true);
     if ($file == false) {
-        echo _T('association:erreur_fichier_inexistant');
+        echo _T('association_compta:erreur_fichier_inexistant');
 
     }elseif ($json_data == false) {
-        echo _T('association:erreur_fichier_invalide');
+        echo _T('association_compta:erreur_fichier_invalide');
     }else {
         return $json_data;
     }

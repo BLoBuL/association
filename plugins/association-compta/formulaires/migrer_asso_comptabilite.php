@@ -26,8 +26,8 @@ function formulaires_migrer_asso_comptabilite_saisies_dist(){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'form_migrer_asso_comptabilite_fieldset',
-            'label' => '<:association:form_migrer_asso_comptabilite_label:>',
-            'explication' => '<:association:form_migrer_asso_comptabilite_explication:>',
+            'label' => '<:association_compta:form_migrer_asso_comptabilite_label:>',
+            'explication' => '<:association_compta:form_migrer_asso_comptabilite_explication:>',
         ),
         'saisies' => array(
             // Choix du mode de migration
@@ -35,11 +35,11 @@ function formulaires_migrer_asso_comptabilite_saisies_dist(){
                 'saisie' => 'selection',
                 'options' => array(
                     'nom' => 'type_migration',
-                    'label' => '<:association:form_migrer_asso_comptabilite_mode_label:>',
-                    'explication' => '<:association:form_migrer_asso_comptabilite_mode_explication:>',
+                    'label' => '<:association_compta:form_migrer_asso_comptabilite_mode_label:>',
+                    'explication' => '<:association_compta:form_migrer_asso_comptabilite_mode_explication:>',
                     'data' => array(
-                        'auto' => _T('association:form_migrer_asso_comptabilite_mode_auto'),
-                        'manuelle' => _T('association:form_migrer_asso_comptabilite_mode_manuelle'),
+                        'auto' => _T('association_compta:form_migrer_asso_comptabilite_mode_auto'),
+                        'manuelle' => _T('association_compta:form_migrer_asso_comptabilite_mode_manuelle'),
                     ),
                     'defaut' => 'auto',
                     'obligatoire' => 'oui',
@@ -50,7 +50,7 @@ function formulaires_migrer_asso_comptabilite_saisies_dist(){
                 'saisie' => 'checkbox',
                 'options' => array(
                     'nom' => 'imputations_existantes',
-                    'label' => '<:association:form_migrer_asso_comptabilite_imputation_label:>',
+                    'label' => '<:association_compta:form_migrer_asso_comptabilite_imputation_label:>',
                     'data' => saisies_tableau2chaine($liste_compte_imputation),
                     'obligatoire' => 'oui',
                     'afficher_si' => '@type_migration@ == "manuelle"',
@@ -60,7 +60,7 @@ function formulaires_migrer_asso_comptabilite_saisies_dist(){
                 'saisie' => 'selection',
                 'options' => array(
                     'nom' => 'pc_cotisations_creance',
-                    'label' => _T('association:form_migrer_asso_comptabilite_compte_creance_label'),
+                    'label' => _T('association_compta:form_migrer_asso_comptabilite_compte_creance_label'),
                     'explication' => _T('association_config:form_migrer_asso_comptabilite_compte_creance_label'),
                     'data' => preparer_liste_asso_plan_compte('data_saisies','1'),
                     'defaut' => '',
@@ -71,8 +71,8 @@ function formulaires_migrer_asso_comptabilite_saisies_dist(){
                 'saisie' => 'selection',
                 'options' => array(
                     'nom' => 'pc_cotisations_paiement',
-                    'label' => _T('association:form_migrer_asso_comptabilite_compte_creance_label'),
-                    'explication' => _T('association:form_migrer_asso_comptabilite_compte_creance_label'),
+                    'label' => _T('association_compta:form_migrer_asso_comptabilite_compte_creance_label'),
+                    'explication' => _T('association_compta:form_migrer_asso_comptabilite_compte_creance_label'),
                     'data' => preparer_liste_asso_plan_compte('data_saisies','7'),
                     'defaut' => '',
                     'afficher_si' => '@type_migration@ == "manuelle"',
@@ -95,19 +95,19 @@ function formulaires_migrer_asso_comptabilite_verifier_dist(){
 
     $type_migration = _request('type_migration') ?: '';
     if (!$type_migration) {
-        $erreurs['type_migration'] = _T('association:erreur_obligatoire');
+        $erreurs['type_migration'] = _T('association_compta:erreur_obligatoire');
     }
 
     if ($type_migration === 'manuelle') {
         $imputations_existantes = _request('imputations_existantes');
         if (!$imputations_existantes || !is_array($imputations_existantes) || !count($imputations_existantes)) {
-            $erreurs['imputations_existantes'] = _T('association:erreur_obligatoire');
+            $erreurs['imputations_existantes'] = _T('association_compta:erreur_obligatoire');
         }
         if (!_request('pc_cotisations_creance')) {
-            $erreurs['pc_cotisations_creance'] = _T('association:erreur_obligatoire');
+            $erreurs['pc_cotisations_creance'] = _T('association_compta:erreur_obligatoire');
         }
         if (!_request('pc_cotisations_paiement')) {
-            $erreurs['pc_cotisations_paiement'] = _T('association:erreur_obligatoire');
+            $erreurs['pc_cotisations_paiement'] = _T('association_compta:erreur_obligatoire');
         }
     }
 
@@ -154,7 +154,7 @@ function formulaires_migrer_asso_comptabilite_traiter_dist(){
         }
     }
 
-    $retour['message_ok'] = _T('association:message_import_reussi');
+    $retour['message_ok'] = _T('association_compta:message_import_reussi');
     $retour['redirect'] = generer_url_ecrire('comptes');
 
     return $retour;
@@ -302,7 +302,7 @@ function preparer_liste_compte_imputation(){
     );
     while ($row = sql_fetch($query_comptes)) {
         $imputation = ($row['imputation']) ? $row['imputation'] : '0';
-        $res[$imputation] = _T('association:compte') . ' ' . $imputation . ' (' . $row['nb_occurrences'] . ' ' . _T('association:nb_occurrences'). ')';
+        $res[$imputation] = _T('association_compta:compte') . ' ' . $imputation . ' (' . $row['nb_occurrences'] . ' ' . _T('association_compta:nb_occurrences'). ')';
     }
     return $res;
 }

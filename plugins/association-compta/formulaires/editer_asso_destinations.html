@@ -7,11 +7,11 @@
 			#SET{erreurs,#ENV**{erreurs}|table_valeur{intitule}}
 			<li class="editer_intitule">
 				[<span class="erreur_message">(#GET{erreurs})</span>]
-				<label for="intitule"><strong><:association:entete_intitule:></strong></label>
+				<label for="intitule"><strong><:association_compta:entete_intitule:></strong></label>
 				<input name="intitule" type="text" [value="(#ENV{intitule})"] id="intitule" class="text" required="required" />
 			</li>
 			<li class="editer_commentaire">
-				<label for="commentaire"><strong><:association:commentaires:></strong></label>
+				<label for="commentaire"><strong><:association_compta:commentaires:></strong></label>
 				<textarea rows="3" name="commentaire" id="commentaire"  class='formo'/>[(#ENV{commentaire})]</textarea>
 			</li>
 		</ul>

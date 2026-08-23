@@ -38,7 +38,7 @@ function formulaires_editer_asso_plan_charger_dist($id_plan) {
 
 	/* pour passer securiser action */
 	$contexte['_action'] = ["editer_asso_plan", $id_plan];
-	$contexte['title'] = $id_plan === '' ? _T('association:ajouter_plan') : _T('association:modifier_plan');
+	$contexte['title'] = $id_plan === '' ? _T('association_compta:ajouter_plan') : _T('association_compta:modifier_plan');
 
 	return $contexte;
 }
@@ -50,7 +50,7 @@ function formulaires_editer_asso_plan_verifier_dist($id_plan='') {
 	$classe = _request('classe');
 	$code = _request('code');
 	if ((!preg_match("/^[0-9]{2}\w*$/", $code)) || ($code[0] != $classe)){
-		$erreurs['code'] = _T('association:erreur_plan_code');
+		$erreurs['code'] = _T('association_compta:erreur_plan_code');
 	}
 
 	/* verifier la date */
@@ -63,13 +63,13 @@ function formulaires_editer_asso_plan_verifier_dist($id_plan='') {
 		/* verifier que le code n'est pas deja attribue a une ligne du plan ou si il l'est que c'est a celle qu'on edite */
 		if ($r = sql_fetsel('code,id_plan', 'spip_asso_plan', "code=$code")) {
 			if ($r['id_plan']!=$id_plan) {
-				$erreurs['code'] = _T('association:erreur_plan_code_duplique');
+				$erreurs['code'] = _T('association_compta:erreur_plan_code_duplique');
 			}
 		}
 	}
 
 	if (count($erreurs)) {
-	$erreurs['message_erreur'] = _T('association:erreur_titre');
+	$erreurs['message_erreur'] = _T('association_compta:erreur_titre');
 	}
 
 	return $erreurs;

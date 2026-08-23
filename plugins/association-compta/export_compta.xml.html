@@ -143,21 +143,21 @@
     <Cell ss:MergeAcross="15" ss:StyleID="s84"><Data ss:Type="String">Liste des inscrits</Data></Cell>
    </Row>
 <Row ss:AutoFitHeight="0">
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_num_evenement:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_date:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_statut:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_prenom:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_nom:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_email:>}|textebrut)</Data></Cell>];    
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_nb_inscrits:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_nom_accompagnant:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_commentaire:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_details:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_numero_transaction:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_statut_transaction:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_montant_transaction:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_mode_transaction:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_inscriptions_evenement_date_paiement:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_num_evenement:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_date:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_statut:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_prenom:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_nom:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_email:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_nb_inscrits:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_nom_accompagnant:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_commentaire:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_details:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_numero_transaction:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_statut_transaction:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_montant_transaction:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_mode_transaction:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_inscriptions_evenement_date_paiement:>}|textebrut)</Data></Cell>];
     </Row><BOUCLE_asso_activites(ASSO_ACTIVITES){id_evenement}>[(#SET{nb_inscrits,#GET{nb_inscrits}|plus{#NOMBRE_INSCRITS}})]
     <Row ss:AutoFitHeight="0" ss:Height="12.9375">
         <Cell><Data ss:Type="String">#ID_ACTIVITE</Data></Cell>

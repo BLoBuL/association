@@ -61,14 +61,14 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
             'saisie' => 'selection',
             'options' => [
                 'nom' => 'objet',
-                'label' => _T('association:form_operation_objet_label'),
-                'explication' => _T('association:form_operation_objet_explication'),
+                'label' => _T('association_compta:form_operation_objet_label'),
+                'explication' => _T('association_compta:form_operation_objet_explication'),
                 'data' => [
-                    'autre' => _T('association:choix_autres'),
-                    'cotisation' => _T('association:choix_cotisation'),
-                    'activite' => _T('association:choix_activite'),
-                    'evenement' => _T('association:choix_evenement'),
-                    'don' => _T('association:choix_don')
+                    'autre' => _T('association_compta:choix_autres'),
+                    'cotisation' => _T('association_compta:choix_cotisation'),
+                    'activite' => _T('association_compta:choix_activite'),
+                    'evenement' => _T('association_compta:choix_evenement'),
+                    'don' => _T('association_compta:choix_don')
                 ],
                 'defaut' => $objet_defaut,
                 'obligatoire' => 'oui',
@@ -86,8 +86,8 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
             'saisie' => 'selection',
             'options' => [
                 'nom' => 'id_evenement',
-                'label' => _T('association:form_operation_evenement_label'),
-                'explication' => _T('association:form_operation_evenement_explication'),
+                'label' => _T('association_compta:form_operation_evenement_label'),
+                'explication' => _T('association_compta:form_operation_evenement_explication'),
                 'data' => preparer_liste_evenements(),
                 'defaut' => $id_evenement ?? '',
                 'obligatoire' => 'oui',
@@ -99,8 +99,8 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
             'saisie' => 'selection',
             'options' => [
                 'nom' => 'imputation',
-                'label' => _T('association:form_operation_imputation_label'),
-                'explication' => _T('association:form_operation_imputation_explication'),
+                'label' => _T('association_compta:form_operation_imputation_label'),
+                'explication' => _T('association_compta:form_operation_imputation_explication'),
                 'data' => preparer_liste_asso_plan_compte('data_saisies'),
                 'defaut' => $imputation_evenement ?? '',
                 'obligatoire' => 'oui',
@@ -111,9 +111,9 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
         [
             'saisie' => 'date',
             'options' => [
-                'label' => '<:association:form_operation_date_label:>',
+                'label' => '<:association_compta:form_operation_date_label:>',
                 'nom' => 'date',
-                'explication' => '<:association:form_operation_date_explication:>',
+                'explication' => '<:association_compta:form_operation_date_explication:>',
                 'obligatoire' => 'oui',
                 'defaut' => date('Y-m-d'),
                 'sqltype' => 'date',
@@ -122,12 +122,12 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
         [
             'saisie' => 'radio',
             'options' => [
-                'label' => '<:association:form_operation_type_label:>',
+                'label' => '<:association_compta:form_operation_type_label:>',
                 'nom' => 'type_operation',
                 'rows' => 3,
-                'explication' => '<:association:form_operation_type_explication:>',
+                'explication' => '<:association_compta:form_operation_type_explication:>',
                 'defaut' => 'recette',
-                'data' => ['recette' => '<:association:choix_recette:>', 'depense' => '<:association:choix_depense:>'],
+                'data' => ['recette' => '<:association_compta:choix_recette:>', 'depense' => '<:association_compta:choix_depense:>'],
                 'obligatoire' => 'oui',
                 'disable_avec_post' => $disable_partiel,
             ],
@@ -135,10 +135,10 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
         [
             'saisie' => 'input',
             'options' => [
-                'label' => '<:association:form_operation_montant_label:>',
+                'label' => '<:association_compta:form_operation_montant_label:>',
                 'nom' => 'montant',
                 'rows' => 3,
-                'explication' => '<:association:form_operation_montant_explication:>',
+                'explication' => '<:association_compta:form_operation_montant_explication:>',
                 'obligatoire' => 'oui',
                 'placeholder' => 10,
                 'disable_avec_post' => $disable_montant,
@@ -154,10 +154,10 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
         [
             'saisie' => 'textarea',
             'options' => [
-                'label' => '<:association:form_operation_justification_label:>',
+                'label' => '<:association_compta:form_operation_justification_label:>',
                 'nom' => 'justification',
                 'rows' => 3,
-                'explication' => '<:association:form_operation_justification_explication:>',
+                'explication' => '<:association_compta:form_operation_justification_explication:>',
                 'traitements' => 'propre',
                 'obligatoire' => 'oui',
                 'disable_avec_post' => $disable_partiel,
@@ -200,7 +200,7 @@ function formulaires_editer_asso_comptes_charger_dist($id_compte = 'new') {
 
     if (!autoriser('modifier', 'asso_compte', $id_compte_int, null, $opt_check)) {
         // Interdire l'accès au formulaire
-        return array('message_erreur' => _T('association:erreur_autorisation'));
+        return array('message_erreur' => _T('association_compta:erreur_autorisation'));
     }
 
     // Si c'est une modification, charger les données du compte
@@ -274,12 +274,12 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
     $opt_check = array();
     if ($id_evenement_ctx > 0) $opt_check['id_evenement'] = $id_evenement_ctx;
     if (!autoriser('modifier', 'asso_compte', $id_compte_int, null, $opt_check)) {
-        return array('message_erreur' => _T('association:erreur_autorisation'));
+        return array('message_erreur' => _T('association_compta:erreur_autorisation'));
     }
 
     // Vérification que le montant est supérieur à 0
     if (_request('montant') <= 0) {
-        $erreurs['montant'] = _T('association:erreur_recette_depense');
+        $erreurs['montant'] = _T('association_compta:erreur_recette_depense');
     }
 
     // Récupération de l'objet de l'opération
@@ -291,7 +291,7 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
             // Vérification de l'imputation pour les opérations "autre"
             $code = _request('imputation');
             if (empty($code)) {
-                $erreurs['imputation'] = _T('association:erreur_imputation_obligatoire');
+                $erreurs['imputation'] = _T('association_compta:erreur_imputation_obligatoire');
             } else {
                 $depense = _request('depense') ?: 0;
                 $recette = _request('recette') ?: 0;
@@ -300,7 +300,7 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
                 if (!array_key_exists("montant", $erreurs)) {
                     $type_op = sql_getfetsel('type_op', 'spip_asso_plan', 'code=' . sql_quote($code));
                     if ((($type_op == 'credit') && ($depense > 0)) || (($type_op == 'debit') && ($recette > 0))) {
-                        $erreurs['imputation'] = _T('association:erreur_operation_non_permise_sur_ce_compte');
+                        $erreurs['imputation'] = _T('association_compta:erreur_operation_non_permise_sur_ce_compte');
                     }
                 }
             }
@@ -309,7 +309,7 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
         case 'evenement':
             // Vérification qu'un événement est sélectionné
             if (empty(_request('id_evenement'))) {
-                $erreurs['id_evenement'] = _T('association:erreur_evenement_obligatoire');
+                $erreurs['id_evenement'] = _T('association_compta:erreur_evenement_obligatoire');
             }
             // Définition de l'imputation pour les événements
 /*            if ($depense = _request('depense') > 0) {
@@ -351,7 +351,7 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
         set_request('depense', _request('montant'));
         set_request('recette', 0);
     } else {
-        $erreurs['montant'] = _T('association:erreur_recette_depense');
+        $erreurs['montant'] = _T('association_compta:erreur_recette_depense');
     }
 
 /*    // Vérification de la date
@@ -361,7 +361,7 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
 
     // Ajout d'un message d'erreur global si des erreurs sont détectées
     if (count($erreurs)) {
-        $erreurs['message_erreur'] = _T('association:erreur_titre');
+        $erreurs['message_erreur'] = _T('association_compta:erreur_titre');
     }
 
     return $erreurs;
@@ -391,7 +391,7 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
     $opt_check = array();
     if ($id_evenement_ctx > 0) $opt_check['id_evenement'] = $id_evenement_ctx;
     if (!autoriser('modifier', 'asso_compte', $id_compte_int, null, $opt_check)) {
-        return array('message_erreur' => _T('association:erreur_autorisation'));
+        return array('message_erreur' => _T('association_compta:erreur_autorisation'));
     }
 
     // Récupérer les valeurs postées

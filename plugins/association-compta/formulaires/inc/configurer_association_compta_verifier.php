@@ -68,10 +68,10 @@ function association_compta_configurer_verifier($config) {
         else $erreur = true;
     }
     if ($erreur) {
-        $erreurs['message_erreur'] = _T('association:erreur_configurer_association_titre').'<br/>'._T('association:erreur_configurer_association_reference_multiple');
+        $erreurs['message_erreur'] = _T('association_compta:erreur_configurer_association_titre').'<br/>'._T('association_compta:erreur_configurer_association_reference_multiple');
     } elseif (count($erreurs)) {
         // message générique si uniquement erreurs de format
-        $erreurs['message_erreur'] = _T('association:erreur_configurer_association_titre');
+        $erreurs['message_erreur'] = _T('association_compta:erreur_configurer_association_titre');
     }
 
 	return $erreurs;

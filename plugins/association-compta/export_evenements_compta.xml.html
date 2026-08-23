@@ -217,15 +217,15 @@
     <Cell ss:MergeAcross="9" ss:StyleID="s84"><Data ss:Type="String">Listes des événements</Data></Cell>
    </Row>
 <Row ss:AutoFitHeight="0">
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_evenements_num_evenement:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_evenements_date:>}|textebrut)</Data></Cell>];
-    [<Cell ss:MergeAcross="1"><Data ss:Type="String">(#VAL{<:association:export_evenements_categorie:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_evenements_titre:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_evenements_descriptif:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_evenements_quota:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_evenements_nb_inscrits:>}|textebrut)</Data></Cell>];
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_evenements_total_paiement_attente:>}|textebrut)</Data></Cell>];    
-    [<Cell><Data ss:Type="String">(#VAL{<:association:export_evenements_encaisse:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_num_evenement:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_date:>}|textebrut)</Data></Cell>];
+    [<Cell ss:MergeAcross="1"><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_categorie:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_titre:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_descriptif:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_quota:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_nb_inscrits:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_total_paiement_attente:>}|textebrut)</Data></Cell>];
+    [<Cell><Data ss:Type="String">(#VAL{<:association_compta:export_evenements_encaisse:>}|textebrut)</Data></Cell>];
     </Row><BOUCLE_evenements(EVENEMENTS){si #SESSION{id_auteur}}{inscription = 1}{payant ?}{statut = publie}{par date_debut}
                                                             {date_debut >#ENV{periode_debut}|agenda_jourdecal{0,'Y-m-d'}}
                                                             {date_debut <#ENV{periode_fin}|agenda_jourdecal{1,'Y-m-d'}}

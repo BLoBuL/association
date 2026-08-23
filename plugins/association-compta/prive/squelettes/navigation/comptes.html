@@ -12,27 +12,27 @@
 <div class="boite_info">
 
   <div class="titre_exercice" style="margin:0.5em 0 0.8em;">
-    <strong><:association:label_filtre_exercice_comptable:> : [(#GET{exercice_env}|association_comptes_libelle_exercice)]</strong>
+    <strong><:association_compta:label_filtre_exercice_comptable:> : [(#GET{exercice_env}|association_comptes_libelle_exercice)]</strong>
   </div>
 
-  <div class="boite_stats_compact" aria-label="<:association:compta_activites_totaux_titre:>">
+  <div class="boite_stats_compact" aria-label="<:association_compta:compta_activites_totaux_titre:>">
     <div class="stats-grid">
-      <div class="stat-card" aria-label="<:association:compta_card_recettes:>">
-        <div class="stat-card-title">&uarr; <:association:compta_card_recettes:></div>
+      <div class="stat-card" aria-label="<:association_compta:compta_card_recettes:>">
+        <div class="stat-card-title">&uarr; <:association_compta:compta_card_recettes:></div>
         <div class="stat-card-main"><BOUCLE_nav_recettes(POUR){tableau #GET{totaux_env}|table_valeur{par_devise}}{par cle}><span class="stat-currency-line">[(#VALEUR|table_valeur{recettes}|association_nbrefr)] <span class="stat-card-currency">#CLE</span></span></BOUCLE_nav_recettes></div>
-        <div class="stat-card-sub"><:association:compta_card_recettes_sub:></div>
+        <div class="stat-card-sub"><:association_compta:compta_card_recettes_sub:></div>
       </div>
 
-      <div class="stat-card" aria-label="<:association:compta_card_depenses:>">
-        <div class="stat-card-title">&darr; <:association:compta_card_depenses:></div>
+      <div class="stat-card" aria-label="<:association_compta:compta_card_depenses:>">
+        <div class="stat-card-title">&darr; <:association_compta:compta_card_depenses:></div>
         <div class="stat-card-main"><BOUCLE_nav_depenses(POUR){tableau #GET{totaux_env}|table_valeur{par_devise}}{par cle}><span class="stat-currency-line">[(#VALEUR|table_valeur{depenses}|association_nbrefr)] <span class="stat-card-currency">#CLE</span></span></BOUCLE_nav_depenses></div>
-        <div class="stat-card-sub"><:association:compta_card_depenses_sub:></div>
+        <div class="stat-card-sub"><:association_compta:compta_card_depenses_sub:></div>
       </div>
 
-      <div class="stat-card" aria-label="<:association:compta_card_solde:>">
-        <div class="stat-card-title">⚖️ <:association:compta_card_solde:></div>
+      <div class="stat-card" aria-label="<:association_compta:compta_card_solde:>">
+        <div class="stat-card-title">⚖️ <:association_compta:compta_card_solde:></div>
         <div class="stat-card-main stat-solde"><BOUCLE_nav_soldes(POUR){tableau #GET{totaux_env}|table_valeur{par_devise}}{par cle}><span class="stat-currency-line [(#VALEUR|table_valeur{solde}|>{0}|?{solde_positif,solde_negatif})]">[(#VALEUR|table_valeur{solde}|association_nbrefr)] <span class="stat-card-currency">#CLE</span></span></BOUCLE_nav_soldes></div>
-        <div class="stat-card-sub"><:association:compta_card_solde_sub:></div>
+        <div class="stat-card-sub"><:association_compta:compta_card_solde_sub:></div>
       </div>
     </div>
   </div>
