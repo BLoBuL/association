@@ -31,6 +31,8 @@ ne suffit pas à valider son parcours métier.
 | Prêts | état sans restitution | « Non restituée » remplace la date SQL sentinelle `0000-00-00` | validé |
 | Prêts | nettoyage | suppression transactionnelle ciblée, puis relecture : 0 prêt et 0 ressource synthétiques | validé |
 | Communication | abonnement newsletter | squelette public et formulaire natif Newsletter servis ; adresse invalide bloquée nativement, sans inscription ni envoi | validé sans envoi réel |
+| Groupes | bénévoles, rôles et autorisations | page bénévoles rendue, accessible au rédacteur ; module sans table propre, champs complémentaires portés par Champs Extras | validé selon le périmètre actuel du module |
+| Paiements | intégration Bank | inscriptions gratuites sans transaction, scénarios automatisés payants et redirections Bank, icônes indépendantes des plugins Blobul ; aucun paiement réel déclenché | validé sans débit externe |
 | Front office | accueil, profil, inscription, événement, ressources et newsletter | H1, absence d'erreur fatale et absence de débordement horizontal sur les pages contrôlées | validé pour le rendu ; scénarios métier encore détaillés ci-dessus |
 | Interface | Font Awesome | glyphes calculés avec `Font Awesome 6 Free` sur adhérents, activités, bénévoles, comptabilité, cotisations et configuration | validé |
 
@@ -82,7 +84,7 @@ ne suffit pas à valider son parcours métier.
 
 ## Non-régression
 
-- 57 tests PHP autonomes réussis ;
+- 69 tests PHP autonomes réussis, y compris les tests propres aux neuf modules ;
 - 274 fichiers PHP contrôlés sans erreur de syntaxe ;
 - compilation réelle des squelettes vérifiée par les pages privées et publiques
   après purge du cache ;
