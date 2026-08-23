@@ -325,6 +325,8 @@ $configuration_adhesions = file_get_contents($racine . '/plugins/association-adh
 $configuration_paiements = file_get_contents($racine . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php');
 $configuration_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php');
 $configuration_communication = file_get_contents($racine . '/plugins/association-communication/formulaires/inc/configurer_association_communication.php');
+$registre_cli_socle = file_get_contents($racine . '/inc/association_config_cli_registre.php');
+$api_cli_socle = file_get_contents($racine . '/inc/association_config_cli.php');
 $verification_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta_verifier.php');
 $verification_communication = file_get_contents($racine . '/plugins/association-communication/formulaires/inc/configurer_association_communication_verifier.php');
 $pipelines_socle = file_get_contents($racine . '/association_pipelines.php');
@@ -447,6 +449,31 @@ $verifier(
 	strpos($configuration_socle, 'function association_compta_configurer_verifier') === false
 		&& strpos($verification_compta, 'function association_compta_configurer_verifier') !== false,
 	'Les validations comptables doivent appartenir au module Comptabilite.'
+);
+$verifier(
+	strpos($paquet, 'nom="association_config_cli_registre"') !== false
+		&& strpos($api_cli_socle, "pipeline('association_config_cli_registre'") !== false,
+	'Le registre CLI doit être composé par un pipeline SPIP.'
+);
+foreach (array(
+	'association-adhesions' => 'association_adhesions',
+	'association-evenements' => 'association_evenements',
+	'association-paiements' => 'association_paiements',
+	'association-communication' => 'association_communication',
+	'association-compta' => 'association_compta',
+) as $module_cli => $prefixe_cli) {
+	$definitions_cli = $racine . '/plugins/' . $module_cli . '/inc/' . $prefixe_cli . '_config_cli.php';
+	$paquet_cli = file_get_contents($racine . '/plugins/' . $module_cli . '/paquet.xml');
+	$verifier(is_file($definitions_cli), 'Définitions CLI absentes pour ' . $module_cli . '.');
+	$verifier(strpos($paquet_cli, 'nom="association_config_cli_registre"') !== false, 'Pipeline CLI absent pour ' . $module_cli . '.');
+}
+$verifier(
+	strpos($registre_cli_socle, "'adhesion.") === false
+		&& strpos($registre_cli_socle, "'evenement.") === false
+		&& strpos($registre_cli_socle, "'paiement.") === false
+		&& strpos($registre_cli_socle, "'comptabilite.") === false
+		&& strpos($registre_cli_socle, "'affichage.") === false,
+	'Le registre CLI du socle ne doit plus déclarer les domaines métier.'
 );
 $verifier(
 	strpos($configuration_socle, 'FILTER_VALIDATE_EMAIL') === false

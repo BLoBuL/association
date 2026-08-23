@@ -40,6 +40,7 @@
 	<pipeline nom="association_inscription_evenement_traiter" action="" />
 	<pipeline nom="association_evenement_resoudre_contexte" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_configuration_navigation" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="association_config_cli_registre" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_executer" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_evenements_pipelines.php" />

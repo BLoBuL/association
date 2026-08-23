@@ -4,6 +4,12 @@ if (!defined('_ECRIRE_INC_VERSION')) {
     return;
 }
 
+function association_compta_association_config_cli_registre($flux) {
+	include_spip('inc/association_compta_config_cli');
+	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_compta_config_cli_definitions());
+	return $flux;
+}
+
 function association_compta_post_edition($flux) {
     if (($flux['args']['table'] ?? '') === 'spip_commandes') {
         $id_commande = intval($flux['args']['id_objet'] ?? $flux['data']['id_commande'] ?? 0);

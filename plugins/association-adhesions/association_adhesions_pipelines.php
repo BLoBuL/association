@@ -2,6 +2,12 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+function association_adhesions_association_config_cli_registre($flux) {
+	include_spip('inc/association_adhesions_config_cli');
+	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_adhesions_config_cli_definitions());
+	return $flux;
+}
+
 function association_adhesions_association_maintenance_bdd_configurer($flux) {
 	$source = $flux['args']['source'] ?? array();
 	$flux['data']['jours_inactivite'] = intval(association_maintenance_lire_source(

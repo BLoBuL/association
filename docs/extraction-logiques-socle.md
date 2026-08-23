@@ -620,6 +620,26 @@ affichage dans le message CVT. Le socle ne possède donc plus de catalogue des
 résultats produits par Adhésions, Événements, Comptabilité, Paiements et
 Communication.
 
+## Lot 53 : registre CLI composable
+
+Le registre des commandes `association:config:*` est désormais construit par
+le pipeline `association_config_cli_registre`. Le socle conserve uniquement le
+debug, l’identité de l’association et les trois réglages transversaux de
+maintenance. Les cinq modules fournissent 110 définitions :
+
+- Adhésions : 37 options ;
+- Événements : 39 options ;
+- Paiements : 7 options ;
+- Communication : 4 options ;
+- Comptabilité : 23 options.
+
+Une fusion protégée interdit à un fournisseur d’écraser une option déjà
+déclarée. La représentation canonique des 135 définitions possède exactement
+la même empreinte SHA-256 qu’avant l’extraction ; les noms publics, chemins,
+types, bornes, valeurs par défaut et listes autorisées sont donc inchangés.
+Les snapshots v1/v2 et les commandes de lecture, écriture et restauration
+restent compatibles.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

@@ -4,6 +4,12 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function association_evenements_association_config_cli_registre($flux) {
+	include_spip('inc/association_evenements_config_cli');
+	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_evenements_config_cli_definitions());
+	return $flux;
+}
+
 /**
  * Résout l'événement associé à une inscription sans exposer sa table aux autres modules.
  */

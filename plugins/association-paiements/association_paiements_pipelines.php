@@ -2,6 +2,12 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+function association_paiements_association_config_cli_registre($flux) {
+	include_spip('inc/association_paiements_config_cli');
+	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_paiements_config_cli_definitions());
+	return $flux;
+}
+
 
 function association_trig_bank_notifier_reglement($flux)
 {

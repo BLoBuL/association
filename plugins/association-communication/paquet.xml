@@ -12,6 +12,7 @@
 	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_configuration_listes_diffusion" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_configuration_navigation" inclure="association_communication_pipelines.php" />
+	<pipeline nom="association_config_cli_registre" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_executer" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_communication_pipelines.php" />
 	<pipeline nom="autoriser" inclure="association_communication_autoriser.php" />

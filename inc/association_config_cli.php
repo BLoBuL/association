@@ -25,18 +25,6 @@ function association_config_cli_registre() {
 			'writable' => true,
 			'description' => 'Activation de toutes les categories de debug du plugin Association.',
 		),
-		'evenement.inscription' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_inscription', array('oui', 'non'), 'oui', 'Activation globale des inscriptions aux evenements.'),
-		'evenement.selection_famille' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_config_accompagnants', array('tout', 'membre_famille'), 'tout', 'Selection libre ou limitee aux membres de la famille.'),
-		'evenement.informations_supplementaires' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_form_info_supp', array('oui', 'non'), 'oui', 'Activation des informations supplementaires du parcours multi-etapes.'),
-		'evenement.accompagnants' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_accompagnants', array('oui', 'non'), 'oui', 'Autorisation globale des accompagnants.'),
-		'evenement.invites' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_invites', array('oui', 'non'), 'non', 'Autorisation des invites hors famille.'),
-		'evenement.limite_accompagnants' => association_config_cli_definition_entier('/association_metas/meta_cfg_event_limite_nb_accompagnants', '5', 0, 1000, 'Limite globale du nombre d accompagnants.'),
-		'evenement.type_inscrits' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_type_inscrits_evenement', array('public', 'prive', 'strict', 'only_strict'), 'prive', 'Type d inscrits par defaut ; only_strict verrouille le mode strict.'),
-		'evenement.validation' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_validation', array('oui', 'non'), 'non', 'Validation manuelle requise pour les inscriptions.'),
-		'evenement.quota' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_type_quota', array('souple', 'strict'), 'souple', 'Comportement global des quotas.'),
-		'evenement.liste_attente' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_file_attente', array('oui', 'non'), 'oui', 'Activation de la liste d attente.'),
-		'evenement.validation_liste_attente' => association_config_cli_definition_enum('/association_metas/meta_cfg_event_validation_auto', array('oui', 'non'), 'oui', 'Validation automatique des inscriptions en attente.'),
-		'evenement.limite_liste_attente' => association_config_cli_definition_entier('/association_metas/meta_cfg_event_limite_places_file_attente', '5', 0, 100000, 'Limite globale de la liste d attente.'),
 	);
 
 	foreach (array_keys(association_log_categories_defaut()) as $categorie) {
@@ -49,11 +37,14 @@ function association_config_cli_registre() {
 		);
 	}
 
-	if (function_exists('association_config_cli_completer_registre')) {
-		$registre = association_config_cli_completer_registre($registre);
-	}
 
-	return $registre;
+	$registre = association_config_cli_ajouter_definitions($registre, association_config_cli_definitions_socle());
+	$registre = pipeline('association_config_cli_registre', array(
+		'args' => array(),
+		'data' => $registre,
+	));
+
+	return is_array($registre) ? $registre : array();
 }
 
 function association_config_cli_definition_enum($path, $allowed, $default, $description) {

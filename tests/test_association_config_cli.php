@@ -54,6 +54,11 @@ function spip_log($message, $channel) {
 
 include_once PLUGIN_ROOT . '/inc/association_log.php';
 include_once PLUGIN_ROOT . '/inc/association_config_cli_registre.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_config_cli.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_config_cli.php';
+include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_config_cli.php';
+include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_communication_config_cli.php';
+include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_config_cli.php';
 include_once PLUGIN_ROOT . '/inc/association_config_cli.php';
 include_once PLUGIN_ROOT . '/association_autoriser.php';
 
@@ -75,6 +80,28 @@ function association_config_cli_test_snapshot_state($snapshot) {
 
 $registre = association_config_cli_registre();
 
+function association_config_cli_test_canoniser_registre($valeur) {
+	if (!is_array($valeur)) {
+		return $valeur;
+	}
+	if (array_keys($valeur) !== range(0, count($valeur) - 1)) {
+		ksort($valeur);
+	}
+	foreach ($valeur as $cle => $item) {
+		$valeur[$cle] = association_config_cli_test_canoniser_registre($item);
+	}
+	return $valeur;
+}
+
+$empreinte_registre = hash(
+	'sha256',
+	json_encode(association_config_cli_test_canoniser_registre($registre), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+);
+association_config_cli_test_assert(
+	$empreinte_registre === '54778b0dd54827318453c7a1e87c249089e1a59585a5a61519d7c91d6cf1b180',
+	'la modularisation conserve exactement les 135 définitions CLI historiques'
+);
+
 // Audit independant : toutes les saisies persistantes du formulaire central
 // doivent avoir exactement un chemin physique dans le registre CLI.
 function bank_lister_configs() { return array(); }
@@ -82,7 +109,21 @@ function bank_config_id($configuration) { return ''; }
 function sql_fetsel($select, $from, $where = '') { return false; }
 function sql_getfetsel($select, $from, $where = '') { return 1; }
 function sql_allfetsel($select, $from, $where = '') { return array(); }
-function pipeline($nom, $flux) { return $flux['data'] ?? $flux; }
+function pipeline($nom, $flux) {
+	$data = $flux['data'] ?? $flux;
+	if ($nom === 'association_config_cli_registre') {
+		foreach (array(
+			'association_adhesions_config_cli_definitions',
+			'association_evenements_config_cli_definitions',
+			'association_paiements_config_cli_definitions',
+			'association_communication_config_cli_definitions',
+			'association_compta_config_cli_definitions',
+		) as $fournisseur) {
+			$data = association_config_cli_ajouter_definitions($data, $fournisseur());
+		}
+	}
+	return $data;
+}
 function preparer_liste_asso_destination_comptable() { return array(); }
 function preparer_liste_asso_plan_classe() { return array(); }
 function preparer_liste_asso_plan_compte() { return array(); }

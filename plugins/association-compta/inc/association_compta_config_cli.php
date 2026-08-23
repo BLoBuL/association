@@ -1,0 +1,221 @@
+<?php
+
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
+
+/** Définitions CLI propres au module, extraites du registre historique. */
+function association_compta_config_cli_definitions() {
+	return array (
+  'comptabilite.active' => 
+  array (
+    'type' => 'boolean',
+    'writable' => true,
+    'path' => '/association_metas/comptes',
+    'default' => 'off',
+    'description' => 'Configuration Association : comptabilite.active.',
+  ),
+  'comptabilite.classe_banques' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/classe_banques',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.classe_banques.',
+    'max_length' => 64,
+  ),
+  'comptabilite.destinations' => 
+  array (
+    'type' => 'boolean',
+    'writable' => true,
+    'path' => '/association_metas/destinations',
+    'default' => 'off',
+    'description' => 'Configuration Association : comptabilite.destinations.',
+  ),
+  'comptabilite.debut_exercice' => 
+  array (
+    'type' => 'day_month',
+    'writable' => true,
+    'path' => '/association_metas/exercice_comptable_debut',
+    'default' => '01/07',
+    'description' => 'Configuration Association : comptabilite.debut_exercice.',
+  ),
+  'comptabilite.pc_cotisations_creance' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_cotisations_creance',
+    'default' => '416',
+    'description' => 'Configuration Association : comptabilite.pc_cotisations_creance.',
+    'max_length' => 64,
+  ),
+  'comptabilite.pc_cotisations_paiement' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_cotisations_paiement',
+    'default' => '7010',
+    'description' => 'Configuration Association : comptabilite.pc_cotisations_paiement.',
+    'max_length' => 64,
+  ),
+  'comptabilite.dc_cotisations' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/dc_cotisations',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.dc_cotisations.',
+    'max_length' => 64,
+  ),
+  'comptabilite.pc_activites_creance' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_activites_creance',
+    'default' => '417',
+    'description' => 'Configuration Association : comptabilite.pc_activites_creance.',
+    'max_length' => 64,
+  ),
+  'comptabilite.pc_activites_paiement' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_activites_paiement',
+    'default' => '7011',
+    'description' => 'Configuration Association : comptabilite.pc_activites_paiement.',
+    'max_length' => 64,
+  ),
+  'comptabilite.pc_activites_frais' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_activites_frais',
+    'default' => '601001',
+    'description' => 'Configuration Association : comptabilite.pc_activites_frais.',
+    'max_length' => 64,
+  ),
+  'comptabilite.dc_activites' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/dc_activites',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.dc_activites.',
+    'max_length' => 64,
+  ),
+  'comptabilite.dons' => 
+  array (
+    'type' => 'boolean',
+    'writable' => true,
+    'path' => '/association_metas/dons',
+    'default' => 'off',
+    'description' => 'Configuration Association : comptabilite.dons.',
+  ),
+  'comptabilite.pc_dons' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_dons',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.pc_dons.',
+    'max_length' => 64,
+  ),
+  'comptabilite.dc_dons' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/dc_dons',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.dc_dons.',
+    'max_length' => 64,
+  ),
+  'comptabilite.ventes' => 
+  array (
+    'type' => 'boolean',
+    'writable' => true,
+    'path' => '/association_metas/ventes',
+    'default' => 'off',
+    'description' => 'Configuration Association : comptabilite.ventes.',
+  ),
+  'comptabilite.pc_ventes' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_ventes',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.pc_ventes.',
+    'max_length' => 64,
+  ),
+  'comptabilite.pc_frais_envoi' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_frais_envoi',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.pc_frais_envoi.',
+    'max_length' => 64,
+  ),
+  'comptabilite.dc_ventes' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/dc_ventes',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.dc_ventes.',
+    'max_length' => 64,
+  ),
+  'comptabilite.prets' => 
+  array (
+    'type' => 'boolean',
+    'writable' => true,
+    'path' => '/association_metas/prets',
+    'default' => 'off',
+    'description' => 'Configuration Association : comptabilite.prets.',
+  ),
+  'comptabilite.pc_prets' => 
+  array (
+    'type' => 'identifier',
+    'writable' => true,
+    'path' => '/association_metas/pc_prets',
+    'default' => '',
+    'description' => 'Configuration Association : comptabilite.pc_prets.',
+    'max_length' => 64,
+  ),
+  'maintenance.mois_non_encaisse' => 
+  array (
+    'type' => 'integer',
+    'writable' => true,
+    'path' => '/association_metas/meta_cfg_maintenance_mois_non_encaisse',
+    'default' => '6',
+    'min' => 0,
+    'max' => 1200,
+    'description' => 'Configuration Association : maintenance.mois_non_encaisse.',
+  ),
+  'maintenance.supprimer_cotisations_orphelines' => 
+  array (
+    'type' => 'enum',
+    'writable' => true,
+    'path' => '/association_metas/meta_cfg_maintenance_supprimer_cotisations_orphelines',
+    'allowed' => 
+    array (
+      0 => 'oui',
+      1 => 'non',
+    ),
+    'default' => 'oui',
+    'description' => 'Configuration Association : maintenance.supprimer_cotisations_orphelines.',
+  ),
+  'maintenance.supprimer_cotisations_non_encaissees' => 
+  array (
+    'type' => 'enum',
+    'writable' => true,
+    'path' => '/association_metas/meta_cfg_maintenance_supprimer_cotisations_non_encaissees',
+    'allowed' => 
+    array (
+      0 => 'oui',
+      1 => 'non',
+    ),
+    'default' => 'oui',
+    'description' => 'Configuration Association : maintenance.supprimer_cotisations_non_encaissees.',
+  ),
+);
+}
