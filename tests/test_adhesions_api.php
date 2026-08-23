@@ -96,6 +96,7 @@ function compte_cotisation($date, $montant, $justification, $imputation, $journa
     $GLOBALS['test_comptes'][$id] = compact('id_auteur', 'id_categorie', 'id_transaction') + array(
         'id_compte' => $id,
         'montant' => $montant,
+        'justification' => $justification,
         'statut_cotisation' => $statut,
         'reinscription' => $reinscription,
     );
@@ -215,6 +216,18 @@ foreach (array('auto' => 'ok', 'pre-paiement' => 'demande', 'post-paiement' => '
     test_assert($resultat['id_transaction'] === 0, "une cotisation gratuite $validation ne crée pas de transaction");
     test_assert($GLOBALS['test_bank_calls'] === 0, "une cotisation gratuite $validation n’appelle pas Bank");
 }
+
+test_reset('auto', 0);
+$resultat = api_traiter_cotisation(array(
+    'id_auteur' => 1,
+    'id_categorie' => 10,
+    'origine' => 'prive',
+    'justification' => 'Cotisation synthétique #1',
+));
+test_assert(
+    ($GLOBALS['test_comptes'][1]['justification'] ?? '') === 'Cotisation synthétique #1',
+    'la justification préparée par le formulaire est conservée par l API'
+);
 
 test_reset('auto', 80);
 $GLOBALS['test_config']['/association_metas/meta_cfg_taxe'] = 20;

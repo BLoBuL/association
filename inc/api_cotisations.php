@@ -160,8 +160,13 @@ function api_traiter_cotisation($params) {
         $query_auteur = sql_fetsel('statut_interne', 'spip_auteurs', 'id_auteur=' . $id_auteur);
         $id_compte = isset($params['id_compte']) ? $params['id_compte'] : 'new';
         $id_categorie = intval($params['id_categorie']);
-        // Remettre lâ€™ancienne valeur par défaut
-        $justification = 'Nouvelle cotisation de -- Membre nÂ°' . $id_auteur;
+        $justification = trim((string) ($params['justification'] ?? ''));
+        if ($justification === '') {
+            $justification = _T('association:justification_encaissement_cotisation', array(
+                'nom_prenom' => trim((string) ($params['nom_prenom'] ?? '')),
+                'id_auteur' => $id_auteur,
+            ));
+        }
         if (isset($params['reinscription']) && $params['reinscription']) {
             $reinscription = $params['reinscription'];
         }else{

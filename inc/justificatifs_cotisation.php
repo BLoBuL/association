@@ -81,7 +81,7 @@ function association_justificatifs_cotisation_supprimer($id_compte, $id_document
         if (sql_countsel('spip_documents_liens', $autres_liens)) {
             return array('ok' => false, 'message' => _T('association:justificatifs_suppression_document_partage'));
         }
-        if (!autoriser('modifier', 'document', $document_id)) {
+        if (!autoriser('supprimer', 'document', $document_id)) {
             return array('ok' => false, 'message' => _T('association:justificatifs_suppression_interdite'));
         }
     }

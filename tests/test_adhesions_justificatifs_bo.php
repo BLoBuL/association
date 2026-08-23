@@ -82,6 +82,8 @@ test_assert($resultat['ok'] && !association_justificatifs_cotisation_etat(20)['c
 $GLOBALS['test_liens'] = array_slice($GLOBALS['test_liens'], 0, 1);
 test_assert(!association_justificatifs_cotisation_marquer(20, true)['ok'], 'un dossier incomplet ne peut pas être validé');
 $source_squelette = file_get_contents(PLUGIN_ROOT . '/prive/inclure/justificatifs_cotisation.html');
+$source_helper = file_get_contents(PLUGIN_ROOT . '/inc/justificatifs_cotisation.php');
+test_assert(str_contains($source_helper, "autoriser('supprimer', 'document', \$document_id)"), 'la suppression prévalide l autorisation exacte avant de détacher un document');
 test_assert(str_contains($source_squelette, 'justificatifs-entete') && str_contains($source_squelette, 'justificatifs-pied'), 'le bloc de contrôle possède une hiérarchie visuelle dédiée');
 test_assert(str_contains($source_squelette, 'justificatif-description') && str_contains($source_squelette, 'justificatif-statut'), 'chaque document sépare description et statut');
 test_assert(str_contains($source_squelette, 'supprimer_justificatifs_cotisation') && str_contains($source_squelette, 'justificatifs_suppression_confirmation'), 'la suppression définitive exige une confirmation');
