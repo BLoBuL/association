@@ -385,6 +385,12 @@ pour les imports et migrations existants.
 Les raccourcis de la colonne extra de la configuration sont fournis par
 Comptabilité sous le même chemin de squelette privé.
 
+Le commit `8fef1f7` a été déployé atomiquement dans le socle et Comptabilité
+depuis l'artefact SHA-256
+`b55dd36e6c57cece4b377f7d4f4ea057b4fc9d9c03fee97ddd69c8bd0b1f6de1`.
+Le SPIP servi résout le squelette depuis `plugins/association-compta` et y
+retrouve les raccourcis d'import du plan et de migration.
+
 Le commit `ccd9fdf` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `129a059ead47adac15277ba045b21f171929488ae284108fb49ae00d365822ae`.
