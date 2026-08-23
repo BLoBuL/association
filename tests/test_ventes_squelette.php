@@ -3,7 +3,9 @@
 $source = file_get_contents(dirname(__DIR__) . '/prive/squelettes/contenu/ventes.html');
 
 if (!str_contains($source, '#SET{peut_supprimer,#AUTORISER{supprimer,vente,#ID_VENTE}}')
-	|| !str_contains($source, '#GET{peut_supprimer}|oui')) {
+	|| !str_contains($source, '#GET{peut_supprimer}|oui')
+	|| !str_contains($source, 'name="drop&#91;&#93;"')
+	|| str_contains($source, 'name="drop[]"')) {
 	fwrite(STDERR, "L'autorisation de suppression des ventes n'est pas préparée séparément du balisage HTML.\n");
 	exit(1);
 }
