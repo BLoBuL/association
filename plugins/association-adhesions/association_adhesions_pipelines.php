@@ -8,6 +8,14 @@ function association_adhesions_association_config_cli_registre($flux) {
 	return $flux;
 }
 
+function association_adhesions_association_configuration_saisies($flux) {
+	include_spip('formulaires/inc/configurer_association_adhesions');
+	$flux['data'][] = array('ordre' => 20, 'saisies' => association_adhesions_configurer_saisies(
+		$flux['args']['config'] ?? '', (bool) ($flux['args']['disable_meta_admin'] ?? true)
+	));
+	return $flux;
+}
+
 function association_adhesions_association_maintenance_bdd_configurer($flux) {
 	$source = $flux['args']['source'] ?? array();
 	$flux['data']['jours_inactivite'] = intval(association_maintenance_lire_source(

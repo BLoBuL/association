@@ -8,6 +8,14 @@ function association_paiements_association_config_cli_registre($flux) {
 	return $flux;
 }
 
+function association_paiements_association_configuration_saisies($flux) {
+	include_spip('formulaires/inc/configurer_association_paiements');
+	$flux['data'][] = array('ordre' => 40, 'saisies' => association_paiements_configurer_saisies(
+		$flux['args']['config'] ?? '', (bool) ($flux['args']['disable_meta_admin'] ?? true)
+	));
+	return $flux;
+}
+
 
 function association_trig_bank_notifier_reglement($flux)
 {

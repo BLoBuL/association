@@ -23,6 +23,8 @@
 	<pipeline nom="association_migrations_historiques" inclure="inc/association_compta_migrations_socle.php" />
 	<pipeline nom="association_log_categories" inclure="inc/association_compta_log.php" />
 	<pipeline nom="association_menu_entrees" inclure="inc/association_compta_menu.php" />
+	<pipeline nom="association_configuration_saisies" inclure="association_compta_pipelines.php" />
+	<pipeline nom="association_configuration_verifier" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_executer" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_compta_pipelines.php" />

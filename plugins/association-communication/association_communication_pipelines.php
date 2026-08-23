@@ -8,6 +8,18 @@ function association_communication_association_config_cli_registre($flux) {
 	return $flux;
 }
 
+function association_communication_association_configuration_saisies($flux) {
+	include_spip('formulaires/inc/configurer_association_communication');
+	$flux['data'][] = array('ordre' => 10, 'saisies' => association_communication_configurer_saisies($flux['args']['config'] ?? ''));
+	return $flux;
+}
+
+function association_communication_association_configuration_verifier($flux) {
+	include_spip('formulaires/inc/configurer_association_communication_verifier');
+	$flux['data'][] = array('ordre' => 20, 'erreurs' => association_communication_configurer_verifier($flux['args']['config'] ?? ''));
+	return $flux;
+}
+
 /**
  * Empêche Mailsubscribers d'exposer une page publique dédiée.
  *

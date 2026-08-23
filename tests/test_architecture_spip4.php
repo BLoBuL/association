@@ -451,6 +451,24 @@ $verifier(
 	'Les validations comptables doivent appartenir au module Comptabilite.'
 );
 $verifier(
+	strpos($paquet, 'nom="association_configuration_saisies"') !== false
+		&& strpos($paquet, 'nom="association_configuration_verifier"') !== false
+		&& strpos($configuration_socle, "pipeline('association_configuration_saisies'") !== false
+		&& strpos($configuration_socle, "pipeline('association_configuration_verifier'") !== false,
+	'Les saisies et validations métier doivent être composées par des pipelines SPIP.'
+);
+foreach (array(
+	'association_communication_configurer_saisies', 'association_adhesions_configurer_saisies',
+	'association_evenements_configurer_saisies', 'association_paiements_configurer_saisies',
+	'association_compta_configurer_saisies', 'association_compta_configurer_verifier',
+	'association_communication_configurer_verifier',
+) as $appel_configuration_metier) {
+	$verifier(
+		strpos($configuration_socle, $appel_configuration_metier . '(') === false,
+		'Le formulaire racine ne doit plus appeler directement ' . $appel_configuration_metier . '.'
+	);
+}
+$verifier(
 	strpos($paquet, 'nom="association_config_cli_registre"') !== false
 		&& strpos($api_cli_socle, "pipeline('association_config_cli_registre'") !== false,
 	'Le registre CLI doit être composé par un pipeline SPIP.'

@@ -12,6 +12,7 @@
 	<pipeline nom="association_configuration_navigation" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_config_cli_registre" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_installation_inventaire" inclure="inc/association_paiements_installation.php" />
+	<pipeline nom="association_configuration_saisies" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_executer" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_paiements_pipelines.php" />
 </paquet>

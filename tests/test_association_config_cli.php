@@ -61,6 +61,10 @@ include_once PLUGIN_ROOT . '/inc/association_config_cli_registre.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_pipelines.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/association_adhesions_pipelines.php';
+include_once PLUGIN_ROOT . '/plugins/association-communication/association_communication_pipelines.php';
+include_once PLUGIN_ROOT . '/plugins/association-compta/association_compta_pipelines.php';
+include_once PLUGIN_ROOT . '/plugins/association-paiements/association_paiements_pipelines.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_communication_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_config_cli.php';
@@ -115,6 +119,23 @@ function sql_fetsel($select, $from, $where = '') { return false; }
 function sql_getfetsel($select, $from, $where = '') { return 1; }
 function sql_allfetsel($select, $from, $where = '') { return array(); }
 function pipeline($nom, $flux) {
+	if ($nom === 'association_configuration_saisies') {
+		foreach (array(
+			'association_communication_association_configuration_saisies',
+			'association_adhesions_association_configuration_saisies',
+			'association_evenements_association_configuration_saisies',
+			'association_paiements_association_configuration_saisies',
+			'association_compta_association_configuration_saisies',
+		) as $fournisseur) { $flux = $fournisseur($flux); }
+		return $flux;
+	}
+	if ($nom === 'association_configuration_verifier') {
+		foreach (array(
+			'association_compta_association_configuration_verifier',
+			'association_communication_association_configuration_verifier',
+		) as $fournisseur) { $flux = $fournisseur($flux); }
+		return $flux;
+	}
 	$data = $flux['data'] ?? $flux;
 	if ($nom === 'association_config_cli_registre') {
 		foreach (array(

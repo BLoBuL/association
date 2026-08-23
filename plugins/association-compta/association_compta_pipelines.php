@@ -10,6 +10,18 @@ function association_compta_association_config_cli_registre($flux) {
 	return $flux;
 }
 
+function association_compta_association_configuration_saisies($flux) {
+	include_spip('formulaires/inc/configurer_association_compta');
+	$flux['data'][] = array('ordre' => 50, 'saisies' => association_compta_configurer_saisies($flux['args']['config'] ?? ''));
+	return $flux;
+}
+
+function association_compta_association_configuration_verifier($flux) {
+	include_spip('formulaires/inc/configurer_association_compta_verifier');
+	$flux['data'][] = array('ordre' => 10, 'erreurs' => association_compta_configurer_verifier($flux['args']['config'] ?? ''));
+	return $flux;
+}
+
 function association_compta_post_edition($flux) {
     if (($flux['args']['table'] ?? '') === 'spip_commandes') {
         $id_commande = intval($flux['args']['id_objet'] ?? $flux['data']['id_commande'] ?? 0);

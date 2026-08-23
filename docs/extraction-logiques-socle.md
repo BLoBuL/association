@@ -724,6 +724,23 @@ et son icône. Le tri numérique reproduit la séquence historique
 appliquées après composition. Un plugin inactif ne peut plus laisser une entrée
 orpheline construite centralement.
 
+## Lot 59 : formulaire de configuration entièrement composable
+
+Le formulaire racine n'appelle plus directement les fonctions de
+Communication, Adhésions, Événements, Paiements et Comptabilité. Les saisies
+sont fournies par `association_configuration_saisies` avec les priorités
+10/20/30/40/50, qui reproduisent l'ordre historique des cinq modules.
+
+Les validations métier de Comptabilité et Communication passent de même par
+`association_configuration_verifier`, dans leur ordre historique 10/20. Le
+socle conserve uniquement les informations générales, les réglages
+transversaux de maintenance et de debug, ainsi que la fusion générique des
+contributions. Les validations distribuées de maintenance restent ensuite
+appliquées comme auparavant.
+
+L'inventaire reste à 122 configurations persistantes uniques et le registre
+CLI couvre toujours exactement leurs 135 options publiques et techniques.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

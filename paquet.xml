@@ -39,6 +39,8 @@
 	<pipeline nom="association_migrations_historiques" action="" />
 	<pipeline nom="association_log_categories" action="" />
 	<pipeline nom="association_menu_entrees" action="" />
+	<pipeline nom="association_configuration_saisies" action="" />
+	<pipeline nom="association_configuration_verifier" action="" />
 
 	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
 	<necessite nom="association_adhesions" compatibilite="[4.0.0;4.*]" />

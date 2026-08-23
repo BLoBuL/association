@@ -10,6 +10,14 @@ function association_evenements_association_config_cli_registre($flux) {
 	return $flux;
 }
 
+function association_evenements_association_configuration_saisies($flux) {
+	include_spip('formulaires/inc/configurer_association_evenements');
+	$flux['data'][] = array('ordre' => 30, 'saisies' => association_evenements_configurer_saisies(
+		$flux['args']['config'] ?? '', (bool) ($flux['args']['disable_meta_admin'] ?? true)
+	));
+	return $flux;
+}
+
 function association_evenements_association_config_cli_snapshot_v1_options($flux) {
 	return array_merge($flux, array(
 		'evenement.inscription',

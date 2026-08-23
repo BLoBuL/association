@@ -98,16 +98,15 @@ $saisies[]= array(
     ),
 );
 }
-include_spip('formulaires/inc/configurer_association_communication');
-$saisies = array_merge($saisies, association_communication_configurer_saisies($config));
-include_spip('formulaires/inc/configurer_association_adhesions');
-$saisies = array_merge($saisies, association_adhesions_configurer_saisies($config, $disable_meta_admin));
-include_spip('formulaires/inc/configurer_association_evenements');
-$saisies = array_merge($saisies, association_evenements_configurer_saisies($config, $disable_meta_admin));
-include_spip('formulaires/inc/configurer_association_paiements');
-$saisies = array_merge($saisies, association_paiements_configurer_saisies($config, $disable_meta_admin));
-include_spip('formulaires/inc/configurer_association_compta');
-$saisies = array_merge($saisies, association_compta_configurer_saisies($config));
+$contributions = pipeline('association_configuration_saisies', array(
+    'args' => array('config' => $config, 'disable_meta_admin' => $disable_meta_admin),
+    'data' => array(),
+));
+$contributions = is_array($contributions) ? ($contributions['data'] ?? array()) : array();
+usort($contributions, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
+foreach ($contributions as $contribution) {
+    $saisies = array_merge($saisies, (array) ($contribution['saisies'] ?? array()));
+}
 if($config == 'maintenance_bdd' OR empty($config)) {
     $saisies[] = array(
         'saisie' => 'fieldset',
@@ -217,11 +216,15 @@ function formulaires_configurer_association_charger_dist($config) {
 function formulaires_configurer_association_verifier_dist($config) {
 	$erreurs = array();
 
-	include_spip('formulaires/inc/configurer_association_compta_verifier');
-	$erreurs = array_merge($erreurs, association_compta_configurer_verifier($config));
-
-	include_spip('formulaires/inc/configurer_association_communication_verifier');
-	$erreurs = array_merge($erreurs, association_communication_configurer_verifier($config));
+	$contributions = pipeline('association_configuration_verifier', array(
+		'args' => array('config' => $config),
+		'data' => array(),
+	));
+	$contributions = is_array($contributions) ? ($contributions['data'] ?? array()) : array();
+	usort($contributions, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
+	foreach ($contributions as $contribution) {
+		$erreurs = array_merge($erreurs, (array) ($contribution['erreurs'] ?? array()));
+	}
 
 	$champ_lot = 'meta_cfg_maintenance_lot';
 	if ($erreur = association_config_maintenance_verifier_entier($champ_lot)) {
