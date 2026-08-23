@@ -9,6 +9,19 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  */
 function association_evenements_configurer_saisies($config, $disable_meta_admin = true) {
 	$saisies = array();
+	if ($config === 'maintenance_bdd' || empty($config)) {
+		$saisies[] = association_config_maintenance_fieldset(
+			'config_maintenance_evenements_fieldset',
+			_T('association_evenements:maintenance_titre'),
+			array(
+				association_config_maintenance_input('jours_inscriptions_attente', 90),
+				association_config_maintenance_radio('supprimer_inscriptions_non_validees'),
+				association_config_maintenance_radio('anonymiser_inscriptions_inactifs'),
+				association_config_maintenance_radio('supprimer_participations_orphelines'),
+				association_config_maintenance_radio('supprimer_participations_obsoletes'),
+			)
+		);
+	}
 	if (($config === 'modules' || empty($config))
 		&& function_exists('verifier_site_fiafe')
 		&& verifier_site_fiafe() === true) {

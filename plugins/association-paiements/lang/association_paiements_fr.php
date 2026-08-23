@@ -19,5 +19,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'journal_inscription_validation_paiement' => 'Validation automatique de l’inscription suite à l’encaissement de la transaction',
 	'label_choix_remboursement_notifier_inscrit' => 'Oui, envoyer un reçu',
 	'label_remboursement_notifier_inscrit' => 'Envoyer un reçu de remboursement',
+	'maintenance_titre' => 'Maintenance des paiements',
 	'prets_libelle_mode_paiement' => 'Mode de paiement',
 );

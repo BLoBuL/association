@@ -343,5 +343,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array (
   'validation_cotisation_auto' => 'Automatique',
   'validation_cotisation_post_paiement' => 'Après paiement',
   'validation_cotisation_pre_paiement' => 'Avant paiement',
+	'maintenance_titre' => 'Maintenance des adhésions et des auteurs',
   'voir_fiche_adherent' => 'Voir la fiche de l\'adhérent',
 );

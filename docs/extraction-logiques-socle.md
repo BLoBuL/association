@@ -576,6 +576,24 @@ aucune valeur existante. Le fournisseur Événements vérifie explicitement la
 présence de `verifier_site_fiafe()` avant de l’appeler, ce qui rend le formulaire
 utilisable sans le plugin historique qui fournissait cette fonction.
 
+## Lot 50 : réglages de maintenance distribués
+
+Le socle ne décrit plus les seuils ni les actions de maintenance métier. Il
+conserve uniquement l’activation globale, le mode simulation, la taille des
+lots et la commande manuelle de simulation. Chaque fournisseur déclare les
+réglages correspondant à son propre exécuteur :
+
+- Adhésions : ancienneté et traitement des auteurs inactifs ;
+- Événements : délai et nettoyage des inscriptions et participations ;
+- Comptabilité : ancienneté et nettoyage des écritures de cotisation ;
+- Paiements : transactions orphelines ;
+- Communication : abonnés et redirections obsolètes.
+
+Un constructeur transversal du socle normalise les saisies numériques et les
+choix oui/non, mais ne connaît aucun nom d’action métier. Tous les chemins
+`association_metas/meta_cfg_maintenance_*` restent identiques : une base
+historique conserve donc ses réglages sans migration de valeurs.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

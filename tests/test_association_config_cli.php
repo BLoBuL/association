@@ -77,7 +77,6 @@ $registre = association_config_cli_registre();
 
 // Audit independant : toutes les saisies persistantes du formulaire central
 // doivent avoir exactement un chemin physique dans le registre CLI.
-function preparer_liste_pages_uniques() { return array(); }
 function bank_lister_configs() { return array(); }
 function bank_config_id($configuration) { return ''; }
 function sql_fetsel($select, $from, $where = '') { return false; }
@@ -87,7 +86,6 @@ function pipeline($nom, $flux) { return $flux['data'] ?? $flux; }
 function preparer_liste_asso_destination_comptable() { return array(); }
 function preparer_liste_asso_plan_classe() { return array(); }
 function preparer_liste_asso_plan_compte() { return array(); }
-function preparer_liste_champs_filtres() { return array(); }
 function saisies_tableau2chaine($valeur) { return $valeur; }
 function test_plugin_actif($plugin) { return $plugin === 'gis'; }
 function verifier_site_fiafe() { return true; }
@@ -107,6 +105,7 @@ function association_config_cli_test_collecter_saisies($saisies, &$noms) {
 }
 
 $GLOBALS['visiteur_session'] = array('statut' => '0minirezo', 'webmestre' => 'oui');
+include_once PLUGIN_ROOT . '/formulaires/inc/configurer_association.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/configurer_association_evenements.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/formulaires/inc/configurer_association_adhesions.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php';

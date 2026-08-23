@@ -33,6 +33,17 @@ function preparer_liste_mailsubscribinglists() {
  */
 function association_adhesions_configurer_saisies($config, $disable_meta_admin = true) {
 	$saisies = array();
+	if ($config === 'maintenance_bdd' || empty($config)) {
+		$saisies[] = association_config_maintenance_fieldset(
+			'config_maintenance_adhesions_fieldset',
+			_T('association_adhesions:maintenance_titre'),
+			array(
+				association_config_maintenance_input('jours_inactivite', 365),
+				association_config_maintenance_radio('supprimer_auteurs_sans_paiements'),
+				association_config_maintenance_radio('anonymiser_auteurs_avec_paiements'),
+			)
+		);
+	}
 	if (($config === 'modules' || empty($config)) && test_plugin_actif('gis')) {
 		$actions_gis = saisies_tableau2chaine(array(
 			'modification_adherent' => _T('association_config:filtre_modification_adherent'),

@@ -447,5 +447,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array (
   'voir_activites_statut_inscription' => 'Statut de l\'inscription en ligne',
   'voir_activites_suivi_paiement' => 'Suivi des paiements',
   'voir_activites_tableau_de_bord' => 'Tableau de bord',
+	'maintenance_titre' => 'Maintenance des événements et participations',
   'vous_etes_organisateur' => 'Vous êtes organisateur de cet événement.',
 );

@@ -127,7 +127,7 @@ if($config == 'maintenance_bdd' OR empty($config)) {
                     'nom' => 'meta_cfg_maintenance_bdd_enable',
                     'label' => _T('association_config:config_maintenance_bdd_enable_label'),
                     'explication' => _T('association_config:config_maintenance_bdd_enable_explication'),
-                    'data' => array('oui' => _T('association:oui'), 'non' => _T('association:non')),
+                    'data' => array('oui' => _T('association_config:oui'), 'non' => _T('association_config:non')),
                     'defaut' => 'oui',
                 ),
             ),
@@ -137,180 +137,11 @@ if($config == 'maintenance_bdd' OR empty($config)) {
                     'nom' => 'meta_cfg_maintenance_dry_run',
                     'label' => _T('association_config:config_maintenance_bdd_dry_run_label'),
                     'explication' => _T('association_config:config_maintenance_bdd_dry_run_explication'),
-                    'data' => array('oui' => _T('association:oui'), 'non' => _T('association:non')),
+                    'data' => array('oui' => _T('association_config:oui'), 'non' => _T('association_config:non')),
                     'defaut' => 'oui',
                 ),
             ),
-            array(
-                'saisie' => 'input',
-                'options' => array(
-                    'nom' => 'meta_cfg_maintenance_jours_inactivite',
-                    'label' => _T('association_config:config_maintenance_bdd_jours_inactivite_label'),
-                    'explication' => _T('association_config:config_maintenance_bdd_jours_inactivite_explication'),
-                    'type' => 'text',
-                    'defaut' => '365',
-                ),
-            ),
-            array(
-                'saisie' => 'input',
-                'options' => array(
-                    'nom' => 'meta_cfg_maintenance_jours_inscriptions_attente',
-                    'label' => _T('association_config:config_maintenance_bdd_jours_inscriptions_attente_label'),
-                    'explication' => _T('association_config:config_maintenance_bdd_jours_inscriptions_attente_explication'),
-                    'type' => 'text',
-                    'defaut' => '90',
-                ),
-            ),
-            array(
-                'saisie' => 'input',
-                'options' => array(
-                    'nom' => 'meta_cfg_maintenance_mois_non_encaisse',
-                    'label' => _T('association_config:config_maintenance_bdd_mois_non_encaisse_label'),
-                    'explication' => _T('association_config:config_maintenance_bdd_mois_non_encaisse_explication'),
-                    'type' => 'text',
-                    'defaut' => '6',
-                ),
-            ),
-            array(
-                'saisie' => 'input',
-                'options' => array(
-                    'nom' => 'meta_cfg_maintenance_lot',
-                    'label' => _T('association_config:config_maintenance_bdd_lot_label'),
-                    'explication' => _T('association_config:config_maintenance_bdd_lot_explication'),
-                    'type' => 'text',
-                    'defaut' => '1000',
-                ),
-            ),
-            array(
-                'saisie' => 'fieldset',
-                'options' => array(
-                    'nom' => 'config_maintenance_bdd_actions',
-                    'label' => _T('association_config:config_maintenance_bdd_actions_fieldset'),
-                ),
-                'saisies' => array(
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_auteurs_sans_paiements',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_auteurs_sans_paiements_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_auteurs_sans_paiements_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_anonymiser_auteurs_avec_paiements',
-                            'label' => _T('association_config:config_maintenance_bdd_anonymiser_auteurs_avec_paiements_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_anonymiser_auteurs_avec_paiements_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_inscriptions_non_validees',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_inscriptions_non_validees_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_inscriptions_non_validees_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_anonymiser_inscriptions_inactifs',
-                            'label' => _T('association_config:config_maintenance_bdd_anonymiser_inscriptions_inactifs_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_anonymiser_inscriptions_inactifs_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_cotisations_orphelines',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_cotisations_orphelines_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_cotisations_orphelines_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_cotisations_non_encaissees',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_cotisations_non_encaissees_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_cotisations_non_encaissees_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_transactions_orphelines',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_transactions_orphelines_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_transactions_orphelines_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_participations_orphelines',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_participations_orphelines_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_participations_orphelines_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_participations_obsoletes',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_participations_obsoletes_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_participations_obsoletes_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_urls_mailsubscriber',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_urls_mailsubscriber_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_urls_mailsubscriber_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_urls_obsoletes',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_urls_obsoletes_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_urls_obsoletes_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                    array(
-                        'saisie' => 'radio',
-                        'options' => array(
-                            'nom' => 'meta_cfg_maintenance_supprimer_mailsubscribers_orphelines',
-                            'label' => _T('association_config:config_maintenance_bdd_supprimer_mailsubscribers_orphelines_label'),
-                            'explication' => _T('association_config:config_maintenance_bdd_supprimer_mailsubscribers_orphelines_explication'),
-                            'data'=>array('oui'=>_T('association:oui'),'non'=>_T('association:non')),
-                            'defaut'=>'oui'
-                        )
-                    ),
-                ),
-            ),
-
+			association_config_maintenance_input('lot', 1000),
             // Bouton pour exécuter un dry-run immédiatement (visible uniquement aux webmestres via restrictions du fieldset)
             array(
                 'saisie' => 'input',

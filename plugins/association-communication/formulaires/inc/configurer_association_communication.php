@@ -9,6 +9,17 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  */
 function association_communication_configurer_saisies($config) {
 	$saisies = array();
+	if ($config === 'maintenance_bdd' || empty($config)) {
+		$saisies[] = association_config_maintenance_fieldset(
+			'config_maintenance_communication_fieldset',
+			_T('association_communication:maintenance_titre'),
+			array(
+				association_config_maintenance_radio('supprimer_urls_mailsubscriber'),
+				association_config_maintenance_radio('supprimer_urls_obsoletes'),
+				association_config_maintenance_radio('supprimer_mailsubscribers_orphelines'),
+			)
+		);
+	}
 	if ($config !== 'segments' && !empty($config)) {
 		return $saisies;
 	}

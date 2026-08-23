@@ -39,6 +39,15 @@ function identifier_tresorier() {
  */
 function association_paiements_configurer_saisies($config, $disable_meta_admin = true) {
 	$saisies = array();
+	if ($config === 'maintenance_bdd' || empty($config)) {
+		$saisies[] = association_config_maintenance_fieldset(
+			'config_maintenance_paiements_fieldset',
+			_T('association_paiements:maintenance_titre'),
+			array(
+				association_config_maintenance_radio('supprimer_transactions_orphelines'),
+			)
+		);
+	}
 if($config == 'mode_paiement' OR empty($config)) {
 // Fieldset for payment configurations
     $choix_mode_paiement = preparer_choix_mode_paiement();

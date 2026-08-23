@@ -12,6 +12,17 @@ include_spip('inc/destinations');
  */
 function association_compta_configurer_saisies($config) {
 	$saisies = array();
+	if ($config === 'maintenance_bdd' || empty($config)) {
+		$saisies[] = association_config_maintenance_fieldset(
+			'config_maintenance_compta_fieldset',
+			_T('association_compta:maintenance_titre'),
+			array(
+				association_config_maintenance_input('mois_non_encaisse', 6),
+				association_config_maintenance_radio('supprimer_cotisations_orphelines'),
+				association_config_maintenance_radio('supprimer_cotisations_non_encaissees'),
+			)
+		);
+	}
 if($config == 'comptabilite' OR empty($config)) {
     $saisies[] = array(
         'saisie' => 'fieldset',

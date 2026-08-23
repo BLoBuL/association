@@ -81,5 +81,6 @@ Suite à la validation de ce formulaire vous serez redirigé vers la page vous p
 	'notifications_metiers_previsualiser' => 'Prévisualiser',
 	'notifications_metiers_titre' => 'Notifications métier',
 	'notification_automatique' => 'Notification automatique',
+	'maintenance_titre' => 'Maintenance des abonnements et redirections',
 	'titre_newsletter' => 'Inscription à la newsletter',
 );
