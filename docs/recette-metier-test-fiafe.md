@@ -572,3 +572,21 @@ Le serveur restitue une clé historique et deux des nouveaux libellés français
 compile le CVT du plan comptable en 2596 octets et valide encore l'installation
 complète. L'accès direct au squelette privé sans session conserve son garde 404
 normal ; sa recette visuelle authentifiée reste dans la campagne navigateur.
+
+## Lot 45 — squelettes front Paiements et Événements
+
+Le commit `0287584` a été déployé atomiquement dans Paiements et Événements.
+Les artefacts ont pour SHA-256
+`dc4bcdcaaaffcb9db966043a0819825f50a26ca602df903225fa96a404c1c7b9`
+et `bc3125cffae85d66476e124a212fc51e03916c8953bb389855e6f4649f0eab90`.
+Le SPIP servi compile les quatre modèles de paiement (577 octets chacun), les
+deux albums sans données de contexte et résout le nouveau domaine événementiel.
+L’installation complète reste valide.
+
+## Lot 46 — gabarit email Communication
+
+Le commit `5b8b88c` a été déployé atomiquement dans Communication depuis
+l’artefact SHA-256
+`6e5c56ff09ccac5739bfb1fb71569681fc6cee2b9a8121d72fd028d4698b6fe1`.
+Le rendu serveur du gabarit autonome produit 2837 octets, contient la coque
+responsive et le contenu injecté, et ne contient aucune référence `zblobul`.
