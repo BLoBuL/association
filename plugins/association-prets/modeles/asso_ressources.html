@@ -1,4 +1,4 @@
-[(#REM)<!-- doc: contrib.spip.net/4174#modeles -->]
+[(#REM) Modèle public des ressources du module Association - Prêts.]
 <B_ressources_disponibles>
 #ANCRE_PAGINATION
 <table class="spip">
@@ -25,8 +25,8 @@
 	{pu?}
 	{commentaire?LIKE %#ENV{commentaire}%}
 	{maj?LIKE #ENV{maj}%}
-	{statut !IN sorti, suspendu }
-	{par #ENV{tri,date_acquisition DESC}}
+	{statut !IN sorti,suspendu}
+	{par date_acquisition}{inverse}
 	{pagination #ENV{pagination,10} assoressources}
 	>
 	<tr id="#ID_RESSOURCE" class="[row_(#COMPTEUR_BOUCLE|alterner{'odd','even'})]">
@@ -61,5 +61,5 @@
 </table>
 [<nav class="pagination">(#PAGINATION{prive})</nav>]
 </B_ressources_disponibles>
-[<div class="erreur">(#ENV{vide}|sinon{<:ecrire:texte_vide:>})</div>]
+<div class="notice">[(#ENV{vide}|sinon{<:association:ressource_aucune:>})]</div>
 <//B_ressources_disponibles>
