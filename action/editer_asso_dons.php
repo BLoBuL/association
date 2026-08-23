@@ -14,10 +14,12 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
 
 include_spip('inc/comptes');
 
-function action_editer_asso_dons() {
-		
-	$securiser_action = charger_fonction('securiser_action', 'inc');
-	$id_don=$securiser_action();
+function action_editer_asso_dons($id_don = null) {
+	if ($id_don === null) {
+		$securiser_action = charger_fonction('securiser_action', 'inc');
+		$id_don = $securiser_action();
+	}
+	$id_don = (int) $id_don;
 
 	$journal= _request('journal');
 	$date_don = _request('date_don');

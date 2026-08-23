@@ -16,10 +16,13 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 
 include_spip('inc/comptes');
 
-function action_editer_asso_ventes()
+function action_editer_asso_ventes($id_vente = null)
 {
-    $securiser_action = charger_fonction('securiser_action', 'inc');
-    $id_vente = $securiser_action();
+    if ($id_vente === null) {
+        $securiser_action = charger_fonction('securiser_action', 'inc');
+        $id_vente = $securiser_action();
+    }
+    $id_vente = (int) $id_vente;
 
     $id_compte=intval(_request('id_compte'));
     $date_vente = _request('date_vente');

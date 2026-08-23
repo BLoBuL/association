@@ -12,10 +12,14 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
-function action_editer_asso_ressources() {
-		
-	$securiser_action = charger_fonction('securiser_action', 'inc');
-	$id_ressource=$securiser_action();
+function action_editer_asso_ressources($id_ressource = null) {
+	// CVT transmet directement l'identifiant. securiser_action() reste réservé
+	// à l'ancien appel direct de l'action, sans argument PHP.
+	if ($id_ressource === null) {
+		$securiser_action = charger_fonction('securiser_action', 'inc');
+		$id_ressource = $securiser_action();
+	}
+	$id_ressource = (int) $id_ressource;
 
 	$code= _request('code');
 	$date = _request('date_acquisition');
