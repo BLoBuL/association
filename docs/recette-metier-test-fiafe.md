@@ -278,3 +278,14 @@ détectée et les panneaux déplacés au lot 16 restent intégralement servis.
 Les validations Communication, Comptabilité et maintenance passent toujours,
 et la résolution activité vers événement retourne encore l'événement attendu
 228. Les 66 tests autonomes passent avant déploiement.
+
+## Lot 18 — export CSV des adhérents
+
+Le commit `629e695` a été déployé dans le socle et Adhésions depuis l'artefact
+SHA-256 `da44202d4465413fdc33a8783d7119b41214ab2a0e675762622f67b496f76cfe`.
+Le serveur résout désormais `inc/fonctions/generer_export_csv.php` depuis le
+plugin Adhésions actif ; le fichier n'existe plus dans le socle.
+
+Une exécution SPIP réelle avec un critère vide charge le filtre, produit le
+formulaire HTML, son action signée et le bouton de génération CSV sans erreur.
+Les 66 tests autonomes passent avant déploiement.
