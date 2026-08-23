@@ -18,7 +18,8 @@ include_spip('inc/destinations');
 function formulaires_configurer_association_saisies_dist($config = '', $lister_champs = ''){
 $saisies=array();
 
-$disable_meta_admin = $GLOBALS['visiteur_session']['statut'] != '0minirezo';
+$visiteur_session = $GLOBALS['visiteur_session'] ?? array();
+$disable_meta_admin = !is_array($visiteur_session) || ($visiteur_session['statut'] ?? '') !== '0minirezo';
 
 if($config == 'info' OR empty($config)){
 $saisies[]= array(
