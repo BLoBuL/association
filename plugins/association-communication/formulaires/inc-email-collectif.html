@@ -4,7 +4,7 @@
 <div class="formulaire_spip formulaire_#FORM formulaire_#FORM_#ENV{_etape}">
     [<p class='formulaire_erreur'>(#ENV*{message_erreur})</p>]
     [<p class='formulaire_message_ok'>(#ENV*{message_ok})</p>]
-    <h1 class="grostitre">[(#ENV{mode_email_collectif}|=={evenement}|?{<:association:label_formulaire_envoi_collectif_evenement:>,<:association:label_formulaire_envoi_collectif_adherent:>})] - Étape : [ (#ENV{_etape})]/[(#ENV{_etapes})] :</h1>
+    <h1 class="grostitre">[(#ENV{mode_email_collectif}|=={evenement}|?{<:association_communication:label_formulaire_envoi_collectif_evenement:>,<:association_communication:label_formulaire_envoi_collectif_adherent:>})] - Étape : [ (#ENV{_etape})]/[(#ENV{_etapes})] :</h1>
     <INCLURE{fond=formulaires/inc-saisies-cvt-etapes-#ENV{_saisies/options/etapes_presentation,defaut}, etapes=#ENV{_saisies_par_etapes}, env} />
     <form action="#ENV{action}" method="post" enctype="multipart/form-data">
         #ACTION_FORMULAIRE{#ENV{action},#FORM}
@@ -29,10 +29,10 @@
             <INCLURE{fond=prive/objets/liste/table_destinataires_email_collectif,env,ajax,id_auteurs=#ENV{liste_auteurs}} />
         ]
         <BOUCLE_affichage_recapitualif(CONDITION){si #ENV{afficher_recapitulatif}|oui}>
-           <h3><:association:envoi_mail_collectif_recap_titre:></h3>
-           <strong><:association:envoi_mail_collectif_recap_chapeau:></strong>
-            <p><:association:envoi_mail_collectif_recap_message{count_selecteur_adherent=#ENV{count_selecteur_adherent}}:></p>
-            <p><:association:envoi_mail_collectif_recap_attention:></p>
+           <h3><:association_communication:envoi_mail_collectif_recap_titre:></h3>
+           <strong><:association_communication:envoi_mail_collectif_recap_chapeau:></strong>
+            <p><:association_communication:envoi_mail_collectif_recap_message{count_selecteur_adherent=#ENV{count_selecteur_adherent}}:></p>
+            <p><:association_communication:envoi_mail_collectif_recap_attention:></p>
         </BOUCLE_affichage_recapitualif>
         <br>
         <BOUCLE_bouton_bottom(CONDITION){si #ENV{_etape}|in_array{#LISTE{1,2,3,5,6}}}>

@@ -1,6 +1,6 @@
 <B_mailsubscribinglists>
 <div class="liste corbeille-mailsubscribinglists">
-[<h3 class="titrem">(#GRAND_TOTAL|singulier_ou_pluriel{association:mailsubscribinglist_corbeille_un,association:mailsubscribinglist_corbeille_tous})</h3>]
+[<h3 class="titrem">(#GRAND_TOTAL|singulier_ou_pluriel{association_communication:mailsubscribinglist_corbeille_un,association_communication:mailsubscribinglist_corbeille_tous})</h3>]
 [<p class='pagination'>(#PAGINATION)</p>]
 <ul class='liste-items checkables'>
 <BOUCLE_mailsubscribinglists(MAILSUBSCRIBINGLISTS){statut}{pagination 10}{par titre}{recherche ?}>
@@ -15,4 +15,3 @@
 [<p class='pagination'>(#PAGINATION{prive})</p>]
 </div>
 </B_mailsubscribinglists>
-

@@ -24,16 +24,16 @@ $gabarits = array();
         'saisie' => 'fieldset',
         'options' => array(
                 'nom' => 'fieldset_select_gabarit_nom',
-                'label' => '<:association:email_collectif_select_gabarit_explication:>',
+                'label' => '<:association_communication:email_collectif_select_gabarit_explication:>',
             ),
          'saisies' => array(
             array(
             'saisie' => 'selection',
             'options' => array(
-                'label' => '<:association:email_collectif_select_gabarit_titre:>',
+                'label' => '<:association_communication:email_collectif_select_gabarit_titre:>',
                 'nom' => 'select_gabarit',
                 //'conteneur_class' => 'date_debut',
-                'explication' => '<:association:email_collectif_sujet_explication:>',
+                'explication' => '<:association_communication:email_collectif_sujet_explication:>',
                 'attributs' => "onchange=window.location.href=window.location.href+'&'+this.name+'='+this.value",
                 'data' => $gabarits,
                 )
@@ -45,7 +45,7 @@ $gabarits = array();
             'saisie' => 'fieldset',
             'options' => array(
                     'nom' => 'fieldset_select_gabarit_nom',
-                    'label' => '<:association:email_collectif_select_gabarit_explication:>',
+                    'label' => '<:association_communication:email_collectif_select_gabarit_explication:>',
                     ),
             );
     }

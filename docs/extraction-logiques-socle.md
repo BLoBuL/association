@@ -506,6 +506,13 @@ Les quinze libellés de transactions et remboursements sont fournis par
 `association_paiements_fr.php`. Les composants et pipelines de Paiements
 emploient le domaine `association_paiements`, avec repli SPIP vers le français.
 
+## Lot 42 : domaine de langue Communication
+
+Les cinquante-cinq libellés d'envoi collectif, corbeille et prévisualisation
+sont fournis par `association_communication_fr.php`. Ils complètent les domaines
+de notifications déjà propres au module. Tous les consommateurs utilisent le
+domaine `association_communication` avec repli SPIP vers le français.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

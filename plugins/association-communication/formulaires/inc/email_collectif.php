@@ -49,13 +49,13 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'fieldset_edition_message_nom',
-            'label' => '<:association:email_collectif_fieldset_edition_message_label:>',
+            'label' => '<:association_communication:email_collectif_fieldset_edition_message_label:>',
         ),
         'saisies' => array(
             array(
                 'saisie' => 'input',
                 'options' => array(
-                    'label' => '<:association:email_collectif_sujet_label:>',
+                    'label' => '<:association_communication:email_collectif_sujet_label:>',
                     'nom' => 'sujet',
                     'defaut' => '',
                     'obligatoire' => 'oui',
@@ -64,9 +64,9 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
             array(
                 'saisie' => 'input',
                 'options' => array(
-                    'label' => '<:association:email_collectif_titre_label:>',
+                    'label' => '<:association_communication:email_collectif_titre_label:>',
                     'nom' => 'titre',
-                    'explication' => '<:association:email_collectif_titre_explication:>',
+                    'explication' => '<:association_communication:email_collectif_titre_explication:>',
                     'defaut' => '',
                     'obligatoire' => 'oui',
                 )
@@ -74,9 +74,9 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
             array(
                 'saisie' => 'input',
                 'options' => array(
-                    'label' => '<:association:email_collectif_chapeau_label:>',
+                    'label' => '<:association_communication:email_collectif_chapeau_label:>',
                     'nom' => 'chapeau',
-                    'explication' => '<:association:email_collectif_chapeau_explication:>',
+                    'explication' => '<:association_communication:email_collectif_chapeau_explication:>',
                     'defaut' => '',
                 )
             ),
@@ -84,7 +84,7 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
                 'saisie' 	=> 'fichiers',
                 'options' => array(
                     'nom' => 'visuel_principal',
-                    'label'	=> '<:association:email_visuel_principal_explication:>',
+                    'label'	=> '<:association_communication:email_visuel_principal_explication:>',
                     'nb_fichiers' => 1
                 ),
                 'verifier' => array(
@@ -99,10 +99,10 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
             array(
                 'saisie' => 'textarea',
                 'options' => array(
-                    'label' => '<:association:email_collectif_texte_label:>',
+                    'label' => '<:association_communication:email_collectif_texte_label:>',
                     'nom' => 'texte',
                     //'conteneur_class' => 'date_debut',
-                    'explication' => '<:association:email_collectif_texte_explication:>',
+                    'explication' => '<:association_communication:email_collectif_texte_explication:>',
                     'defaut' => '',
                     'obligatoire' => 'oui',
                 )
@@ -110,13 +110,13 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
             ...($mode === 'evenement' ? array(array(
                 'saisie' => 'radio',
                 'options' => array(
-                    'label' => '<:association:email_collectif_destinataires_label:>',
+                    'label' => '<:association_communication:email_collectif_destinataires_label:>',
                     'nom' => 'type_destinataires_evenement',
-                    'explication' => '<:association:email_collectif_destinataires_explication:>',
+                    'explication' => '<:association_communication:email_collectif_destinataires_explication:>',
                     'defaut' => 'inscrits_evenement',
                     'data' => array(
-                        'inscrits_evenement' => '<:association:email_collectif_destinataires_inscrits_evenement:>',
-                        'adherents_association' => '<:association:email_collectif_destinataires_adherents_association:>',
+                        'inscrits_evenement' => '<:association_communication:email_collectif_destinataires_inscrits_evenement:>',
+                        'adherents_association' => '<:association_communication:email_collectif_destinataires_adherents_association:>',
                     ),
                     'obligatoire' => 'oui',
                 ),
@@ -125,14 +125,14 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
                 'saisie' => 'radio',
                 'options' => array(
                     'label' => $mode === 'evenement'
-                        ? '<:association:email_collectif_inclure_evenement_label:>'
-                        : '<:association:ajouter_information_paiement_label:>',
+                        ? '<:association_communication:email_collectif_inclure_evenement_label:>'
+                        : '<:association_communication:ajouter_information_paiement_label:>',
                     'nom' => $mode === 'evenement'
                         ? 'inclure_contenu_evenement'
                         : 'ajouter_information_paiement',
                     'explication' => $mode === 'evenement'
-                        ? '<:association:email_collectif_inclure_evenement_explication:>'
-                        : '<:association:ajouter_information_paiement_explication:>',
+                        ? '<:association_communication:email_collectif_inclure_evenement_explication:>'
+                        : '<:association_communication:ajouter_information_paiement_explication:>',
                     'defaut' => $mode === 'evenement' ? 'oui' : 'non',
                     'data'=> array('oui' => 'Oui','non' => 'Non')
                 ),
@@ -141,8 +141,8 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
                 'saisie' 	=> 'fichiers',
                 'options' => array(
                     'nom' => 'documents_joints',
-                    'label'	=> '<:association:email_documents_joints_label:>',
-                    'explication'	=> '<:association:email_documents_joints_explication:>',
+                    'label'	=> '<:association_communication:email_documents_joints_label:>',
+                    'explication'	=> '<:association_communication:email_documents_joints_explication:>',
                     'nb_fichiers' => 3
                 ),
                 'verifier' => array(
@@ -161,7 +161,7 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'message',
-            'label' => '<:association:email_collectif_message_titre:>',
+            'label' => '<:association_communication:email_collectif_message_titre:>',
         ),
         'saisies' => array(
             // $saisies_fieldset_gabarit,
@@ -197,7 +197,7 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'visualisation_message',
-            'label' => '<:association:email_collectif_fieldset_visualisation_message_label:>',
+            'label' => '<:association_communication:email_collectif_fieldset_visualisation_message_label:>',
         ),
     );
     $saisies[]=$saisies_etape_2;
@@ -207,7 +207,7 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
             'saisie' => 'fieldset',
             'options' => array(
                 'nom' => 'inscrits_evenement',
-                'label' => '<:association:email_collectif_inscriptions_evenement_label:>',
+                'label' => '<:association_communication:email_collectif_inscriptions_evenement_label:>',
             ),
         );
     } else {
@@ -216,7 +216,7 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
             'saisie' => 'fieldset',
             'options' => array(
                 'nom' => 'recherche',
-                'label' => '<:association:email_collectif_fieldset_recherche_label:>',
+                'label' => '<:association_communication:email_collectif_fieldset_recherche_label:>',
             ),
             'saisies' => $saisies_recherche_avancee,
         );
@@ -240,38 +240,38 @@ function association_formulaire_email_collectif_saisies($mode = 'adherent'){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'option_envoi',
-            'label' => '<:association:email_collectif_option_envoi_label:>',
-            //'explication' => '<:association:email_collectif_select_gabarit_explication:>',
+            'label' => '<:association_communication:email_collectif_option_envoi_label:>',
+            //'explication' => '<:association_communication:email_collectif_select_gabarit_explication:>',
             //'conteneur_class' => 'fieldset_operateur',
         ),
         'saisies' => array(
             array(
                 'saisie' => 'input',
                 'options' => array(
-                    'label' => '<:association:email_collectif_nom_expediteur_label:>',
+                    'label' => '<:association_communication:email_collectif_nom_expediteur_label:>',
                     'nom' => 'nom_expediteur',
                     //'conteneur_class' => 'date_debut',
-                    //'explication' => '<:association:email_collectif_nom_expediteur_explication:>',
+                    //'explication' => '<:association_communication:email_collectif_nom_expediteur_explication:>',
                     'defaut' => '',
                 )
             ),
             array(
                 'saisie' => 'input',
                 'options' => array(
-                    'label' => '<:association:email_collectif_email_expediteur_label:>',
+                    'label' => '<:association_communication:email_collectif_email_expediteur_label:>',
                     'nom' => 'email_expediteur',
                     //'conteneur_class' => 'date_debut',
-                    'explication' => _T('association:email_collectif_email_expediteur_explication',array('domaine'=>$website_domain)),
+                    'explication' => _T('association_communication:email_collectif_email_expediteur_explication',array('domaine'=>$website_domain)),
                     'defaut' => '',
                 )
             ),
             array(
                 'saisie' => 'date',
                 'options' => array(
-                    'label' => '<:association:email_collectif_email_date_envoi_label:>',
+                    'label' => '<:association_communication:email_collectif_email_date_envoi_label:>',
                     'nom' => 'date_envoi',
                     //'conteneur_class' => 'date_debut',
-                    'explication' => '<:association:email_collectif_email_date_envoi_explication:>',
+                    'explication' => '<:association_communication:email_collectif_email_date_envoi_explication:>',
                     'horaire' => 'oui',
                     'heure_pas' => 4,
                     //'defaut' =>,
@@ -544,7 +544,7 @@ function association_formulaire_email_collectif_traiter($mode = 'adherent', $id_
     if (!$count_selecteur_adherent) {
         return array(
             'editable' => true,
-            'message_erreur' => _T('association:email_collectif_aucun_destinataire'),
+            'message_erreur' => _T('association_communication:email_collectif_aucun_destinataire'),
         );
     }
 

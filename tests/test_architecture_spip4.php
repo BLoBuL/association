@@ -167,6 +167,19 @@ $verifier(
 		&& strpos($paiements_lang, "'label_remboursement_notifier_inscrit'") !== false,
 	'Le plugin Paiements doit utiliser son propre domaine de langue.'
 );
+$communication_lang = file_get_contents($racine . '/plugins/association-communication/lang/association_communication_fr.php');
+$communication_sources_lang = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-communication')) as $communication_source_lang) {
+	if ($communication_source_lang->isFile() && preg_match('/\.(?:php|html)$/', $communication_source_lang->getFilename()) && strpos($communication_source_lang->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$communication_sources_lang .= file_get_contents($communication_source_lang->getPathname());
+	}
+}
+$verifier(
+	!preg_match('/(?:<:|[\'\"]|\{)association:/', $communication_sources_lang)
+		&& strpos($communication_sources_lang, 'association_communication:') !== false
+		&& strpos($communication_lang, "'notifications_metiers_titre'") !== false,
+	'Le plugin Communication doit utiliser son propre domaine de langue Association.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

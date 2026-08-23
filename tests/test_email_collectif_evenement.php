@@ -78,6 +78,15 @@ function _T($cle, $variables = array()) {
 		'association:email_collectif_evenement_modification_texte' => 'Modification de @titre@.',
 		'association:email_collectif_rappel_evenement_lien' => 'Consulter evenement',
 		'association:email_collectif_inscription_participants' => '@nombre@ participants',
+		'association_communication:email_collectif_evenement_rappel_sujet' => 'Rappel - @titre@',
+		'association_communication:email_collectif_evenement_rappel_texte' => 'Rappel de @titre@.',
+		'association_communication:email_collectif_evenement_annulation_sujet' => 'Annulation - @titre@',
+		'association_communication:email_collectif_evenement_annulation_texte' => 'Annulation de @titre@.',
+		'association_communication:email_collectif_evenement_report_sujet' => 'Report - @titre@',
+		'association_communication:email_collectif_evenement_report_texte' => 'Report de @titre@.',
+		'association_communication:email_collectif_evenement_modification_sujet' => 'Modification - @titre@',
+		'association_communication:email_collectif_evenement_modification_texte' => 'Modification de @titre@.',
+		'association_communication:email_collectif_inscription_participants' => '@nombre@ participants',
 	);
 	$texte = $textes[$cle] ?? $cle;
 	foreach ($variables as $nom => $valeur) {

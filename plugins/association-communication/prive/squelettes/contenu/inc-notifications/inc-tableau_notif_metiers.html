@@ -13,14 +13,14 @@
     <td>[(#VALEUR|table_valeur{sujet})]</td>
     <td>
         [(#VALEUR|table_valeur{url}|oui)
-            <a href="[(#VALEUR|table_valeur{url})]" class="mediabox btn btn_mini"><:association:notifications_metiers_previsualiser:></a>
+            <a href="[(#VALEUR|table_valeur{url})]" class="mediabox btn btn_mini"><:association_communication:notifications_metiers_previsualiser:></a>
         ]
         [(#VALEUR|table_valeur{url}|non)
-            <span class="notice"><:association:notifications_metiers_contexte_absent:></span>
+            <span class="notice"><:association_communication:notifications_metiers_contexte_absent:></span>
         ]
     </td>
 </tr>
 </BOUCLE_notifications_metiers>
 </BOUCLE_groupes_metiers>
-<tr><td colspan="5" class="notice"><:association:notifications_metiers_aucune:></td></tr>
+<tr><td colspan="5" class="notice"><:association_communication:notifications_metiers_aucune:></td></tr>
 <//B_groupes_metiers>

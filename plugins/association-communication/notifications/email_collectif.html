@@ -17,7 +17,7 @@
         <INCLURE{fond=notifications/inc/inc-infos_evenement,env}>
     </BOUCLE_contenu_evenement>
      <B_categories_adherents>
-         <b><:association:email_notification_categorie_cotisation:></b>
+         <b><:association_communication:email_notification_categorie_cotisation:></b>
         <ul class="spip">
             <BOUCLE_categories_adherents(ASSO_CATEGORIES_ADHERENTS){tout}{!par cotisation}{statut=ok}{si #ENV{ajouter_information_paiement}|=={oui}}>
                 [<li>(#VALEUR) - [(#COTISATION|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})]</li>]
@@ -28,7 +28,7 @@
 	</div>
     </B_categories_adherents>
     <B_mode_paiement_adhesion>
-        <b><:association:email_notification_mode_paiement:></b><br>
+        <b><:association_communication:email_notification_mode_paiement:></b><br>
         <ul class="spip">
             <BOUCLE_mode_paiement_adhesion(POUR){tableau #VAL{acte}|bank_lister_configs}{valeur != simu}{si #ENV{ajouter_information_paiement}|=={oui}}>
                 [(#VALEUR{actif}|oui|et{#VALEUR|bank_config_id|in_any{#CONFIG{association_metas/mode_paiement_adhesion}}|oui})
@@ -38,7 +38,7 @@
         </ul>
     </B_mode_paiement_adhesion>
     <B_documents_joints_img>
-        <h2 class="titre-section-petit"><:association:galerie:></h2>
+        <h2 class="titre-section-petit"><:association_communication:galerie:></h2>
         <BOUCLE_documents_joints_img(DOCUMENTS){tout}{si #ENV{documents_joints}|oui}{id_document IN #ENV{documents_joints}}{extension IN png,jpg,gif}{mode=image}>
             <div class="document_joints">
                 [(#LOGO_DOCUMENT|image_passe_partout{260,130}|image_recadre{260,130,center center}{#URL_DOCUMENT})]
@@ -46,7 +46,7 @@
         </BOUCLE_documents_joints_img>
      </B_documents_joints_img>
     <B_documents_joints_doc>
-        <h2 class="titre-section-petit"><:association:documents_joints:></h2>
+        <h2 class="titre-section-petit"><:association_communication:documents_joints:></h2>
         <BOUCLE_documents_joints_doc(DOCUMENTS){tout}{si #ENV{documents_joints}|oui}{id_document IN #ENV{documents_joints}}{!extension IN png,jpg,gif}{mode=document}>
             <div class="document_joints">
                 <a href="#URL_DOCUMENT">#URL_DOCUMENT</a>

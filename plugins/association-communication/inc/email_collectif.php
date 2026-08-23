@@ -28,7 +28,7 @@ function association_email_collectif_inscriptions_evenement($id_evenement) {
 			$row['libelle'] = trim($prenom . ' ' . $nom);
 			if ($nombre_inscrits > 1) {
 				$row['libelle'] .= ' — ' . _T(
-					'association:email_collectif_inscription_participants',
+					'association_communication:email_collectif_inscription_participants',
 					array('nombre' => $nombre_inscrits)
 				);
 			}
@@ -115,8 +115,8 @@ function association_email_collectif_verifier_selection($mode, $etape, $id_evene
 
 	if (!association_email_collectif_resoudre_destinataires($id_auteurs, $id_activites, $id_evenement)) {
 		return array(
-			'selecteur_adherent' => _T('association:email_collectif_aucun_destinataire'),
-			'message_erreur' => _T('association:email_collectif_aucun_destinataire'),
+			'selecteur_adherent' => _T('association_communication:email_collectif_aucun_destinataire'),
+			'message_erreur' => _T('association_communication:email_collectif_aucun_destinataire'),
 		);
 	}
 
@@ -159,7 +159,7 @@ function association_email_collectif_gabarit_evenement($id_evenement, $type = 'l
 	return array(
 		'id_evenement' => $id_evenement,
 		'gabarit_evenement' => $type,
-		'sujet' => _T('association:email_collectif_evenement_' . $type . '_sujet', $variables),
+		'sujet' => _T('association_communication:email_collectif_evenement_' . $type . '_sujet', $variables),
 		'titre' => $titre,
 		'chapeau' => implode(' - ', $details),
 		'texte' => '',

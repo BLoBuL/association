@@ -57,10 +57,10 @@ L'√©toile <strong>*</strong> permets d'identifier les notifications personnalis√
         <BOUCLE_onglet_metiers(CONDITION){si #VAL|association_notifications_metiers|count|>{0}}>
         <li class="tab-metiers [(#ENV{tab,adhesion}|=={metiers}|?{active,})]">
             [(#ENV{tab,adhesion}|=={metiers}|oui)
-                <strong class="on" aria-current="page"><:association:notifications_metiers_titre:></strong>
+                <strong class="on" aria-current="page"><:association_communication:notifications_metiers_titre:></strong>
             ]
             [(#ENV{tab,adhesion}|=={metiers}|non)
-                <a href="[(#SELF|parametre_url{tab,metiers})]" class="ajax"><:association:notifications_metiers_titre:></a>
+                <a href="[(#SELF|parametre_url{tab,metiers})]" class="ajax"><:association_communication:notifications_metiers_titre:></a>
             ]
         </li>
         </BOUCLE_onglet_metiers>
