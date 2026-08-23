@@ -84,6 +84,11 @@ foreach ($iterateur_meta as $fichier_meta) {
 	}
 }
 $verifier(!$meta_association_restant, 'Les squelettes doivent utiliser CONFIG pour les metas Association.');
+$profil_association = file_get_contents($racine . '/plugins/association-adhesions/modeles/asso_profil.html');
+$verifier(
+	strpos($profil_association, "#CONFIG{association_metas/rue}|sinon{''}|nl2br") !== false,
+	'Le profil public doit normaliser une adresse absente avant nl2br sous PHP 8.'
+);
 foreach (array(
 	'style.css',
 	'prive/themes/spip/images/numbers-line.svg',

@@ -2,7 +2,7 @@
 <div class="vcard" id="vcard-asso">
     <h3 class="fn org"><strong class="organization-name">#CONFIG{association_metas/nom}</strong></h3>
     <p class="adr" id="vcard-asso-adr">
-        [<span class="street-aspanress">(#CONFIG{association_metas/rue}|nl2br|typo)</span><br />]
+        [<span class="street-aspanress">(#CONFIG{association_metas/rue}|sinon{''}|nl2br|typo)</span><br />]
         [<span class="postal-code">(#CONFIG{association_metas/cp})</span>&nbsp;]
         [<span class="locality">(#CONFIG{association_metas/ville})</span>]
     </p>
