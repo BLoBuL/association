@@ -428,6 +428,13 @@ personnalisée `#ONGLETS_ASSOCIATION`, qui ne faisait que déléguer à ce squel
 est supprimée. Les dix-huit pages concernées utilisent ainsi la syntaxe
 `INCLURE` native de SPIP.
 
+## Lot 31 : saisie Formidable dans Communication
+
+La saisie auto-découverte `formulaires` conserve son nom et son chemin logique,
+mais ses gabarits HTML et YAML sont fournis par Communication. Elle sélectionne
+un formulaire Formidable publié pour les parcours de communication et ne
+constitue donc plus une responsabilité du socle.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

@@ -77,6 +77,13 @@ $verifier(
 	!is_file($racine . '/balise/onglets_association.php'),
 	'Le socle ne doit plus compiler une balise personnalisee pour inclure ses onglets.'
 );
+$verifier(
+	!is_file($racine . '/saisies/formulaires.html')
+		&& !is_file($racine . '/saisies/formulaires.yaml')
+		&& is_file($racine . '/plugins/association-communication/saisies/formulaires.html')
+		&& is_file($racine . '/plugins/association-communication/saisies/formulaires.yaml'),
+	'La saisie de formulaires doit appartenir au plugin Communication.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {
