@@ -81,13 +81,14 @@ function verifier_categorie_adherent_entreprise() { return true; }
 function preparer_liste_zones() { return array(); }
 function preparer_liste_mailsubscribinglists() { return array(); }
 function preparer_liste_pages_uniques() { return array(); }
-function preparer_choix_mode_paiement() { return array(); }
+function bank_lister_configs() { return array(); }
+function bank_config_id($configuration) { return ''; }
+function sql_fetsel($select, $from, $where = '') { return false; }
 function preparer_liste_asso_destination_comptable() { return array(); }
 function preparer_liste_asso_plan_classe() { return array(); }
 function preparer_liste_asso_plan_compte() { return array(); }
 function preparer_liste_champs_filtres() { return array(); }
 function saisies_tableau2chaine($valeur) { return $valeur; }
-function identifier_tresorier() { return 0; }
 function test_plugin_actif($plugin) { return $plugin === 'gis'; }
 function verifier_site_fiafe() { return true; }
 

@@ -495,10 +495,6 @@ if(($config == 'entreprise' OR empty($config)) AND verifier_categorie_adherent_e
         );
 
 }
-include_spip('formulaires/inc/configurer_association_evenements');
-$saisies = array_merge($saisies, association_evenements_configurer_saisies($config));
-include_spip('formulaires/inc/configurer_association_paiements');
-$saisies = array_merge($saisies, association_paiements_configurer_saisies($config, $disable_meta_admin));
 
 	return $saisies;
 }

@@ -4,6 +4,21 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+/**
+ * Résout l'événement associé à une inscription sans exposer sa table aux autres modules.
+ */
+function association_evenements_association_evenement_resoudre_contexte($flux) {
+	$id_activite = (int) ($flux['args']['id_activite'] ?? 0);
+	if ($id_activite <= 0) {
+		return $flux;
+	}
+	$inscription = sql_fetsel('id_evenement', 'spip_asso_activites', 'id_activite=' . $id_activite);
+	if ($inscription) {
+		$flux['data'] = (int) $inscription['id_evenement'];
+	}
+	return $flux;
+}
+
 function association_evenements_taches_generales_cron($taches) {
 	$taches['association_expiration_auto_evenement'] = 30 * 60;
 	return $taches;

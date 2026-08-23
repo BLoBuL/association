@@ -223,6 +223,24 @@ n'utilisait plus cet objet ambigu. Les actions comptables emploient désormais
 exclusivement les autorisations SPIP typées `asso_compte`, tandis que les
 événements conservent leurs autorisations propres.
 
+## Lot 14 : contrats inter-modules contrôlés
+
+L'orchestration des panneaux Événements et Paiements réside de nouveau
+exclusivement dans le socle : une extraction mécanique les avait laissés à la
+fin du fichier Adhésions, créant une dépendance indirecte malgré un rendu
+fonctionnel. Un test d'architecture interdit désormais cette régression.
+
+Comptabilité ne charge plus la bibliothèque d'autorisation d'Événements et ne
+lit plus `spip_asso_activites`. Lorsqu'une écriture est identifiée par une
+inscription, un pipeline Événements résout son contexte ; l'autorisation finale
+reste demandée à SPIP avec l'objet typé `evenement`. Les retours des pipelines
+catégorie entreprise et listes de diffusion sont aussi lus via leur clé `data`,
+conformément au contrat SPIP, au lieu de traiter par erreur l'enveloppe complète.
+
+Enfin, les helpers Bank/trésorier résident dans Paiements et les bibliothèques
+plan/destinations sont chargées par Comptabilité, plus par le formulaire du
+socle.
+
 ## Lots restant après la migration et la première recette distante
 
 1. répartir les blocs métier du grand formulaire de configuration ;

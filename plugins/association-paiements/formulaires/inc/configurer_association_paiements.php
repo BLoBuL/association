@@ -5,6 +5,36 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 /**
+ * Retourne les configurations Bank utilisables dans les formulaires métier.
+ */
+function preparer_choix_mode_paiement() {
+	include_spip('inc/bank');
+	$configurations = array();
+	foreach (bank_lister_configs() as $configuration) {
+		if ((int) ($configuration['actif'] ?? 0) !== 1) {
+			continue;
+		}
+		$id = bank_config_id($configuration);
+		$type = $configuration['presta'] ?? '';
+		$label = empty($configuration['label']) ? '' : ' (' . $configuration['label'] . ')';
+		$configurations[$id] = _T('bank:label_presta_' . $type) . $label;
+	}
+	return $configurations;
+}
+
+/**
+ * Identifie le trésorier affiché dans le choix d'autorisation d'encaissement.
+ */
+function identifier_tresorier() {
+	$auteur = sql_fetsel(
+		'nom_famille,prenom',
+		'spip_auteurs',
+		"statut='0minirezo' AND statut_interne='ok' AND fonction IN ('tresoriere','tresorier')"
+	);
+	return $auteur ? trim(($auteur['nom_famille'] ?? '') . ' ' . ($auteur['prenom'] ?? '')) : '';
+}
+
+/**
  * Déclare le panneau de configuration propre aux paiements.
  */
 function association_paiements_configurer_saisies($config, $disable_meta_admin = true) {

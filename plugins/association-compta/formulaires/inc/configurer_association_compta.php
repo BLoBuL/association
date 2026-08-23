@@ -4,6 +4,9 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+include_spip('inc/comptes');
+include_spip('inc/destinations');
+
 /**
  * Déclare le panneau de configuration propre à la comptabilité.
  */

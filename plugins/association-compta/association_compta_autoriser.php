@@ -4,8 +4,6 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-include_spip('inc/association_evenements_autorisations');
-
 function autoriser_comptes_menu_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	$qui = association_normalize_qui($qui);
 	return association_module_actif('comptes') && association_est_admin_complet($qui);
@@ -51,9 +49,7 @@ function autoriser_comptes_dist($faire, $type = '', $id = 0, $qui = null, $opt =
 		} else {
 			$id_evenement = (int) (($opt['id_evenement'] ?? 0) ?: _request('id_evenement'));
 		}
-		return $id_evenement > 0
-			&& function_exists('association_est_responsable_evenement')
-			&& association_est_responsable_evenement($qui, $id_evenement);
+		return $id_evenement > 0 && autoriser('modifier', 'evenement', $id_evenement, $qui, $opt);
 	}
 	return false;
 }
@@ -68,9 +64,7 @@ function autoriser_asso_comptes_creer_dist($faire, $type, $id, $qui, $opt) {
 	}
 	if ($qui['statut'] === '1comite') {
 		$id_evenement = association_obtenir_evenement_contexte(0, is_array($opt) ? $opt : array());
-		return $id_evenement > 0
-			&& function_exists('association_est_responsable_evenement')
-			&& association_est_responsable_evenement($qui, $id_evenement);
+		return $id_evenement > 0 && autoriser('modifier', 'evenement', $id_evenement, $qui, $opt);
 	}
 	return false;
 }
@@ -95,8 +89,14 @@ function association_obtenir_evenement_contexte($id_compte = 0, $opt = array()){
 		$id_activite = intval(_request('id_activite'));
 	}
 	if ($id_activite > 0) {
-		$r = sql_fetsel('id_evenement', 'spip_asso_activites', 'id_activite=' . intval($id_activite));
-		if ($r && !empty($r['id_evenement'])) return intval($r['id_evenement']);
+		$contexte = pipeline('association_evenement_resoudre_contexte', array(
+			'args' => array('id_activite' => $id_activite),
+			'data' => 0,
+		));
+		$id_evenement = (int) ($contexte['data'] ?? 0);
+		if ((int) $id_evenement > 0) {
+			return (int) $id_evenement;
+		}
 	}
 
 	// 4) id_compte fourni (param ou request) -> lire l'objet/id_objet

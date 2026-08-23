@@ -38,4 +38,5 @@
 	<pipeline nom="association_inscription_evenement_charger" action="" />
 	<pipeline nom="association_inscription_evenement_verifier" action="" />
 	<pipeline nom="association_inscription_evenement_traiter" action="" />
+	<pipeline nom="association_evenement_resoudre_contexte" inclure="association_evenements_pipelines.php" />
 </paquet>

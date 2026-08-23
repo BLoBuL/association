@@ -12,8 +12,6 @@
 //https://contrib.spip.net/Formulaire-de-configuration-avec-le-plugin-Saisies
 
 include_spip('formulaires/inc/configurer_association');
-include_spip('inc/comptes');
-include_spip('inc/destinations');
 
 function formulaires_configurer_association_saisies_dist($config = '', $lister_champs = ''){
 $saisies=array();
@@ -102,6 +100,10 @@ $saisies[]= array(
 }
 include_spip('formulaires/inc/configurer_association_adhesions');
 $saisies = array_merge($saisies, association_adhesions_configurer_saisies($config));
+include_spip('formulaires/inc/configurer_association_evenements');
+$saisies = array_merge($saisies, association_evenements_configurer_saisies($config));
+include_spip('formulaires/inc/configurer_association_paiements');
+$saisies = array_merge($saisies, association_paiements_configurer_saisies($config, $disable_meta_admin));
 if($config == 'segments' OR empty($config)){
 
 $saisies[]= array(

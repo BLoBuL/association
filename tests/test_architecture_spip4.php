@@ -58,6 +58,7 @@ $verifier(!preg_match('/\"(?:reinscription|statut_cotisation)\"\s*=>/', $schema)
 $administration_socle = file_get_contents($racine . '/association_administrations.php');
 $migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');
 $configuration_socle = file_get_contents($racine . '/formulaires/configurer_association.php');
+$configuration_helpers_socle = file_get_contents($racine . '/formulaires/inc/configurer_association.php');
 $configuration_evenements = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc/configurer_association_evenements.php');
 $configuration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/formulaires/inc/configurer_association_adhesions.php');
 $configuration_paiements = file_get_contents($racine . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php');
@@ -80,6 +81,29 @@ $verifier(
 	'Le panneau des modes de paiement doit appartenir au module Paiements.'
 );
 $verifier(
+	strpos($configuration_helpers_socle, 'function preparer_choix_mode_paiement') === false
+		&& strpos($configuration_helpers_socle, 'function identifier_tresorier') === false
+		&& strpos($configuration_paiements, 'function preparer_choix_mode_paiement') !== false
+		&& strpos($configuration_paiements, 'function identifier_tresorier') !== false,
+	'Les helpers Bank et tresorier doivent appartenir au module Paiements.'
+);
+$verifier(
+	strpos($configuration_socle, "include_spip('inc/comptes')") === false
+		&& strpos($configuration_socle, "include_spip('inc/destinations')") === false,
+	'Le formulaire du socle ne doit pas precharger les bibliotheques de Comptabilite.'
+);
+$verifier(
+	strpos($configuration_helpers_socle, "\$flux['data'] ?? false") !== false
+		&& strpos($configuration_helpers_socle, "\$flux['data'] ?? array()") !== false,
+	'Les contrats de configuration doivent lire la cle data retournee par les pipelines SPIP.'
+);
+$verifier(
+	strpos($autorisation_compta, "include_spip('inc/association_evenements_autorisations')") === false
+		&& strpos($autorisation_compta, 'spip_asso_activites') === false
+		&& strpos($autorisation_compta, "pipeline('association_evenement_resoudre_contexte'") !== false,
+	'Comptabilite doit resoudre le contexte evenement par contrat sans lire la table du module.'
+);
+$verifier(
 	strpos($configuration_socle, "config == 'comptabilite'") === false
 		&& strpos($configuration_compta, "config == 'comptabilite'") !== false,
 	'Le panneau comptable doit appartenir au module Comptabilite.'
@@ -90,6 +114,11 @@ $verifier(
 		&& strpos($configuration_adhesions, "config == 'adhesion'") !== false
 		&& strpos($configuration_adhesions, "config == 'entreprise'") !== false,
 	'Les panneaux adhesion et entreprise doivent appartenir au module Adhesions.'
+);
+$verifier(
+	strpos($configuration_adhesions, 'association_evenements_configurer_saisies') === false
+		&& strpos($configuration_adhesions, 'association_paiements_configurer_saisies') === false,
+	'Adhesions ne doit pas orchestrer la configuration des autres modules.'
 );
 $verifier(
 	strpos($configuration_socle, 'function association_compta_configurer_verifier') === false
