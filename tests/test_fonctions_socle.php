@@ -5,6 +5,7 @@ $GLOBALS['meta']['adresse_site'] = 'https://www.Exemple-Asso.test/espace/';
 function pipeline($nom, $flux) {
 	if ($nom === 'association_configuration_navigation') {
 		$flux['data']['test_module'] = ['ordre' => 25, 'label' => 'test:module'];
+		return $flux['data'];
 	}
 	return $flux;
 }

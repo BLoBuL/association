@@ -106,8 +106,8 @@ function association_configuration_navigation($webmestre = false) {
 		$flux['data']['debug'] = ['ordre' => 120, 'label' => 'association_config:navigation_config_debug'];
 	}
 
-	$flux = pipeline('association_configuration_navigation', $flux);
-	$navigation = !empty($flux['data']) && is_array($flux['data']) ? $flux['data'] : [];
+	$navigation = pipeline('association_configuration_navigation', $flux);
+	$navigation = is_array($navigation) ? $navigation : [];
 	foreach ($navigation as $config => &$entree) {
 		$page = $entree['page'] ?? 'configurer_association';
 		$entree['url'] = generer_url_ecrire(
