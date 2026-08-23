@@ -1,6 +1,6 @@
 [(#AUTORISER{modifier,asso_compte,#ENV{id_compte,0}}|sinon_interdire_acces)]
 
-[(#SET{redirect,#ENV{redirect}|sinon{#ID_COMPTE|?{#ID_COMPTE|generer_objet_url{asso_compte},#URL_ECRIRE{asso_comptes}}}})]
+[(#SET{redirect,#ENV{redirect}|sinon{#ID_COMPTE|?{#ID_COMPTE|generer_objet_url{asso_compte},#URL_ECRIRE{comptes}}}})]
 
 <div class="cadre-formulaire-editer">
 

@@ -19,4 +19,14 @@ foreach ($pages as $page => $titre) {
 	}
 }
 
+$formulaire_compte = file_get_contents(dirname(__DIR__) . '/formulaires/editer_asso_comptes.php');
+$contenu_compte = file_get_contents($racine . 'editer_asso_comptes.html');
+if (str_contains($formulaire_compte, "generer_url_ecrire('asso_comptes')")
+	|| !str_contains($formulaire_compte, "generer_url_ecrire('comptes')")
+	|| str_contains($contenu_compte, '#URL_ECRIRE{asso_comptes}')
+	|| !str_contains($contenu_compte, '#URL_ECRIRE{comptes}')) {
+	fwrite(STDERR, "L'édition comptable redirige encore vers la page privée legacy asso_comptes.\n");
+	exit(1);
+}
+
 echo "Titres des pages privées conformes\n";

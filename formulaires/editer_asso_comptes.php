@@ -454,7 +454,7 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
     }elseif($objet == 'evenement' AND $id_objet > 0) {
         $res['redirect'] = generer_url_ecrire('voir_activites','id=' . intval($id_objet) . '&affichage=comptabilite');
     } else {
-        $res['redirect'] = generer_url_ecrire('asso_comptes');
+        $res['redirect'] = generer_url_ecrire('comptes');
     }
 
     return $res;
