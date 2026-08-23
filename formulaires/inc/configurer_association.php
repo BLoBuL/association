@@ -1,15 +1,5 @@
 <?php
 
-// Function to check if at least one categorie_adherent of type 'entreprise' exists, if yes return 'true'
-function verifier_categorie_adherent_entreprise(){
-    return (bool) pipeline('association_configuration_categorie_entreprise', array(
-        'args' => array(),
-        'data' => false,
-    ));
-
-}
-
-
 /**
  * Prépare la liste des pages uniques (articles avec id_rubrique = -1 et statut publié)
  * pour la sélection dans la configuration des modalités d'inscription.
@@ -27,28 +17,6 @@ function preparer_liste_pages_uniques() {
         $data[$article['page']] = supprimer_numero($article['titre']);
     }
     return saisies_tableau2chaine($data);
-}
-
-// Function to prepare the list of zones
-function preparer_liste_zones(){
-    $zones = sql_allfetsel('id_zone,titre','spip_zones');
-    // Initialize an empty array
-    $zones_array = array();
-    // Loop through the fetched data and reformat it
-    foreach ($zones as $zone) {
-        $zones_array[$zone['id_zone']] = $zone['titre'];
-    }
-    $data_zones = saisies_tableau2chaine($zones_array);
-    return $data_zones;
-
-}
-// Function to prepare the list of mail subscribing lists starting by "liste_
-function preparer_liste_mailsubscribinglists(){
-    $listes = pipeline('association_configuration_listes_diffusion', array(
-        'args' => array(),
-        'data' => array(),
-    ));
-    return saisies_tableau2chaine(is_array($listes) ? $listes : array());
 }
 
 // Function to prepare the list of segments

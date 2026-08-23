@@ -4,6 +4,30 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function verifier_categorie_adherent_entreprise() {
+	return (bool) sql_getfetsel(
+		'id_categorie',
+		'spip_asso_categories_adherents',
+		"type_adherent='entreprise'"
+	);
+}
+
+function preparer_liste_zones() {
+	$zones = array();
+	foreach (sql_allfetsel('id_zone,titre', 'spip_zones') ?: array() as $zone) {
+		$zones[$zone['id_zone']] = $zone['titre'];
+	}
+	return saisies_tableau2chaine($zones);
+}
+
+function preparer_liste_mailsubscribinglists() {
+	$listes = pipeline('association_configuration_listes_diffusion', array(
+		'args' => array(),
+		'data' => array(),
+	));
+	return saisies_tableau2chaine(is_array($listes) ? $listes : array());
+}
+
 /**
  * Déclare les panneaux de configuration propres aux adhésions.
  */

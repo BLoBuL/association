@@ -282,6 +282,18 @@ Cette passe a également rendu explicite le paramètre `disable_meta_admin` des
 constructeurs Adhésions et Événements. Il n'est plus lu comme variable locale
 indéfinie et conserve une valeur restrictive par défaut lors d'un appel direct.
 
+## Lot 17 : helpers de configuration Adhésions
+
+Les helpers de catégorie entreprise, zones d'accès et listes de diffusion sont
+maintenant définis par Adhésions, au même endroit que les panneaux qui les
+consomment. Le socle ne connaît plus les tables de catégories d'adhésion ni les
+zones et n'adapte plus les listes de Communication pour Adhésions.
+
+La liste de diffusion reste obtenue par le pipeline public de Communication ;
+la dépendance Adhésions vers Communication est déjà déclarée et aucun cycle
+n'est introduit. Le pipeline de catégorie entreprise reste disponible comme
+contrat public pour les autres consommateurs éventuels.
+
 ## État après le lot 15
 
 La répartition du grand formulaire de configuration est achevée pour les

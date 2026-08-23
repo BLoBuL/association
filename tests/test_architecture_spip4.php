@@ -117,6 +117,15 @@ $verifier(
 	'Les panneaux adhesion et entreprise doivent appartenir au module Adhesions.'
 );
 $verifier(
+	strpos($configuration_helpers_socle, 'function verifier_categorie_adherent_entreprise') === false
+		&& strpos($configuration_helpers_socle, 'function preparer_liste_zones') === false
+		&& strpos($configuration_helpers_socle, 'function preparer_liste_mailsubscribinglists') === false
+		&& strpos($configuration_adhesions, 'function verifier_categorie_adherent_entreprise') !== false
+		&& strpos($configuration_adhesions, 'function preparer_liste_zones') !== false
+		&& strpos($configuration_adhesions, 'function preparer_liste_mailsubscribinglists') !== false,
+	'Les helpers categorie entreprise, zones et listes de diffusion doivent appartenir a Adhesions.'
+);
+$verifier(
 	strpos($configuration_socle, "config == 'segments'") === false
 		&& strpos($configuration_communication, "'segments'") !== false
 		&& strpos($configuration_communication, "'selection_segment'") !== false,

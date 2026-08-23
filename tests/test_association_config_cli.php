@@ -77,13 +77,13 @@ $registre = association_config_cli_registre();
 
 // Audit independant : toutes les saisies persistantes du formulaire central
 // doivent avoir exactement un chemin physique dans le registre CLI.
-function verifier_categorie_adherent_entreprise() { return true; }
-function preparer_liste_zones() { return array(); }
-function preparer_liste_mailsubscribinglists() { return array(); }
 function preparer_liste_pages_uniques() { return array(); }
 function bank_lister_configs() { return array(); }
 function bank_config_id($configuration) { return ''; }
 function sql_fetsel($select, $from, $where = '') { return false; }
+function sql_getfetsel($select, $from, $where = '') { return 1; }
+function sql_allfetsel($select, $from, $where = '') { return array(); }
+function pipeline($nom, $flux) { return $flux['data'] ?? $flux; }
 function preparer_liste_asso_destination_comptable() { return array(); }
 function preparer_liste_asso_plan_classe() { return array(); }
 function preparer_liste_asso_plan_compte() { return array(); }
