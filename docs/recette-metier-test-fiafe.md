@@ -609,3 +609,15 @@ l’artefact SHA-256
 Le serveur résout un message de cotisation, le mois dynamique décembre et un
 compteur d’adhérents auparavant absent. Les deux CVT d’édition compilent, le
 profil public produit 19295 octets et l’installation complète reste valide.
+
+## Lot 49 — réglages GIS et réseau FIAFE
+
+Le commit `fc06681` a été déployé atomiquement dans le socle, Adhésions et
+Événements depuis l’artefact SHA-256
+`ec7eb72c838abb63d19a0d49ad929b7f6efd835bca059f4976c5b0ba71327b67`.
+Les trois fichiers servis ont exactement les empreintes de l’état Git, le cache
+a été vidé et les trois plugins restent actifs. Sur test-fiafe, GIS est inactif
+et la fonction historique `verifier_site_fiafe()` n’est plus fournie : les deux
+panneaux conditionnels sont donc correctement absents, sans notice ni erreur.
+Le formulaire racine reste exécutable dans ce contexte autonome et
+`spip test:spip` valide SPIP, PDO, la base et la version 4.4.21.
