@@ -18,6 +18,18 @@ function association_evenements_association_rgpd_export_auteur($flux) {
 	return $flux;
 }
 
+function association_evenements_association_rgpd_anonymiser_auteur($flux) {
+	$id = intval($flux['args']['id_auteur'] ?? 0);
+	$email = trim((string) ($flux['args']['email'] ?? ''));
+	$where = array('id_auteur=' . $id);
+	if ($email !== '') { $where[] = 'email_inscrit=' . sql_quote($email); }
+	$flux['data']['activites_anonymisees'] = association_rgpd_updateq('spip_asso_activites', association_rgpd_filtrer_champs('spip_asso_activites', array(
+		'nom_inscrit' => 'Anonyme', 'prenom_inscrit' => '', 'email_inscrit' => '', 'tel_inscrit' => '',
+		'ip_inscrit' => '', 'nom_participants' => '', 'commentaire' => '',
+	)), '(' . implode(' OR ', $where) . ')');
+	return $flux;
+}
+
 function association_evenements_declarer_champs_extras($champs) {
 	include_once __DIR__ . '/base/association_champs_extras.php';
 	$champs = association_declarer_champs_extras_impl($champs);

@@ -26,104 +26,15 @@ function association_rgpd_anonymiser_auteur($id_auteur, $auteur = array()) {
 
 	$email = trim((string)($auteur['email'] ?? ''));
 	$anon = 'anonyme_' . $id_auteur;
-	$resume = array();
-
-	$where_activites = array('id_auteur=' . $id_auteur);
-	if ($email !== '') {
-		$where_activites[] = 'email_inscrit=' . sql_quote($email);
-	}
-
-	$maj_activites = association_rgpd_filtrer_champs('spip_asso_activites', array(
-		'nom_inscrit' => 'Anonyme',
-		'prenom_inscrit' => '',
-		'email_inscrit' => '',
-		'tel_inscrit' => '',
-		'ip_inscrit' => '',
-		'nom_participants' => '',
-		'commentaire' => '',
+	$resume = pipeline('association_rgpd_anonymiser_auteur', array(
+		'args' => array('id_auteur' => $id_auteur, 'email' => $email, 'anon' => $anon),
+		'data' => array(),
 	));
-	$resume['activites_anonymisees'] = association_rgpd_updateq(
-		'spip_asso_activites',
-		$maj_activites,
-		'(' . implode(' OR ', $where_activites) . ')'
-	);
-
-	$resume['dons_anonymises'] = association_rgpd_updateq(
-		'spip_asso_dons',
-		association_rgpd_filtrer_champs('spip_asso_dons', array(
-			'bienfaiteur' => 'Anonyme',
-			'colis' => '',
-			'contrepartie' => '',
-			'commentaire' => '',
-		)),
-		'id_adherent=' . $id_auteur
-	);
-
-	$resume['ventes_anonymisees'] = association_rgpd_updateq(
-		'spip_asso_ventes',
-		association_rgpd_filtrer_champs('spip_asso_ventes', array(
-			'acheteur' => 'Anonyme',
-			'commentaire' => '',
-		)),
-		'id_acheteur=' . $id_auteur
-	);
-
-	$resume['prets_anonymises'] = association_rgpd_updateq(
-		'spip_asso_prets',
-		association_rgpd_filtrer_champs('spip_asso_prets', array(
-			'commentaire_sortie' => '',
-			'commentaire_retour' => '',
-		)),
-		'id_emprunteur=' . sql_quote((string)$id_auteur)
-	);
-
-	$resume['comptes_anonymises'] = association_rgpd_updateq(
-		'spip_asso_comptes',
-		association_rgpd_filtrer_champs('spip_asso_comptes', array(
-			'justification' => 'Operation associee a un compte anonymise ' . $id_auteur,
-		)),
-		'id_auteur=' . $id_auteur
-	);
-
-	$resume['transactions_anonymisees'] = association_rgpd_anonymiser_transactions($id_auteur, $email, $anon);
+	$resume = is_array($resume) ? $resume : array();
 
 	return array(
 		'ok' => true,
 		'resume' => $resume,
-	);
-}
-
-/**
- * Anonymise les transactions Bank liees a l'auteur.
- *
- * @param int $id_auteur
- * @param string $email
- * @param string $anon
- * @return int
- */
-function association_rgpd_anonymiser_transactions($id_auteur, $email, $anon) {
-	$where = array('id_auteur=' . intval($id_auteur));
-	if ($email !== '') {
-		$where[] = 'auteur=' . sql_quote($email);
-	}
-
-	return association_rgpd_updateq(
-		'spip_transactions',
-		association_rgpd_filtrer_champs('spip_transactions', array(
-			'auteur_id' => (string)intval($id_auteur),
-			'auteur' => $anon,
-			'refcb' => '',
-			'validite' => '',
-			'abo_uid' => '',
-			'pay_id' => '',
-			'cadeau_email' => '',
-			'cadeau_message' => '',
-			'url_retour' => '',
-			'token' => '',
-			'message' => '',
-			'erreur' => '',
-		)),
-		'(' . implode(' OR ', $where) . ')'
 	);
 }
 

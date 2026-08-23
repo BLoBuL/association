@@ -47,3 +47,11 @@ function association_compta_association_maintenance_supprimer_donnees_auteurs($f
 	$flux['data']['supprimer_comptes_auteurs'] = asso_supprimer_comptes_auteurs($ids, (bool) ($flux['args']['dry_run'] ?? true));
 	return $flux;
 }
+
+function association_compta_association_rgpd_anonymiser_auteur($flux) {
+	$id = intval($flux['args']['id_auteur'] ?? 0);
+	$flux['data']['comptes_anonymises'] = association_rgpd_updateq('spip_asso_comptes', association_rgpd_filtrer_champs('spip_asso_comptes', array(
+		'justification' => 'Operation associee a un compte anonymise ' . $id,
+	)), 'id_auteur=' . $id);
+	return $flux;
+}

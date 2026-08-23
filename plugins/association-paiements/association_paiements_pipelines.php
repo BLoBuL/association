@@ -150,3 +150,16 @@ function association_paiements_association_maintenance_supprimer_donnees_auteurs
 	$flux['data']['supprimer_transactions_auteurs'] = asso_supprimer_transactions_auteurs($ids, (bool) ($flux['args']['dry_run'] ?? true));
 	return $flux;
 }
+
+function association_paiements_association_rgpd_anonymiser_auteur($flux) {
+	$id = intval($flux['args']['id_auteur'] ?? 0);
+	$email = trim((string) ($flux['args']['email'] ?? ''));
+	$where = array('id_auteur=' . $id);
+	if ($email !== '') { $where[] = 'auteur=' . sql_quote($email); }
+	$flux['data']['transactions_anonymisees'] = association_rgpd_updateq('spip_transactions', association_rgpd_filtrer_champs('spip_transactions', array(
+		'auteur_id' => (string) $id, 'auteur' => (string) ($flux['args']['anon'] ?? ('anonyme_' . $id)),
+		'refcb' => '', 'validite' => '', 'abo_uid' => '', 'pay_id' => '', 'cadeau_email' => '',
+		'cadeau_message' => '', 'url_retour' => '', 'token' => '', 'message' => '', 'erreur' => '',
+	)), '(' . implode(' OR ', $where) . ')');
+	return $flux;
+}

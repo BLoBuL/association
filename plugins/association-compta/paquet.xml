@@ -13,6 +13,7 @@
 	<pipeline nom="autoriser" inclure="association_compta_autoriser.php" />
 	<pipeline nom="post_insertion" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_rgpd_export_auteur" inclure="association_compta_pipelines.php" />
+	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_maintenance_auteurs_encaisses" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" inclure="association_compta_pipelines.php" />
 	<pipeline nom="post_edition" inclure="association_compta_pipelines.php" />

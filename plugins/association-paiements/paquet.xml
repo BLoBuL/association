@@ -7,5 +7,6 @@
 	<pipeline nom="trig_bank_notifier_reglement" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="bank_redirige_apres_retour_transaction" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_maintenance_auteurs_encaisses" inclure="association_paiements_pipelines.php" />
+	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" inclure="association_paiements_pipelines.php" />
 </paquet>

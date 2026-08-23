@@ -102,6 +102,13 @@ pipeline public `association_rgpd_export_auteur` reçoit `id_auteur` et `email` 
 Cette séparation rend l'export extensible et empêche le socle de reprendre la
 propriété implicite des tables des modules.
 
+L'anonymisation suit désormais le même contrat : le pipeline
+`association_rgpd_anonymiser_auteur` transmet l'identifiant, l'email historique
+et le pseudonyme calculé. Événements, Dons, Ventes, Prêts, Comptabilité et
+Paiements mettent exclusivement à jour leurs propres tables et renvoient leur
+compteur au résumé transversal. Le socle ne référence plus aucune table métier
+dans ses deux opérations RGPD.
+
 ## Lot 7 : maintenance BDD distribuée
 
 La première tranche déplace dans Événements toutes les opérations qui lisent

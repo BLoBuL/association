@@ -4,6 +4,7 @@
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
 	<pipeline nom="autoriser" inclure="association_dons_autoriser.php" />
 	<pipeline nom="association_rgpd_export_auteur" inclure="association_dons_pipelines.php" />
+	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_dons_pipelines.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_dons.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_dons.php" />
 	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
