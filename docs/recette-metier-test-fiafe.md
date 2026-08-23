@@ -369,6 +369,11 @@ Le path SPIP résout désormais le script et l'icône exclusivement depuis
 Les trois icônes privées non référencées et la feuille publique de thème tiers,
 jamais chargée par le paquet, sont supprimées du socle.
 
+Le commit `13cef38` a été déployé atomiquement dans le socle depuis l'artefact
+SHA-256 `45a223bf329c271c7c34201036dfc39ca858bff538a85982f292b29411de9ddf`.
+Le serveur confirme leur absence et conserve la feuille privée déclarée
+`prive/themes/spip/css/asso.css`.
+
 Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.
