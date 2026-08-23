@@ -469,3 +469,12 @@ depuis l'artefact SHA-256
 puis le registre des plugins a été actualisé. Sur le SPIP servi, le pipeline
 actif retire bien l'URL et vide la page publique de `spip_mailsubscribers`,
 tandis que la déclaration SQL du socle ne référence plus cet objet.
+
+## Lot 34 — manifeste SQL minimal
+
+Les pipelines SQL racine sans traitement sont supprimés. Le commit `2ff56c3`
+a été déployé atomiquement dans le socle depuis l'artefact SHA-256
+`4d1d63aef42300e0d8bd0dfc338e2f6c5dbff5161fe75f8404dd5ae46f686f7b`,
+puis le registre des plugins a été actualisé. Le serveur confirme que le socle
+ne déclare plus les pipelines principal et objets, que sa table auxiliaire de
+métas reste déclarée et que le pipeline objet de Communication reste actif.
