@@ -29,16 +29,14 @@ function association_rgpd_export_donnees_auteur($id_auteur) {
 		return array();
 	}
 
-	$flux = pipeline('association_rgpd_export_auteur', array(
+	$data = pipeline('association_rgpd_export_auteur', array(
 		'args' => array(
 			'id_auteur' => $id_auteur,
 			'email' => trim((string)($auteur['email'] ?? '')),
 		),
 		'data' => array(),
 	));
-	$data = is_array($flux) && isset($flux['data']) && is_array($flux['data'])
-		? $flux['data']
-		: array();
+	$data = is_array($data) ? $data : array();
 
 	return array('date_export_association' => date('c')) + $data;
 }

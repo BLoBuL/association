@@ -10,11 +10,10 @@ include_spip('inc/notifications_cotisations_audit');
  * Catalogue extensible des notifications métier fournies par les plugins actifs.
  */
 function association_notifications_metiers(): array {
-    $flux = pipeline('association_notifications_metiers', [
+    $groupes = pipeline('association_notifications_metiers', [
         'args' => ['exec' => 'notifications'],
         'data' => [],
     ]);
-    $groupes = is_array($flux) ? ($flux['data'] ?? []) : [];
     return is_array($groupes) ? $groupes : [];
 }
 

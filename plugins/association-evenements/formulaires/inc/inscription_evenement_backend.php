@@ -753,13 +753,13 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
             'info_adherent' => $info_adherent,
         ),
     ));
-    if (is_array($flux_charger) && isset($flux_charger['data']) && is_array($flux_charger['data'])) {
-        $saisies_general = isset($flux_charger['data']['saisies_general']) && is_array($flux_charger['data']['saisies_general']) ? $flux_charger['data']['saisies_general'] : $saisies_general;
-        $saisies_tarifs = isset($flux_charger['data']['saisies_tarifs']) && is_array($flux_charger['data']['saisies_tarifs']) ? $flux_charger['data']['saisies_tarifs'] : $saisies_tarifs;
-        $saisies_modalites = isset($flux_charger['data']['saisies_modalites']) && is_array($flux_charger['data']['saisies_modalites']) ? $flux_charger['data']['saisies_modalites'] : $saisies_modalites;
-        $saisies_hidden = isset($flux_charger['data']['saisies_hidden']) && is_array($flux_charger['data']['saisies_hidden']) ? $flux_charger['data']['saisies_hidden'] : $saisies_hidden;
-        $data_activite = isset($flux_charger['data']['data_activite']) && is_array($flux_charger['data']['data_activite']) ? $flux_charger['data']['data_activite'] : $data_activite;
-        $info_adherent = isset($flux_charger['data']['info_adherent']) && is_array($flux_charger['data']['info_adherent']) ? $flux_charger['data']['info_adherent'] : $info_adherent;
+    if (is_array($flux_charger)) {
+        $saisies_general = isset($flux_charger['saisies_general']) && is_array($flux_charger['saisies_general']) ? $flux_charger['saisies_general'] : $saisies_general;
+        $saisies_tarifs = isset($flux_charger['saisies_tarifs']) && is_array($flux_charger['saisies_tarifs']) ? $flux_charger['saisies_tarifs'] : $saisies_tarifs;
+        $saisies_modalites = isset($flux_charger['saisies_modalites']) && is_array($flux_charger['saisies_modalites']) ? $flux_charger['saisies_modalites'] : $saisies_modalites;
+        $saisies_hidden = isset($flux_charger['saisies_hidden']) && is_array($flux_charger['saisies_hidden']) ? $flux_charger['saisies_hidden'] : $saisies_hidden;
+        $data_activite = isset($flux_charger['data_activite']) && is_array($flux_charger['data_activite']) ? $flux_charger['data_activite'] : $data_activite;
+        $info_adherent = isset($flux_charger['info_adherent']) && is_array($flux_charger['info_adherent']) ? $flux_charger['info_adherent'] : $info_adherent;
     }
 
     $saisies_par_etapes = array();
@@ -1690,8 +1690,8 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
             'mode_multi' => $mode_multi,
         ),
     ));
-    if (is_array($flux_verifier) && isset($flux_verifier['data']) && is_array($flux_verifier['data']) && isset($flux_verifier['data']['erreurs']) && is_array($flux_verifier['data']['erreurs'])) {
-        $erreurs = $flux_verifier['data']['erreurs'];
+    if (is_array($flux_verifier) && isset($flux_verifier['erreurs']) && is_array($flux_verifier['erreurs'])) {
+        $erreurs = $flux_verifier['erreurs'];
     }
 
     spip_log('[IE_VERIFY][' . $trace_id . '] quotas nombre_a_verifier=' . intval($nombre_a_verifier)
@@ -1929,12 +1929,12 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
             'data_form' => $data_form,
         ),
     ));
-    if (is_array($flux_traiter_pre) && isset($flux_traiter_pre['data']) && is_array($flux_traiter_pre['data'])) {
-        if (isset($flux_traiter_pre['data']['post']) && is_array($flux_traiter_pre['data']['post'])) {
-            $post = $flux_traiter_pre['data']['post'];
+    if (is_array($flux_traiter_pre)) {
+        if (isset($flux_traiter_pre['post']) && is_array($flux_traiter_pre['post'])) {
+            $post = $flux_traiter_pre['post'];
         }
-        if (isset($flux_traiter_pre['data']['data_form']) && is_array($flux_traiter_pre['data']['data_form'])) {
-            $data_form = $flux_traiter_pre['data']['data_form'];
+        if (isset($flux_traiter_pre['data_form']) && is_array($flux_traiter_pre['data_form'])) {
+            $data_form = $flux_traiter_pre['data_form'];
         }
     }
     ie_log_formater_multi($trace_id, $mode, $post, $data_form, 'traiter');
@@ -2198,8 +2198,8 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
             'id_transaction' => $id_transaction,
         ),
     ));
-    if (is_array($flux_traiter_post) && isset($flux_traiter_post['data']) && is_array($flux_traiter_post['data']) && isset($flux_traiter_post['data']['resultat']) && is_array($flux_traiter_post['data']['resultat'])) {
-        return $flux_traiter_post['data']['resultat'];
+    if (is_array($flux_traiter_post) && isset($flux_traiter_post['resultat']) && is_array($flux_traiter_post['resultat'])) {
+        return $flux_traiter_post['resultat'];
     }
 
     return $resultat_traitement;
