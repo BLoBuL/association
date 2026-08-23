@@ -7,9 +7,10 @@ define('_LOG_INFO_IMPORTANTE', 2);
 $GLOBALS['familles_test'] = array();
 $GLOBALS['liens_test'] = array();
 $GLOBALS['prochain_id_famille_test'] = 100;
+$GLOBALS['familles_actif_test'] = true;
 
 function include_spip($fichier) {}
-function test_plugin_actif($plugin) { return $plugin === 'familles'; }
+function test_plugin_actif($plugin) { return $plugin === 'familles' && $GLOBALS['familles_actif_test']; }
 function sql_showtable($table, $complet = false) {
 	return array('field' => array('auteur_compte_principal' => 'bigint(21)'));
 }
@@ -52,7 +53,7 @@ if (!association_familles_integration_disponible()) {
 }
 
 $rapport = association_familles_previsualiser_migration();
-if ($rapport['totaux'] !== array('familles' => 1, 'principaux' => 2, 'secondaires' => 1, 'alertes' => 0)) {
+if (!$rapport['disponible'] || $rapport['totaux'] !== array('familles' => 1, 'principaux' => 2, 'secondaires' => 1, 'alertes' => 0)) {
 	fwrite(STDERR, "La previsualisation de migration est incorrecte\n");
 	exit(1);
 }
@@ -70,6 +71,18 @@ if (($GLOBALS['familles_test'][11] ?? array()) !== array(100)) {
 $second = association_familles_executer_migration();
 if ($second['familles_creees'] !== 0 || $second['liens_crees'] !== 0 || $second['erreurs']) {
 	fwrite(STDERR, "La migration n'est pas idempotente\n");
+	exit(1);
+}
+
+$GLOBALS['familles_actif_test'] = false;
+$indisponible = association_familles_previsualiser_migration();
+if ($indisponible['disponible'] || $indisponible['groupes'] || array_sum($indisponible['totaux'])) {
+	fwrite(STDERR, "L'absence du plugin Familles devrait produire une previsualisation vide\n");
+	exit(1);
+}
+$execution_indisponible = association_familles_executer_migration();
+if ($execution_indisponible['erreurs'] !== array('plugin/familles')) {
+	fwrite(STDERR, "L'execution devrait signaler proprement l'absence du plugin Familles\n");
 	exit(1);
 }
 

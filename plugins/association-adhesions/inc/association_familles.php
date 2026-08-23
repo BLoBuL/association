@@ -69,11 +69,19 @@ function association_familles_lister_groupes() {
  * Prévisualiser la migration sans modifier les données.
  */
 function association_familles_previsualiser_migration() {
-	include_spip('inc/familles');
 	$rapport = array(
+		'disponible' => false,
 		'groupes' => array(),
 		'totaux' => array('familles' => 0, 'principaux' => 0, 'secondaires' => 0, 'alertes' => 0),
 	);
+	if (!association_familles_integration_disponible()) {
+		return $rapport;
+	}
+	include_spip('inc/familles');
+	$rapport['disponible'] = function_exists('familles_objet_lister_familles');
+	if (!$rapport['disponible']) {
+		return $rapport;
+	}
 
 	foreach (association_familles_lister_groupes() as $groupe) {
 		$id_principal = intval($groupe['id_principal']);
@@ -96,9 +104,12 @@ function association_familles_previsualiser_migration() {
  * Exécuter une migration idempotente vers les liens du plugin Familles.
  */
 function association_familles_executer_migration() {
-	include_spip('inc/familles');
 	$rapport = association_familles_previsualiser_migration();
 	$resultat = array('familles_creees' => 0, 'liens_crees' => 0, 'erreurs' => array());
+	if (empty($rapport['disponible'])) {
+		$resultat['erreurs'][] = 'plugin/familles';
+		return $resultat;
+	}
 	$options_principal = array_fill_keys(
 		array('peut_voir', 'peut_modifier', 'peut_gerer_liens', 'peut_payer', 'recoit_emails', 'recoit_factures', 'contact_principal'),
 		'oui'

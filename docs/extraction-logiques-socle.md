@@ -260,6 +260,11 @@ La migration consomme l'API publique actuelle de Familles,
 `familles_lister_familles_auteur()` n'existe plus dans Familles 0.2.25 et ne
 doit pas être réintroduit.
 
+L'intégration étant facultative, la prévisualisation retourne un rapport vide
+et l'exécution une erreur contrôlée lorsque Familles n'est pas actif ou ne
+fournit pas cette API. L'accès privé n'est alors pas ajouté ; aucune fonction
+absente ne peut provoquer de fatal PHP.
+
 ## État après le lot 15
 
 La répartition du grand formulaire de configuration est achevée pour les
