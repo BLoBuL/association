@@ -263,3 +263,18 @@ autonome, qui fixe le périmètre complet attendu, conserve exactement ses 122
 configurations persistantes. L'accueil public répond `200` après purge ; les
 seules erreurs SQL retrouvées dans les fichiers de log sont antérieures de plus
 de six heures au déploiement.
+
+## Lot 17 — helpers de configuration Adhésions
+
+Le commit `9366ad8` a été déployé dans le socle et le plugin Adhésions actif à
+partir de l'artefact SHA-256
+`a168b2d958d1b3c717f799477d5c025d07e3f92e94f51e0953a4e022164968ba`.
+
+La recette SPIP réelle conserve les huit fieldsets et dix-huit champs du panneau
+Adhésions, les quatre fieldsets et dix champs Entreprise, ainsi que les cinq
+listes de diffusion fournies par Communication. La catégorie entreprise est
+détectée et les panneaux déplacés au lot 16 restent intégralement servis.
+
+Les validations Communication, Comptabilité et maintenance passent toujours,
+et la résolution activité vers événement retourne encore l'événement attendu
+228. Les 66 tests autonomes passent avant déploiement.
