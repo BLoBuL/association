@@ -433,17 +433,9 @@ supprime l'avertissement ; la compilation est désormais propre.
 Les dix-huit pages privées remplacent `#ONGLETS_ASSOCIATION` par une inclusion
 SPIP explicite. Le compilateur de balise historique est supprimé.
 
-Le commit `ccd9fdf` a été déployé atomiquement dans le socle, Adhésions et
-Événements depuis l'artefact SHA-256
-`129a059ead47adac15277ba045b21f171929488ae284108fb49ae00d365822ae`.
-Le SPIP servi résout les trois modèles auteurs depuis
-`plugins/association-adhesions/yaml` et le modèle webinaire depuis
-`plugins/association-evenements/yaml`, avec une empreinte calculable pour chacun.
-
-Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
-Événements depuis l'artefact SHA-256
-`9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.
-Le SPIP servi résout chaque fichier `options` depuis son plugin actif, expose
-les cinq statuts adhérents, trois statuts de cotisation et cinq statuts
-d'activité attendus. Les conversions de date, heure et montant restent
-conformes ; le fragment supprimé n'est plus résolu par le path SPIP.
+Le commit `21039f3` a été déployé atomiquement dans le socle, Adhésions,
+Comptabilité, Événements et Groupes depuis l'artefact SHA-256
+`c27d27c8330da39eaf4d7b72bf38a5c15d54f8a794f722b70f5aa8562a558b6b`.
+Le serveur ne résout plus la balise supprimée. Les cinq squelettes privés
+représentatifs utilisent l'inclusion native et compilent sans erreur, avec des
+sorties comprises entre 602 et 606 octets.
