@@ -68,6 +68,17 @@ foreach (array(
 		'Le reliquat Inscription2 ou Inscription3 doit rester supprime : ' . $reliquat_inscription
 	);
 }
+foreach (array(
+	'style.css',
+	'prive/themes/spip/images/numbers-line.svg',
+	'prive/themes/spip/images/passport-line.svg',
+	'prive/themes/spip/images/user-community-line.svg',
+) as $actif_orphelin) {
+	$verifier(
+		!is_file($racine . '/' . $actif_orphelin),
+		'L actif sans consommateur doit rester supprime : ' . $actif_orphelin
+	);
+}
 $verifier(!preg_match('/\"(?:reinscription|statut_cotisation)\"\s*=>/', $schema), 'Le schema des comptes ne doit plus declarer de champs metier de cotisation.');
 $administration_socle = file_get_contents($racine . '/association_administrations.php');
 $migration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_migration.php');

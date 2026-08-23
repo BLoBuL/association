@@ -375,6 +375,13 @@ maintenant fournis par Comptabilité. Leurs noms et chemins logiques SPIP ne
 changent pas : les deux bibliothèques comptables existantes continuent de les
 résoudre par `find_in_path()` et le menu du socle par `find_in_theme()`.
 
+## Lot 25 : actifs orphelins supprimés
+
+Trois icônes privées sans aucun appel et le fichier racine `style.css` ont été
+retirés. Ce dernier n'était déclaré par aucun paquet ou squelette et contenait
+des règles propres à un ancien thème public tiers. La feuille privée officielle
+du socle reste `prive/themes/spip/css/asso.css`, déclarée dans `paquet.xml`.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

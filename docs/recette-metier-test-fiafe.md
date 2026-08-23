@@ -364,6 +364,11 @@ depuis l'artefact SHA-256
 Le path SPIP résout désormais le script et l'icône exclusivement depuis
 `plugins/association-compta`; la fonction JavaScript d'ajout reste présente.
 
+## Lot 25 — actifs orphelins
+
+Les trois icônes privées non référencées et la feuille publique de thème tiers,
+jamais chargée par le paquet, sont supprimées du socle.
+
 Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.
