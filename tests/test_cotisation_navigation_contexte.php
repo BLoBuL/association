@@ -20,7 +20,7 @@ if (preg_match('/#URL_ECRIRE\{(?:auteur|auteur_edit|editer_asso_cotisation),id_a
 
 if (strpos($formulaire, "\$id_compte == 'new' && !\$id_auteur") === false
 	|| strpos($formulaire, "'editable' => false") === false
-	|| strpos($formulaire, "'message_erreur' => _T('association:erreur_id_auteur_invalide')") === false) {
+	|| strpos($formulaire, "'message_erreur' => _T('association_adhesions:erreur_id_auteur_invalide')") === false) {
 	$erreurs[] = 'Le formulaire ne bloque pas explicitement une création sans auteur.';
 }
 

@@ -3,8 +3,8 @@
     <header class="justificatifs-entete">
         <span class="justificatifs-pictogramme" aria-hidden="true"></span>
         <div>
-            <h2><:association:justificatifs_cotisation_titre:></h2>
-            <p><:association:justificatifs_cotisation_explication:></p>
+            <h2><:association_adhesions:justificatifs_cotisation_titre:></h2>
+            <p><:association_adhesions:justificatifs_cotisation_explication:></p>
         </div>
         <strong class="justificatifs-compteur">#TOTAL_BOUCLE</strong>
     </header>
@@ -23,40 +23,40 @@
                 </span>
             </a>
             <span class="justificatif-actions">
-                [(#VU|=={oui}|?{<span class="justificatif-statut success"><:association:justificatif_controle:></span>,<span class="justificatif-statut notice"><:association:justificatif_a_controler:></span>})]
+                [(#VU|=={oui}|?{<span class="justificatif-statut success"><:association_adhesions:justificatif_controle:></span>,<span class="justificatif-statut notice"><:association_adhesions:justificatif_a_controler:></span>})]
                 [(#BOUTON_ACTION{
-                    <:association:justificatif_supprimer:>,
+                    <:association_adhesions:justificatif_supprimer:>,
                     #URL_ACTION_AUTEUR{supprimer_justificatifs_cotisation,#ENV{id_compte}-#ID_DOCUMENT,#SELF},
                     justificatif-action-supprimer,
-                    <:association:justificatif_suppression_confirmation:>
+                    <:association_adhesions:justificatif_suppression_confirmation:>
                 })]
             </span>
         </li>
         </BOUCLE_justificatifs>
     </ul>
     <footer class="justificatifs-pied">
-        <p class="justificatifs-resume"><strong>#TOTAL_BOUCLE</strong> <:association:justificatifs_recus:></p>
+        <p class="justificatifs-resume"><strong>#TOTAL_BOUCLE</strong> <:association_adhesions:justificatifs_recus:></p>
         <div class="actions">
             [(#TOTAL_BOUCLE|>={2}|oui)
             <a class="btn btn_secondaire justificatifs-action-valider" href="[(#URL_ACTION_AUTEUR{valider_justificatifs_cotisation,#ENV{id_compte}-oui,#SELF})]">
-                <:association:justificatifs_marquer_valides:>
+                <:association_adhesions:justificatifs_marquer_valides:>
             </a>]
             <a class="btn justificatifs-action-revoir" href="[(#URL_ACTION_AUTEUR{valider_justificatifs_cotisation,#ENV{id_compte}-non,#SELF})]">
-                <:association:justificatifs_marquer_a_revoir:>
+                <:association_adhesions:justificatifs_marquer_a_revoir:>
             </a>
             [(#BOUTON_ACTION{
-                <:association:justificatifs_supprimer_definitivement:>,
+                <:association_adhesions:justificatifs_supprimer_definitivement:>,
                 #URL_ACTION_AUTEUR{supprimer_justificatifs_cotisation,#ENV{id_compte}-0,#SELF},
                 btn justificatifs-action-supprimer,
-                <:association:justificatifs_suppression_confirmation:>
+                <:association_adhesions:justificatifs_suppression_confirmation:>
             })]
         </div>
     </footer>
 </section>
 </B_justificatifs>
 <section class="box notice justificatifs-cotisation justificatifs-absents">
-    <h2><:association:justificatifs_cotisation_titre:></h2>
+    <h2><:association_adhesions:justificatifs_cotisation_titre:></h2>
     [<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV{justificatifs_erreur})</p>]
-    <p><:association:justificatifs_cotisation_absents:></p>
+    <p><:association_adhesions:justificatifs_cotisation_absents:></p>
 </section>
 <//B_justificatifs>

@@ -23,7 +23,7 @@ function formulaires_migrer_familles_association_traiter_dist() {
 	include_spip('inc/association_familles');
 	$resultat = association_familles_executer_migration();
 	if ($resultat['erreurs']) {
-		return array('message_erreur' => _T('association:migration_familles_erreurs', array('nb' => count($resultat['erreurs']))));
+		return array('message_erreur' => _T('association_adhesions:migration_familles_erreurs', array('nb' => count($resultat['erreurs']))));
 	}
-	return array('message_ok' => _T('association:migration_familles_resultat', $resultat), 'editable' => true);
+	return array('message_ok' => _T('association_adhesions:migration_familles_resultat', $resultat), 'editable' => true);
 }

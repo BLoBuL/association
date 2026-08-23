@@ -128,8 +128,8 @@ function association_adhesions_afficher_contenu_objet($flux) {
     }
     $date = sql_getfetsel('inscription', 'spip_auteurs', 'id_auteur=' . $id_auteur);
     if ($date) {
-        $date = ($date === '0000-00-00 00:00:00') ? _T('association:non_renseignee') : affdate($date);
-        $flux['data'] .= '<div>' . propre(_T('association:date_inscription') . ' : ' . $date) . '</div>';
+        $date = ($date === '0000-00-00 00:00:00') ? _T('association_adhesions:non_renseignee') : affdate($date);
+        $flux['data'] .= '<div>' . propre(_T('association_adhesions:date_inscription') . ' : ' . $date) . '</div>';
     }
     return $flux;
 }
@@ -162,7 +162,7 @@ function association_adhesions_formulaire_verifier($flux) {
         $naissance = new DateTime('@' . $timestamp);
         $naissance->setTimezone(new DateTimeZone(date_default_timezone_get()));
         if ((new DateTime())->diff($naissance)->y > $limite) {
-            $erreurs[$nom] = _T('association:erreur_age_enfant', array('limite' => $limite));
+            $erreurs[$nom] = _T('association_adhesions:erreur_age_enfant', array('limite' => $limite));
         }
     }
     $flux['data'] = $erreurs;

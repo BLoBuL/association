@@ -58,5 +58,5 @@ function formulaires_adherents_recherche_avancee_traiter_dist(){
         association_log('adherents', 'Recherche avancée sauvegardée en session: ' . count($criteres_recherche) . ' critères', 'debug');
     }
 
-    return array('message_ok' => _T('association:recherche_effectuee'));
+    return array('message_ok' => _T('association_adhesions:recherche_effectuee'));
 }

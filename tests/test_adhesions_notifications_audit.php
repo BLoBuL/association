@@ -31,7 +31,7 @@ function _T($cle, $args = array()) {
         'notifications:cotisation_encaissement_admin_sujet' => 'Paiement recu',
         'notifications:email_notification_echeances_sujet' => 'Echeance prochaine',
         'notifications:email_notification_echeance_echu_sujet' => 'Adhesion echue',
-        'association:email_recu_encaissement_adhesion_sujet' => 'Recu de paiement',
+        'association_adhesions:email_recu_encaissement_adhesion_sujet' => 'Recu de paiement',
         'notifications:justificatifs_a_revoir_sujet' => 'Documents a fournir de nouveau',
     );
     return $sujets[$cle] ?? $cle;

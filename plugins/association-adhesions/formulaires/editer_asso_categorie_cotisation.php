@@ -47,7 +47,7 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'input',
              'options' => [
                  'nom' => 'valeur',
-                 'label' => _T('association:nom_cotisation'),
+                 'label' => _T('association_adhesions:nom_cotisation'),
                  'type' => 'text'
              ]
          ],
@@ -55,11 +55,11 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'selection',
              'options' => [
                  'nom' => 'statut',
-                 'label' => _T('association:edit_cotisation_statut_label'),
-                 'explication' => _T('association:edit_cotisation_statut_explication'),
+                 'label' => _T('association_adhesions:edit_cotisation_statut_label'),
+                 'explication' => _T('association_adhesions:edit_cotisation_statut_explication'),
                  'data' => [
-                     'ok' => _T('association:participation_active'),
-                     'desactive' => _T('association:participation_desactive')
+                     'ok' => _T('association_adhesions:participation_active'),
+                     'desactive' => _T('association_adhesions:participation_desactive')
                  ],
                  'cacher_option_intro' => 'oui',
              ]
@@ -68,12 +68,12 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'selection',
              'options' => [
                  'nom' => 'eligibilite',
-                 'label' => _T('association:edit_cotisation_eligibilite_label'),
-                 'explication' => _T('association:edit_cotisation_eligibilite_explication'),
+                 'label' => _T('association_adhesions:edit_cotisation_eligibilite_label'),
+                 'explication' => _T('association_adhesions:edit_cotisation_eligibilite_explication'),
                  'data' => [
-                     'tout' => _T('association:choix_eligibilite_tout') . ' ' . _T('association:defaut'),
-                     'inscription' => _T('association:choix_eligibilite_inscription'),
-                     'reinscription' => _T('association:choix_eligibilite_reinscription'),
+                     'tout' => _T('association_adhesions:choix_eligibilite_tout') . ' ' . _T('association_adhesions:defaut'),
+                     'inscription' => _T('association_adhesions:choix_eligibilite_inscription'),
+                     'reinscription' => _T('association_adhesions:choix_eligibilite_reinscription'),
                  ],
                 'defaut' => 'tout',
                  'cacher_option_intro' => 'oui',
@@ -83,20 +83,20 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'selection',
              'options' => [
                  'nom' => 'type_adherent',
-                 'label' => _T('association:edit_cotisation_type_label'),
-                 'explication' => _T('association:edit_cotisation_type_explication'),
+                 'label' => _T('association_adhesions:edit_cotisation_type_label'),
+                 'explication' => _T('association_adhesions:edit_cotisation_type_explication'),
                  'data' => [
-                     'adherent' => _T('association:cotisation_adherent') . ' '. _T('association:defaut'),
-                     'famille' => _T('association:cotisation_famille'),
-                     'couple' => _T('association:cotisation_couple'),
-                     'individuel' => _T('association:cotisation_individuel'),
-                     'conjoint' => _T('association:cotisation_conjoint'),
-                     'etudiant' => _T('association:cotisation_etudiant'),
-                     'enfant' => _T('association:cotisation_enfant'),
-                     'entreprise' => _T('association:cotisation_entreprise'),
-                     'babysitting' => _T('association:cotisation_babysitting'),
-                     'partenaire' => _T('association:cotisation_partenaire'),
-                     'vip' => _T('association:cotisation_vip')
+                     'adherent' => _T('association_adhesions:cotisation_adherent') . ' '. _T('association_adhesions:defaut'),
+                     'famille' => _T('association_adhesions:cotisation_famille'),
+                     'couple' => _T('association_adhesions:cotisation_couple'),
+                     'individuel' => _T('association_adhesions:cotisation_individuel'),
+                     'conjoint' => _T('association_adhesions:cotisation_conjoint'),
+                     'etudiant' => _T('association_adhesions:cotisation_etudiant'),
+                     'enfant' => _T('association_adhesions:cotisation_enfant'),
+                     'entreprise' => _T('association_adhesions:cotisation_entreprise'),
+                     'babysitting' => _T('association_adhesions:cotisation_babysitting'),
+                     'partenaire' => _T('association_adhesions:cotisation_partenaire'),
+                     'vip' => _T('association_adhesions:cotisation_vip')
                  ],
                     'defaut' => 'adherent',
                  'cacher_option_intro' => 'oui',
@@ -107,8 +107,8 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'input',
              'options' => [
                  'nom' => 'nombre_enfants',
-                 'label' => _T('association:edit_cotisation_nombre_enfants_label'),
-                 'explication' => _T('association:edit_cotisation_nombre_enfants_explication'),
+                 'label' => _T('association_adhesions:edit_cotisation_nombre_enfants_label'),
+                 'explication' => _T('association_adhesions:edit_cotisation_nombre_enfants_explication'),
                  'type' => 'number',
                  'step' => '1',
                  'afficher_si' => '@type_adherent@ IN "famille,enfant"',
@@ -120,11 +120,11 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'radio',
              'options' => array(
                  'nom' => 'document_justificatif',
-                 'label' => '<:association:form_categorie_adherent_justificatif_label:>',
-                 'explication' => '<:association:form_categorie_adherent_justificatif_explication:>',
+                 'label' => '<:association_adhesions:form_categorie_adherent_justificatif_label:>',
+                 'explication' => '<:association_adhesions:form_categorie_adherent_justificatif_explication:>',
                  'data' => array(
-                     'oui' => '<:association:oui:>',
-                     'non' => '<:association:non:>'
+                     'oui' => '<:association_adhesions:oui:>',
+                     'non' => '<:association_adhesions:non:>'
                  ),
                  'defaut' => 'non',
              ),
@@ -133,12 +133,12 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'selection',
              'options' => array(
                  'nom' => 'validation',
-                 'label' => _T('association:form_categorie_cotisation_validation_label'),
-                 'explication' => _T('association:form_categorie_cotisation_validation_explication'),
+                 'label' => _T('association_adhesions:form_categorie_cotisation_validation_label'),
+                 'explication' => _T('association_adhesions:form_categorie_cotisation_validation_explication'),
                  'data' => array(
-                     'auto' => _T('association:choix_validation_cotisation_auto') . ' ' . _T('association:defaut'),
-                     'pre-paiement' => _T('association:choix_validation_cotisation_pre_paiement') ,
-                     'post-paiement' => _T('association:choix_validation_cotisation_post_paiement'),
+                     'auto' => _T('association_adhesions:choix_validation_cotisation_auto') . ' ' . _T('association_adhesions:defaut'),
+                     'pre-paiement' => _T('association_adhesions:choix_validation_cotisation_pre_paiement') ,
+                     'post-paiement' => _T('association_adhesions:choix_validation_cotisation_post_paiement'),
                  ),
                  'defaut' => 'auto',
                  'cacher_option_intro' => 'oui',
@@ -154,10 +154,10 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'date_debut',
              'options' => [
                  'nom' => 'mois_debut',
-                 'label' => _T('association:mois_debut_validite'),
+                 'label' => _T('association_adhesions:mois_debut_validite'),
                  'data' => array_combine(
                      range(1, 12),
-                     array_map(fn($m) => _T("association:mois_" . strtolower(date('F', mktime(0, 0, 0, $m)))), range(1, 12))
+                     array_map(fn($m) => _T("association_adhesions:mois_" . strtolower(date('F', mktime(0, 0, 0, $m)))), range(1, 12))
                  )
              ]
          ],
@@ -165,7 +165,7 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'selection',
              'options' => [
                  'nom' => 'jour_debut',
-                 'label' => _T('association:jour_debut_validite'),
+                 'label' => _T('association_adhesions:jour_debut_validite'),
                  'data' => array_combine(range(1, 31), range(1, 31))
              ]
          ],
@@ -173,10 +173,10 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'selection',
              'options' => [
                  'nom' => 'mois_fin',
-                 'label' => _T('association:mois_fin_validite'),
+                 'label' => _T('association_adhesions:mois_fin_validite'),
                  'data' => array_combine(
                      range(1, 12),
-                     array_map(fn($m) => _T("association:mois_" . strtolower(date('F', mktime(0, 0, 0, $m)))), range(1, 12))
+                     array_map(fn($m) => _T("association_adhesions:mois_" . strtolower(date('F', mktime(0, 0, 0, $m)))), range(1, 12))
                  )
              ]
          ],
@@ -184,7 +184,7 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'selection',
              'options' => [
                  'nom' => 'jour_fin',
-                 'label' => _T('association:jour_fin_validite'),
+                 'label' => _T('association_adhesions:jour_fin_validite'),
                  'data' => array_combine(range(1, 31), range(1, 31))
              ]
          ],*/
@@ -195,7 +195,7 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'input',
              'options' => [
                  'nom' => 'commentaires',
-                 'label' => _T('association:explication_participation'),
+                 'label' => _T('association_adhesions:explication_participation'),
                  'rows' => 3
              ]
          ],
@@ -203,8 +203,8 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'selection',
              'options' => [
                  'nom' => 'devise',
-                 'label' => _T('association:devise_cotisation_label'),
-                 'explication' => _T('association:devise_cotisation_explication', ['devise' => $devise_defaut]),
+                 'label' => _T('association_adhesions:devise_cotisation_label'),
+                 'explication' => _T('association_adhesions:devise_cotisation_explication', ['devise' => $devise_defaut]),
                  'data' => $devises,
                  'defaut' => $devise_defaut,
                  'cacher_option_intro' => 'oui',
@@ -214,7 +214,7 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              'saisie' => 'input',
              'options' => [
                  'nom' => 'cotisation',
-                 'label' => _T('association:montant_cotisation'),
+                 'label' => _T('association_adhesions:montant_cotisation'),
                  'type' => 'number',
                  'step' => '0.01'
              ]
@@ -223,10 +223,10 @@ function formulaires_editer_asso_categorie_cotisation_saisies_dist($id_categorie
              "saisie" => 'checkbox',
              "options" => [
                  "nom" => 'mode_paiement',
-                 "label" => _T('association:mode_paiement_cotisation_label'),
+                 "label" => _T('association_adhesions:mode_paiement_cotisation_label'),
                  "datas" => $mode_paiement_listes,
                  "defaut" => $mode_paiement_liste,
-                 "explication" => _T('association:mode_paiement_cotisation_explication'),
+                 "explication" => _T('association_adhesions:mode_paiement_cotisation_explication'),
              ],
          ],
     ];
@@ -313,13 +313,13 @@ function formulaires_editer_asso_categorie_cotisation_verifier_dist($id_categori
     if ($cotisation === null || $cotisation === '') {
         $erreurs['cotisation'] = _T('info_obligatoire');
     } elseif (!is_numeric($cotisation) || floatval($cotisation) < 0) {
-        $erreurs['cotisation'] = _T('association:erreur_montant_invalide');
+        $erreurs['cotisation'] = _T('association_adhesions:erreur_montant_invalide');
     }
 
     if (association_cotisations_multidevises_actives()) {
         $devise = strtoupper((string) _request('devise'));
         if (!isset(association_cotisation_devises_disponibles()[$devise])) {
-            $erreurs['devise'] = _T('association:erreur_devise_cotisation_invalide');
+            $erreurs['devise'] = _T('association_adhesions:erreur_devise_cotisation_invalide');
         }
     }
 
@@ -334,7 +334,7 @@ function formulaires_editer_asso_categorie_cotisation_verifier_dist($id_categori
         $jour_debut = intval(_request('jour_debut'));
 
         if ($jour_debut > $jours_par_mois[$mois_debut]) {
-            $erreurs['jour_debut'] = _T('association:erreur_jour_invalide_pour_mois');
+            $erreurs['jour_debut'] = _T('association_adhesions:erreur_jour_invalide_pour_mois');
         }
 
         if (_request('mois_fin') && _request('jour_fin')) {
@@ -342,13 +342,13 @@ function formulaires_editer_asso_categorie_cotisation_verifier_dist($id_categori
             $jour_fin = intval(_request('jour_fin'));
 
             if ($jour_fin > $jours_par_mois[$mois_fin]) {
-                $erreurs['jour_fin'] = _T('association:erreur_jour_invalide_pour_mois');
+                $erreurs['jour_fin'] = _T('association_adhesions:erreur_jour_invalide_pour_mois');
             }
         }
     }
 
     if (count($erreurs)) {
-        $erreurs['message_erreur'] = _T('association:erreur_titre');
+        $erreurs['message_erreur'] = _T('association_adhesions:erreur_titre');
     }
 
     return $erreurs;
@@ -398,10 +398,10 @@ if (_request('mois_debut') && _request('jour_debut')) {
     // Insertion ou mise à jour
     if ($id_categorie) {
         sql_updateq("spip_asso_categories_adherents", $data, "id_categorie=$id_categorie");
-        $message = _T('association:categorie_mise_a_jour');
+        $message = _T('association_adhesions:categorie_mise_a_jour');
     } else {
         $id_categorie = sql_insertq("spip_asso_categories_adherents", $data);
-        $message = _T('association:categorie_ajoutee');
+        $message = _T('association_adhesions:categorie_ajoutee');
     }
 
     return [

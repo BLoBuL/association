@@ -142,10 +142,10 @@ function association_definitions_champs_extras($fields){
 // Filtre par statut interne
 function filtre_liste_statut_interne_adherents(){
     $statuts = array(
-        'ok' => _T('association:statut_interne_ok'),
-        'prospect' => _T('association:statut_interne_prospect'),
-        'echu' => _T('association:statut_interne_echu'),
-        'sorti' => _T('association:statut_interne_sorti'),
+        'ok' => _T('association_adhesions:statut_interne_ok'),
+        'prospect' => _T('association_adhesions:statut_interne_prospect'),
+        'echu' => _T('association_adhesions:statut_interne_echu'),
+        'sorti' => _T('association_adhesions:statut_interne_sorti'),
     );
     return $statuts;
 }
@@ -233,9 +233,9 @@ function gestion_comptes_secondaires_active(){
 function filtre_liste_type_compte(){
     if (est_actif_gestion_comptes_secondaires()) {
         return array(
-            'defaut' => _T('association:filtre_type_compte_defaut'),
-            'compte_principal' => _T('association:filtre_type_compte_principal'),
-            'compte_secondaire' => _T('association:filtre_type_compte_secondaire')
+            'defaut' => _T('association_adhesions:filtre_type_compte_defaut'),
+            'compte_principal' => _T('association_adhesions:filtre_type_compte_principal'),
+            'compte_secondaire' => _T('association_adhesions:filtre_type_compte_secondaire')
         );
     }
     return array();
@@ -494,16 +494,16 @@ function get_recherche_active_resume() {
         $parts = array();
 
         if (!empty($criteres['_input_nom_famille'])) {
-            $parts[] = _T('association:filtres_actifs_nom') . ' ' . $criteres['_input_nom_famille'];
+            $parts[] = _T('association_adhesions:filtres_actifs_nom') . ' ' . $criteres['_input_nom_famille'];
         }
         if (!empty($criteres['_input_prenom'])) {
-            $parts[] = _T('association:filtres_actifs_prenom') . ' ' . $criteres['_input_prenom'];
+            $parts[] = _T('association_adhesions:filtres_actifs_prenom') . ' ' . $criteres['_input_prenom'];
         }
         if (!empty($criteres['_input_email'])) {
-            $parts[] = _T('association:filtres_actifs_email') . ' ' . $criteres['_input_email'];
+            $parts[] = _T('association_adhesions:filtres_actifs_email') . ' ' . $criteres['_input_email'];
         }
         if (!empty($criteres['_input_mobile'])) {
-            $parts[] = _T('association:filtres_actifs_mobile') . ' ' . $criteres['_input_mobile'];
+            $parts[] = _T('association_adhesions:filtres_actifs_mobile') . ' ' . $criteres['_input_mobile'];
         }
 
         if (!empty($parts)) {
@@ -520,7 +520,7 @@ function get_recherche_active_resume() {
 
         $resume = array(
             'type' => 'avancee',
-            'resume' => _T('association:recherche_active_avancee_nb', array('nb' => $nb_criteres))
+            'resume' => _T('association_adhesions:recherche_active_avancee_nb', array('nb' => $nb_criteres))
         );
     }
 

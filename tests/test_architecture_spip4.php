@@ -263,6 +263,20 @@ $verifier(
 		&& strpos($evenements_lang, "'evenement_info_supplementaire'") !== false,
 	'Le plugin Événements doit utiliser son propre domaine de langue.'
 );
+$adhesions_lang = file_get_contents($racine . '/plugins/association-adhesions/lang/association_adhesions_fr.php');
+$adhesions_sources_lang = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-adhesions')) as $adhesions_source_lang) {
+	if ($adhesions_source_lang->isFile() && preg_match('/\.(?:php|html)$/', $adhesions_source_lang->getFilename()) && strpos($adhesions_source_lang->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$adhesions_sources_lang .= file_get_contents($adhesions_source_lang->getPathname());
+	}
+}
+$verifier(
+	!preg_match('/(?:<:|[\'\"]|\{)association:/', $adhesions_sources_lang)
+		&& strpos($adhesions_sources_lang, 'association_adhesions:') !== false
+		&& strpos($adhesions_lang, "'cotisation_enregistree'") !== false
+		&& strpos($adhesions_lang, "'mois_december'") !== false,
+	'Le plugin Adhésions doit utiliser son propre domaine de langue complet.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

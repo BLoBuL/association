@@ -42,7 +42,7 @@ function formulaires_editer_asso_membres_verifier_dist($id_auteur) {
 					$erreurs[$champ] = _request($champ)."&nbsp;:&nbsp;".$erreur_validite;
 				}
 				if (count($erreurs)) {
-				$erreurs['message_erreur'] = _T('association:erreur_titre');
+				$erreurs['message_erreur'] = _T('association_adhesions:erreur_titre');
 				}
 			}
 		}

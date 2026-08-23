@@ -556,6 +556,14 @@ un choix alternatif conserve directement son libellé administrateur, sans
 construire dynamiquement une fausse clé de langue. Le module n’utilise plus le
 domaine historique `association`.
 
+## Lot 48 : domaine de langue Adhésions
+
+Les libellés des adhérents, familles, catégories et cotisations sont fournis par
+`association_adhesions_fr.php`. Le domaine contient toutes les variantes
+dynamiques de type de cotisation et les douze mois, ainsi que les libellés
+historiquement absents des formulaires et notifications. Les pages publiques,
+CVT, modèles et écrans privés n’utilisent plus le domaine racine.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

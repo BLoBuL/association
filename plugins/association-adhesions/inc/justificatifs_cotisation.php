@@ -23,14 +23,14 @@ function association_justificatifs_cotisation_etat($id_compte) {
  */
 function association_justificatifs_cotisation_marquer($id_compte, $valide = true) {
     $id_compte = intval($id_compte);
-    if ($id_compte < 1) return array('ok' => false, 'message' => _T('association:justificatifs_cotisation_introuvables'));
+    if ($id_compte < 1) return array('ok' => false, 'message' => _T('association_adhesions:justificatifs_cotisation_introuvables'));
 
     $etat = association_justificatifs_cotisation_etat($id_compte);
     if ($valide && !$etat['complet']) {
-        return array('ok' => false, 'message' => _T('association:justificatifs_cotisation_incomplets'));
+        return array('ok' => false, 'message' => _T('association_adhesions:justificatifs_cotisation_incomplets'));
     }
     if ($etat['total'] < 1) {
-        return array('ok' => false, 'message' => _T('association:justificatifs_cotisation_introuvables'));
+        return array('ok' => false, 'message' => _T('association_adhesions:justificatifs_cotisation_introuvables'));
     }
 
     sql_updateq(
@@ -40,7 +40,7 @@ function association_justificatifs_cotisation_marquer($id_compte, $valide = true
     );
     include_spip('inc/invalideur');
     suivre_invalideur("id='asso_compte/$id_compte'");
-    return array('ok' => true, 'message' => $valide ? _T('association:justificatifs_cotisation_valides') : _T('association:justificatifs_cotisation_a_revoir'));
+    return array('ok' => true, 'message' => $valide ? _T('association_adhesions:justificatifs_cotisation_valides') : _T('association_adhesions:justificatifs_cotisation_a_revoir'));
 }
 
 /**
@@ -54,7 +54,7 @@ function association_justificatifs_cotisation_supprimer($id_compte, $id_document
     $id_document = intval($id_document);
     $document_cible = $id_document;
     if ($id_compte < 1) {
-        return array('ok' => false, 'message' => _T('association:justificatifs_cotisation_introuvables'));
+        return array('ok' => false, 'message' => _T('association_adhesions:justificatifs_cotisation_introuvables'));
     }
 
     $condition = 'objet=' . sql_quote('compte') . ' AND id_objet=' . $id_compte;
@@ -71,7 +71,7 @@ function association_justificatifs_cotisation_supprimer($id_compte, $id_document
     );
     $documents = array_values(array_unique(array_map('intval', $documents)));
     if (!$documents) {
-        return array('ok' => false, 'message' => _T('association:justificatifs_cotisation_introuvables'));
+        return array('ok' => false, 'message' => _T('association_adhesions:justificatifs_cotisation_introuvables'));
     }
 
     include_spip('inc/autoriser');
@@ -79,10 +79,10 @@ function association_justificatifs_cotisation_supprimer($id_compte, $id_document
         $autres_liens = 'id_document=' . $document_id
             . ' AND NOT (objet=' . sql_quote('compte') . ' AND id_objet=' . $id_compte . ')';
         if (sql_countsel('spip_documents_liens', $autres_liens)) {
-            return array('ok' => false, 'message' => _T('association:justificatifs_suppression_document_partage'));
+            return array('ok' => false, 'message' => _T('association_adhesions:justificatifs_suppression_document_partage'));
         }
         if (!autoriser('modifier', 'document', $document_id)) {
-            return array('ok' => false, 'message' => _T('association:justificatifs_suppression_interdite'));
+            return array('ok' => false, 'message' => _T('association_adhesions:justificatifs_suppression_interdite'));
         }
     }
 
@@ -93,14 +93,14 @@ function association_justificatifs_cotisation_supprimer($id_compte, $id_document
         if (!action_supprimer_document_dist($document_id)) {
             include_spip('action/editer_liens');
             objet_associer(array('document' => $document_id), array('compte' => $id_compte));
-            return array('ok' => false, 'message' => _T('association:justificatifs_suppression_echec'));
+            return array('ok' => false, 'message' => _T('association_adhesions:justificatifs_suppression_echec'));
         }
     }
 
     return array(
         'ok' => true,
         'message' => _T($document_cible
-            ? 'association:justificatif_suppression_reussie'
-            : 'association:justificatifs_suppression_reussie')
+            ? 'association_adhesions:justificatif_suppression_reussie'
+            : 'association_adhesions:justificatifs_suppression_reussie')
     );
 }

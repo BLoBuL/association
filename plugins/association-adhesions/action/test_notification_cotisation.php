@@ -13,7 +13,7 @@ function action_test_notification_cotisation_dist() {
         : (autoriser('webmestre') || autoriser('configurer'));
 
     if (!$autorise) {
-        action_test_notification_cotisation_redirect(_request('redirect'), _T('association:erreur_test_notification_interdit'), false);
+        action_test_notification_cotisation_redirect(_request('redirect'), _T('association_adhesions:erreur_test_notification_interdit'), false);
     }
 
     $securiser_action = charger_fonction('securiser_action', 'inc');
@@ -259,21 +259,21 @@ function action_test_notification_cotisation_dist() {
             $ok = notifier_cotisation_adherent($fake_query_cotisation, $fake_query_categories, $fake_query_transaction, $type_map, $opts);
         }
         if ($ok) {
-            $message = _T('association:info_notification_test_envoyee', array('notification' => $notification, 'email' => $email));
+            $message = _T('association_adhesions:info_notification_test_envoyee', array('notification' => $notification, 'email' => $email));
         } else {
-            $message = _T('association:erreur_envoi_email');
+            $message = _T('association_adhesions:erreur_envoi_email');
         }
     } else {
         // Fallback : essayer l'ancien helper d'envoi de test si disponible
         if (function_exists('notifications_cotisation_envoyer_test')) {
             $ok = notifications_cotisation_envoyer_test($notification, $type, $email, $lang, $delai, $message);
         } else {
-            $message = _T('association:erreur_envoi_email');
+            $message = _T('association_adhesions:erreur_envoi_email');
             $ok = false;
         }
     }
 
-    action_test_notification_cotisation_redirect(_request('redirect'), $message ?: _T('association:erreur_envoi_email'), $ok);
+    action_test_notification_cotisation_redirect(_request('redirect'), $message ?: _T('association_adhesions:erreur_envoi_email'), $ok);
 }
 
 function action_test_notification_cotisation_redirect($redirect, $message, $ok) {

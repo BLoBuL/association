@@ -8,14 +8,14 @@
     </td>
     <td class="type-inscription">
         [(#INSCRIPTION|=={inscription}|oui)
-        <span class="type-inscription-icon premiere" title="<:association:inscription:>" aria-label="<:association:inscription:>">
+        <span class="type-inscription-icon premiere" title="<:association_adhesions:inscription:>" aria-label="<:association_adhesions:inscription:>">
             <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
-            <span class="type-inscription-label"><:association:inscription:></span>
+            <span class="type-inscription-label"><:association_adhesions:inscription:></span>
         </span>]
         [(#INSCRIPTION|=={reinscription}|oui)
-        <span class="type-inscription-icon renouvellement" title="<:association:reinscription:>" aria-label="<:association:reinscription:>">
+        <span class="type-inscription-icon renouvellement" title="<:association_adhesions:reinscription:>" aria-label="<:association_adhesions:reinscription:>">
             <i class="fa-solid fa-rotate" aria-hidden="true"></i>
-            <span class="type-inscription-label"><:association:reinscription:></span>
+            <span class="type-inscription-label"><:association_adhesions:reinscription:></span>
         </span>]
         [(#INSCRIPTION|=={reinscription}|non|et{#INSCRIPTION|=={inscription}|non})
             #INSCRIPTION
@@ -37,14 +37,14 @@
             </BOUCLE_docs_compte>
             <BOUCLE_docs_a_controler(DOCUMENTS spip_documents_liens){objet=compte}{id_objet=#ID_COMPTE}{vu!=oui}{tout}>
             </BOUCLE_docs_a_controler>
-            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="badge notice justificatifs-badge" title="<:association:justificatifs_cotisation_titre:>">
+            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="badge notice justificatifs-badge" title="<:association_adhesions:justificatifs_cotisation_titre:>">
                 <i class="fa-regular fa-id-card" aria-hidden="true"></i>
-                <span>#TOTAL_BOUCLE <:association:justificatif_a_controler:></span>
+                <span>#TOTAL_BOUCLE <:association_adhesions:justificatif_a_controler:></span>
             </a>
             </B_docs_a_controler>
-            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="badge success justificatifs-badge" title="<:association:justificatifs_cotisation_titre:>">
+            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="badge success justificatifs-badge" title="<:association_adhesions:justificatifs_cotisation_titre:>">
                 <i class="fa-regular fa-id-card" aria-hidden="true"></i>
-                <span><:association:justificatif_controle:></span>
+                <span><:association_adhesions:justificatif_controle:></span>
             </a>
             <//B_docs_a_controler>
             </B_docs_compte>

@@ -1,17 +1,17 @@
 [<p>
     (#ENV{criteres_sql}|oui)
-    <:association:resultat_recherche_label{criteres_sql=#ENV{criteres_sql}}:>
+    <:association_adhesions:resultat_recherche_label{criteres_sql=#ENV{criteres_sql}}:>
 </p>]
 <B_tableau_incrits>
 <p>
-    <:association:table_inscription_adherents_nb_resultat{nb_resultat=#TOTAL_BOUCLE}:>
+    <:association_adhesions:table_inscription_adherents_nb_resultat{nb_resultat=#TOTAL_BOUCLE}:>
 </p>     
     <table id="tableau_adherents" class="tableau_adherents tableau_asso">
         <tr>
         <th>[(#TRI{id_auteur,'#',ajax})]</th>
-        <th>[(#TRI{nom_famille,<:association:activite_entete_nom:>,ajax})]</th>
+        <th>[(#TRI{nom_famille,<:association_adhesions:activite_entete_nom:>,ajax})]</th>
         <th class=""><:email:></th>
-        <th class=""><:association:activite_entete_cotisation:></th>
+        <th class=""><:association_adhesions:activite_entete_cotisation:></th>
          <th class="checkbox"> 
             <input id="check_all"  type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);" checked="checked">
              <label for="check_all" ></label></th>
@@ -28,6 +28,6 @@
     </table>
 </B_tableau_incrits>
 <p>
-    <:association:resultat_vide_recherche_label:>
+    <:association_adhesions:resultat_vide_recherche_label:>
 </p>    
 <//B_tableau_incrits>

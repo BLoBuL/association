@@ -19,18 +19,18 @@ function adherents_recherche_avancee_saisies(){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'operateur',
-            'label' => _T('association:fieldset_adherents_recherche_label'),
+            'label' => _T('association_adhesions:fieldset_adherents_recherche_label'),
             'conteneur_class' => 'fieldset_type_recherche',
         ),
         'saisies' => array(
             array(
                 'saisie' => 'radio',
                 'options' => array(
-                    'label' => _T('association:radio_type_recherche_label'),
+                    'label' => _T('association_adhesions:radio_type_recherche_label'),
                     'nom' => 'type_recherche',
                     'data' => array(
-                        'statut_adhesion' => _T('association:radio_type_recherche_data_statut_adhesion'),
-                        'multicritere' => _T('association:radio_type_recherche_data_multicritere')
+                        'statut_adhesion' => _T('association_adhesions:radio_type_recherche_data_statut_adhesion'),
+                        'multicritere' => _T('association_adhesions:radio_type_recherche_data_multicritere')
                     ),
                     'defaut' => 'statut_adhesion',
                 )
@@ -39,7 +39,7 @@ function adherents_recherche_avancee_saisies(){
                 'saisie' => 'fieldset',
                 'options' => array(
                     'nom' => 'fieldset_statut_adhesion',
-                    'label' => _T('association:fieldset_statut_adhesion_label'),
+                    'label' => _T('association_adhesions:fieldset_statut_adhesion_label'),
                     'conteneur_class' => 'fieldset_statut_adhesion',
                     'afficher_si' => '@type_recherche@=="statut_adhesion"',
                 ),
@@ -49,7 +49,7 @@ function adherents_recherche_avancee_saisies(){
                 'saisie' => 'fieldset',
                 'options' => array(
                     'nom' => 'fieldset_multicritere',
-                    'label' => _T('association:fieldset_multicritere_label'),
+                    'label' => _T('association_adhesions:fieldset_multicritere_label'),
                     'conteneur_class' => 'fieldset_multicritere',
                     'afficher_si' => '@type_recherche@=="multicritere"',
                 ),
@@ -142,7 +142,7 @@ function adherents_recherche_avancee_formater_saisie(array $champs_extra, array 
                 'nom' => 'fieldset_' . $nom,
                 'label' => $label,
                 'conteneur_class' => 'fieldset_date',
-                'explication' => _T('association:recherche_fieldset_date_explication'),
+                'explication' => _T('association_adhesions:recherche_fieldset_date_explication'),
             ],
             'saisies' => [
                 [
@@ -221,16 +221,16 @@ function adherents_recherche_avancee_multicritere_saisie(){
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'operateur',
-            'label' => _T('association:fieldset_adherents_recherche_label'),
+            'label' => _T('association_adhesions:fieldset_adherents_recherche_label'),
             'conteneur_class' => 'fieldset_operateur',
         ),
         'saisies' => array(
             array(
                 'saisie' => 'radio',
                 'options' => array(
-                    'label' => _T('association:radio_type_recherche_label'),
+                    'label' => _T('association_adhesions:radio_type_recherche_label'),
                     'nom' => 'operateur_recherche',
-                    'explication' => _T('association:radio_type_recherche_explication'),
+                    'explication' => _T('association_adhesions:radio_type_recherche_explication'),
                     'data' => array('OR' => 'Ou', 'AND' => 'Et'),
                     'defaut' => 'AND',
                 )

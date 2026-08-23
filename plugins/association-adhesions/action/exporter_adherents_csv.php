@@ -76,7 +76,7 @@ function action_exporter_adherents_csv_dist() {
 			if($titre_perso)
 				$titre = $titre_perso."-".$GLOBALS['meta']['nom_site']."-".date('Y-m-d');
 			else
-				$titre = _T('association:titre_csv')."-".$GLOBALS['meta']['nom_site']."-".date('Y-m-d');
+				$titre = _T('association_adhesions:titre_csv')."-".$GLOBALS['meta']['nom_site']."-".date('Y-m-d');
 			// chargement de la fonction
 			$exporter_csv = charger_fonction('exporter_csv', 'inc/');
 			// Creation du CSV et export

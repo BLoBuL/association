@@ -13,17 +13,17 @@
         [(#REM) Indication des filtres actifs qui seront combinés ]
         [(#ENV{periode}|ou{#ENV{statut_interne}|et{#ENV{statut_interne}|!={tout}}}|ou{#ENV{type_adherent}|et{#ENV{type_adherent}|!={tout}}}|oui)
         <div class="info-filtres-combines">
-            <p><strong><i class="fa fa-info-circle"></i> <:association:recherche_avancee_info_filtres_titre:></strong></p>
-            <p><:association:recherche_avancee_info_filtres_intro:></p>
+            <p><strong><i class="fa fa-info-circle"></i> <:association_adhesions:recherche_avancee_info_filtres_titre:></strong></p>
+            <p><:association_adhesions:recherche_avancee_info_filtres_intro:></p>
             <ul>
                 [(#ENV{periode}|et{#ENV{periode}|!={tout}}|oui)
-                <li><strong><:association:filtres_actifs_periode:></strong> #ENV{periode}</li>
+                <li><strong><:association_adhesions:filtres_actifs_periode:></strong> #ENV{periode}</li>
                 ]
                 [(#ENV{statut_interne}|et{#ENV{statut_interne}|!={tout}}|oui)
-                <li><strong><:association:filtres_actifs_statut:></strong> #ENV{statut_interne}</li>
+                <li><strong><:association_adhesions:filtres_actifs_statut:></strong> #ENV{statut_interne}</li>
                 ]
                 [(#ENV{type_adherent}|et{#ENV{type_adherent}|!={tout}}|oui)
-                <li><strong><:association:filtres_actifs_type:></strong> #ENV{type_adherent}</li>
+                <li><strong><:association_adhesions:filtres_actifs_type:></strong> #ENV{type_adherent}</li>
                 ]
             </ul>
         </div>
@@ -37,7 +37,7 @@
         [(#ENV{type_adherent}|oui)<input type="hidden" name="type_adherent" value="#ENV{type_adherent}" />]
         #GENERER_SAISIES{#ENV{_saisies}}
         <p class="boutons">
-			<input type="submit" class="submit" name="rechercher" value="<:association:recherche_bouton_rechercher:>">
+			<input type="submit" class="submit" name="rechercher" value="<:association_adhesions:recherche_bouton_rechercher:>">
 		</p>
         </form>
     </div>

@@ -1,11 +1,11 @@
 <BOUCLE_inscription_active(MAILSUBSCRIBERS){email=#SESSION{email}}{statut=valide}{doublons}>
-	<h2><:association:preference_inscription_newsletter_titre:></h2>
-	<p><:association:preference_inscription_newsletter_message:></p>
+	<h2><:association_adhesions:preference_inscription_newsletter_titre:></h2>
+	<p><:association_adhesions:preference_inscription_newsletter_message:></p>
 	<div class="ajax">
 		[(#FORMULAIRE_EDITER_MAILSUBSCRIBER_PUBLIC{#ID_MAILSUBSCRIBER})]
 	</div>
 </BOUCLE_inscription_active>
 
 <BOUCLE_inscription_inactive(MAILSUBSCRIBERS){email=#SESSION{email}}{tout}{doublons}>
-	<p><:association:preference_inscription_newsletter_suspendue:></p>
+	<p><:association_adhesions:preference_inscription_newsletter_suspendue:></p>
 </BOUCLE_inscription_inactive>

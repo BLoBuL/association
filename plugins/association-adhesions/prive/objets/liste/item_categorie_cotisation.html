@@ -7,9 +7,9 @@
         [(#VALEUR|propre|textebrut)]
     </td>
     <td class="">
-        [(#VALIDATION|=={auto}|ou{#VALIDATION|non}|oui)<:association:validation_cotisation_auto:>]
-        [(#VALIDATION|=={pre-paiement}|oui)<:association:validation_cotisation_pre_paiement:>]
-        [(#VALIDATION|=={post-paiement}|oui)<:association:validation_cotisation_post_paiement:>]
+        [(#VALIDATION|=={auto}|ou{#VALIDATION|non}|oui)<:association_adhesions:validation_cotisation_auto:>]
+        [(#VALIDATION|=={pre-paiement}|oui)<:association_adhesions:validation_cotisation_pre_paiement:>]
+        [(#VALIDATION|=={post-paiement}|oui)<:association_adhesions:validation_cotisation_post_paiement:>]
 
     </td>
     <td class="">
@@ -20,7 +20,7 @@
         [(#STATUT|=={desactive}|oui)Désactivé (ce tarif ne sera pas proposé aux internautes)]
     </td>
     <td class="">
-        [(#VAL{association:cotisation_}|concat{#TYPE_ADHERENT}|_T)]
+        [(#VAL{association_adhesions:cotisation_}|concat{#TYPE_ADHERENT}|_T)]
 
     </td>
    <td class="message">
@@ -34,7 +34,7 @@
             <i class="fa-regular fa-trash-can" aria-hidden="true"></i>,
             #URL_ACTION_AUTEUR{supprimer_categorie_cotisation, #ID_CATEGORIE, #SELF},
             'lien_fa ajax',
-            <:association:confirmation_suppression_categorie:>
+            <:association_adhesions:confirmation_suppression_categorie:>
         })]
     </td>
 </tr>

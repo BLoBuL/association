@@ -30,9 +30,9 @@ function formulaires_synchro_asso_membres_traiter() {
 	$synchro = charger_fonction('synchroniser_asso_membres','action');
 	$nb_insertion = $synchro(); /* la fonction action retourne le nombre d'insertion realisees */
 	if ($nb_insertion>1) {
-		$nb_insertion .= _T('association:membres_ajoutes');
+		$nb_insertion .= _T('association_adhesions:membres_ajoutes');
 	} else {
-		$nb_insertion .= _T('association:membre_ajoute');
+		$nb_insertion .= _T('association_adhesions:membre_ajoute');
 	}
 	$res['message_ok'] = $nb_insertion;
 	

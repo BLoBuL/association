@@ -35,7 +35,7 @@ function formulaires_adherents_recherche_rapide_charger_dist(){
             'saisie' => 'input',
             'options' => array(
                 'nom' => '_input_prenom',
-                'label' => _T('association:activite_form_public_prenom_inscrit'),
+                'label' => _T('association_adhesions:activite_form_public_prenom_inscrit'),
                 'defaut' => $defaults['_input_prenom'],
             )
         ),
@@ -43,7 +43,7 @@ function formulaires_adherents_recherche_rapide_charger_dist(){
             'saisie' => 'input',
             'options' => array(
                 'nom' => '_input_nom_famille',
-                'label' => _T('association:activite_form_public_nom_inscrit'),
+                'label' => _T('association_adhesions:activite_form_public_nom_inscrit'),
                 'defaut' => $defaults['_input_nom_famille'],
             )
         ),
@@ -51,7 +51,7 @@ function formulaires_adherents_recherche_rapide_charger_dist(){
             'saisie' => 'input',
             'options' => array(
                 'nom' => '_input_email',
-                'label' => _T('association:activite_form_public_email_inscrit'),
+                'label' => _T('association_adhesions:activite_form_public_email_inscrit'),
                 'defaut' => $defaults['_input_email'],
             )
         ),
@@ -59,7 +59,7 @@ function formulaires_adherents_recherche_rapide_charger_dist(){
             'saisie' => 'input',
             'options' => array(
                 'nom' => '_input_mobile',
-                'label' => _T('association:activite_form_public_tel_inscrit'),
+                'label' => _T('association_adhesions:activite_form_public_tel_inscrit'),
                 'defaut' => $defaults['_input_mobile'],
             )
         ),
@@ -108,7 +108,7 @@ function formulaires_adherents_recherche_rapide_traiter_dist(){
     }
 
     return array(
-        'message_ok' => _T('association:recherche_effectuee'),
+        'message_ok' => _T('association_adhesions:recherche_effectuee'),
         'redirect' => generer_url_ecrire('adherents')
     );
 }

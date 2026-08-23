@@ -56,7 +56,7 @@ function association_familles_lister_groupes() {
 		if ($id_auteur !== $id_principal) {
 			$groupes[$id_principal]['secondaires'][] = $auteur;
 			if (!isset($par_id[$id_principal])) {
-				$groupes[$id_principal]['alertes'][] = _T('association:migration_familles_principal_absent');
+				$groupes[$id_principal]['alertes'][] = _T('association_adhesions:migration_familles_principal_absent');
 			}
 		}
 	}
@@ -87,7 +87,7 @@ function association_familles_previsualiser_migration() {
 		$id_principal = intval($groupe['id_principal']);
 		$familles = familles_objet_lister_familles('auteur', $id_principal, array('inclure_inactifs' => true));
 		if (count($familles) > 1) {
-			$groupe['alertes'][] = _T('association:migration_familles_plusieurs_familles');
+			$groupe['alertes'][] = _T('association_adhesions:migration_familles_plusieurs_familles');
 		}
 		$groupe['familles'] = $familles;
 		$rapport['groupes'][] = $groupe;
@@ -127,7 +127,7 @@ function association_familles_executer_migration() {
 		if (!$id_famille) {
 			$nom = trim((string) ($groupe['principal']['nom'] ?? ''));
 			$id_famille = familles_creer(array(
-				'titre' => _T('association:migration_familles_titre_genere', array('nom' => $nom, 'id' => $id_principal)),
+				'titre' => _T('association_adhesions:migration_familles_titre_genere', array('nom' => $nom, 'id' => $id_principal)),
 				'statut' => 'publie',
 			));
 			$resultat['familles_creees'] += $id_famille ? 1 : 0;

@@ -1,5 +1,5 @@
 [(#AUTORISER{cotisations_menu}|sinon_interdire_acces)]
-<h1 class="grostitre"><:association:titre_listes_cotisations:></h1>
+<h1 class="grostitre"><:association_adhesions:titre_listes_cotisations:></h1>
 <div class="asso-filtres-container filtre-card">
     <div class="filtre-card-header">
         <h2 class="filtre-card-title">Filtres</h2>
@@ -9,7 +9,7 @@
     [(#SET{f_cot,#VAL|filtres_effectifs_cotisations})]
     <div class="asso-filtres">
         <div class="filtre-groupe">
-            <label><:association:label_filtre_periodes_cotisations:></label>
+            <label><:association_adhesions:label_filtre_periodes_cotisations:></label>
 
             <!-- Toggle contexte periode: adherent / entreprise -->
             <div class="options options-contexte" style="margin-bottom:6px;">
@@ -19,7 +19,7 @@
 
             <div class="options">
                 <a href="[(#SELF|parametre_url{periode,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{periode}|?{'',selected})]">
-                    <:association:label_tous_statut_cotisation:>
+                    <:association_adhesions:label_tous_statut_cotisation:>
                 </a>
                 <BOUCLE_periodes(DATA){source table, #VAL|liste_periodes_cotisations}>
                 <a href="[(#SELF|parametre_url{periode,#LIBELLE})]"
@@ -33,10 +33,10 @@
         </div>
 
         <div class="filtre-groupe">
-            <label><:association:label_filtre_cotisation_statut_cotisation:></label>
+            <label><:association_adhesions:label_filtre_cotisation_statut_cotisation:></label>
             <div class="options">
                 <a href="[(#SELF|parametre_url{statut_cotisation,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{statut_cotisation}|?{'',selected})]">
-                    <:association:label_tous_statut_cotisation:>
+                    <:association_adhesions:label_tous_statut_cotisation:>
                 </a>
                 <BOUCLE_statut(ASSO_COTISATIONS){tout}{fusion statut}{statut!=''}><a href="[(#SELF|parametre_url{statut_cotisation,#STATUT})]" class="ajax option[(#GET{f_cot}|table_valeur{statut_cotisation}|=={#STATUT}|oui) selected]">#STATUT</a>
                 </BOUCLE_statut>
@@ -45,13 +45,13 @@
 
         <!-- Groupe important: 1ère inscription / réinscription -->
         <div class="filtre-groupe filtre-important" role="radiogroup" aria-label="Filtre type d'inscription">
-             <label><:association:label_filtre_cotisation_reinscription:></label>
+             <label><:association_adhesions:label_filtre_cotisation_reinscription:></label>
              <div class="options">
                  <a href="[(#SELF|parametre_url{reinscription,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{reinscription}|?{'',selected})]">
-                     <:association:label_tous_statut_cotisation:>
+                     <:association_adhesions:label_tous_statut_cotisation:>
                  </a>
                  <BOUCLE_reinscription(DATA){source table, #LISTE{reinscription,inscription}}>
-                <a href="[(#SELF|parametre_url{reinscription,#VALEUR})]" class="ajax option[(#GET{f_cot}|table_valeur{reinscription}|=={#VALEUR}|oui) selected]" role="radio" aria-checked="[(#GET{f_cot}|table_valeur{reinscription}|=={#VALEUR}|?{'true','false'})]">[(#VALEUR|=={reinscription}|?{<:association:reinscription:>,<:association:inscription:>})]</a>
+                <a href="[(#SELF|parametre_url{reinscription,#VALEUR})]" class="ajax option[(#GET{f_cot}|table_valeur{reinscription}|=={#VALEUR}|oui) selected]" role="radio" aria-checked="[(#GET{f_cot}|table_valeur{reinscription}|=={#VALEUR}|?{'true','false'})]">[(#VALEUR|=={reinscription}|?{<:association_adhesions:reinscription:>,<:association_adhesions:inscription:>})]</a>
                  </BOUCLE_reinscription>
              </div>
          </div>
@@ -60,10 +60,10 @@
      <div class="asso-filtres">
         <B_type_cotisations>
             <div class="filtre-groupe">
-                <label><:association:label_filtre_type_cotisation:></label>
+                <label><:association_adhesions:label_filtre_type_cotisation:></label>
                 <div class="options">
                     <a href="[(#SELF|parametre_url{type_cotisation,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{type_cotisation}|?{'',selected})]">
-                        <:association:label_tous_statut_cotisation:>
+                        <:association_adhesions:label_tous_statut_cotisation:>
                     </a>
                     <BOUCLE_type_cotisations(DATA){si #VAL|a_type_cotisation}{source table, #VAL|liste_type_cotisation}>
                     <a href="[(#SELF|parametre_url{type_cotisation,#CLE})]" class="ajax option[(#GET{f_cot}|table_valeur{type_cotisation}|=={#CLE}|oui) selected]">#VALEUR</a>
@@ -73,10 +73,10 @@
         </B_type_cotisations>
 
         <div class="filtre-groupe">
-            <label><:association:label_filtre_categorie_cotisation:></label>
+            <label><:association_adhesions:label_filtre_categorie_cotisation:></label>
             <div class="options">
                 <a href="[(#SELF|parametre_url{id_categorie,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{id_categorie}|?{'',selected})]">
-                    <:association:label_tous_statut_cotisation:>
+                    <:association_adhesions:label_tous_statut_cotisation:>
                 </a>
                 <BOUCLE_categories(ASSO_CATEGORIES_ADHERENTS){statut!= supprime}>
                 <a href="[(#SELF|parametre_url{id_categorie,#ID_CATEGORIE})]" class="ajax option[(#GET{f_cot}|table_valeur{id_categorie}|=={#ID_CATEGORIE}|oui) selected]">
@@ -93,12 +93,12 @@
 <div class="asso-actions">
     <div class="bouton">
         <a href="[(#URL_PAGE{export_cotisations.csv}|parametre_url{periode,#GET{f_cot}|table_valeur{periode}}|parametre_url{statut_cotisation,#GET{f_cot}|table_valeur{statut_cotisation}}|parametre_url{reinscription,#GET{f_cot}|table_valeur{reinscription}}|parametre_url{id_categorie,#GET{f_cot}|table_valeur{id_categorie}}|parametre_url{type_cotisation,#GET{f_cot}|table_valeur{type_cotisation}}|parametre_url{periode_contexte,#GET{periode_contexte}|scalar_val{}})]" class="btn-export lien_avec_fa">
-            <span class="fa_icone"><i class="fa-solid fa-file-export"></i></span><span><:association:label_exporter_selection_cotisation:></span>
+            <span class="fa_icone"><i class="fa-solid fa-file-export"></i></span><span><:association_adhesions:label_exporter_selection_cotisation:></span>
         </a>
     </div>
     <div class="bouton">
         <a href="[(#URL_PAGE{export_cotisations.csv}|parametre_url{periode_contexte,#GET{periode_contexte}|scalar_val{}})]" class="btn-export lien_avec_fa">
-            <span class="fa_icone"><i class="fa-solid fa-file-export"></i></span><span><:association:label_exporter_toutes_cotisations:></span>
+            <span class="fa_icone"><i class="fa-solid fa-file-export"></i></span><span><:association_adhesions:label_exporter_toutes_cotisations:></span>
         </a>
     </div>
 </div>
@@ -107,32 +107,32 @@
 <div class="asso-resultats">
     <div class="asso-header">
         <div class="asso-count">
-            <:association:label_nombre_resultat_cotisation:> <span>#TOTAL_BOUCLE</span>
+            <:association_adhesions:label_nombre_resultat_cotisation:> <span>#TOTAL_BOUCLE</span>
         </div>
     </div>
 
-    <div class="cotisations-legende" aria-label="<:association:cotisations_legende_titre:>">
-        <strong class="cotisations-legende-titre"><:association:cotisations_legende_titre:></strong>
-        <span class="cotisations-legende-item"><span class="cotisations-legende-couleur ok" aria-hidden="true"></span><:association:statut_cotis_ok:></span>
-        <span class="cotisations-legende-item"><span class="cotisations-legende-couleur demande" aria-hidden="true"></span><:association:statut_cotis_demande:></span>
-        <span class="cotisations-legende-item"><span class="cotisations-legende-couleur attente" aria-hidden="true"></span><:association:statut_cotis_attente:></span>
+    <div class="cotisations-legende" aria-label="<:association_adhesions:cotisations_legende_titre:>">
+        <strong class="cotisations-legende-titre"><:association_adhesions:cotisations_legende_titre:></strong>
+        <span class="cotisations-legende-item"><span class="cotisations-legende-couleur ok" aria-hidden="true"></span><:association_adhesions:statut_cotis_ok:></span>
+        <span class="cotisations-legende-item"><span class="cotisations-legende-couleur demande" aria-hidden="true"></span><:association_adhesions:statut_cotis_demande:></span>
+        <span class="cotisations-legende-item"><span class="cotisations-legende-couleur attente" aria-hidden="true"></span><:association_adhesions:statut_cotis_attente:></span>
         <span class="cotisations-legende-separateur" aria-hidden="true"></span>
-        <span class="cotisations-legende-item"><span class="type-inscription-icon premiere" aria-hidden="true"><i class="fa-solid fa-user-plus"></i></span><:association:inscription:></span>
-        <span class="cotisations-legende-item"><span class="type-inscription-icon renouvellement" aria-hidden="true"><i class="fa-solid fa-rotate"></i></span><:association:reinscription:></span>
+        <span class="cotisations-legende-item"><span class="type-inscription-icon premiere" aria-hidden="true"><i class="fa-solid fa-user-plus"></i></span><:association_adhesions:inscription:></span>
+        <span class="cotisations-legende-item"><span class="type-inscription-icon renouvellement" aria-hidden="true"><i class="fa-solid fa-rotate"></i></span><:association_adhesions:reinscription:></span>
     </div>
 
-    <div class="tableau-cotisations-scroll" role="region" aria-label="<:association:titre_listes_cotisations:>" tabindex="0">
+    <div class="tableau-cotisations-scroll" role="region" aria-label="<:association_adhesions:titre_listes_cotisations:>" tabindex="0">
     <table class="tableau_asso tableau_cotisations_adherent">
         <thead>
         <tr>
             <th>#</th>
-            <th><:association:adherent_entete_date:></th>
-            <th class="type-inscription"><:association:type_inscription:></th>
-            <th><:association:label_colonne_adherent:></th>
-            <th><:association:cotisation_categorie:></th>
-            <th><:association:justificatifs_cotisation_colonne:></th>
-            <th><:association:label_colonne_transaction:></th>
-            <th colspan="2"><:association:label_colonne_actions:></th>
+            <th><:association_adhesions:adherent_entete_date:></th>
+            <th class="type-inscription"><:association_adhesions:type_inscription:></th>
+            <th><:association_adhesions:label_colonne_adherent:></th>
+            <th><:association_adhesions:cotisation_categorie:></th>
+            <th><:association_adhesions:justificatifs_cotisation_colonne:></th>
+            <th><:association_adhesions:label_colonne_transaction:></th>
+            <th colspan="2"><:association_adhesions:label_colonne_actions:></th>
         </tr>
         </thead>
         <tbody>
@@ -145,7 +145,7 @@
 </div>
 </B_cotisation>
 <div class="asso-no-result">
-    <i class="fa fa-info-circle"></i> <:association:label_aucun_resultat_cotisation:>
+    <i class="fa fa-info-circle"></i> <:association_adhesions:label_aucun_resultat_cotisation:>
 </div>
 <//B_cotisation>
 <div class="nettoyeur"></div>

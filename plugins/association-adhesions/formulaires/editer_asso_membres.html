@@ -4,11 +4,11 @@
 		<div>
 			#ACTION_FORMULAIRE{#ENV{action}}
 			<ul>
-				<h3 class="legend"><:association:adherent_titre_modifier_membre:></h3>
+				<h3 class="legend"><:association_adhesions:adherent_titre_modifier_membre:></h3>
 
 				
 				<!-- <li class="editer_sexe">
-					<label for="sexe"><strong><:association:adherent_libelle_sexe:></strong></label>
+					<label for="sexe"><strong><:association_adhesions:adherent_libelle_sexe:></strong></label>
 					<input type="text" name="sexe" value="[(#ENV{sexe})]" id="sexe"  class='formo'/>
 				</li> -->
 				
@@ -19,20 +19,20 @@
 					    [(#SAISIE{[(#VALEUR|table_valeur{saisie}|print_r{1})],[(#VALEUR|table_valeur{options}|table_valeur{nom}|print_r{1})]}
 					    {class=formo}
 					    {id=sexe}
-					    {label=<strong><:association:adherent_libelle_sexe:></strong>}
+					    {label=<strong><:association_adhesions:adherent_libelle_sexe:></strong>}
 					    {datas=[(#VALEUR|table_valeur{options}|table_valeur{datas})]}
 					    )]
 
 				</BOUCLE_champs_extra_civilite>
 				
 				<li class="editer_nom_famille">
-					<label for="nom_famille"><strong><:association:adherent_libelle_nom_famille:></strong></label>
+					<label for="nom_famille"><strong><:association_adhesions:adherent_libelle_nom_famille:></strong></label>
 					<input type="text" name="nom_famille" value="[(#ENV{nom_famille})]" id="nom_famille"  class='formo'/>
 				</li>
 
 				[(#ENV{meta_prenom}|oui)
 				<li class="editer_prenom">
-					<label for="prenom"><strong><:association:adherent_libelle_prenom:></strong></label>
+					<label for="prenom"><strong><:association_adhesions:adherent_libelle_prenom:></strong></label>
 					<input type="text" name="prenom" value="[(#ENV{prenom})]" id="prenom"  class='formo'/>
 				</li>
 				]
@@ -49,12 +49,12 @@
 				</BOUCLE_champs_extra_nationalite>
 
 				<li class="editer_fonction">
-					<label for="fonction"><strong><:association:adherent_libelle_fonction:></strong></label>
+					<label for="fonction"><strong><:association_adhesions:adherent_libelle_fonction:></strong></label>
 					<input type="text" name="fonction" value="[(#ENV{fonction})]" id="fonction"  class='formo'/>
 				</li>
 
 				<li class="editer_categorie">
-					<label for="categorie"><strong><:association:adherent_libelle_categorie:></strong></label>
+					<label for="categorie"><strong><:association_adhesions:adherent_libelle_categorie:></strong></label>
 					<B_categorie>
 					<select name="categorie" id="categorie" class="formo" >
 					<BOUCLE_categorie(ASSO_CATEGORIES_ADHERENTS){par libelle}>
@@ -62,12 +62,12 @@
 					</BOUCLE_categorie>
 					</select>
 					</B_categorie>
-					<span class="erreur_message"><:association:erreur_pas_de_categorie:></span>
+					<span class="erreur_message"><:association_adhesions:erreur_pas_de_categorie:></span>
 					<//B_categorie>
 				</li>
 				<li class="editer_inscription">
 					[<span class='erreur_message'>(#GET{erreurs})</span>]
-					<!-- <label for="validite"><strong><:association:adherent_libelle_validite:></strong></label>
+					<!-- <label for="validite"><strong><:association_adhesions:adherent_libelle_validite:></strong></label>
 					<input name="validite" type="text" value="[(#ENV{validite}|affdate{Y-m-d})]" id="datepicker"  class="text date datepicker"/> -->
 
 					<!--UPDATE - correction des dates -->
@@ -78,7 +78,7 @@
 					    [(#SAISIE{[(#VALEUR|table_valeur{saisie}|print_r{1})],[(#VALEUR|table_valeur{options}|table_valeur{nom}|print_r{1})]}
 					    {class=formo}
 					    {id=validite}
-					    {label=<strong><:association:adherent_libelle_inscription:></strong>}
+					    {label=<strong><:association_adhesions:adherent_libelle_inscription:></strong>}
 					    {datas=[(#VALEUR|table_valeur{options}|table_valeur{datas})]}
 					    )]
 					</BOUCLE_champs_extra_inscription>
@@ -87,7 +87,7 @@
 				#SET{erreurs,#ENV**{erreurs}|table_valeur{validite}}
 				<li class="editer_validite">
 					[<span class='erreur_message'>(#GET{erreurs})</span>]
-					<!-- <label for="validite"><strong><:association:adherent_libelle_validite:></strong></label>
+					<!-- <label for="validite"><strong><:association_adhesions:adherent_libelle_validite:></strong></label>
 					<input name="validite" type="text" value="[(#ENV{validite}|affdate{Y-m-d})]" id="datepicker"  class="text date datepicker"/> -->
 
 					<!--UPDATE - correction des dates -->
@@ -97,7 +97,7 @@
 					    [(#SAISIE{[(#VALEUR|table_valeur{saisie}|print_r{1})],[(#VALEUR|table_valeur{options}|table_valeur{nom}|print_r{1})]}
 					    {class=formo}
 					    {id=validite}
-					    {label=<strong><:association:adherent_libelle_validite:></strong>}
+					    {label=<strong><:association_adhesions:adherent_libelle_validite:></strong>}
 					    {datas=[(#VALEUR|table_valeur{options}|table_valeur{datas})]}
 					    )]
 
@@ -108,60 +108,60 @@
 
 				<!-- impossible de recuperer les valeurs des statuts dans le tableau global association_liste_des_statuts, re-entres a la main, il y apeut-etre moyen de faire mieux -->
 				<li class="editer_statut_interne">
-					<label for="statu_interne"><strong><:association:adherent_libelle_statut:></strong></label>
+					<label for="statu_interne"><strong><:association_adhesions:adherent_libelle_statut:></strong></label>
 					<select name="statut_interne" id="statut_interne" class="formo" >
-						<option [(#ENV{statut_interne}|=={sorti}|?{selected="selected"})] value="sorti"><:association:adherent_entete_statut_sorti:></option>
-						<option [(#ENV{statut_interne}|=={prospect}|?{selected="selected"})] value="prospect"><:association:adherent_entete_statut_prospect:></option>
-						<option [(#ENV{statut_interne}|=={ok}|?{selected="selected"})] value="ok"><:association:adherent_entete_statut_ok:></option>
-						<option [(#ENV{statut_interne}|=={echu}|?{selected="selected"})] value="echu"><:association:adherent_entete_statut_echu:></option>
-						<option [(#ENV{statut_interne}|=={relance}|?{selected="selected"})] value="relance"><:association:adherent_entete_statut_relance:></option>
+						<option [(#ENV{statut_interne}|=={sorti}|?{selected="selected"})] value="sorti"><:association_adhesions:adherent_entete_statut_sorti:></option>
+						<option [(#ENV{statut_interne}|=={prospect}|?{selected="selected"})] value="prospect"><:association_adhesions:adherent_entete_statut_prospect:></option>
+						<option [(#ENV{statut_interne}|=={ok}|?{selected="selected"})] value="ok"><:association_adhesions:adherent_entete_statut_ok:></option>
+						<option [(#ENV{statut_interne}|=={echu}|?{selected="selected"})] value="echu"><:association_adhesions:adherent_entete_statut_echu:></option>
+						<option [(#ENV{statut_interne}|=={relance}|?{selected="selected"})] value="relance"><:association_adhesions:adherent_entete_statut_relance:></option>
 					</select>
 				</li>
 
 				[(#ENV{meta_id_asso}|oui)
 				<li class="editer_id_asso">
-					<label for="id_asso"><strong><:association:adherent_libelle_reference_interne:></strong></label>
+					<label for="id_asso"><strong><:association_adhesions:adherent_libelle_reference_interne:></strong></label>
 					<input type="text" name="id_asso" value="[(#ENV{id_asso})]" id="id_asso"  class='formo'/>
 				</li>
 				]
 
 				<li class="editer_email">
-					<label for="email"><strong><:association:adherent_libelle_email:></strong></label>
+					<label for="email"><strong><:association_adhesions:adherent_libelle_email:></strong></label>
 					<input name="email" id="email"  class='formo' type="text" value="[(#ENV{email})]" />
 				</li>
 
 				<li class="editer_adresse">
-					<label for="adresse"><strong><:association:adherent_libelle_adresse:></strong></label>
+					<label for="adresse"><strong><:association_adhesions:adherent_libelle_adresse:></strong></label>
 					<textarea name="adresse" id="adresse"  class='formo' rows="3" cols="80">[(#ENV{adresse})]</textarea>
 				</li>
 
 				<li class="editer_code_postal">
-					<label for="code_postal"><strong><:association:adherent_libelle_code_postal:></strong></label>
+					<label for="code_postal"><strong><:association_adhesions:adherent_libelle_code_postal:></strong></label>
 					<input name="code_postal" id="code_postal"  class='formo' type="text" value="[(#ENV{code_postal})]" />
 				</li>
 
 				<li class="editer_ville">
-					<label for="ville"><strong><:association:adherent_libelle_ville:></strong></label>
+					<label for="ville"><strong><:association_adhesions:adherent_libelle_ville:></strong></label>
 					<input name="ville" id="ville"  class='formo' type="text" value="[(#ENV{ville})]" />
 				</li>
 
 				<li class="editer_quartier">
-					<label for="quartier"><strong><:association:adherent_libelle_quartier:></strong></label>
+					<label for="quartier"><strong><:association_adhesions:adherent_libelle_quartier:></strong></label>
 					<input name="quartier" id="quartier"  class='formo' type="text" value="[(#ENV{quartier})]" />
 				</li>
 
 				<li class="editer_telephone">
-					<label for="telephone"><strong><:association:adherent_libelle_telephone:></strong></label>
+					<label for="telephone"><strong><:association_adhesions:adherent_libelle_telephone:></strong></label>
 					<input name="telephone" id="telephone"  class='formo' type="text" value="[(#ENV{telephone})]" />
 				</li>
 
 				<li class="editer_mobile">
-					<label for="mobile"><strong><:association:adherent_libelle_mobile:></strong></label>
+					<label for="mobile"><strong><:association_adhesions:adherent_libelle_mobile:></strong></label>
 					<input name="mobile" id="mobile"  class='formo' type="text" value="[(#ENV{mobile})]" />
 				</li>
 
 				<li class="editer_commentaire">
-					<label for="commentaire"><strong><:association:adherent_libelle_commentaires:></strong></label>
+					<label for="commentaire"><strong><:association_adhesions:adherent_libelle_commentaires:></strong></label>
 					<textarea name="commentaire" id="commentaire"  class='formo' rows="3" cols="80">[(#ENV{commentaire})]</textarea>
 				</li>
 

@@ -83,7 +83,7 @@ function generer_export_csv_adherents($criteres_sql = false){
     }
 
     // Génération du formulaire HTML pour l'export CSV
-    $res = '<div class="input_text"><label for="csv_name_id">' ._T('association:nommer_selection_csv'). '</label><input type="text" id="CSV_name_id" name="csv_name" value=""></div><h4>' ._T('association:information_a_inclure'). '</h4>';
+    $res = '<div class="input_text"><label for="csv_name_id">' ._T('association_adhesions:nommer_selection_csv'). '</label><input type="text" id="CSV_name_id" name="csv_name" value=""></div><h4>' ._T('association_adhesions:information_a_inclure'). '</h4>';
     foreach ($arraynom as $k => $v) {
         $label = ($v) ? typo($v) : $k;
         $res .= "<div class='input_checkbox $k'><input type='checkbox' id='csv[$k]_id' name='csv[$k]' value='$k' /><label for='csv[$k]_id'>$label</label></div>";
@@ -96,6 +96,6 @@ function generer_export_csv_adherents($criteres_sql = false){
 	$action = generer_action_auteur('exporter_adherents_csv', 'export', generer_url_ecrire('adherents'));
 	return '<form method="post" action="' . attribut_html($action) . '"><div>'
 		. $res
-		. '<p class="boutons"><button type="submit" class="submit">' . _T('association:bouton_generer_csv') . '</button></p>'
+		. '<p class="boutons"><button type="submit" class="submit">' . _T('association_adhesions:bouton_generer_csv') . '</button></p>'
 		. '</div></form>';
 }

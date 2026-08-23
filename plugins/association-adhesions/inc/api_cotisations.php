@@ -43,9 +43,9 @@ function api_cotisations_saisies_communes($params)
     $type_adherent = isset($params['type_adherent']) ? $params['type_adherent'] : '';
     $origine = isset($params['origine']) ? $params['origine'] : 'prive';
 
-    $label_fieldset = $params['label_fieldset'] ?? '<:association:form_cotisation_fieldset:>';
-    $explication_fieldset = $params['explication_fieldset'] ?? '<:association:form_cotisation_explication:>';
-    $form_cotisation_categorie_label = $params['form_cotisation_categorie_label'] ?? '<:association:form_cotisation_categorie_label:>';
+    $label_fieldset = $params['label_fieldset'] ?? '<:association_adhesions:form_cotisation_fieldset:>';
+    $explication_fieldset = $params['explication_fieldset'] ?? '<:association_adhesions:form_cotisation_explication:>';
+    $form_cotisation_categorie_label = $params['form_cotisation_categorie_label'] ?? '<:association_adhesions:form_cotisation_categorie_label:>';
 
     // Vérification de l'ID auteur
     if (!$id_auteur || !is_numeric($id_auteur)) {
@@ -118,8 +118,8 @@ function api_cotisations_saisies_communes($params)
     if ($id_compte === 'new' OR !$id_compte) {
         $options_justificatif = array(
             'nom' => 'document_justificatif',
-            'label' => '<:association:form_cotisation_justificatif_label:>',
-            'explication' => '<:association:form_cotisation_justificatif_explication:>',
+            'label' => '<:association_adhesions:form_cotisation_justificatif_label:>',
+            'explication' => '<:association_adhesions:form_cotisation_justificatif_explication:>',
             'nb_fichiers' => 3,
         );
         if ($afficher_si_document_justificatif !== '') {
@@ -162,7 +162,7 @@ function api_traiter_cotisation($params) {
         $id_categorie = intval($params['id_categorie']);
         $justification = trim((string) ($params['justification'] ?? ''));
         if ($justification === '') {
-            $justification = _T('association:justification_encaissement_cotisation', array(
+            $justification = _T('association_adhesions:justification_encaissement_cotisation', array(
                 'nom_prenom' => trim((string) ($params['nom_prenom'] ?? '')),
                 'id_auteur' => $id_auteur,
             ));
@@ -354,7 +354,7 @@ function api_traiter_cotisation($params) {
             && $id_compte
             && count($documents) < $controle_documents['nouveaux_requis']) {
             association_log('cotisations', 'Echec de liaison des justificatifs au compte ' . intval($id_compte), 'erreur');
-            return ['statut' => 'erreur', 'message' => _T('association:erreur_justificatif_enregistrement')];
+            return ['statut' => 'erreur', 'message' => _T('association_adhesions:erreur_justificatif_enregistrement')];
         }
         // Gestion de la notification et de l'activation des privilèges
         changer_statut_cotisation($id_compte, $origine, $notifier);
@@ -459,10 +459,10 @@ function cotisation_verifier_documents_justificatifs($id_categorie, $files = arr
         $erreur = intval($fichier['error'] ?? UPLOAD_ERR_NO_FILE);
         if ($erreur === UPLOAD_ERR_NO_FILE || trim((string)($fichier['name'] ?? '')) === '') continue;
         if ($erreur !== UPLOAD_ERR_OK || intval($fichier['size'] ?? 0) < 1) {
-            return array('valide' => false, 'message' => _T('association:erreur_justificatif_upload'), 'nouveaux_requis' => max(0, $minimum - $existants));
+            return array('valide' => false, 'message' => _T('association_adhesions:erreur_justificatif_upload'), 'nouveaux_requis' => max(0, $minimum - $existants));
         }
         if (intval($fichier['size']) > 10 * 1024 * 1024) {
-            return array('valide' => false, 'message' => _T('association:erreur_justificatif_taille'), 'nouveaux_requis' => max(0, $minimum - $existants));
+            return array('valide' => false, 'message' => _T('association_adhesions:erreur_justificatif_taille'), 'nouveaux_requis' => max(0, $minimum - $existants));
         }
         $extension = strtolower(pathinfo((string)$fichier['name'], PATHINFO_EXTENSION));
         $mime = strtolower(trim((string)($fichier['type'] ?? '')));
@@ -476,14 +476,14 @@ function cotisation_verifier_documents_justificatifs($id_categorie, $files = arr
             }
         }
         if (!in_array($extension, $extensions, true) || ($mime !== '' && !in_array($mime, $mimes, true))) {
-            return array('valide' => false, 'message' => _T('association:erreur_justificatif_format'), 'nouveaux_requis' => max(0, $minimum - $existants));
+            return array('valide' => false, 'message' => _T('association_adhesions:erreur_justificatif_format'), 'nouveaux_requis' => max(0, $minimum - $existants));
         }
         $valides++;
     }
 
     $nouveaux_requis = max(0, $minimum - $existants);
     if ($valides < $nouveaux_requis) {
-        return array('valide' => false, 'message' => _T('association:erreur_justificatif_minimum', array('nb' => $minimum)), 'nouveaux_requis' => $nouveaux_requis);
+        return array('valide' => false, 'message' => _T('association_adhesions:erreur_justificatif_minimum', array('nb' => $minimum)), 'nouveaux_requis' => $nouveaux_requis);
     }
     return array('valide' => true, 'message' => '', 'nouveaux_requis' => $nouveaux_requis, 'valides' => $valides, 'existants' => $existants);
 }

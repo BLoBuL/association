@@ -52,7 +52,7 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
     }
 
     // Justification par défaut via la chaîne de langue (toujours sûre)
-    $justification = _T('association:justification_encaissement_cotisation', ['nom_prenom' => $nom_prenom, 'id_auteur' => $id_auteur]);
+    $justification = _T('association_adhesions:justification_encaissement_cotisation', ['nom_prenom' => $nom_prenom, 'id_auteur' => $id_auteur]);
 
     // Préparation des paramètres pour l'API commune
     $params = [
@@ -96,9 +96,9 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
 
         // Par défaut proposer les statuts standards
         $status_data = array(
-            'ok' => '<:association:choix_cotisation_statut_ok:>',
-            'attente' => '<:association:choix_cotisation_statut_attente:>',
-            'demande' => '<:association:choix_cotisation_statut_demande:>',
+            'ok' => '<:association_adhesions:choix_cotisation_statut_ok:>',
+            'attente' => '<:association_adhesions:choix_cotisation_statut_attente:>',
+            'demande' => '<:association_adhesions:choix_cotisation_statut_demande:>',
         );
 
         // Si une catégorie est sélectionnée, restreindre les statuts selon sa validation
@@ -112,13 +112,13 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
                 if ($validation === 'pre-paiement') {
                     // Pour pre-paiement, ne PAS permettre le statut 'ok' (validation ne se fait qu'après paiement)
                     $status_data = array(
-                        'demande' => '<:association:choix_cotisation_statut_demande:>',
-                        'attente' => '<:association:choix_cotisation_statut_attente:>',
+                        'demande' => '<:association_adhesions:choix_cotisation_statut_demande:>',
+                        'attente' => '<:association_adhesions:choix_cotisation_statut_attente:>',
                     );
                 } elseif ($validation === 'post-paiement' || $validation === 'auto') {
                     $status_data = array(
-                        'attente' => '<:association:choix_cotisation_statut_attente:>',
-                        'ok' => '<:association:choix_cotisation_statut_ok:>',
+                        'attente' => '<:association_adhesions:choix_cotisation_statut_attente:>',
+                        'ok' => '<:association_adhesions:choix_cotisation_statut_ok:>',
                     );
                 }
             }
@@ -127,11 +127,11 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
         $admin_saisies[] = array(
             'saisie' => 'selection',
             'options' => array(
-                'label' => '<:association:form_cotisation_statut_label:>',
+                'label' => '<:association_adhesions:form_cotisation_statut_label:>',
                 'nom' => 'statut_cotisation',
                 'data' => $status_data,
                 'cacher_option_intro' => true,
-                'explication' => '<:association:form_cotisation_statut_explication:>',
+                'explication' => '<:association_adhesions:form_cotisation_statut_explication:>',
                 'defaut' => array_key_exists('attente', $status_data) ? 'attente' : (array_key_exists('demande', $status_data) ? 'demande' : 'ok'),
             ),
         );
@@ -141,12 +141,12 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
     $admin_saisies[] = array(
         'saisie' => 'selection',
         'options' => array(
-            'label' => '<:association:form_cotisation_reinscription_label:>',
+            'label' => '<:association_adhesions:form_cotisation_reinscription_label:>',
             'nom' => 'reinscription',
-            'explication' => '<:association:form_cotisation_reinscription_explication:>',
+            'explication' => '<:association_adhesions:form_cotisation_reinscription_explication:>',
             'data' => array(
-                'inscription' => '<:association:choix_cotisation_inscription:>',
-                'reinscription' => '<:association:choix_cotisation_reinscription:>',
+                'inscription' => '<:association_adhesions:choix_cotisation_inscription:>',
+                'reinscription' => '<:association_adhesions:choix_cotisation_reinscription:>',
             ),
             'cacher_option_intro' => true,
             'defaut' => $reinscription_defaut,
@@ -156,10 +156,10 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
     $admin_saisies[] = array(
         'saisie' => 'textarea',
         'options' => array(
-            'label' => '<:association:form_cotisation_justification_label:>',
+            'label' => '<:association_adhesions:form_cotisation_justification_label:>',
             'nom' => 'justification',
             'rows' => 3,
-            'explication' => '<:association:form_cotisation_justification_explication:>',
+            'explication' => '<:association_adhesions:form_cotisation_justification_explication:>',
             'defaut' => $justification,
             'traitements' => 'propre',
             'disable_avec_post' => 1,
@@ -169,11 +169,11 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
     $admin_saisies[] = array(
         'saisie' => 'case',
         'options' => array(
-            'label' => '<:association:form_cotisation_notification_label:>',
+            'label' => '<:association_adhesions:form_cotisation_notification_label:>',
             'nom' => 'notifier',
             'defaut' => 'on',
-            'label_case' => '<:association:form_cotisation_notification_label_case:>',
-            'explication' => '<:association:form_cotisation_notification_explication:>',
+            'label_case' => '<:association_adhesions:form_cotisation_notification_label_case:>',
+            'explication' => '<:association_adhesions:form_cotisation_notification_explication:>',
         )
     );
 
@@ -193,8 +193,8 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
             'saisie' => 'fichiers',
             'options' => array(
                 'nom' => 'document_justificatif',
-                'label' => '<:association:form_cotisation_justificatif_label:>',
-                'explication' => '<:association:form_cotisation_justificatif_explication:>',
+                'label' => '<:association_adhesions:form_cotisation_justificatif_label:>',
+                'explication' => '<:association_adhesions:form_cotisation_justificatif_explication:>',
                 'nb_fichiers' => 3,
                 'obligatoire' => 'non',
                 'afficher_si' => $afficher_si_document_justificatif,
@@ -214,7 +214,7 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'form_cotisation_admin_fieldset',
-            'label' => '<:association:form_cotisation_admin_fieldset:>',
+            'label' => '<:association_adhesions:form_cotisation_admin_fieldset:>',
         ),
         'saisies' => $admin_saisies,
     );
@@ -252,7 +252,7 @@ function formulaires_editer_asso_cotisation_charger_dist($id_compte = 'new') {
             'id_auteur' => 0,
             'id_compte' => $id_compte,
             'editable' => false,
-            'message_erreur' => _T('association:erreur_id_auteur_invalide'),
+            'message_erreur' => _T('association_adhesions:erreur_id_auteur_invalide'),
         );
     }
 
@@ -297,7 +297,7 @@ function formulaires_editer_asso_cotisation_verifier_dist($id_compte = 'new') {
     // Vérifier id_auteur
     $id_auteur = intval(_request('id_auteur'));
     if (!$id_auteur && $id_compte == 'new') {
-        $erreurs['id_auteur'] = _T('association:erreur_id_auteur_invalide');
+        $erreurs['id_auteur'] = _T('association_adhesions:erreur_id_auteur_invalide');
         return $erreurs;
     }
 
@@ -351,7 +351,7 @@ function formulaires_editer_asso_cotisation_verifier_dist($id_compte = 'new') {
         // Accepter les formats avec virgule ou point
         $montant_sanitized = str_replace(',', '.', $montant_raw);
         if (!is_numeric($montant_sanitized)) {
-            $erreurs['montant'] = _T('association:erreur_montant_invalide');
+            $erreurs['montant'] = _T('association_adhesions:erreur_montant_invalide');
         }
     }
 
@@ -383,7 +383,7 @@ function formulaires_editer_asso_cotisation_verifier_dist($id_compte = 'new') {
     }
 
     if (count($erreurs)) {
-        $erreurs['message_erreur'] = _T('association:erreur_formulaire_cotisation');
+        $erreurs['message_erreur'] = _T('association_adhesions:erreur_formulaire_cotisation');
     }
 
     return $erreurs;
@@ -404,7 +404,7 @@ function formulaires_editer_asso_cotisation_traiter($id_compte = 'new') {
     include_spip('inc/api_cotisations');
 
     if(!$id_auteur = intval(_request('id_auteur'))) {
-        return ['message_erreur' => _T('association:erreur_id_auteur_invalide')];
+        return ['message_erreur' => _T('association_adhesions:erreur_id_auteur_invalide')];
     }
 
     // Rassembler les paramètres en s'assurant de la sécurité
@@ -455,7 +455,7 @@ function formulaires_editer_asso_cotisation_traiter($id_compte = 'new') {
     }
 
     return [
-        'message_ok' => _T('association:cotisation_enregistree'),
+        'message_ok' => _T('association_adhesions:cotisation_enregistree'),
         'redirect' => generer_url_ecrire('voir_adherent', 'id_auteur=' . $id_auteur)
     ];
 }

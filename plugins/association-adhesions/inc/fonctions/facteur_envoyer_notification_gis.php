@@ -4,10 +4,10 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
 function facteur_envoyer_notification_gis($id_auteur,$nom_auteur,$string_recherche,$nouvelle_adresse,$id_gis,$action) {
 
     if($action == 'echec'){
-        $sujet = _T('association:email_notification_gis_echec_sujet', array('nom_adherent' => $nom_auteur));
+        $sujet = _T('association_adhesions:email_notification_gis_echec_sujet', array('nom_adherent' => $nom_auteur));
         $modele = 'notifications/notification_echec_gis';
     }elseif($action == 'modification'){
-        $sujet = _T('association:email_notification_gis_modification_sujet', array('nom_adherent' => $nom_auteur));
+        $sujet = _T('association_adhesions:email_notification_gis_modification_sujet', array('nom_adherent' => $nom_auteur));
         $modele = 'notifications/notification_modification_gis';
     }
 

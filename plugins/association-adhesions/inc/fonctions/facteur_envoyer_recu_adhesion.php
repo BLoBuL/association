@@ -92,7 +92,7 @@ function facteur_envoyer_recu_adhesion($id_auteur, $id_transaction, $type_recu, 
     }
 
     $query_categorie = sql_fetsel('id_categorie, valeur, cotisation, devise', 'spip_asso_categories_adherents', "id_categorie=" . intval($query_compte['id_categorie']));
-    $titre_categorie = $query_categorie['valeur'] ?? _T('association:categorie_inconnue');
+    $titre_categorie = $query_categorie['valeur'] ?? _T('association_adhesions:categorie_inconnue');
     $devise_recu = $query_transaction['devise'] ?? '';
     if ($devise_recu === '') {
         $devise_recu = $query_categorie['devise'] ?? '';
@@ -104,7 +104,7 @@ function facteur_envoyer_recu_adhesion($id_auteur, $id_transaction, $type_recu, 
     // Définition du sujet et du modèle en fonction du type de reçu
     if($type_recu == 'encaissement'){
         // Passer le nom de l'adhérent pour construire le sujet: "Nom - Reçu de votre paiement"
-        $sujet = _T('association:email_recu_encaissement_adhesion_sujet', array(
+        $sujet = _T('association_adhesions:email_recu_encaissement_adhesion_sujet', array(
                 'nom_adherent' => $nom_adherent,
                 'titre_categorie' => $titre_categorie,
                 'numero_recu' => $numero_recu)
