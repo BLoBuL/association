@@ -11,4 +11,5 @@
 	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_configuration_navigation" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_executer" inclure="association_paiements_pipelines.php" />
+	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_paiements_pipelines.php" />
 </paquet>

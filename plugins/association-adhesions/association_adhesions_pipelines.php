@@ -2,6 +2,30 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+function association_adhesions_association_maintenance_bdd_configurer($flux) {
+	$source = $flux['args']['source'] ?? array();
+	$flux['data']['jours_inactivite'] = intval(association_maintenance_lire_source(
+		$source,
+		'meta_cfg_maintenance_jours_inactivite',
+		365
+	));
+	$flux['data']['actions']['supprimer_auteurs_sans_paiements'] = association_maintenance_valeur_booleenne(
+		association_maintenance_lire_source($source, 'meta_cfg_maintenance_supprimer_auteurs_sans_paiements', true)
+	);
+	$flux['data']['actions']['anonymiser_auteurs_avec_paiements'] = association_maintenance_valeur_booleenne(
+		association_maintenance_lire_source($source, 'meta_cfg_maintenance_anonymiser_auteurs_avec_paiements', true)
+	);
+	return $flux;
+}
+
+function association_adhesions_association_maintenance_bdd_verifier_configuration($flux) {
+	$champ = 'meta_cfg_maintenance_jours_inactivite';
+	if ($erreur = association_config_maintenance_verifier_entier($champ)) {
+		$flux['data'][$champ] = $erreur;
+	}
+	return $flux;
+}
+
 function association_adhesions_association_maintenance_bdd_preparer($flux) {
 	include_spip('inc/association_adhesions_maintenance');
 	$options = (array) ($flux['args']['options'] ?? array());

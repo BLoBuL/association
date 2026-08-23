@@ -57,43 +57,8 @@ include_spip('base/abstract_sql');
 function genie_association_maintenance_bdd($tache) {
     association_log('cron', 'Associaspip: Tâche CRON maintenance - début', 'info');
 
-    // Lire les metas de configuration si disponibles
-    $metas = isset($GLOBALS['association_metas']) ? $GLOBALS['association_metas'] : array();
-
-    // Helper pour interpréter les valeurs de case/boolean stockées ("on", "oui", "1")
-    $is_true = function($v) {
-        if (is_bool($v)) return $v;
-        $v = (string)$v;
-        return in_array(strtolower($v), array('1', 'on', 'oui', 'true'), true);
-    };
-
-    // Options construites automatiquement depuis les metas, avec valeurs par défaut
-    $options = array(
-        // activation générale
-        'enabled' => isset($metas['meta_cfg_maintenance_bdd_enable']) ? $is_true($metas['meta_cfg_maintenance_bdd_enable']) : true,
-        // dry_run
-        'dry_run' => isset($metas['meta_cfg_maintenance_dry_run']) ? $is_true($metas['meta_cfg_maintenance_dry_run']) : true,
-        // seuils
-        'jours_inactivite' => isset($metas['meta_cfg_maintenance_jours_inactivite']) ? intval($metas['meta_cfg_maintenance_jours_inactivite']) : 365,
-        'jours_inscriptions_en_attente' => isset($metas['meta_cfg_maintenance_jours_inscriptions_attente']) ? intval($metas['meta_cfg_maintenance_jours_inscriptions_attente']) : 90,
-        'mois_non_encaisse' => isset($metas['meta_cfg_maintenance_mois_non_encaisse']) ? intval($metas['meta_cfg_maintenance_mois_non_encaisse']) : 6,
-        'lot' => isset($metas['meta_cfg_maintenance_lot']) ? intval($metas['meta_cfg_maintenance_lot']) : 1000,
-        // Actions : par défaut on réplique le comportement historique (exécuter toutes les actions)
-        'actions' => array(
-            'supprimer_auteurs_sans_paiements' => isset($metas['meta_cfg_maintenance_supprimer_auteurs_sans_paiements']) ? $is_true($metas['meta_cfg_maintenance_supprimer_auteurs_sans_paiements']) : true,
-            'anonymiser_auteurs_avec_paiements' => isset($metas['meta_cfg_maintenance_anonymiser_auteurs_avec_paiements']) ? $is_true($metas['meta_cfg_maintenance_anonymiser_auteurs_avec_paiements']) : true,
-            'supprimer_inscriptions_non_validees' => isset($metas['meta_cfg_maintenance_supprimer_inscriptions_non_validees']) ? $is_true($metas['meta_cfg_maintenance_supprimer_inscriptions_non_validees']) : true,
-            'anonymiser_inscriptions_inactifs' => isset($metas['meta_cfg_maintenance_anonymiser_inscriptions_inactifs']) ? $is_true($metas['meta_cfg_maintenance_anonymiser_inscriptions_inactifs']) : true,
-            'supprimer_cotisations_orphelines' => isset($metas['meta_cfg_maintenance_supprimer_cotisations_orphelines']) ? $is_true($metas['meta_cfg_maintenance_supprimer_cotisations_orphelines']) : true,
-            'supprimer_cotisations_non_encaissees' => isset($metas['meta_cfg_maintenance_supprimer_cotisations_non_encaissees']) ? $is_true($metas['meta_cfg_maintenance_supprimer_cotisations_non_encaissees']) : true,
-            'supprimer_transactions_orphelines' => isset($metas['meta_cfg_maintenance_supprimer_transactions_orphelines']) ? $is_true($metas['meta_cfg_maintenance_supprimer_transactions_orphelines']) : true,
-            'supprimer_participations_orphelines' => isset($metas['meta_cfg_maintenance_supprimer_participations_orphelines']) ? $is_true($metas['meta_cfg_maintenance_supprimer_participations_orphelines']) : true,
-            'supprimer_participations_obsoletes' => isset($metas['meta_cfg_maintenance_supprimer_participations_obsoletes']) ? $is_true($metas['meta_cfg_maintenance_supprimer_participations_obsoletes']) : true,
-            'supprimer_urls_mailsubscriber' => isset($metas['meta_cfg_maintenance_supprimer_urls_mailsubscriber']) ? $is_true($metas['meta_cfg_maintenance_supprimer_urls_mailsubscriber']) : true,
-            'supprimer_urls_obsoletes' => isset($metas['meta_cfg_maintenance_supprimer_urls_obsoletes']) ? $is_true($metas['meta_cfg_maintenance_supprimer_urls_obsoletes']) : true,
-            'supprimer_mailsubscribers_orphelines' => isset($metas['meta_cfg_maintenance_supprimer_mailsubscribers_orphelines']) ? $is_true($metas['meta_cfg_maintenance_supprimer_mailsubscribers_orphelines']) : true,
-        ),
-    );
+    $metas = isset($GLOBALS['association_metas']) ? (array) $GLOBALS['association_metas'] : array();
+    $options = association_maintenance_options_depuis_source($metas);
 
     association_log('cron', 'Associaspip: Options maintenance construites depuis metas: ' . json_encode($options), 'info');
 
@@ -109,6 +74,50 @@ function genie_association_maintenance_bdd($tache) {
     ecrire_fichier($chemin, json_encode($resume, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
     return $resume;
+}
+
+/**
+ * Lit une valeur de maintenance depuis un tableau ou depuis la requête CVT.
+ */
+function association_maintenance_lire_source($source, $nom, $defaut = null) {
+    if (is_array($source)) {
+        return array_key_exists($nom, $source) ? $source[$nom] : $defaut;
+    }
+    $valeur = _request($nom);
+    return $valeur === null ? $defaut : $valeur;
+}
+
+/**
+ * Normalise les valeurs booléennes historiques des métas Association.
+ */
+function association_maintenance_valeur_booleenne($valeur) {
+    if (is_bool($valeur)) {
+        return $valeur;
+    }
+    return in_array(strtolower((string) $valeur), array('1', 'on', 'oui', 'true'), true);
+}
+
+/**
+ * Construit les options transversales puis laisse chaque module ajouter ses
+ * seuils et actions via le pipeline dédié.
+ */
+function association_maintenance_options_depuis_source($source = array(), $forcer_dry_run = false) {
+    $options = array(
+        'enabled' => association_maintenance_valeur_booleenne(
+            association_maintenance_lire_source($source, 'meta_cfg_maintenance_bdd_enable', true)
+        ),
+        'dry_run' => $forcer_dry_run ? true : association_maintenance_valeur_booleenne(
+            association_maintenance_lire_source($source, 'meta_cfg_maintenance_dry_run', true)
+        ),
+        'lot' => intval(association_maintenance_lire_source($source, 'meta_cfg_maintenance_lot', 1000)),
+        'actions' => array(),
+    );
+
+    $options = pipeline('association_maintenance_bdd_configurer', array(
+        'args' => array('source' => $source),
+        'data' => $options,
+    ));
+    return is_array($options) ? $options : array();
 }
 
 /**

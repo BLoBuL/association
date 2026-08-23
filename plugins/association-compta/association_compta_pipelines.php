@@ -66,6 +66,29 @@ function association_compta_association_configuration_navigation($flux) {
 	return $flux;
 }
 
+function association_compta_association_maintenance_bdd_configurer($flux) {
+	$source = $flux['args']['source'] ?? array();
+	$flux['data']['mois_non_encaisse'] = intval(association_maintenance_lire_source(
+		$source,
+		'meta_cfg_maintenance_mois_non_encaisse',
+		6
+	));
+	foreach (array('supprimer_cotisations_orphelines', 'supprimer_cotisations_non_encaissees') as $action) {
+		$flux['data']['actions'][$action] = association_maintenance_valeur_booleenne(
+			association_maintenance_lire_source($source, 'meta_cfg_maintenance_' . $action, true)
+		);
+	}
+	return $flux;
+}
+
+function association_compta_association_maintenance_bdd_verifier_configuration($flux) {
+	$champ = 'meta_cfg_maintenance_mois_non_encaisse';
+	if ($erreur = association_config_maintenance_verifier_entier($champ)) {
+		$flux['data'][$champ] = $erreur;
+	}
+	return $flux;
+}
+
 function association_compta_association_maintenance_bdd_executer($flux) {
 	include_spip('inc/association_compta_maintenance');
 	$options = (array) ($flux['args']['options'] ?? array());

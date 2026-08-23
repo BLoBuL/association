@@ -257,6 +257,20 @@ function association_communication_association_configuration_navigation($flux) {
 	return $flux;
 }
 
+function association_communication_association_maintenance_bdd_configurer($flux) {
+	$source = $flux['args']['source'] ?? array();
+	foreach (array(
+		'supprimer_urls_mailsubscriber',
+		'supprimer_urls_obsoletes',
+		'supprimer_mailsubscribers_orphelines',
+	) as $action) {
+		$flux['data']['actions'][$action] = association_maintenance_valeur_booleenne(
+			association_maintenance_lire_source($source, 'meta_cfg_maintenance_' . $action, true)
+		);
+	}
+	return $flux;
+}
+
 function association_communication_association_maintenance_bdd_executer($flux) {
 	include_spip('inc/association_communication_maintenance');
 	$options = (array) ($flux['args']['options'] ?? array());

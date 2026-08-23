@@ -99,3 +99,14 @@ function association_config_maintenance_fieldset($nom, $label, array $saisies) {
         'saisies' => $saisies,
     );
 }
+
+/**
+ * Retourne l'erreur CVT standard si un seuil n'est pas un entier positif.
+ */
+function association_config_maintenance_verifier_entier($champ) {
+    $valeur = trim((string) _request($champ));
+    if ($valeur !== '' && (!ctype_digit($valeur) || intval($valeur) < 1)) {
+        return _T('association_config:erreur_entier_positif');
+    }
+    return '';
+}

@@ -223,12 +223,15 @@ function formulaires_configurer_association_verifier_dist($config) {
 	include_spip('formulaires/inc/configurer_association_communication_verifier');
 	$erreurs = array_merge($erreurs, association_communication_configurer_verifier($config));
 
-	foreach (array('meta_cfg_maintenance_jours_inactivite', 'meta_cfg_maintenance_jours_inscriptions_attente', 'meta_cfg_maintenance_mois_non_encaisse', 'meta_cfg_maintenance_lot') as $numfield) {
-		$valeur = trim((string) _request($numfield));
-		if ($valeur !== '' && !ctype_digit($valeur)) {
-			$erreurs[$numfield] = _T('association_config:erreur_entier_positif');
-		}
+	$champ_lot = 'meta_cfg_maintenance_lot';
+	if ($erreur = association_config_maintenance_verifier_entier($champ_lot)) {
+		$erreurs[$champ_lot] = $erreur;
 	}
+	$erreurs = pipeline('association_maintenance_bdd_verifier_configuration', array(
+		'args' => array('config' => $config),
+		'data' => $erreurs,
+	));
+	$erreurs = is_array($erreurs) ? $erreurs : array();
 
 	if ($erreurs && !isset($erreurs['message_erreur'])) {
 		$erreurs['message_erreur'] = _T('association:erreur_configurer_association_titre');
@@ -275,36 +278,8 @@ function formulaires_configurer_association_traiter_dist($config){
             // Charger les fonctions du genie
             include_spip('genie/association_maintenance_bdd');
 
-            // Helper pour interpréter les valeurs
-            $is_true = function($v) {
-                if (is_bool($v)) return $v;
-                $v = (string)$v;
-                return in_array(strtolower($v), array('1','on','oui','true'), true);
-            };
-
-            // Construire les options depuis les valeurs soumises (avec fallbacks)
-            $options = array(
-                'enabled' => isset($valeurs['meta_cfg_maintenance_bdd_enable']) ? $is_true($valeurs['meta_cfg_maintenance_bdd_enable']) : true,
-                'dry_run' => true, // force dry-run
-                'jours_inactivite' => isset($valeurs['meta_cfg_maintenance_jours_inactivite']) ? intval($valeurs['meta_cfg_maintenance_jours_inactivite']) : 365,
-                'jours_inscriptions_en_attente' => isset($valeurs['meta_cfg_maintenance_jours_inscriptions_attente']) ? intval($valeurs['meta_cfg_maintenance_jours_inscriptions_attente']) : 90,
-                'mois_non_encaisse' => isset($valeurs['meta_cfg_maintenance_mois_non_encaisse']) ? intval($valeurs['meta_cfg_maintenance_mois_non_encaisse']) : 6,
-                'lot' => isset($valeurs['meta_cfg_maintenance_lot']) ? intval($valeurs['meta_cfg_maintenance_lot']) : 1000,
-                'actions' => array(
-                    'supprimer_auteurs_sans_paiements' => isset($valeurs['meta_cfg_maintenance_supprimer_auteurs_sans_paiements']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_auteurs_sans_paiements']) : true,
-                    'anonymiser_auteurs_avec_paiements' => false,
-                    'supprimer_inscriptions_non_validees' => isset($valeurs['meta_cfg_maintenance_supprimer_inscriptions_non_validees']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_inscriptions_non_validees']) : true,
-                    'anonymiser_inscriptions_inactifs' => false,
-                    'supprimer_cotisations_orphelines' => isset($valeurs['meta_cfg_maintenance_supprimer_cotisations_orphelines']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_cotisations_orphelines']) : true,
-                    'supprimer_cotisations_non_encaissees' => isset($valeurs['meta_cfg_maintenance_supprimer_cotisations_non_encaissees']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_cotisations_non_encaissees']) : true,
-                    'supprimer_transactions_orphelines' => isset($valeurs['meta_cfg_maintenance_supprimer_transactions_orphelines']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_transactions_orphelines']) : true,
-                    'supprimer_participations_orphelines' => isset($valeurs['meta_cfg_maintenance_supprimer_participations_orphelines']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_participations_orphelines']) : true,
-                    'supprimer_participations_obsoletes' => isset($valeurs['meta_cfg_maintenance_supprimer_participations_obsoletes']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_participations_obsoletes']) : true,
-                    'supprimer_urls_mailsubscriber' => isset($valeurs['meta_cfg_maintenance_supprimer_urls_mailsubscriber']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_urls_mailsubscriber']) : true,
-                    'supprimer_urls_obsoletes' => isset($valeurs['meta_cfg_maintenance_supprimer_urls_obsoletes']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_urls_obsoletes']) : true,
-                    'supprimer_mailsubscribers_orphelines' => isset($valeurs['meta_cfg_maintenance_supprimer_mailsubscribers_orphelines']) ? $is_true($valeurs['meta_cfg_maintenance_supprimer_mailsubscribers_orphelines']) : true,
-                ),
-            );
+            // Construire les options via les fournisseurs métier et forcer la simulation.
+            $options = association_maintenance_options_depuis_source(null, true);
 
             association_log('cron', 'Associaspip: Options dry-run construites: ' . json_encode($options), 'info');
 

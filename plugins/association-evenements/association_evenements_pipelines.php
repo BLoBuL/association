@@ -25,6 +25,34 @@ function association_evenements_association_configuration_navigation($flux) {
 	return $flux;
 }
 
+function association_evenements_association_maintenance_bdd_configurer($flux) {
+	$source = $flux['args']['source'] ?? array();
+	$flux['data']['jours_inscriptions_en_attente'] = intval(association_maintenance_lire_source(
+		$source,
+		'meta_cfg_maintenance_jours_inscriptions_attente',
+		90
+	));
+	foreach (array(
+		'supprimer_inscriptions_non_validees',
+		'anonymiser_inscriptions_inactifs',
+		'supprimer_participations_orphelines',
+		'supprimer_participations_obsoletes',
+	) as $action) {
+		$flux['data']['actions'][$action] = association_maintenance_valeur_booleenne(
+			association_maintenance_lire_source($source, 'meta_cfg_maintenance_' . $action, true)
+		);
+	}
+	return $flux;
+}
+
+function association_evenements_association_maintenance_bdd_verifier_configuration($flux) {
+	$champ = 'meta_cfg_maintenance_jours_inscriptions_attente';
+	if ($erreur = association_config_maintenance_verifier_entier($champ)) {
+		$flux['data'][$champ] = $erreur;
+	}
+	return $flux;
+}
+
 function association_evenements_association_maintenance_bdd_executer($flux) {
 	include_spip('inc/association_evenements_maintenance');
 	$options = (array) ($flux['args']['options'] ?? array());

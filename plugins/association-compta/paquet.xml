@@ -19,6 +19,8 @@
 	<pipeline nom="post_edition" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_configuration_navigation" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_executer" inclure="association_compta_pipelines.php" />
+	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_compta_pipelines.php" />
+	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_compta_pipelines.php" />
 	<necessite nom="intl" compatibilite="[1.3.0;[" />
 	<style source="prive/themes/spip/css/comptabilite.css" type="prive" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_compta.php" />

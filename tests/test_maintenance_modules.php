@@ -104,6 +104,36 @@ if (strpos($socle, "pipeline('association_maintenance_bdd_executer'") === false)
 	exit(1);
 }
 
+if (strpos($socle, "pipeline('association_maintenance_bdd_configurer'") === false) {
+	fwrite(STDERR, "Le cron transversal n'appelle pas le pipeline de configuration métier.\n");
+	exit(1);
+}
+foreach (array(
+	'adhesions' => $pipelines_adhesions,
+	'evenements' => $pipelines_evenements,
+	'compta' => $pipelines_compta,
+	'paiements' => $pipelines_paiements,
+	'communication' => $pipelines_communication,
+) as $module => $source_pipeline) {
+	if (strpos($source_pipeline, 'function association_' . $module . '_association_maintenance_bdd_configurer(') === false) {
+		fwrite(STDERR, "Le module {$module} ne fournit pas sa configuration de maintenance.\n");
+		exit(1);
+	}
+}
+foreach (array(
+	'meta_cfg_maintenance_jours_inactivite',
+	'meta_cfg_maintenance_jours_inscriptions_attente',
+	'meta_cfg_maintenance_mois_non_encaisse',
+	'meta_cfg_maintenance_supprimer_auteurs_sans_paiements',
+	'meta_cfg_maintenance_supprimer_transactions_orphelines',
+	'meta_cfg_maintenance_supprimer_urls_obsoletes',
+) as $reglage_metier) {
+	if (strpos($socle, $reglage_metier) !== false) {
+		fwrite(STDERR, "Le cron transversal connaît encore {$reglage_metier}.\n");
+		exit(1);
+	}
+}
+
 foreach (array('association_maintenance_auteurs_encaisses', 'association_maintenance_supprimer_donnees_auteurs') as $pipeline) {
 	if (strpos($adhesions, "pipeline('{$pipeline}'") === false) {
 		fwrite(STDERR, "Orchestration SPIP absente pour {$pipeline}.\n");

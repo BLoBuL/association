@@ -594,6 +594,20 @@ choix oui/non, mais ne connaît aucun nom d’action métier. Tous les chemins
 `association_metas/meta_cfg_maintenance_*` restent identiques : une base
 historique conserve donc ses réglages sans migration de valeurs.
 
+## Lot 51 : options d’exécution et validations distribuées
+
+La séparation du formulaire est prolongée jusqu’à l’exécution. Le cron et le
+bouton CVT ne connaissent plus les seuils ni la liste des actions métier : ils
+construisent uniquement les options transversales, puis appellent le pipeline
+`association_maintenance_bdd_configurer`. Les cinq modules ajoutent leurs
+propres valeurs et convertissent les booléens historiques.
+
+La validation CVT des seuils suit le même principe avec le pipeline
+`association_maintenance_bdd_verifier_configuration`. Le socle contrôle
+seulement la taille de lot ; Adhésions, Événements et Comptabilité valident
+leurs seuils respectifs. Le dry-run demandé depuis le privé reste forcé, quelle
+que soit la valeur stockée de l’exécution planifiée.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

@@ -169,6 +169,14 @@ function association_paiements_association_configuration_navigation($flux) {
 	return $flux;
 }
 
+function association_paiements_association_maintenance_bdd_configurer($flux) {
+	$source = $flux['args']['source'] ?? array();
+	$flux['data']['actions']['supprimer_transactions_orphelines'] = association_maintenance_valeur_booleenne(
+		association_maintenance_lire_source($source, 'meta_cfg_maintenance_supprimer_transactions_orphelines', true)
+	);
+	return $flux;
+}
+
 function association_paiements_association_maintenance_bdd_executer($flux) {
 	include_spip('inc/association_paiements_maintenance');
 	$options = (array) ($flux['args']['options'] ?? array());
