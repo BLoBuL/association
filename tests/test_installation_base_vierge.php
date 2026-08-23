@@ -14,6 +14,14 @@ if (strpos($branche_create, "array('maj_tables', array('spip_association_metas')
 if (preg_match('/spip_asso_(?!ciation_metas)/', $branche_create)) {
 	$erreurs[] = 'la création du socle ne doit posséder aucune table métier';
 }
+$debut_desinstallation = strpos($administration, 'function association_vider_tables');
+$branche_desinstallation = $debut_desinstallation === false ? '' : substr($administration, $debut_desinstallation);
+if (!$branche_desinstallation || preg_match('/sql_drop_table\(["\']spip_asso_(?!ciation_metas)/', $branche_desinstallation)) {
+	$erreurs[] = 'la désinstallation du socle ne doit supprimer aucune table métier';
+}
+if (strpos($branche_desinstallation, 'association_declarer_champs_extras') !== false) {
+	$erreurs[] = 'la désinstallation du socle ne doit supprimer aucun Champ Extra métier';
+}
 
 $schemas = array(
 	'association_base_version' => '1.6.1',

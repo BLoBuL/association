@@ -25,11 +25,8 @@ function association_upgrade($nom_meta_base_version, $version_cible) {
     $maj['create'] = array(
         array('maj_tables', array('spip_association_metas')),
     );
-    cextras_api_upgrade(association_declarer_champs_extras(array()), $maj['create']);
-    // Les champs auteurs historiques ne sont pas encore tous portes par la
-    // declaration PHP ci-dessus. Leur description YAML versionnee reste la
-    // source de compatibilite et passe par l'importeur Champs Extras officiel.
-    $maj['create'][] = array('association_import_champs_extras');
+    // Les champs extras et leurs migrations appartiennent désormais aux
+    // modules métier qui les déclarent. Le socle n'en installe aucun.
 #V1.1.0
     $maj['1.1.0'] = array(
         //MAJ des tables
@@ -495,27 +492,9 @@ function association_import_champs_extras(){
 }
 
 function association_vider_tables($nom_meta_base_version) {
-    // Suppression des tables principales du plugin
-    sql_drop_table("spip_asso_categories_adherents");
-    sql_drop_table("spip_asso_categories_activites");
-    sql_drop_table("spip_asso_dons");
-    sql_drop_table("spip_asso_ventes");
-    sql_drop_table("spip_asso_comptes");
-	sql_drop_table("spip_asso_cotisations");
-    sql_drop_table("spip_asso_plan");
-    sql_drop_table("spip_asso_destination");
-    sql_drop_table("spip_asso_destination_op");
-    sql_drop_table("spip_asso_ressources");
-    sql_drop_table("spip_asso_prets");
-    sql_drop_table("spip_asso_activites");
-
-    // Suppression des tables auxiliaires
+    // Le socle ne supprime que sa propre table. Les tables et champs métier
+    // restent sous la responsabilité de leurs plugins respectifs.
     sql_drop_table("spip_association_metas");
-    sql_drop_table("spip_asso_categories_activites_liens");
-
-    // Suppression des champs extras ajoutés à d'autres tables
-    include_spip('inc/cextras');
-    cextras_api_vider_tables(association_declarer_champs_extras(array()));
 
     // Supprimer les méta-données du plugin
     effacer_meta($nom_meta_base_version);

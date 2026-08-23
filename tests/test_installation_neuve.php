@@ -21,14 +21,6 @@ function include_spip($fichier) {
 	$GLOBALS['association_installation_test']['inclusions'][] = $fichier;
 }
 
-function association_declarer_champs_extras($champs = array()) {
-	$champs['spip_evenements']['champ_test'] = array(
-		'saisie' => 'input',
-		'options' => array('nom' => 'champ_test', 'sql' => 'TEXT'),
-	);
-	return $champs;
-}
-
 function cextras_api_upgrade($champs, &$operations) {
 	$GLOBALS['association_installation_test']['cextras'] = $champs;
 	$operations[] = array('association_test_installer_cextras', array_keys($champs));
@@ -94,14 +86,11 @@ foreach (array(
 	}
 }
 
-if (empty($capture['cextras']['spip_evenements']['champ_test'])) {
-	$erreurs[] = 'les Champs Extras declares ne sont pas transmis a cextras_api_upgrade()';
+if ($capture['cextras'] !== null) {
+	$erreurs[] = 'le socle ne doit plus installer les Champs Extras des modules metier';
 }
-if (count($create) < 2 || ($create[1][0] ?? '') !== 'association_test_installer_cextras') {
-	$erreurs[] = 'les operations Champs Extras ne sont pas ajoutees au plan create';
-}
-if (!in_array(array('association_import_champs_extras'), $create, true)) {
-	$erreurs[] = 'les Champs Extras auteurs historiques ne sont pas importes lors du create';
+if (count($create) !== 1) {
+	$erreurs[] = 'la branche create du socle ne doit installer que sa table de configuration';
 }
 
 // Les migrations historiques restent disponibles pour une base possedant une
