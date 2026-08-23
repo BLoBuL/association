@@ -309,3 +309,10 @@ par les modules et à l'autorisation éditoriale des documents. Une assertion
 d'architecture interdit désormais d'y réintroduire les domaines cotisation,
 comptabilité, événements ou communication. Les 67 tests autonomes passent
 avant déploiement.
+
+Le commit `3edfe82` a été déployé atomiquement dans le socle depuis l'artefact
+SHA-256 `d3cfb99c7c09f83e0e6b7f0410cf80ec908e0aaacceee1bb41e6cc9d0637d7ad`.
+Le SPIP servi résout le fichier depuis `plugins/association`, charge les quatre
+contrats transverses attendus et délègue encore correctement les menus
+Adhérents et Comptes à leurs plugins actifs. Les erreurs retrouvées dans les
+journaux concernent les anciens plugins Blobul le 22 août et non ce lot.
