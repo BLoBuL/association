@@ -153,6 +153,21 @@ uniquement un chargement de compatibilité afin que ses callbacks 1.6.0 et 1.6.1
 déjà publiés puissent déléguer cette migration sans rupture. Enfin, le fichier
 de fonctions globales ne précharge plus les filtres du module Paiements.
 
+## Lot 10 : callbacks de migration et composants de communication
+
+Les callbacks de données encore appelés par les anciennes versions du schéma
+sont maintenant rangés dans leur domaine : normalisation des événements et des
+inscriptions dans Événements, reprise de l'ancien journal dans Comptabilité,
+catégories et ancien YAML Champs Extras dans Adhésions. Le fichier
+d'administration du socle ne contient plus leur implémentation ; il les charge
+uniquement pour honorer la séquence de migration historique déjà publiée.
+
+Communication fournit désormais le composant `emails/inc-email_auteur` utilisé
+par les notifications d'Événements, récupéré de la logique FO historique puis
+neutralisé de ses dépendances au thème et à Blobul CORE. La page commune des
+notifications collecte aussi les audits métier par pipeline : elle ne connaît
+plus directement la fonction d'audit des cotisations d'Adhésions.
+
 ## État résiduel du socle
 
 Le socle conserve uniquement :
