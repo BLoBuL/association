@@ -98,140 +98,14 @@ $saisies[]= array(
     ),
 );
 }
+include_spip('formulaires/inc/configurer_association_communication');
+$saisies = array_merge($saisies, association_communication_configurer_saisies($config));
 include_spip('formulaires/inc/configurer_association_adhesions');
-$saisies = array_merge($saisies, association_adhesions_configurer_saisies($config));
+$saisies = array_merge($saisies, association_adhesions_configurer_saisies($config, $disable_meta_admin));
 include_spip('formulaires/inc/configurer_association_evenements');
-$saisies = array_merge($saisies, association_evenements_configurer_saisies($config));
+$saisies = array_merge($saisies, association_evenements_configurer_saisies($config, $disable_meta_admin));
 include_spip('formulaires/inc/configurer_association_paiements');
 $saisies = array_merge($saisies, association_paiements_configurer_saisies($config, $disable_meta_admin));
-if($config == 'segments' OR empty($config)){
-
-$saisies[]= array(
-    'saisie' => 'fieldset',
-    'options' => array(
-        'nom' => 'config_selection_segment_fieldset',
-        'label' => _T('association_config:config_selection_segment_fieldset'),
-        'explication' => _T('association_config:config_selection_segment_explication'),
-    ),
-    'saisies' => array(
-        // Selection box for segment
-        array(
-            'saisie' => 'selection_multiple',
-            'options' => array(
-                'nom' => 'selection_segment',
-                'label' => _T('association_config:config_selection_segment_label'),
-                //'multiple' => 'multiple',
-                'size' => 10,
-                'data' => preparer_liste_champs_filtres(),
-                ),
-
-            ),
-
-    ),
-);
-}
-if ($config == 'affichage_public') {
-        $saisies[]=
-            array(
-                'saisie' => 'fieldset',
-                'options' => array(
-                    'nom' => 'config_annuaire_membre',
-                    'label' => _T('association_config:config_annuaire_membre_fieldset'),
-                ),
-                'saisies' => array(
-                    // Checkbox for annuaire filters
-                    array(
-                        'saisie' => 'checkbox',
-                        'options' => array(
-                            'nom' => 'config_filtres_annuaire',
-                            'label' => _T('association_config:config_filtres_annuaire_label'),
-                            'explication' => _T('association_config:config_filtres_annuaire_explication'),
-                            'data' => array(
-                                'code_postal' => _T('association_config:config_choix_code_postal'),
-                                'quartier' => _T('association_config:config_choix_quartier'),
-                                'ville' => _T('association_config:config_choix_ville'),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-
-    // Fieldset : statuts affichés dans la liste publique des inscrits d'un événement
-    $saisies[] = array(
-        'saisie' => 'fieldset',
-        'options' => array(
-            'nom' => 'config_statuts_liste_publique_inscrits_fieldset',
-            'label' => _T('association_config:config_statuts_liste_publique_inscrits_fieldset'),
-            'explication' => _T('association_config:config_statuts_liste_publique_inscrits_explication'),
-        ),
-        'saisies' => array(
-            // Inscrits confirmés : toujours affiché, affiché à titre informatif (non modifiable)
-            array(
-                'saisie' => 'explication',
-                'options' => array(
-                    'nom' => 'info_statut_ok_fixe',
-                    'explication' => _T('association_config:config_statuts_liste_publique_ok_fixe'),
-                ),
-            ),
-            // Checkboxes pour les statuts optionnels
-            array(
-                'saisie' => 'checkbox',
-                'options' => array(
-                    'nom' => 'config_statuts_liste_publique_inscrits',
-                    'label' => _T('association_config:config_statuts_liste_publique_options_label'),
-                    'data' => array(
-                        'preinscrit'   => _T('association_config:config_statuts_liste_publique_preinscrit'),
-                        'liste_attente' => _T('association_config:config_statuts_liste_publique_liste_attente'),
-                    ),
-                ),
-            ),
-        ),
-    );
-}
-if($config == 'affichage_prive') {
-        $saisies[] = array(
-            'saisie' => 'fieldset',
-            'options' => array(
-                'nom' => 'config_filtres_tableau',
-                'label' => _T('association_config:config_filtres_tableau_fieldset'),
-                'explication' => _T('association_config:config_filtres_tableau_explication'),
-            ),
-            'saisies' => array(
-                array(
-                    'saisie' => 'selection_multiple',
-                    'options' => array(
-                        'nom' => 'config_champs_filtres_adherents',
-                        'label' => _T('association_config:config_champs_filtres_adherents_label'),
-                        'explication' => _T('association_config:config_champs_filtres_adherents_explication'),
-                        // Préparer la liste des champs extra de type radio/select
-                        'data' => preparer_liste_champs_filtres(),
-                    ),
-                ),
-            ),
-        );
-
-
-// Nouveau fieldset : sélection des champs extras affichés comme colonnes du tableau adhérents
-        $saisies[] = array(
-            'saisie' => 'fieldset',
-            'options' => array(
-                'nom' => 'config_colonnes_tableau',
-                'label' => _T('association_config:config_champs_colonnes_tableau_fieldset'),
-                'explication' => _T('association_config:config_champs_colonnes_tableau_explication'),
-            ),
-            'saisies' => array(
-                array(
-                    'saisie' => 'selection_multiple',
-                    'options' => array(
-                        'nom' => 'config_champs_colonnes_adherents',
-                        'label' => _T('association_config:config_champs_colonnes_adherents_label'),
-                        'explication' => _T('association_config:config_champs_colonnes_adherents_explication'),
-                        'data' => preparer_liste_champs_filtres(),
-                    ),
-                ),
-            ),
-        );
-    }
 if($config == 'modules' OR empty($config)) {
     if (test_plugin_actif('gis')) {
 

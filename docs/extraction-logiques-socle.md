@@ -265,6 +265,23 @@ et l'exécution une erreur contrôlée lorsque Familles n'est pas actif ou ne
 fournit pas cette API. L'accès privé n'est alors pas ajouté ; aucune fonction
 absente ne peut provoquer de fatal PHP.
 
+## Lot 16 : affichages et segments distribués
+
+Les derniers panneaux d'affichage à responsabilité métier ont quitté le grand
+formulaire du socle. Communication déclare la sélection des champs de segments.
+Adhésions déclare les filtres de l'annuaire public ainsi que les filtres et
+colonnes du tableau privé des adhérents. Événements déclare les statuts admis
+dans la liste publique des inscrits.
+
+L'onglet historique `affichage_public` est ainsi composé de deux contributions
+indépendantes sans modifier les noms des metas. Les 122 valeurs persistantes du
+formulaire et leur registre CLI restent strictement identiques. Le socle charge
+les trois fournisseurs et agrège leurs saisies.
+
+Cette passe a également rendu explicite le paramètre `disable_meta_admin` des
+constructeurs Adhésions et Événements. Il n'est plus lu comme variable locale
+indéfinie et conserve une valeur restrictive par défaut lors d'un appel direct.
+
 ## État après le lot 15
 
 La répartition du grand formulaire de configuration est achevée pour les

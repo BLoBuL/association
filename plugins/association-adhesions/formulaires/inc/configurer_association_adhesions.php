@@ -7,7 +7,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 /**
  * Déclare les panneaux de configuration propres aux adhésions.
  */
-function association_adhesions_configurer_saisies($config) {
+function association_adhesions_configurer_saisies($config, $disable_meta_admin = true) {
 	$saisies = array();
 if($config == 'adhesion' OR empty($config)) {
 // *****************************************
@@ -495,6 +495,72 @@ if(($config == 'entreprise' OR empty($config)) AND verifier_categorie_adherent_e
         );
 
 }
+
+	if ($config === 'affichage_public') {
+		$saisies[] = array(
+			'saisie' => 'fieldset',
+			'options' => array(
+				'nom' => 'config_annuaire_membre',
+				'label' => _T('association_config:config_annuaire_membre_fieldset'),
+			),
+			'saisies' => array(
+				array(
+					'saisie' => 'checkbox',
+					'options' => array(
+						'nom' => 'config_filtres_annuaire',
+						'label' => _T('association_config:config_filtres_annuaire_label'),
+						'explication' => _T('association_config:config_filtres_annuaire_explication'),
+						'data' => array(
+							'code_postal' => _T('association_config:config_choix_code_postal'),
+							'quartier' => _T('association_config:config_choix_quartier'),
+							'ville' => _T('association_config:config_choix_ville'),
+						),
+					),
+				),
+			),
+		);
+	}
+
+	if ($config === 'affichage_prive') {
+		$saisies[] = array(
+			'saisie' => 'fieldset',
+			'options' => array(
+				'nom' => 'config_filtres_tableau',
+				'label' => _T('association_config:config_filtres_tableau_fieldset'),
+				'explication' => _T('association_config:config_filtres_tableau_explication'),
+			),
+			'saisies' => array(
+				array(
+					'saisie' => 'selection_multiple',
+					'options' => array(
+						'nom' => 'config_champs_filtres_adherents',
+						'label' => _T('association_config:config_champs_filtres_adherents_label'),
+						'explication' => _T('association_config:config_champs_filtres_adherents_explication'),
+						'data' => preparer_liste_champs_filtres(),
+					),
+				),
+			),
+		);
+		$saisies[] = array(
+			'saisie' => 'fieldset',
+			'options' => array(
+				'nom' => 'config_colonnes_tableau',
+				'label' => _T('association_config:config_champs_colonnes_tableau_fieldset'),
+				'explication' => _T('association_config:config_champs_colonnes_tableau_explication'),
+			),
+			'saisies' => array(
+				array(
+					'saisie' => 'selection_multiple',
+					'options' => array(
+						'nom' => 'config_champs_colonnes_adherents',
+						'label' => _T('association_config:config_champs_colonnes_adherents_label'),
+						'explication' => _T('association_config:config_champs_colonnes_adherents_explication'),
+						'data' => preparer_liste_champs_filtres(),
+					),
+				),
+			),
+		);
+	}
 
 	return $saisies;
 }

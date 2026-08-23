@@ -63,6 +63,7 @@ $configuration_evenements = file_get_contents($racine . '/plugins/association-ev
 $configuration_adhesions = file_get_contents($racine . '/plugins/association-adhesions/formulaires/inc/configurer_association_adhesions.php');
 $configuration_paiements = file_get_contents($racine . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php');
 $configuration_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php');
+$configuration_communication = file_get_contents($racine . '/plugins/association-communication/formulaires/inc/configurer_association_communication.php');
 $verification_compta = file_get_contents($racine . '/plugins/association-compta/formulaires/inc/configurer_association_compta_verifier.php');
 $verification_communication = file_get_contents($racine . '/plugins/association-communication/formulaires/inc/configurer_association_communication_verifier.php');
 $pipelines_socle = file_get_contents($racine . '/association_pipelines.php');
@@ -114,6 +115,27 @@ $verifier(
 		&& strpos($configuration_adhesions, "config == 'adhesion'") !== false
 		&& strpos($configuration_adhesions, "config == 'entreprise'") !== false,
 	'Les panneaux adhesion et entreprise doivent appartenir au module Adhesions.'
+);
+$verifier(
+	strpos($configuration_socle, "config == 'segments'") === false
+		&& strpos($configuration_communication, "'segments'") !== false
+		&& strpos($configuration_communication, "'selection_segment'") !== false,
+	'Le panneau segments doit appartenir au module Communication.'
+);
+$verifier(
+	strpos($configuration_socle, "config == 'affichage_public'") === false
+		&& strpos($configuration_adhesions, "'affichage_public'") !== false
+		&& strpos($configuration_adhesions, "'config_filtres_annuaire'") !== false
+		&& strpos($configuration_evenements, "'affichage_public'") !== false
+		&& strpos($configuration_evenements, "'config_statuts_liste_publique_inscrits'") !== false,
+	'L affichage public doit etre compose par Adhesions et Evenements.'
+);
+$verifier(
+	strpos($configuration_socle, "config == 'affichage_prive'") === false
+		&& strpos($configuration_adhesions, "'affichage_prive'") !== false
+		&& strpos($configuration_adhesions, "'config_champs_filtres_adherents'") !== false
+		&& strpos($configuration_adhesions, "'config_champs_colonnes_adherents'") !== false,
+	'L affichage prive des adherents doit appartenir au module Adhesions.'
 );
 $verifier(
 	strpos($configuration_adhesions, 'association_evenements_configurer_saisies') === false

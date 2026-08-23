@@ -7,7 +7,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 /**
  * Déclare les panneaux de configuration propres aux événements.
  */
-function association_evenements_configurer_saisies($config) {
+function association_evenements_configurer_saisies($config, $disable_meta_admin = true) {
 	$saisies = array();
 if($config == 'evenement' OR empty($config)) {
 
@@ -535,6 +535,37 @@ if($config == 'evenement_defaut' OR empty($config)) {
 
 
 }
+
+	if ($config === 'affichage_public') {
+		$saisies[] = array(
+			'saisie' => 'fieldset',
+			'options' => array(
+				'nom' => 'config_statuts_liste_publique_inscrits_fieldset',
+				'label' => _T('association_config:config_statuts_liste_publique_inscrits_fieldset'),
+				'explication' => _T('association_config:config_statuts_liste_publique_inscrits_explication'),
+			),
+			'saisies' => array(
+				array(
+					'saisie' => 'explication',
+					'options' => array(
+						'nom' => 'info_statut_ok_fixe',
+						'explication' => _T('association_config:config_statuts_liste_publique_ok_fixe'),
+					),
+				),
+				array(
+					'saisie' => 'checkbox',
+					'options' => array(
+						'nom' => 'config_statuts_liste_publique_inscrits',
+						'label' => _T('association_config:config_statuts_liste_publique_options_label'),
+						'data' => array(
+							'preinscrit' => _T('association_config:config_statuts_liste_publique_preinscrit'),
+							'liste_attente' => _T('association_config:config_statuts_liste_publique_liste_attente'),
+						),
+					),
+				),
+			),
+		);
+	}
 
 	return $saisies;
 }

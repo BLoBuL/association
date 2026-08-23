@@ -112,6 +112,7 @@ include_once PLUGIN_ROOT . '/plugins/association-adhesions/formulaires/inc/confi
 include_once PLUGIN_ROOT . '/plugins/association-paiements/formulaires/inc/configurer_association_paiements.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/formulaires/inc/configurer_association_compta.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/formulaires/inc/configurer_association_compta_verifier.php';
+include_once PLUGIN_ROOT . '/plugins/association-communication/formulaires/inc/configurer_association_communication.php';
 include_once PLUGIN_ROOT . '/plugins/association-communication/formulaires/inc/configurer_association_communication_verifier.php';
 include_once PLUGIN_ROOT . '/formulaires/configurer_association.php';
 $saisies_persistantes = array();
@@ -126,6 +127,20 @@ association_config_cli_test_assert(
 	empty($saisies_par_segment['adhesion']['pages_modalite_evenement'])
 		&& isset($saisies_par_segment['evenement']['pages_modalite_evenement']),
 	'les modalites evenement sont exposees uniquement dans l onglet evenement'
+);
+association_config_cli_test_assert(
+	isset($saisies_par_segment['segments']['selection_segment']),
+	'la configuration Communication conserve la selection des segments'
+);
+association_config_cli_test_assert(
+	isset($saisies_par_segment['affichage_public']['config_filtres_annuaire'])
+		&& isset($saisies_par_segment['affichage_public']['config_statuts_liste_publique_inscrits']),
+	'les contributions Adhesions et Evenements composent l affichage public'
+);
+association_config_cli_test_assert(
+	isset($saisies_par_segment['affichage_prive']['config_champs_filtres_adherents'])
+		&& isset($saisies_par_segment['affichage_prive']['config_champs_colonnes_adherents']),
+	'la configuration Adhesions conserve les filtres et colonnes du BO'
 );
 $chemins_formulaire = array();
 foreach (array_keys($saisies_persistantes) as $nom) {
