@@ -15,8 +15,6 @@ A faire :
 - Forcer les codes postaux en format text "=""12345"""
 */
 if (!defined("_ECRIRE_INC_VERSION")) return;
-//include_spip('inc/exporter_csv');
-include_spip('inc/fonctions/generer_exporter_csv');
 include_spip('inc/charsets');
 include_spip('inc/filtres');
 include_spip('inc/texte');

@@ -14,7 +14,7 @@ include_spip('inc/filtres');
 include_spip('inc/texte');
 
 /**
- * Génère un formulaire pour l'export CSV des adhérents en fonction des critères donnés.
+ * Génère le formulaire d'export CSV des adhérents selon les critères donnés.
  *
  * @param string|false $criteres_sql Critères SQL optionnels pour filtrer les adhérents.
  * @return string HTML du formulaire généré.

@@ -294,7 +294,18 @@ la dépendance Adhésions vers Communication est déjà déclarée et aucun cycl
 n'est introduit. Le pipeline de catégorie entreprise reste disponible comme
 contrat public pour les autres consommateurs éventuels.
 
-## État après le lot 15
+## Lot 18 : export CSV des adhérents
+
+Le générateur du formulaire d'export CSV des adhérents réside désormais dans
+Adhésions, avec son action et le squelette privé qui le charge. Son chemin SPIP
+`inc/fonctions/generer_export_csv` et le nom du filtre restent inchangés, ce qui
+préserve le squelette historique.
+
+L'action ne tente plus de charger `inc/fonctions/generer_exporter_csv`, fichier
+qui n'existait pas et n'apportait aucune fonction. Le moteur CSV générique reste
+dans le socle car il est également consommé par Événements.
+
+## État après le lot 18
 
 La répartition du grand formulaire de configuration est achevée pour les
 domaines actuellement extraits : Adhésions, Événements, Paiements,

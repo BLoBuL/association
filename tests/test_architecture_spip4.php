@@ -169,6 +169,12 @@ $verifier(
 	'La migration vers Familles doit appartenir au module Adhesions.'
 );
 $verifier(
+	!is_file($racine . '/inc/fonctions/generer_export_csv.php')
+		&& is_file($racine . '/plugins/association-adhesions/inc/fonctions/generer_export_csv.php')
+		&& strpos(file_get_contents($racine . '/plugins/association-adhesions/action/exporter_adherents_csv.php'), 'generer_exporter_csv') === false,
+	'L export CSV des adherents doit appartenir entierement au module Adhesions.'
+);
+$verifier(
 	strpos($pipelines_socle, 'association_familles') === false
 		&& strpos($pipelines_adhesions, 'association_familles') !== false
 		&& strpos($autorisation_socle, 'migrerfamilles') === false
