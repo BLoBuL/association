@@ -30,5 +30,4 @@
 
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_adhesions.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_adhesions.php" />
-	<chemin path="squelettes" type="public" />
 </paquet>

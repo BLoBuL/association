@@ -36,5 +36,4 @@
 	<pipeline nom="association_inscription_evenement_charger" action="" />
 	<pipeline nom="association_inscription_evenement_verifier" action="" />
 	<pipeline nom="association_inscription_evenement_traiter" action="" />
-	<chemin path="squelettes" type="public" />
 </paquet>

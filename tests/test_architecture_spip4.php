@@ -23,6 +23,10 @@ $paiements_paquet = file_get_contents($racine . '/plugins/association-paiements/
 $verifier(strpos($communication_paquet, 'nom="association_adhesions"') === false, 'Communication ne doit pas creer de cycle vers Adhesions.');
 $verifier(strpos($paiements_paquet, 'nom="association_adhesions"') === false, 'Paiements ne doit pas creer de cycle vers Adhesions.');
 $verifier(strpos($paiements_paquet, 'nom="association_evenements"') === false, 'Paiements ne doit pas creer de cycle vers Evenements.');
+$adhesions_paquet = file_get_contents($racine . '/plugins/association-adhesions/paquet.xml');
+$evenements_paquet = file_get_contents($racine . '/plugins/association-evenements/paquet.xml');
+$verifier(strpos($adhesions_paquet, '<chemin path="squelettes"') === false, 'Adhesions doit exposer sa racine pour rendre prive/ chargeable.');
+$verifier(strpos($evenements_paquet, '<chemin path="squelettes"') === false, 'Evenements doit exposer sa racine pour rendre prive/ chargeable.');
 $verifier(strpos($paquet, '<necessite nom="bank"') === false, 'Bank doit etre porte par le module Paiements.');
 $verifier(strpos($paquet, '<necessite nom="mailsubscribers"') === false, 'Mailsubscribers doit etre porte par le module Communication.');
 $verifier(strpos($paquet, '<necessite nom="inscription3"') === false, 'Inscription 3 ne doit plus etre une dependance.');
