@@ -1,4 +1,5 @@
 [(#AUTORISER{prets_menu}|sinon_interdire_acces)]
+<h1 class="grostitre"><:association:prets_titre_liste_reservations:></h1>
 #SET{id_ressource,#ENV{id_ressource,#ENV{id}}}
 <BOUCLE_ressource(ASSO_RESSOURCES){id_ressource=#GET{id_ressource}}{0,1}>
 [(#BOITE_OUVRIR{<:association:prets_titre_liste_reservations:>,'simple'})]
