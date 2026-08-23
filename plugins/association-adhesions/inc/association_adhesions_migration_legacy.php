@@ -45,3 +45,32 @@ function association_import_champs_extras() {
 	}
 	return $res;
 }
+
+/**
+ * Rejoue une étape tardive du schéma historique du domaine Adhésions.
+ */
+function association_adhesions_migration_legacy($version) {
+	$operations = array(
+		'1.4.2' => array("TABLE spip_asso_categories_adherents ALTER type_adherent SET DEFAULT 'adherent'"),
+		'1.5.0' => array(
+			"TABLE spip_asso_categories_adherents ADD COLUMN date_debut_validite VARCHAR(5) NULL DEFAULT NULL",
+			"TABLE spip_asso_categories_adherents ADD COLUMN date_fin_validite VARCHAR(5) NULL DEFAULT NULL",
+		),
+		'1.5.1' => array(
+			"TABLE spip_asso_categories_adherents ADD COLUMN validation VARCHAR(32) NULL DEFAULT 'auto'",
+			"TABLE spip_asso_categories_adherents ADD COLUMN document_justificatif VARCHAR(3) NULL DEFAULT 'non'",
+		),
+		'1.5.3' => array("TABLE spip_asso_categories_adherents ADD COLUMN nombre_enfants VARCHAR(2) NULL DEFAULT ''"),
+		'1.5.4' => array(
+			"TABLE spip_asso_categories_adherents ADD COLUMN mode_paiement VARCHAR(32) NULL DEFAULT ''",
+			"TABLE spip_asso_categories_adherents ADD COLUMN eligibilite VARCHAR(32) NULL DEFAULT ''",
+		),
+		'1.5.9' => array("TABLE spip_asso_categories_adherents ADD COLUMN devise VARCHAR(3) NOT NULL DEFAULT '' AFTER cotisation"),
+	);
+	foreach ($operations[(string) $version] ?? array() as $operation) {
+		sql_alter($operation);
+	}
+	if ((string) $version === '1.4.2') {
+		association_maj_142();
+	}
+}

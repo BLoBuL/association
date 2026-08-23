@@ -328,9 +328,11 @@ foreach (array('auto' => 'ok', 'post-paiement' => 'demande') as $validation => $
 }
 
 $upgrade_source = file_get_contents(PLUGIN_ROOT . '/association_administrations.php');
+$compta_migration_source = file_get_contents(PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_migration_legacy.php');
+$adhesions_migration_source = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_migration_legacy.php');
 $paquet_source = file_get_contents(PLUGIN_ROOT . '/paquet.xml');
 test_assert(
-    strpos($upgrade_source, "TABLE spip_asso_comptes MODIFY id_transaction BIGINT NOT NULL DEFAULT '0'") !== false,
+    strpos($compta_migration_source, "TABLE spip_asso_comptes MODIFY id_transaction BIGINT NOT NULL DEFAULT '0'") !== false,
     'la migration convertit les installations existantes vers BIGINT'
 );
 preg_match('/schema="([^"]+)"/', $paquet_source, $schema_paquet);
@@ -339,7 +341,7 @@ test_assert(
     'la version de schéma déclenche la migration BIGINT'
 );
 test_assert(
-    strpos($upgrade_source, 'ADD COLUMN devise VARCHAR(3)') !== false
+    strpos($adhesions_migration_source, 'ADD COLUMN devise VARCHAR(3)') !== false
     && version_compare($schema_paquet[1], '1.5.9', '>='),
     'la migration historique ajoute la devise aux catégories de cotisation'
 );

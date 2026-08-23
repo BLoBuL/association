@@ -224,72 +224,25 @@ $maj['1.3.0'] = array(
     array('sql_alter', "TABLE spip_evenements ADD COLUMN lien varchar(255) AFTER lieu"),
     array('sql_alter', "TABLE spip_evenements ADD COLUMN reseau_fiafe varchar(3) NULL DEFAULT 'non'"),
 );
-    $maj['1.4.0'] = array(
-    array('sql_alter', "TABLE spip_asso_activites ADD COLUMN association varchar(255) NULL AFTER nom_inscrit"),
-);
-    $maj['1.4.1'] = array(
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN condition_inscription varchar(3) NULL DEFAULT 'non'"),
-    array('sql_alter', "TABLE spip_evenements ADD COLUMN message_condition_inscription TEXT"),
-);
-    $maj['1.4.2'] = array(
-    array('sql_alter', "TABLE spip_asso_categories_adherents ALTER type_adherent SET DEFAULT 'adherent'"),
-    array('association_maj_142'),
-);
-    $maj['1.4.3'] = array(
-    array('sql_alter', "TABLE spip_asso_activites ADD COLUMN tel_inscrit varchar(255) AFTER email_inscrit")
-);
-    $maj['1.4.4'] = array(
-    array('sql_alter', "TABLE spip_asso_activites ADD COLUMN participants_json TEXT AFTER nom_participants"),
-);
-    $maj['1.4.5'] = array(
-    array('sql_alter', "TABLE spip_evenements CHANGE message_condition_inscription message_condition_inscription TEXT")
-);
-    $maj['1.4.7'] = array(
-    array('sql_alter', "TABLE spip_asso_comptes ADD COLUMN objet varchar(30) DEFAULT 'cotisation'"),
-    array('sql_alter', "TABLE spip_asso_comptes ADD COLUMN id_objet varchar(21) DEFAULT '0'"),
-);
-    $maj['1.4.8'] = array(
-        array('sql_alter', "TABLE spip_evenements CHANGE info_supplementaire info_supplementaire TEXT"),
-        array('sql_alter', "TABLE spip_asso_activites CHANGE journal journal TEXT")
-    );
-    $maj['1.4.9'] = array(
-        array('sql_alter', "TABLE spip_asso_activites CHANGE annotation annotation TEXT")
-    );
-    $maj['1.5.0'] = array(
-        array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN date_debut_validite VARCHAR(5) NULL DEFAULT NULL"),
-        array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN date_fin_validite VARCHAR(5) NULL DEFAULT NULL")
-    );
-    $maj['1.5.1'] = array(
-        array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN validation VARCHAR(32) NULL DEFAULT 'auto'"),
-        array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN document_justificatif VARCHAR(3) NULL DEFAULT 'non'"),
-    );
-    $maj['1.5.2'] = array(
-        array('sql_alter', "TABLE spip_asso_activites ADD COLUMN ip_inscrit VARCHAR(45) NULL AFTER tel_inscrit")
-    );
-    $maj['1.5.3'] = array(
-        array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN nombre_enfants VARCHAR(2) NULL DEFAULT ''"),
-    );
-    $maj['1.5.4'] = array(
-        array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN mode_paiement VARCHAR(32) NULL DEFAULT ''"),
-        array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN eligibilite VARCHAR(32) NULL DEFAULT ''"),
-    );
-    $maj['1.5.5'] = array(
-        array('sql_alter', "TABLE spip_asso_comptes CHANGE date date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'"),
-    );
-    $maj['1.5.6'] = array(
-        array('sql_alter', "TABLE spip_evenements ADD COLUMN invites VARCHAR(3) NOT NULL DEFAULT 'non'"),
-        array('sql_alter', "TABLE spip_evenements ADD COLUMN limite_invites INT(10) UNSIGNED NOT NULL DEFAULT '5'"),
-        array('sql_alter', "TABLE spip_asso_activites ADD COLUMN nb_invite INT(10) UNSIGNED NOT NULL DEFAULT '0'"),
-    );
-    $maj['1.5.7'] = array(
-        array('sql_alter', "TABLE spip_asso_comptes MODIFY id_transaction BIGINT NOT NULL DEFAULT '0'"),
-    );
-    $maj['1.5.8'] = array(
-        array('sql_alter', "TABLE spip_evenements ADD COLUMN fermeture_inscription_date DATETIME NULL DEFAULT NULL AFTER fermeture_inscription"),
-    );
-    $maj['1.5.9'] = array(
-        array('sql_alter', "TABLE spip_asso_categories_adherents ADD COLUMN devise VARCHAR(3) NOT NULL DEFAULT '' AFTER cotisation"),
-    );
+	$maj['1.4.0'] = array(array('association_evenements_migration_legacy', '1.4.0'));
+	$maj['1.4.1'] = array(array('association_evenements_migration_legacy', '1.4.1'));
+	$maj['1.4.2'] = array(array('association_adhesions_migration_legacy', '1.4.2'));
+	$maj['1.4.3'] = array(array('association_evenements_migration_legacy', '1.4.3'));
+	$maj['1.4.4'] = array(array('association_evenements_migration_legacy', '1.4.4'));
+	$maj['1.4.5'] = array(array('association_evenements_migration_legacy', '1.4.5'));
+	$maj['1.4.7'] = array(array('association_compta_migration_legacy', '1.4.7'));
+	$maj['1.4.8'] = array(array('association_evenements_migration_legacy', '1.4.8'));
+	$maj['1.4.9'] = array(array('association_evenements_migration_legacy', '1.4.9'));
+	$maj['1.5.0'] = array(array('association_adhesions_migration_legacy', '1.5.0'));
+	$maj['1.5.1'] = array(array('association_adhesions_migration_legacy', '1.5.1'));
+	$maj['1.5.2'] = array(array('association_evenements_migration_legacy', '1.5.2'));
+	$maj['1.5.3'] = array(array('association_adhesions_migration_legacy', '1.5.3'));
+	$maj['1.5.4'] = array(array('association_adhesions_migration_legacy', '1.5.4'));
+	$maj['1.5.5'] = array(array('association_compta_migration_legacy', '1.5.5'));
+	$maj['1.5.6'] = array(array('association_evenements_migration_legacy', '1.5.6'));
+	$maj['1.5.7'] = array(array('association_compta_migration_legacy', '1.5.7'));
+	$maj['1.5.8'] = array(array('association_evenements_migration_legacy', '1.5.8'));
+	$maj['1.5.9'] = array(array('association_adhesions_migration_legacy', '1.5.9'));
 	$maj['1.6.0'] = array(
 		array('maj_tables', array('spip_asso_cotisations')),
 		array('association_migrer_cotisations_depuis_comptes'),
