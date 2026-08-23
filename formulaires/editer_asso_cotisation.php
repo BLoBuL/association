@@ -244,6 +244,18 @@ function formulaires_editer_asso_cotisation_charger_dist($id_compte = 'new') {
         }
     }
 
+    // Une création sans auteur ne peut pas produire les champs métier (catégorie,
+    // justificatif, règles de validation). Ne jamais présenter dans ce cas un
+    // formulaire partiel qui pourrait être pris pour le vrai formulaire.
+    if ($id_compte == 'new' && !$id_auteur) {
+        return array(
+            'id_auteur' => 0,
+            'id_compte' => $id_compte,
+            'editable' => false,
+            'message_erreur' => _T('association:erreur_id_auteur_invalide'),
+        );
+    }
+
     // Droits d'édition : si l'utilisateur n'a pas le droit de modifier cet auteur, rendre non éditable
     $editable = true;
     if ($id_auteur && !autoriser('modifier', 'auteur', $id_auteur)) {

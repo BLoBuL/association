@@ -2,10 +2,10 @@
 [(#AUTORISER{adherents_menu}|oui)
 	[(#BOITE_OUVRIR{<:titre_cadre_raccourcis:>,'raccourcis'})]
 	<ul class="liste-items">
-		<li class="item"><a href="[(#URL_ECRIRE{auteur,id_auteur})]"><:association:voir_fiche_adherent:></a></li>
-		<li class="item"><a href="[(#URL_ECRIRE{auteur_edit,id_auteur})]"><:association:modifier_fiche_adherent:></a></li>
+		<li class="item"><a href="[(#URL_ECRIRE{auteur}|parametre_url{id_auteur,#ID_AUTEUR})]"><:association:voir_fiche_adherent:></a></li>
+		<li class="item"><a href="[(#URL_ECRIRE{auteur_edit}|parametre_url{id_auteur,#ID_AUTEUR})]"><:association:modifier_fiche_adherent:></a></li>
 		<li class="item"><a href="[(#URL_AUTEUR|parametre_url{var_mode,recalcul})]" rel="external"><:association:consulter_profil_adherent:></a></li>
-		<li class="item"><a href="[(#URL_ECRIRE{editer_asso_cotisation,id_auteur})]" class="btn"><:association:ajouter_nouvel_cotisation:></a></li>
+		<li class="item"><a href="[(#URL_ECRIRE{editer_asso_cotisation}|parametre_url{id_auteur,#ID_AUTEUR})]" class="btn"><:association:ajouter_nouvel_cotisation:></a></li>
 	</ul>
 	[(#BOITE_FERMER)]
 ]
