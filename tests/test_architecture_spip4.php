@@ -190,6 +190,13 @@ $verifier(
 	'Le socle ne doit plus orchestrer ni autoriser la migration vers Familles.'
 );
 $verifier(
+	strpos($autorisation_socle, 'newsletter') === false
+		&& strpos($autorisation_socle, 'asso_compte') === false
+		&& strpos($autorisation_socle, 'evenement') === false
+		&& strpos($autorisation_socle, 'cotisation') === false,
+	'Le fichier d autorisations du socle ne doit plus contenir de logique metier extraite.'
+);
+$verifier(
 	strpos($migration_familles, "familles_objet_lister_familles('auteur'") !== false
 		&& strpos($migration_familles, 'familles_lister_familles_auteur') === false,
 	'La migration Adhesions doit utiliser l API objet actuelle du plugin Familles.'

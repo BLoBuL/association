@@ -317,7 +317,19 @@ ont été supprimés : aucune des fonctions restantes ne les consomme. Une matri
 dédiée verrouille le comportement de sérialisation, de nommage et de conversion
 scalaire.
 
-## État après le lot 19
+## Lot 20 : autorisations racine normalisées
+
+`association_autoriser.php` ne conserve plus les commentaires et signatures
+fantômes des autorisations déjà portées par les plugins métier. Les droits sur
+les adhérents, cotisations, comptes, événements, newsletters, dons, ventes et
+prêts restent déclarés uniquement par leurs modules respectifs.
+
+Le socle expose encore les trois contrats transverses consommés par ces
+modules : normalisation de l'auteur, lecture d'activation historique et
+journalisation contrôlée. L'autorisation éditoriale générique d'ajout de
+document est conservée sans dépendre d'un domaine métier.
+
+## État après le lot 20
 
 La répartition du grand formulaire de configuration est achevée pour les
 domaines actuellement extraits : Adhésions, Événements, Paiements,

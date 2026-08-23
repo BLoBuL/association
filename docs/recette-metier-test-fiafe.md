@@ -301,3 +301,11 @@ Dans le SPIP servi, l'agrégateur RGPD reste chargé, le nom d'export produit
 sont correctement détectées et désérialisées, et le filtre scalaire conserve
 son comportement historique. Le formulaire de configuration se charge encore
 et son panneau d'informations contient son fieldset attendu.
+
+## Lot 20 — autorisations transversales du socle
+
+Le fichier d'autorisations racine est réduit aux contrats transverses utilisés
+par les modules et à l'autorisation éditoriale des documents. Une assertion
+d'architecture interdit désormais d'y réintroduire les domaines cotisation,
+comptabilité, événements ou communication. Les 67 tests autonomes passent
+avant déploiement.
