@@ -3,7 +3,10 @@
 $racine = dirname(__DIR__);
 $administration = file_get_contents($racine . '/association_administrations.php');
 $documentation = file_get_contents($racine . '/docs/installation-base-sans-tables-association.md');
-$verificateur = file_get_contents($racine . '/spip-cli/AssociationInstallationVerifier.php');
+$inventaire = file_get_contents($racine . '/inc/association_installation.php');
+foreach (glob($racine . '/plugins/*/inc/*_installation.php') as $fichier_inventaire) {
+	$inventaire .= file_get_contents($fichier_inventaire);
+}
 $erreurs = array();
 
 $debut_historique = strpos($administration, '#V1.1.0');
@@ -33,8 +36,8 @@ $schemas = array(
 	'association_ventes_base_version' => '1.0.0',
 );
 foreach ($schemas as $meta => $version) {
-	if (strpos($verificateur, "'$meta' => '$version'") === false) {
-		$erreurs[] = "schéma absent du vérificateur : $meta";
+	if (strpos($inventaire, "'$meta' => '$version'") === false) {
+		$erreurs[] = "schéma absent de l'inventaire distribué : $meta";
 	}
 	if (strpos($documentation, "$meta=$version") === false) {
 		$erreurs[] = "schéma absent de la procédure : $meta";

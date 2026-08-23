@@ -640,6 +640,27 @@ types, bornes, valeurs par défaut et listes autorisées sont donc inchangés.
 Les snapshots v1/v2 et les commandes de lecture, écriture et restauration
 restent compatibles.
 
+## Lot 54 : inventaire d'installation distribué
+
+La commande `association:installation:verifier` ne contient plus le catalogue
+des tables, objets SQL et versions de schéma des plugins métier. Chaque plugin
+fournit désormais son propre contrat par le pipeline
+`association_installation_inventaire` :
+
+- le socle décrit sa méta auxiliaire et son schéma ;
+- Adhésions décrit ses catégories et cotisations ;
+- Comptabilité décrit les comptes, le plan et les destinations ;
+- Événements décrit les catégories, participations et leur table de liens ;
+- Dons, Prêts et Ventes décrivent leurs objets respectifs ;
+- Communication, Groupes et Paiements signalent leur contribution même sans
+  posséder de table propre.
+
+Le socle conserve seulement la topologie des neuf plugins qu'il déclare déjà
+comme dépendances obligatoires dans `paquet.xml`. Cela permet au vérificateur de
+signaler à la fois un plugin inactif et l'absence de sa contribution. Les totaux
+historiques restent calculés à partir du registre : 10 plugins, 14 tables, 12
+objets SQL et 7 schémas.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

@@ -19,6 +19,7 @@
 	<pipeline nom="post_edition" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_configuration_navigation" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_config_cli_registre" inclure="association_compta_pipelines.php" />
+	<pipeline nom="association_installation_inventaire" inclure="inc/association_compta_installation.php" />
 	<pipeline nom="association_maintenance_bdd_executer" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_compta_pipelines.php" />

@@ -19,34 +19,21 @@ class AssociationInstallationVerifier extends Command
 		$this->demarrerSpip();
 		include_spip('base/abstract_sql');
 		include_spip('base/objets');
+		include_spip('inc/association_installation');
+		$inventaire = association_installation_inventaire();
+		$plugins = (array) ($inventaire['plugins_requis'] ?? array());
+		$schemas = (array) ($inventaire['schemas'] ?? array());
+		$objetsAttendus = (array) ($inventaire['objets'] ?? array());
+		$tablesAttendues = (array) ($inventaire['tables'] ?? array());
 
-		$plugins = array(
-			'association', 'association_adhesions', 'association_communication',
-			'association_compta', 'association_dons', 'association_evenements',
-			'association_groupes', 'association_paiements', 'association_prets',
-			'association_ventes',
-		);
-		$schemas = array(
-			'association_base_version' => '1.6.1',
-			'association_adhesions_base_version' => '1.2.0',
-			'association_compta_base_version' => '1.0.0',
-			'association_dons_base_version' => '1.0.0',
-			'association_evenements_base_version' => '1.1.0',
-			'association_prets_base_version' => '1.0.0',
-			'association_ventes_base_version' => '1.0.0',
-		);
-		$objetsAttendus = array(
-			'spip_asso_categories_adherents', 'spip_asso_cotisations',
-			'spip_asso_comptes', 'spip_asso_plan', 'spip_asso_destination', 'spip_asso_destination_op',
-			'spip_asso_categories_activites', 'spip_asso_activites',
-			'spip_asso_dons', 'spip_asso_ressources', 'spip_asso_prets', 'spip_asso_ventes',
-		);
-		$tablesAttendues = array_merge(array('spip_association_metas'), $objetsAttendus, array('spip_asso_categories_activites_liens'));
-
-		$erreurs = array();
+		$erreurs = (array) ($inventaire['erreurs'] ?? array());
+		$inventairesFournis = (array) ($inventaire['plugins'] ?? array());
 		foreach ($plugins as $prefixe) {
 			if (!test_plugin_actif($prefixe)) {
 				$erreurs[] = "Plugin inactif : $prefixe";
+			}
+			if (!in_array($prefixe, $inventairesFournis, true)) {
+				$erreurs[] = "Inventaire d'installation absent : $prefixe";
 			}
 		}
 		$tablesInstallees = sql_alltable('%');
@@ -80,7 +67,10 @@ class AssociationInstallationVerifier extends Command
 		}
 
 		$output->writeln('<info>Installation Association valide.</info>');
-		$output->writeln('10 plugins actifs, 14 tables présentes, 12 objets SQL SPIP et 7 schémas à jour.');
+		$output->writeln(sprintf(
+			'%d plugins actifs, %d tables présentes, %d objets SQL SPIP et %d schémas à jour.',
+			count($plugins), count($tablesAttendues), count($objetsAttendus), count($schemas)
+		));
 		return self::SUCCESS;
 	}
 }

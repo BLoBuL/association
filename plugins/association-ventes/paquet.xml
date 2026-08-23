@@ -5,6 +5,7 @@
 	<pipeline nom="autoriser" inclure="association_ventes_autoriser.php" />
 	<pipeline nom="association_rgpd_export_auteur" inclure="association_ventes_pipelines.php" />
 	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_ventes_pipelines.php" />
+	<pipeline nom="association_installation_inventaire" inclure="inc/association_ventes_installation.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_ventes.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_ventes.php" />
 	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
