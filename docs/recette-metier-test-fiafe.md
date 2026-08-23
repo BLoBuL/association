@@ -459,3 +459,13 @@ depuis l'artefact SHA-256
 Le serveur le résout depuis Communication, confirme les trois consommateurs
 Communication, Événements et Comptabilité, puis le compile sans erreur en 214
 octets.
+
+## Lot 33 — déclaration SQL Mailsubscribers
+
+La personnalisation de l'objet Mailsubscribers est fournie par Communication.
+Le commit `e53da85` a été déployé atomiquement dans le socle et Communication
+depuis l'artefact SHA-256
+`6f6de7c3a8637e5dbdb2baf06dc1f2582b0e10147ae2e74f4e0e4cd7c7d9c912`,
+puis le registre des plugins a été actualisé. Sur le SPIP servi, le pipeline
+actif retire bien l'URL et vide la page publique de `spip_mailsubscribers`,
+tandis que la déclaration SQL du socle ne référence plus cet objet.
