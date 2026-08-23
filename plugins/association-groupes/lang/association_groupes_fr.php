@@ -20,5 +20,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'adherent_libelle_photo' => 'Photo',
 	'adherent_libelle_statut' => 'Statut adhérent',
 	'adherent_libelle_telephone' => 'Téléphone',
+	'titre_onglet_benevoles' => 'Bénévoles',
 	'titre_page_benevoles' => 'Bénévoles',
 );

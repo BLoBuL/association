@@ -6,6 +6,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 
 $GLOBALS[$GLOBALS["idx_lang"]] = array (
   'confirmer_suppression' => 'Confirmer la suppression ?',
+  'titre_onglet_prets' => 'Prêts',
   'entete_action' => 'Action',
   'entete_date' => 'Date',
   'entete_id' => '#',

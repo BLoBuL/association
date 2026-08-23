@@ -61,20 +61,16 @@ function association_taches_generales_cron($taches) {
  * @return array
  */
 function association_ajouter_menus($menus) {
-	$entrees = [
-		'adherents' => '010. ',
-		'cotisations' => '020. ',
-		'activites' => '030. ',
-		'benevoles' => '040. ',
-		'configurer_association' => '099. ',
-	];
-
-	foreach (['dons' => '060. ', 'comptes' => '070. ', 'prets' => '080. '] as $module => $ordre) {
-		if (association_module_actif($module)) {
-			$entrees[$module] = $ordre;
-		}
-	}
-	foreach ($entrees as $cle => $ordre) {
+	$entrees = pipeline('association_menu_entrees', array(
+		'configurer_association' => array(
+			'ordre' => 99,
+			'label' => _T('association:titre_onglet_configurer_association'),
+			'exec' => 'configurer_association',
+			'icone' => 'configurer_association',
+		),
+	));
+	uasort($entrees, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
+	foreach ($entrees as $cle => $definition) {
 		if (!autoriser($cle . '_menu', '', 0, $GLOBALS['visiteur_session'])) {
 			unset($entrees[$cle]);
 		}
@@ -88,15 +84,24 @@ function association_ajouter_menus($menus) {
 		_T('association:titre_menu_association'),
 		generer_url_ecrire('navigation', 'menu=association')
 	);
-	foreach ($entrees as $cle => $ordre) {
+	foreach ($entrees as $cle => $definition) {
 		$menu->sousmenu[$cle] = new $classe_bouton(
-			find_in_theme("images/{$cle}-xx.svg"),
-			"<span class='d-none'>{$ordre}</span>" . _T('association:titre_onglet_' . $cle),
-			generer_url_ecrire($cle)
+			find_in_theme('images/' . $definition['icone'] . '-xx.svg'),
+			sprintf("<span class='d-none'>%03d. </span>%s", $definition['ordre'], $definition['label']),
+			generer_url_ecrire($definition['exec'])
 		);
 	}
 
 	return array_merge(array_slice($menus, 0, 2), ['association' => $menu], array_slice($menus, 2));
+}
+
+function association_menu_entrees_ajouter($flux, $entrees) {
+	foreach ($entrees as $cle => $definition) {
+		if (!isset($flux[$cle])) {
+			$flux[$cle] = $definition;
+		}
+	}
+	return $flux;
 }
 
 /**

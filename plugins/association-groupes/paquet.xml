@@ -4,4 +4,5 @@
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
 	<pipeline nom="autoriser" inclure="association_groupes_autoriser.php" />
 	<pipeline nom="association_installation_inventaire" inclure="inc/association_groupes_installation.php" />
+	<pipeline nom="association_menu_entrees" inclure="inc/association_groupes_menu.php" />
 </paquet>

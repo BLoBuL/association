@@ -710,6 +710,20 @@ séquence de chargement des plugins. Les douze clés publiques restent
 inchangées ; le formulaire de debug, l'écriture globale et le registre CLI
 continuent donc de piloter les mêmes chemins de configuration.
 
+## Lot 58 : navigation privée distribuée
+
+Les entrées du menu privé Association sont maintenant fournies par leurs
+plugins via `association_menu_entrees` : Adhérents et Cotisations par
+Adhésions, Activités par Événements, Bénévoles par Groupes, Dons par Dons,
+Comptes par Comptabilité et Prêts par Prêts. Le socle conserve seulement son
+entrée Paramètres et la coque du menu de la suite.
+
+Chaque contribution possède son ordre, son domaine de langue, sa page `exec`
+et son icône. Le tri numérique reproduit la séquence historique
+10/20/30/40/60/70/80/99 ; les autorisations `*_menu` continuent d'être
+appliquées après composition. Un plugin inactif ne peut plus laisser une entrée
+orpheline construite centralement.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
