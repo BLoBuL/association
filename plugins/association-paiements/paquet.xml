@@ -4,8 +4,6 @@
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
 	<necessite nom="bank" compatibilite="[6.4.0;[" />
 	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
-	<utilise nom="association_adhesions" compatibilite="[4.0.0;4.*]" />
-	<utilise nom="association_evenements" compatibilite="[4.0.0;4.*]" />
 	<pipeline nom="trig_bank_notifier_reglement" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="bank_redirige_apres_retour_transaction" inclure="association_paiements_pipelines.php" />
 </paquet>

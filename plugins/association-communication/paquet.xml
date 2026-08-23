@@ -5,7 +5,6 @@
 	<necessite nom="mailsubscribers" compatibilite="[3.7.0;[" />
 	<necessite nom="notifications" compatibilite="[3.7.0;[" />
 	<necessite nom="mailshot" compatibilite="[2.0.0;[" />
-	<utilise nom="association_adhesions" compatibilite="[4.0.0;4.*]" />
 	<pipeline nom="notifications_destinataires" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_notifications_metiers" action="" />
 	<pipeline nom="autoriser" inclure="association_communication_autoriser.php" />

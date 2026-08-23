@@ -18,6 +18,11 @@ $verifier(strpos($paquet, '<necessite nom="association_prets"') !== false, 'Le m
 $verifier(strpos($paquet, '<necessite nom="association_paiements"') !== false, 'Le module Paiements doit etre une dependance explicite.');
 $verifier(strpos($paquet, '<necessite nom="association_groupes"') !== false, 'Le module Groupes doit etre une dependance explicite.');
 $verifier(strpos($paquet, '<necessite nom="association_communication"') !== false, 'Le module Communication doit etre une dependance explicite.');
+$communication_paquet = file_get_contents($racine . '/plugins/association-communication/paquet.xml');
+$paiements_paquet = file_get_contents($racine . '/plugins/association-paiements/paquet.xml');
+$verifier(strpos($communication_paquet, 'nom="association_adhesions"') === false, 'Communication ne doit pas creer de cycle vers Adhesions.');
+$verifier(strpos($paiements_paquet, 'nom="association_adhesions"') === false, 'Paiements ne doit pas creer de cycle vers Adhesions.');
+$verifier(strpos($paiements_paquet, 'nom="association_evenements"') === false, 'Paiements ne doit pas creer de cycle vers Evenements.');
 $verifier(strpos($paquet, '<necessite nom="bank"') === false, 'Bank doit etre porte par le module Paiements.');
 $verifier(strpos($paquet, '<necessite nom="mailsubscribers"') === false, 'Mailsubscribers doit etre porte par le module Communication.');
 $verifier(strpos($paquet, '<necessite nom="inscription3"') === false, 'Inscription 3 ne doit plus etre une dependance.');
