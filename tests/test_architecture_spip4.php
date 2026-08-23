@@ -433,6 +433,12 @@ $verifier(
 	'La configuration du reseau FIAFE doit appartenir au module Evenements.'
 );
 $verifier(
+	strpos($configuration_socle, 'function maintenance_build_human_summary(') === false
+		&& strpos($configuration_socle, 'Remplacement ciblé') === false
+		&& strpos($configuration_socle, "if (isset(\$resume) && is_array(\$resume))") === false,
+	'Le formulaire racine ne doit plus contenir le prototype global mort du rapport de maintenance.'
+);
+$verifier(
 	strpos($configuration_adhesions, 'association_evenements_configurer_saisies') === false
 		&& strpos($configuration_adhesions, 'association_paiements_configurer_saisies') === false,
 	'Adhesions ne doit pas orchestrer la configuration des autres modules.'

@@ -608,6 +608,18 @@ seulement la taille de lot ; Adhésions, Événements et Comptabilité valident
 leurs seuils respectifs. Le dry-run demandé depuis le privé reste forcé, quelle
 que soit la valeur stockée de l’exécution planifiée.
 
+## Lot 52 : suppression du prototype global de rapport
+
+Le formulaire contenait après ses fonctions un prototype de rendu jamais
+exécuté dans le parcours CVT : il dépendait de variables locales hors portée,
+réécrivait potentiellement le même rapport et énumérait dans le socle douze
+clés de résultats métier. Ce bloc mort et son helper inutilisé sont supprimés.
+
+Le parcours effectif conserve la génération unique du JSON sécurisé et son
+affichage dans le message CVT. Le socle ne possède donc plus de catalogue des
+résultats produits par Adhésions, Événements, Comptabilité, Paiements et
+Communication.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les
