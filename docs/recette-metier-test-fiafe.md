@@ -518,3 +518,11 @@ Le serveur résout le fichier français depuis Dons, restitue les trois libellé
 représentatifs attendus et compile le CVT en 2038 octets sans erreur. La page
 privée complète conserve son garde d'autorisation, observé en CLI par sa 404
 normale hors session.
+
+## Lot 39 — domaine de langue Ventes
+
+Ventes utilise désormais son domaine `association_ventes`. Le commit
+`073d141` a été déployé atomiquement dans le plugin Ventes depuis l'artefact
+SHA-256 `e2e38b379650817fc8cb0e683c510ea2ae8e96faf3b224ad683280dfe9ef4c53`.
+Le serveur résout le domaine depuis Ventes, restitue les libellés de liste et
+d'ajout attendus puis compile le CVT en 2369 octets sans erreur.
