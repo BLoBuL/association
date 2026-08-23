@@ -58,7 +58,9 @@ function association_compta_association_rgpd_anonymiser_auteur($flux) {
 
 function association_compta_association_configuration_navigation($flux) {
 	$webmestre = !empty($flux['args']['webmestre']);
-	if ($webmestre || association_module_actif('comptes')) {
+	$comptes = $GLOBALS['association_metas']['comptes'] ?? false;
+	$comptes = in_array($comptes, [true, 1, '1', 'on', 'oui'], true);
+	if ($webmestre || $comptes) {
 		$flux['data']['comptabilite'] = ['ordre' => 100, 'label' => 'association_config:navigation_config_comptabilite'];
 	}
 	return $flux;

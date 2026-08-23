@@ -254,6 +254,10 @@ $verifier(
 	'Chaque plugin doit fournir ses propres entrees de navigation de configuration.'
 );
 $verifier(
+	strpos($pipelines_compta, "association_module_actif('comptes')") === false,
+	'Le fournisseur de navigation Comptabilite ne doit pas dependre du fichier d autorisations du socle.'
+);
+$verifier(
 	strpos($options_socle, 'association_cotisation_statuts') === false
 		&& strpos($options_adhesions, 'association_cotisation_statuts') !== false
 		&& strpos($options_socle, 'facteur_envoyer_notification_gis') === false
