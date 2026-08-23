@@ -600,3 +600,12 @@ Le serveur résout les clés historique, export dynamique et montant gratuit,
 compile le CVT de catégorie, puis valide encore les 10 plugins et leurs schémas.
 Les formulaires publics sans événement retournent normalement une sortie vide ;
 leurs parcours avec données restent couverts par la recette navigateur.
+
+## Lot 48 — domaine de langue Adhésions
+
+Le commit `36fba13` a été déployé atomiquement dans Adhésions depuis
+l’artefact SHA-256
+`3a7dd78ee1923359c792f3ba25f438661a6ddffd122c8b2453479fdf9da28f8e`.
+Le serveur résout un message de cotisation, le mois dynamique décembre et un
+compteur d’adhérents auparavant absent. Les deux CVT d’édition compilent, le
+profil public produit 19295 octets et l’installation complète reste valide.
