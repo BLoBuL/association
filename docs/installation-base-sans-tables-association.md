@@ -123,7 +123,7 @@ Les sept métas de schéma attendues après installation sont celles de la requ�
 de précontrôle, avec les valeurs suivantes :
 
 ```text
-association_base_version=1.6.0
+association_base_version=1.6.1
 association_adhesions_base_version=1.1.0
 association_compta_base_version=1.0.0
 association_dons_base_version=1.0.0

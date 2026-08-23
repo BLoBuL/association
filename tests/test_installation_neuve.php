@@ -52,7 +52,7 @@ function sql_delete($table, $where = '') {
 }
 
 require dirname(__DIR__) . '/association_administrations.php';
-association_upgrade('association_base_version', '1.6.0');
+association_upgrade('association_base_version', '1.6.1');
 
 $capture = $GLOBALS['association_installation_test'];
 $erreurs = array();
@@ -61,7 +61,7 @@ if ($capture['ecritures_meta']) {
 	$erreurs[] = 'une installation neuve ne doit pas fabriquer une ancienne meta de schema';
 }
 
-if (!$capture['maj'] || $capture['maj']['meta'] !== 'association_base_version' || $capture['maj']['cible'] !== '1.6.0') {
+if (!$capture['maj'] || $capture['maj']['meta'] !== 'association_base_version' || $capture['maj']['cible'] !== '1.6.1') {
 	$erreurs[] = 'maj_plugin() ne recoit pas la meta et la cible attendues';
 }
 
@@ -106,7 +106,7 @@ if (!in_array(array('association_import_champs_extras'), $create, true)) {
 
 // Les migrations historiques restent disponibles pour une base possedant une
 // ancienne meta : cette tranche ne doit pas les supprimer silencieusement.
-foreach (array('1.1.0', '1.2.0', '1.5.9', '1.6.0') as $version_legacy) {
+foreach (array('1.1.0', '1.2.0', '1.5.9', '1.6.0', '1.6.1') as $version_legacy) {
 	if (!array_key_exists($version_legacy, $maj)) {
 		$erreurs[] = 'migration historique absente: ' . $version_legacy;
 	}

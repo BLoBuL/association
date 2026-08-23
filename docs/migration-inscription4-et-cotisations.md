@@ -15,14 +15,26 @@ internes d'Inscription 4, ni dupliquer sa gestion des champs auteurs.
 
 `spip_asso_comptes` devient le journal comptable. Les champs métier historiques
 de cotisation sont copiés dans `spip_asso_cotisations` lors de la mise à jour
-du schéma `1.6.0` :
+des schémas `1.6.0` et `1.6.1` :
 
 - auteur, catégorie et transaction ;
 - contexte inscription/réinscription ;
 - statut métier ;
-- dates de création et de validité ;
+- date de création ;
 - montant et devise ;
 - lien optionnel vers l'écriture comptable.
+
+La devise est résolue, dans l'ordre, depuis la transaction Bank, la catégorie
+de cotisation, puis la devise par défaut du site. `spip_asso_comptes.id_objet`
+est actualisé avec le nouvel `id_cotisation` lorsque l'écriture porte
+`objet='cotisation'`.
+
+Les anciennes écritures ne conservaient aucune période de validité propre à
+chaque cotisation. `date_debut_validite` et `date_fin_validite` restent donc à
+`NULL` pour l'historique : recopier la validité actuelle de l'auteur donnerait
+une date fausse aux cotisations antérieures. Ces champs seront alimentés lors
+des nouvelles adhésions dès que la règle de période sera enregistrée au moment
+de leur validation.
 
 La migration est idempotente et conserve temporairement les anciennes colonnes
 de `spip_asso_comptes` pendant la transition. Les écritures passent par

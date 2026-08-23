@@ -5,7 +5,7 @@
 	etat="dev"
 	compatibilite="[4.0.0;4.*]"
 	logo="logo.jpg"
-	schema="1.6.0"
+	schema="1.6.1"
 	documentation="https://assistance.blobul.com"
 >
 	<nom>BLoBuL Association</nom>

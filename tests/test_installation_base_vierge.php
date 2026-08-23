@@ -16,7 +16,7 @@ if (preg_match('/spip_asso_(?!ciation_metas)/', $branche_create)) {
 }
 
 $schemas = array(
-	'association_base_version' => '1.6.0',
+	'association_base_version' => '1.6.1',
 	'association_adhesions_base_version' => '1.1.0',
 	'association_compta_base_version' => '1.0.0',
 	'association_dons_base_version' => '1.0.0',
@@ -43,4 +43,3 @@ if ($erreurs) {
 }
 
 echo "Installation sur base vierge et métas de schéma documentées.\n";
-
