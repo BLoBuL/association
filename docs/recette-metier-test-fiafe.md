@@ -380,6 +380,13 @@ Les trois modèles de champs auteurs sont déplacés dans Adhésions et le modè
 `webinaire_fiafe` dans Événements, tout en conservant leurs chemins logiques
 pour les imports et migrations existants.
 
+Le commit `ccd9fdf` a été déployé atomiquement dans le socle, Adhésions et
+Événements depuis l'artefact SHA-256
+`129a059ead47adac15277ba045b21f171929488ae284108fb49ae00d365822ae`.
+Le SPIP servi résout les trois modèles auteurs depuis
+`plugins/association-adhesions/yaml` et le modèle webinaire depuis
+`plugins/association-evenements/yaml`, avec une empreinte calculable pour chacun.
+
 Le commit `a26e69f` a été déployé atomiquement dans le socle, Adhésions et
 Événements depuis l'artefact SHA-256
 `9115b437a4364cde1582e1f72c265d36c8568d2c88cbfcc8a85c3fa474c68b4b`.
