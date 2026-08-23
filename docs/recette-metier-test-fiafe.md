@@ -289,3 +289,15 @@ plugin Adhésions actif ; le fichier n'existe plus dans le socle.
 Une exécution SPIP réelle avec un critère vide charge le filtre, produit le
 formulaire HTML, son action signée et le bouton de génération CSV sans erreur.
 Les 66 tests autonomes passent avant déploiement.
+
+## Lot 19 — fonctions transversales du socle
+
+Le commit `5709134` a été déployé dans le socle depuis l'artefact SHA-256
+`230fd8a6941c610be63fedd8c3e15bf83d1f4a8ac63088d5139b93deeb731cfc`.
+La suite comprend désormais 67 tests autonomes, tous validés.
+
+Dans le SPIP servi, l'agrégateur RGPD reste chargé, le nom d'export produit
+`export-association-test-fiafe_blobul_com-42-2026-08-23.json`, les valeurs PHP
+sont correctement détectées et désérialisées, et le filtre scalaire conserve
+son comportement historique. Le formulaire de configuration se charge encore
+et son panneau d'informations contient son fieldset attendu.
