@@ -435,6 +435,13 @@ mais ses gabarits HTML et YAML sont fournis par Communication. Elle sélectionne
 un formulaire Formidable publié pour les parcours de communication et ne
 constitue donc plus une responsabilité du socle.
 
+## Lot 32 : composant CVT Formidable dans Communication
+
+Le composant partagé `formulaires/inc-formidable-boutons` est fourni par
+Communication, sous le même chemin SPIP. Les parcours Communication,
+Événements et Comptabilité conservent leurs inclusions existantes tandis que
+le socle ne porte plus ce fragment d'intégration métier.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

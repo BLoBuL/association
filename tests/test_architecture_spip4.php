@@ -84,6 +84,11 @@ $verifier(
 		&& is_file($racine . '/plugins/association-communication/saisies/formulaires.yaml'),
 	'La saisie de formulaires doit appartenir au plugin Communication.'
 );
+$verifier(
+	!is_file($racine . '/formulaires/inc-formidable-boutons.html')
+		&& is_file($racine . '/plugins/association-communication/formulaires/inc-formidable-boutons.html'),
+	'Le composant de boutons Formidable doit appartenir au plugin Communication.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {
