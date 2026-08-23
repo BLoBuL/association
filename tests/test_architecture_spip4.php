@@ -41,9 +41,10 @@ $verifier(strpos($schema, "spip_asso_dons") === false, 'Le socle ne doit plus po
 $verifier(strpos($schema, "spip_asso_ventes") === false, 'Le socle ne doit plus posseder les ventes.');
 $verifier(strpos($schema, "spip_asso_prets") === false, 'Le socle ne doit plus posseder les prets.');
 $verifier(!preg_match('/\"(?:reinscription|statut_cotisation)\"\s*=>/', $schema), 'Le schema des comptes ne doit plus declarer de champs metier de cotisation.');
+$evenements_pipelines = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
 $verifier(
-	strpos($schema, "include_once __DIR__ . '/association_champs_extras.php'") !== false,
-	'La declaration des champs extras doit rester chargeable pendant l installation du plugin.'
+	strpos($evenements_pipelines, "base/association_champs_extras.php") !== false,
+	'La declaration des champs extras de spip_evenements doit appartenir au module Evenements.'
 );
 $verifier(!is_dir($racine . '/exec') || count(glob($racine . '/exec/*')) === 0, 'Les pages privees ne doivent plus utiliser exec/.');
 $verifier(!is_file($racine . '/inc/page.php'), 'L ancien moteur de rendu PHP inc/page.php doit etre supprime.');
@@ -51,25 +52,41 @@ $verifier(!is_file($racine . '/inc/navigation_modules.php'), 'L ancienne navigat
 $verifier(!is_file($racine . '/balise/autoriser_page.php'), 'La balise d autorisation des anciens exec doit etre supprimee.');
 $verifier(!is_file($racine . '/squelettes/profil.html'), 'La page profil doit appartenir au module Adhesions.');
 $verifier(!is_file($racine . '/squelettes/evenement.html'), 'La page evenement doit appartenir au module Evenements.');
-$cotisations_prive = file_get_contents($racine . '/prive/squelettes/contenu/cotisations.html');
+$cotisations_prive = file_get_contents($racine . '/plugins/association-adhesions/prive/squelettes/contenu/cotisations.html');
 $verifier(
 	strpos($cotisations_prive, '#AUTORISER{cotisations_menu}') !== false,
 	'La page privee des cotisations doit appliquer son autorisation SPIP.'
 );
 
-$pages_migrees = array(
-	'action_activites', 'activites', 'adherents', 'bilan', 'comptes',
-	'configurer_association', 'cotisations', 'destinations', 'dons',
-	'edit_compte', 'edit_cotisation', 'edit_destination', 'edit_don',
-	'edit_email_collectif_adherent', 'edit_plan', 'edit_pret',
-	'edit_ressource', 'edit_vente', 'plan_comptable', 'prets',
-	'ressources', 'ventes', 'voir_activites', 'voir_adherent',
+$pages_socle = array(
+	'configurer_association',
 );
-foreach ($pages_migrees as $page) {
+foreach ($pages_socle as $page) {
 	$verifier(
 		is_file($racine . '/prive/squelettes/contenu/' . $page . '.html'),
 		'Le squelette prive contenu/' . $page . '.html est manquant.'
 	);
+}
+
+$pages_modules = array(
+	'association-adhesions' => array('adherents', 'cotisations', 'edit_cotisation', 'voir_adherent'),
+	'association-evenements' => array('action_activites', 'activites', 'voir_activites'),
+	'association-compta' => array('bilan', 'comptes', 'destinations', 'edit_compte', 'edit_destination', 'edit_plan', 'plan_comptable'),
+	'association-dons' => array('dons', 'edit_don'),
+	'association-ventes' => array('ventes', 'edit_vente'),
+	'association-prets' => array('prets', 'ressources', 'edit_pret', 'edit_ressource'),
+);
+foreach ($pages_modules as $module => $pages) {
+	foreach ($pages as $page) {
+		$verifier(
+			is_file($racine . '/plugins/' . $module . '/prive/squelettes/contenu/' . $page . '.html'),
+			'Le squelette prive ' . $page . ' doit appartenir au module ' . $module . '.'
+		);
+		$verifier(
+			!is_file($racine . '/prive/squelettes/contenu/' . $page . '.html'),
+			'Le socle contient encore le squelette metier ' . $page . '.'
+		);
+	}
 }
 
 $iterateur_prive = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/prive'));

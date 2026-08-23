@@ -7,6 +7,7 @@ ini_set('display_errors', 1);
 
 define('PLUGIN_ROOT', dirname(__DIR__));
 if (!defined('_ECRIRE_INC_VERSION')) define('_ECRIRE_INC_VERSION', true);
+require_once PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_fonctions.php';
 if (!function_exists('pipeline')) { function pipeline($nom, $flux) { return $flux; } }
 
 // Minimal stubs
@@ -52,11 +53,11 @@ if (!defined('_LOG_CRITIQUE')) define('_LOG_CRITIQUE', 'CRIT');
 
 // Inclure l'implémentation réelle des helpers avant le backend pour
 // éviter les redéclarations lors de l'inclusion des fichiers.
-include_once PLUGIN_ROOT . '/formulaires/inc/inscription_evenement.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/inscription_evenement.php';
 
 // Include backend
-include_once PLUGIN_ROOT . '/inc/diagnostic_formulaire_inscription.php';
-include_once PLUGIN_ROOT . '/formulaires/inc/inscription_evenement_backend.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/diagnostic_formulaire_inscription.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/inscription_evenement_backend.php';
 
 // Setup scenario: famille active, visiteur connecté, mais aucune sélection
 $GLOBALS['association_metas']['meta_cfg_event_config_accompagnants'] = 'membre_famille';

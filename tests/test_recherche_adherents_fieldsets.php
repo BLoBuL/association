@@ -10,7 +10,7 @@ function saisies_tableau2chaine($data) {
     return $data;
 }
 
-require_once dirname(__DIR__) . '/formulaires/inc/adherents_recherche_avancee.php';
+require_once dirname(__DIR__) . '/plugins/association-adhesions/formulaires/inc/adherents_recherche_avancee.php';
 
 $fieldset_vide = array(
     'saisie' => 'fieldset',

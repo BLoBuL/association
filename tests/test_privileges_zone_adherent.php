@@ -12,7 +12,7 @@ function sql_allfetsel($select, $table, $where = '') {
     }, $GLOBALS['association_test_zones_liees']);
 }
 
-require_once dirname(__DIR__) . '/inc/fonctions/priviliges_adherent.php';
+require_once dirname(__DIR__) . '/plugins/association-adhesions/inc/fonctions/priviliges_adherent.php';
 
 function association_test_zone_assert($condition, $message) {
     if (!$condition) {

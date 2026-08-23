@@ -97,7 +97,7 @@ $GLOBALS['association_metas'] = array(
     'date_scolaire_nouvelle_entreprise' => '31/08',
 );
 
-include_once PLUGIN_ROOT . '/inc/fonctions/association_validite_calculator.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/fonctions/association_validite_calculator.php';
 
 $tests = array(
     'reinscription_adherent_actif_vers_campagne_suivante' => array(

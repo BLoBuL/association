@@ -1,7 +1,8 @@
 <?php
 
 define('_ECRIRE_INC_VERSION', 1);
-require_once dirname(__DIR__) . '/base/association.php';
+require_once dirname(__DIR__) . '/plugins/association-evenements/association_evenements_pipelines.php';
+require_once dirname(__DIR__) . '/plugins/association-adhesions/association_adhesions_pipelines.php';
 
 $saisies = array(
     array(

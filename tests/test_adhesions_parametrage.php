@@ -31,8 +31,8 @@ function sql_insertq($table, $data) { $GLOBALS['test_ecriture'] = $data; return 
 function sql_updateq($table, $data, $where) { $GLOBALS['test_ecriture'] = $data; return true; }
 function generer_url_ecrire($page) { return $page; }
 
-include_once PLUGIN_ROOT . '/inc/cotisations_devises.php';
-include_once PLUGIN_ROOT . '/formulaires/editer_asso_categorie_cotisation.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations_devises.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/formulaires/editer_asso_categorie_cotisation.php';
 
 function test_assert($condition, $message) {
     if (!$condition) { echo "ECHEC: $message\n"; exit(1); }

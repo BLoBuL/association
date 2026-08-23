@@ -7,6 +7,8 @@ if (!defined('ASSOCIATION_TEST_PLUGIN_ROOT')) {
     define('ASSOCIATION_TEST_PLUGIN_ROOT', dirname(__DIR__, 2));
 }
 
+require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_fonctions.php';
+
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
@@ -279,6 +281,12 @@ function include_spip($path) {
     $candidats = array(
         ASSOCIATION_TEST_PLUGIN_ROOT . '/' . $path . '.php',
         ASSOCIATION_TEST_PLUGIN_ROOT . '/' . $path,
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-compta/' . $path . '.php',
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-compta/' . $path,
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-adhesions/' . $path . '.php',
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-adhesions/' . $path,
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/' . $path . '.php',
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/' . $path,
     );
 
     foreach ($candidats as $candidat) {

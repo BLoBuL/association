@@ -138,7 +138,7 @@ function association_test_run_helpers_suite() {
             association_test_assert_contains('Lea', ie_construire_participants_json($data), 'Le JSON doit contenir le second participant');
         },
         'recapitulatif_multi_public_semantique' => function () {
-            $template = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement_multi_public.html');
+            $template = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_multi_public.html');
             $lang = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/lang/association_fr.php');
 
             association_test_assert_contains('<table class="inscription-evenement-public__recap-table">', $template, 'Le recapitulatif doit utiliser un tableau semantique');

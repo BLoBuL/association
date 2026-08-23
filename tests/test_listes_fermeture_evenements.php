@@ -9,7 +9,8 @@ if (!function_exists('agenda_jourdecal')) {
 }
 
 require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/association_fonctions.php';
-require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/inc/evenement_fermeture.php';
+require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-communication/association_communication_fonctions.php';
+require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/inc/evenement_fermeture.php';
 
 function association_test_run_listes_fermeture_suite() {
     return association_test_run_cases('listes_fermeture_evenements', array(

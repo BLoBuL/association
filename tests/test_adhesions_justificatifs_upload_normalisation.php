@@ -10,7 +10,7 @@ function test_assert($condition, $message) {
     echo "OK: $message\n";
 }
 
-include_once PLUGIN_ROOT . '/inc/api_cotisations.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/api_cotisations.php';
 
 $synthetiques = array(
     'document_justificatif' => array(

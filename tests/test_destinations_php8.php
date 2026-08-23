@@ -1,6 +1,6 @@
 <?php
 
-$source = file_get_contents(dirname(__DIR__) . '/formulaires/inc/destinations.php');
+$source = file_get_contents(dirname(__DIR__) . '/plugins/association-compta/formulaires/inc/destinations.php');
 
 if (preg_match('/\x60[^\x60]+\x60/', $source)) {
 	fwrite(STDERR, "Une exécution shell PHP subsiste dans la gestion des destinations\n");

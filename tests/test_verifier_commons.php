@@ -7,6 +7,7 @@ ini_set('display_errors', 1);
 
 define('PLUGIN_ROOT', dirname(__DIR__));
 if (!defined('_ECRIRE_INC_VERSION')) define('_ECRIRE_INC_VERSION', true);
+require_once PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_fonctions.php';
 if (!function_exists('pipeline')) { function pipeline($nom, $flux) { return $flux; } }
 
 // --- Stubs minimalistes SPIP / helpers (simples, suffisants pour verifier) ---
@@ -71,9 +72,9 @@ if (!function_exists('gestions_places')) {
 }
 
 // Include real code
-include_once PLUGIN_ROOT . '/formulaires/inc/inscription_evenement.php';
-include_once PLUGIN_ROOT . '/inc/diagnostic_formulaire_inscription.php';
-include_once PLUGIN_ROOT . '/formulaires/inc/inscription_evenement_backend.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/inscription_evenement.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/diagnostic_formulaire_inscription.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/inscription_evenement_backend.php';
 
 // Helper to run scenario
 function run_scenario($name, $post_seed, $meta_cfg_accompagnants, $visiteur_session = array(), $expect_keys = array(), $deny_keys = array()){

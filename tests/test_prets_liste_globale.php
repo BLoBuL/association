@@ -1,6 +1,6 @@
 <?php
 
-$racine = dirname(__DIR__);
+$racine = dirname(__DIR__) . '/plugins/association-prets';
 $page = file_get_contents($racine . '/prive/squelettes/contenu/prets.html');
 $include = file_get_contents($racine . '/prive/squelettes/inclure/prets_ressource.html');
 $edition = file_get_contents($racine . '/prive/squelettes/contenu/edit_pret.html');
@@ -29,7 +29,7 @@ if (!str_contains($edition, '<h1 class="grostitre">')) {
 }
 if (!str_contains($formulaire_ressource, 'devise=#ENV{devise}')
 	|| str_contains($formulaire_ressource, '#META{/association/symbole}')
-	|| !str_contains($charger_ressource, 'association_cotisation_devise_defaut()')) {
+	|| !str_contains($charger_ressource, 'intl_devise_defaut()')) {
 	fwrite(STDERR, "Le prix de location ne reprend pas la devise Intl du site.\n");
 	exit(1);
 }

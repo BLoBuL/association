@@ -2,7 +2,7 @@
 
 $racine = dirname(__DIR__);
 $administration = file_get_contents($racine . '/association_administrations.php');
-$stockage = file_get_contents($racine . '/inc/cotisations_stockage.php');
+$stockage = file_get_contents($racine . '/plugins/association-adhesions/inc/cotisations_stockage.php');
 $paquet = file_get_contents($racine . '/paquet.xml');
 $documentation = file_get_contents($racine . '/docs/migration-inscription4-et-cotisations.md');
 

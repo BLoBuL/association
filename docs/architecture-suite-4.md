@@ -29,6 +29,13 @@ préfixe `blobul-`. Les anciens dépôts séparés sont uniquement des sources
 historiques : le développement, les commits et les versions partent désormais
 de ce monorepo.
 
+L'extraction des implémentations est suivie dans
+[`extraction-logiques-socle.md`](./extraction-logiques-socle.md). Les lots Dons,
+Ventes, Prêts, Comptabilité, Adhésions, Événements, Communication, Groupes et
+Paiements possèdent désormais leurs actions, CVT, pages, autorisations, options
+et pipelines métier. Le socle conserve les contrats transversaux, la
+configuration commune et la compatibilité de migration.
+
 ## Règles SPIP
 
 Chaque plugin publié suit la structure d'un plugin-dist SPIP :

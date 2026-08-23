@@ -2,5 +2,5 @@
 	<nom>Association - Groupes</nom>
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
-	<necessite nom="cextras" compatibilite="[3.0.5;[" />
+	<pipeline nom="autoriser" inclure="association_groupes_autoriser.php" />
 </paquet>

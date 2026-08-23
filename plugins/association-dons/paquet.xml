@@ -2,6 +2,9 @@
 	<nom>Association - Dons</nom>
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
+	<options>association_dons_options.php</options>
+	<pipeline nom="autoriser" inclure="association_dons_autoriser.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_dons.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_dons.php" />
+	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
 </paquet>

@@ -2,10 +2,10 @@
 
 $racine = dirname(__DIR__);
 $fichiers = array(
-	'formulaires/editer_asso_dons.php',
-	'formulaires/editer_asso_ventes.php',
-	'formulaires/editer_asso_ressources.php',
-	'formulaires/editer_asso_plan.php',
+	'plugins/association-dons/formulaires/editer_asso_dons.php',
+	'plugins/association-ventes/formulaires/editer_asso_ventes.php',
+	'plugins/association-prets/formulaires/editer_asso_ressources.php',
+	'plugins/association-compta/formulaires/editer_asso_plan.php',
 	'formulaires/editer_asso_membres.php',
 );
 

@@ -36,7 +36,10 @@ $moduleNames = @(
 )
 $pluginNames = @('association') + $moduleNames
 
-$trackedFiles = @(& git -C $repositoryRoot ls-files)
+$trackedFiles = @(
+	& git -C $repositoryRoot ls-files --cached --others --exclude-standard |
+		Where-Object { Test-Path -LiteralPath (Join-Path $repositoryRoot ($_ -replace '/', [System.IO.Path]::DirectorySeparatorChar)) }
+)
 if ($LASTEXITCODE -ne 0 -or $trackedFiles.Count -eq 0) {
 	throw 'Impossible de lire la liste des fichiers versionnes avec git ls-files.'
 }

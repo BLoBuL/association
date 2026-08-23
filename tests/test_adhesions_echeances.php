@@ -11,7 +11,7 @@ function bank_devise_defaut() { return array('code' => 'EUR', 'symbole' => '€'
 function lire_config($cle) { return $cle === 'intl/devise_defaut' ? 'CNY' : null; }
 function association_log($canal, $message, $niveau = 'info') { $GLOBALS['test_logs'][] = array($canal, $message, $niveau); }
 
-include_once PLUGIN_ROOT . '/inc/cotisations.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations.php';
 
 function test_assert($condition, $message) {
     if (!$condition) { echo "ECHEC: $message\n"; exit(1); }

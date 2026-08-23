@@ -5,6 +5,7 @@ ini_set('display_errors', 1);
 define('PLUGIN_ROOT', dirname(__DIR__));
 function include_spip($path) {
     $try = PLUGIN_ROOT . '/' . $path . '.php';
+	if (!file_exists($try)) $try = PLUGIN_ROOT . '/plugins/association-evenements/' . $path . '.php';
     if (file_exists($try)) include_once $try;
 }
 function _request($k = null) { global $_R; if ($k === null) return $_R; return isset($_R[$k]) ? $_R[$k] : null; }

@@ -1,6 +1,6 @@
 <?php
 
-$source = file_get_contents(dirname(__DIR__) . '/formulaires/inc/inscription_evenement.php');
+$source = file_get_contents(dirname(__DIR__) . '/plugins/association-evenements/formulaires/inc/inscription_evenement.php');
 
 if (!str_contains($source, 'if (!is_scalar($id_participant))')
 	|| !str_contains($source, '$id_participant = trim((string) $id_participant)')

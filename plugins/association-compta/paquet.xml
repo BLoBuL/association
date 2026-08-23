@@ -10,7 +10,12 @@
 	<!-- Journal, plan comptable et destinations analytiques -->
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
+	<options>association_compta_options.php</options>
+	<pipeline nom="autoriser" inclure="association_compta_autoriser.php" />
+	<pipeline nom="post_insertion" inclure="association_compta_pipelines.php" />
+	<pipeline nom="post_edition" inclure="association_compta_pipelines.php" />
 	<necessite nom="intl" compatibilite="[1.3.0;[" />
+	<style source="prive/themes/spip/css/comptabilite.css" type="prive" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_compta.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_compta.php" />
 </paquet>

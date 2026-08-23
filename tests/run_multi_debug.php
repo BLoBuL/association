@@ -56,10 +56,10 @@ if (!function_exists('generer_famille_adherent')) {
 }
 
 // include backend
-include_once PLUGIN_ROOT . '/formulaires/inc/inscription_evenement_backend.php';
+include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/inscription_evenement_backend.php';
 // Ensure saisies helpers are available for the isolated test
 if (!function_exists('champs_saisies_famille')) {
-    include_once PLUGIN_ROOT . '/formulaires/inc/inscription_evenement_saisies.php';
+    include_once PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc/inscription_evenement_saisies.php';
 }
 // Minimal SQL stubs for the test harness
 global $_TEST_SQL_RESULT, $_TEST_SQL_INDEX;

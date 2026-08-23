@@ -113,9 +113,9 @@ function modifier_compte_cotisation($date, $montant, $justification, $imputation
 function changer_statut_cotisation($id_compte, $origine = '', $notifier = true) {
     $GLOBALS['test_statuts'][] = compact('id_compte', 'origine', 'notifier');
 }
-include_once PLUGIN_ROOT . '/inc/cotisations_devises.php';
-include_once PLUGIN_ROOT . '/inc/cotisations_stockage.php';
-include_once PLUGIN_ROOT . '/inc/api_cotisations.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations_devises.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations_stockage.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/api_cotisations.php';
 
 function test_assert($condition, $message) {
     if (!$condition) {

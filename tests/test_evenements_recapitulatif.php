@@ -177,8 +177,8 @@ function association_test_run_recapitulatif_suite() {
         },
         'gabarits_multi_postent_le_marqueur_recapitulatif' => function () {
             $gabarits = array(
-                ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement_multi.html',
-                ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement_multi_public.html',
+                ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_multi.html',
+                ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_multi_public.html',
             );
 
             foreach ($gabarits as $gabarit) {
@@ -188,19 +188,19 @@ function association_test_run_recapitulatif_suite() {
             }
         },
         'gabarits_nettoient_les_erreurs_et_ne_fuitent_pas_la_condition_famille' => function () {
-            $fonctions_plugin = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/association_fonctions.php');
+            $fonctions_plugin = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_fonctions.php');
             association_test_assert_true($fonctions_plugin !== false, 'Le fichier de fonctions du plugin doit etre lisible');
             association_test_assert_contains(
                 'function ie_message_erreur_texte(',
                 $fonctions_plugin,
-                'Le filtre des gabarits doit etre declare dans association_fonctions.php pour etre disponible au calcul SPIP'
+                'Le filtre des gabarits doit etre declare dans le fichier de fonctions du plugin Evenements pour etre disponible au calcul SPIP'
             );
 
             $gabarits = array(
-                ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement.html',
-                ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement_multi.html',
-                ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement_public.html',
-                ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement_multi_public.html',
+                ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement.html',
+                ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_multi.html',
+                ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_public.html',
+                ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_multi_public.html',
             );
 
             foreach ($gabarits as $gabarit) {
@@ -210,7 +210,7 @@ function association_test_run_recapitulatif_suite() {
                 association_test_assert_true(strpos($contenu, '#ENV*{message_erreur}') === false, 'Le HTML d erreur ne doit pas etre injecte brut : ' . basename($gabarit));
             }
 
-            $simple = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement.html');
+            $simple = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement.html');
             association_test_assert_true(
                 strpos($simple, '[(#CONFIG{association_metas/meta_cfg_event_config_accompagnants}|=={membre_famille}|oui)') === false,
                 'La condition SPIP autour du JavaScript ne doit pas pouvoir fuiter dans la page'
@@ -218,7 +218,7 @@ function association_test_run_recapitulatif_suite() {
             association_test_assert_contains('attachMemberHandlers();', $simple, 'Le rechargement des membres reste disponible et inoffensif pour tous les modes');
         },
         'navigation_etapes_publique_resiste_aux_styles_saisies' => function () {
-            $gabarit = ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement_multi_public.html';
+            $gabarit = ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_multi_public.html';
             $contenu = file_get_contents($gabarit);
 
             association_test_assert_true($contenu !== false, 'Le gabarit public doit etre lisible');

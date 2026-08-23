@@ -41,8 +41,8 @@ function test_assert($condition, $message) {
     echo "OK: $message\n";
 }
 
-include_once PLUGIN_ROOT . '/inc/cotisations.php';
-include_once PLUGIN_ROOT . '/inc/notifications_cotisations_audit.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/notifications_cotisations_audit.php';
 
 $audit = notifications_cotisations_audit();
 $resume = notifications_cotisations_audit_resume($audit);
@@ -63,8 +63,8 @@ $scenario_recu = $scenarios_recu[0];
 $audit_recu = notifications_cotisations_audit(array($scenario_recu));
 test_assert($audit_recu[0]['statut'] === 'attention', 'un recu desactive est signale sans etre considere comme une panne');
 
-$source_cotisations = file_get_contents(PLUGIN_ROOT . '/inc/cotisations.php');
-$source_action = file_get_contents(PLUGIN_ROOT . '/action/valider_justificatifs_cotisation.php');
+$source_cotisations = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations.php');
+$source_action = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/action/valider_justificatifs_cotisation.php');
 $source_action = str_replace("\r\n", "\n", $source_action);
 test_assert(!str_contains($source_cotisations, "bank_paiement/email_ticket_admin"), 'les notifications de cotisation ne dependent plus de email_ticket_admin');
 test_assert(str_contains($source_cotisations, "'documents_recus'") && str_contains($source_cotisations, "'justificatifs_controles'"), 'le contexte email expose l etat documentaire');
@@ -72,7 +72,7 @@ test_assert(str_contains($source_action, "'justificatifs-a-revoir'") && !str_con
 test_assert(str_contains($source_action, "str_replace('&amp;', '&', \$retour)"), 'la redirection de validation restaure les separateurs HTML');
 test_assert(str_contains($source_action, "\$resultat['message'],\n        '&'"), 'la redirection impose un separateur HTTP');
 foreach (array('cotisation-attente_admin', 'cotisation-demande_admin', 'cotisation-encaissement_admin') as $template_admin) {
-    $source_template = file_get_contents(PLUGIN_ROOT . '/notifications/' . $template_admin . '.html');
+    $source_template = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/notifications/' . $template_admin . '.html');
     test_assert(str_contains($source_template, 'justificatifs_cotisation_admin'), "le template $template_admin affiche l etat documentaire conditionnel");
 }
 

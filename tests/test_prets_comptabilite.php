@@ -1,8 +1,9 @@
 <?php
 
-$formulaire = file_get_contents(dirname(__DIR__) . '/formulaires/editer_asso_pret.php');
-$action = file_get_contents(dirname(__DIR__) . '/action/supprimer_prets.php');
-$helper = file_get_contents(dirname(__DIR__) . '/inc/prets.php');
+$racine_prets = dirname(__DIR__) . '/plugins/association-prets';
+$formulaire = file_get_contents($racine_prets . '/formulaires/editer_asso_pret.php');
+$action = file_get_contents($racine_prets . '/action/supprimer_prets.php');
+$helper = file_get_contents($racine_prets . '/inc/prets.php');
 
 foreach (array('$compte[\'objet\'] = \'pret\'', '$compte[\'id_objet\'] = $id_pret') as $attendu) {
 	if (strpos($formulaire, $attendu) === false) {

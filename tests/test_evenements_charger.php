@@ -371,7 +371,7 @@ function association_test_run_charger_suite() {
 
             $res = formulaires_inscription_evenement_multi_charger_dist('', 501);
             $noms = association_test_collect_names($res['_saisies']);
-            $navigation = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/prive/squelettes/navigation/editer_asso_activite.html');
+            $navigation = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/prive/squelettes/navigation/editer_asso_activite.html');
 
             association_test_assert_same(1, $res['id_evenement'], 'La modification doit retrouver son evenement');
             association_test_assert_same(501, $res['id_activite'], 'La modification doit conserver son activite');

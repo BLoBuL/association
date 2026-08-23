@@ -28,7 +28,7 @@ function sql_allfetsel($select, $table, $where, $group = '', $order = '') {
 	return array(array('id_evenement' => 184));
 }
 
-require dirname(__DIR__) . '/prive/squelettes/contenu/activites_fonctions.php';
+require dirname(__DIR__) . '/plugins/association-evenements/prive/squelettes/contenu/activites_fonctions.php';
 
 $contexte = association_activites_contexte(13);
 

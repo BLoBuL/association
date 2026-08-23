@@ -14,6 +14,20 @@
 
 	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
 	<necessite nom="intl" compatibilite="[1.3.0;[" />
+	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_communication" compatibilite="[4.0.0;4.*]" />
+	<options>association_adhesions_options.php</options>
+	<pipeline nom="autoriser" inclure="association_adhesions_autoriser.php" />
+	<pipeline nom="formulaire_charger" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="formulaire_verifier" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="pre_insertion" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="post_edition" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="afficher_contenu_objet" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="association_compta_cotisation_synchroniser" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="formulaire_saisies" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="saisies_afficher_si_saisies" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="i3_definition_champs" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="i3_verifier_formulaire" inclure="association_adhesions_pipelines.php" />
 
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_adhesions.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_adhesions.php" />

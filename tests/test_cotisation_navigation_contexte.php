@@ -1,9 +1,9 @@
 <?php
 
 $racine = dirname(__DIR__);
-$navigation = file_get_contents($racine . '/prive/squelettes/navigation/voir_adherent.html');
-$formulaire = file_get_contents($racine . '/formulaires/editer_asso_cotisation.php');
-$squelette = file_get_contents($racine . '/formulaires/editer_asso_cotisation.html');
+$navigation = file_get_contents($racine . '/plugins/association-adhesions/prive/squelettes/navigation/voir_adherent.html');
+$formulaire = file_get_contents($racine . '/plugins/association-adhesions/formulaires/editer_asso_cotisation.php');
+$squelette = file_get_contents($racine . '/plugins/association-adhesions/formulaires/editer_asso_cotisation.html');
 
 $erreurs = array();
 

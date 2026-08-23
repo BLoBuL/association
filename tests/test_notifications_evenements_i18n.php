@@ -5,7 +5,7 @@ require_once __DIR__ . '/inc/bootstrap_evenements_cli.php';
 function association_test_notifications_charger_langue($langue) {
     $index = 'association_test_notifications_' . $langue;
     $GLOBALS['idx_lang'] = $index;
-    include ASSOCIATION_TEST_PLUGIN_ROOT . '/lang/notifications_' . $langue . '.php';
+    include ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-communication/lang/notifications_' . $langue . '.php';
     return $GLOBALS[$index] ?? array();
 }
 
@@ -18,13 +18,16 @@ function association_test_notifications_placeholders($texte) {
 
 function association_test_run_notifications_evenements_i18n_suite() {
     $fichiers = array_merge(
-        glob(ASSOCIATION_TEST_PLUGIN_ROOT . '/notifications/*activite*.html'),
-        glob(ASSOCIATION_TEST_PLUGIN_ROOT . '/notifications/inc/inc-*.html')
+        glob(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/notifications/*activite*.html'),
+        glob(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/notifications/inc/inc-*.html')
     );
-    $fichiers[] = ASSOCIATION_TEST_PLUGIN_ROOT . '/inc/fonctions/facteur_envoyer_mail_activites.php';
+    $fichiers[] = ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/inc/fonctions/facteur_envoyer_mail_activites.php';
 
     $cles = array();
     $erreurs = array();
+    if (count($fichiers) < 2) {
+        $erreurs[] = 'aucun corpus de notifications événements trouvé';
+    }
     foreach ($fichiers as $fichier) {
         $contenu = file_get_contents($fichier);
         if (preg_match('/<:association:|[\'\"]association:/', $contenu)) {

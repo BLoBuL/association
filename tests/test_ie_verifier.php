@@ -2,6 +2,7 @@
 // Test harness minimal pour ie_verifier_commons
 // Définitions minimales des fonctions SPIP/utilitaires pour exécuter la vérification
 if (!defined('_ECRIRE_INC_VERSION')) define('_ECRIRE_INC_VERSION', '1');
+require_once dirname(__DIR__) . '/plugins/association-evenements/association_evenements_fonctions.php';
 if (!function_exists('pipeline')) { function pipeline($nom, $flux) { return $flux; } }
 
 if (!function_exists('include_spip')){
@@ -13,6 +14,8 @@ if (!function_exists('include_spip')){
         // remplacer les préfixes 'formulaires/' ou 'inc/' si fournis
         $try1 = $base . DIRECTORY_SEPARATOR . $path;
         if (file_exists($try1)) { require_once $try1; return true; }
+		$tryModule = $base . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'association-evenements' . DIRECTORY_SEPARATOR . $path;
+		if (file_exists($tryModule)) { require_once $tryModule; return true; }
         // tenter chemins usuels
         $try2 = $base . DIRECTORY_SEPARATOR . 'formulaires' . DIRECTORY_SEPARATOR . $path;
         if (file_exists($try2)) { require_once $try2; return true; }
@@ -80,7 +83,7 @@ if (!function_exists('_T')){
 }
 
 // Inclure le backend modifié
-require_once __DIR__ . '/../formulaires/inc/inscription_evenement_backend.php';
+require_once __DIR__ . '/../plugins/association-evenements/formulaires/inc/inscription_evenement_backend.php';
 
 function run_test($name, $mode, $id_evenement, $id_activite, $post) {
     echo "\n=== TEST: $name ===\n";

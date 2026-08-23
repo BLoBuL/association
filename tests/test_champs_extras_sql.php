@@ -1,6 +1,6 @@
 <?php
 
-$source = file_get_contents(dirname(__DIR__) . '/base/association_champs_extras.php');
+$source = file_get_contents(dirname(__DIR__) . '/plugins/association-evenements/base/association_champs_extras.php');
 $erreurs = array();
 
 if (preg_match('/["\']sql["\'][^\r\n]*\bDEFAUT\b/', $source)) {

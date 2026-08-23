@@ -1,6 +1,6 @@
 <?php
 
-$source = file_get_contents(dirname(__DIR__) . '/prive/squelettes/contenu/ventes.html');
+$source = file_get_contents(dirname(__DIR__) . '/plugins/association-ventes/prive/squelettes/contenu/ventes.html');
 
 if (!str_contains($source, '#SET{peut_supprimer,#AUTORISER{supprimer,vente,#ID_VENTE}}')
 	|| !str_contains($source, '#GET{peut_supprimer}|oui')

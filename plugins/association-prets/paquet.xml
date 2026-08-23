@@ -2,6 +2,10 @@
 	<nom>Association - Prêts</nom>
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
+	<options>association_prets_options.php</options>
+	<pipeline nom="autoriser" inclure="association_prets_autoriser.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_prets.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_prets.php" />
+	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="intl" compatibilite="[1.3.0;[" />
 </paquet>

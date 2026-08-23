@@ -1,10 +1,11 @@
 <?php
 
 $racine = dirname(__DIR__);
-$paquet = file_get_contents($racine . '/paquet.xml');
-$fonctions = file_get_contents($racine . '/prive/squelettes/contenu/notifications_fonctions.php');
-$page = file_get_contents($racine . '/prive/squelettes/contenu/notifications.html');
-$tableau = file_get_contents($racine . '/prive/squelettes/contenu/inc-notifications/inc-tableau_notif_metiers.html');
+$racine_communication = $racine . '/plugins/association-communication';
+$paquet = file_get_contents($racine_communication . '/paquet.xml');
+$fonctions = file_get_contents($racine_communication . '/prive/squelettes/contenu/notifications_fonctions.php');
+$page = file_get_contents($racine_communication . '/prive/squelettes/contenu/notifications.html');
+$tableau = file_get_contents($racine_communication . '/prive/squelettes/contenu/inc-notifications/inc-tableau_notif_metiers.html');
 
 if (strpos($fonctions, "pipeline('association_notifications_metiers'") === false) {
 	fwrite(STDERR, "La page Notifications n'expose pas le pipeline métier\n");

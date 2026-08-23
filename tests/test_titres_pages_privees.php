@@ -1,26 +1,28 @@
 <?php
 
-$racine = dirname(__DIR__) . '/prive/squelettes/contenu/';
+$racine_depot = dirname(__DIR__);
+$racine = $racine_depot . '/prive/squelettes/contenu/';
 $pages = array(
-	'destinations' => 'association:destination_comptable',
-	'dons' => 'association:tous_les_dons',
-	'ventes' => 'association:toutes_les_ventes',
-	'ressources' => 'association:ressources_titre_liste_ressources',
-	'prets' => 'association:prets_titre_liste_reservations',
-	'plan_comptable' => 'association:plan_comptable',
-	'bilan' => 'association:bilans_comptables',
+	'destinations' => array($racine_depot . '/plugins/association-compta/prive/squelettes/contenu/', 'association:destination_comptable'),
+	'dons' => array($racine_depot . '/plugins/association-dons/prive/squelettes/contenu/', 'association:tous_les_dons'),
+	'ventes' => array($racine_depot . '/plugins/association-ventes/prive/squelettes/contenu/', 'association:toutes_les_ventes'),
+	'ressources' => array($racine_depot . '/plugins/association-prets/prive/squelettes/contenu/', 'association:ressources_titre_liste_ressources'),
+	'prets' => array($racine_depot . '/plugins/association-prets/prive/squelettes/contenu/', 'association:prets_titre_liste_reservations'),
+	'plan_comptable' => array($racine_depot . '/plugins/association-compta/prive/squelettes/contenu/', 'association:plan_comptable'),
+	'bilan' => array($racine_depot . '/plugins/association-compta/prive/squelettes/contenu/', 'association:bilans_comptables'),
 );
 
-foreach ($pages as $page => $titre) {
-	$source = file_get_contents($racine . $page . '.html');
+foreach ($pages as $page => $definition) {
+	list($dossier, $titre) = $definition;
+	$source = file_get_contents($dossier . $page . '.html');
 	if (strpos($source, '<h1 class="grostitre"><:' . $titre . ':></h1>') === false) {
 		fwrite(STDERR, "Titre SPIP privé absent de la page $page\n");
 		exit(1);
 	}
 }
 
-$formulaire_compte = file_get_contents(dirname(__DIR__) . '/formulaires/editer_asso_comptes.php');
-$contenu_compte = file_get_contents($racine . 'editer_asso_comptes.html');
+$formulaire_compte = file_get_contents($racine_depot . '/plugins/association-compta/formulaires/editer_asso_comptes.php');
+$contenu_compte = file_get_contents($racine_depot . '/plugins/association-compta/prive/squelettes/contenu/editer_asso_comptes.html');
 if (str_contains($formulaire_compte, "generer_url_ecrire('asso_comptes')")
 	|| !str_contains($formulaire_compte, "generer_url_ecrire('comptes')")
 	|| str_contains($contenu_compte, '#URL_ECRIRE{asso_comptes}')
@@ -29,8 +31,9 @@ if (str_contains($formulaire_compte, "generer_url_ecrire('asso_comptes')")
 	exit(1);
 }
 
-$edit_cotisation = file_get_contents($racine . 'edit_cotisation.html');
-$editer_cotisation = file_get_contents($racine . 'editer_asso_cotisation.html');
+$racine_adhesions = $racine_depot . '/plugins/association-adhesions/prive/squelettes/contenu/';
+$edit_cotisation = file_get_contents($racine_adhesions . 'edit_cotisation.html');
+$editer_cotisation = file_get_contents($racine_adhesions . 'editer_asso_cotisation.html');
 if (!str_contains($edit_cotisation, '<h1 class="grostitre"><:association:ajout_de_cotisation:></h1>')
 	|| !str_contains($edit_cotisation, 'titre=non')
 	|| !str_contains($editer_cotisation, '#ENV{titre,oui}|=={oui}|oui)<h1 class="grostitre">')) {
@@ -38,7 +41,7 @@ if (!str_contains($edit_cotisation, '<h1 class="grostitre"><:association:ajout_d
 	exit(1);
 }
 
-$voir_activites = file_get_contents($racine . 'voir_activites.html');
+$voir_activites = file_get_contents($racine_depot . '/plugins/association-evenements/prive/squelettes/contenu/voir_activites.html');
 if (!str_contains($voir_activites, '<h1 class="grostitre">#TITRE</h1>')) {
 	fwrite(STDERR, "Le tableau de bord d'un événement n'utilise pas son titre comme H1 privé.\n");
 	exit(1);

@@ -7,7 +7,7 @@ function include_spip($fichier) { return true; }
 function _request($cle) { return $GLOBALS['test_request'][$cle] ?? null; }
 function _T($cle) { return $cle; }
 
-require dirname(__DIR__) . '/formulaires/editer_asso_destinations.php';
+require dirname(__DIR__) . '/plugins/association-compta/formulaires/editer_asso_destinations.php';
 
 $erreurs = formulaires_editer_asso_destinations_verifier_dist();
 if (($erreurs['intitule'] ?? '') !== 'info_obligatoire' || empty($erreurs['message_erreur'])) {

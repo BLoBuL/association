@@ -9,7 +9,7 @@ function association_test_run_diagnostic_formulaire_inscription_suite() {
 		}
 	};
 
-	include_once ASSOCIATION_TEST_PLUGIN_ROOT . '/inc/diagnostic_formulaire_inscription.php';
+	include_once ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/inc/diagnostic_formulaire_inscription.php';
 
 	$sources = array(
 		'ouverture_inscription' => array('inscription_ouverte' => 'oui', 'places_disponibles' => 'oui'),
@@ -86,13 +86,13 @@ function association_test_run_diagnostic_formulaire_inscription_suite() {
 	$regles_fo = association_inscription_regles_effectives('multi_public', array('accompagnants' => true), array('places_limites' => 5), array('radio_type_adherent' => 'individuel'));
 	$verifier($regles_fo['diagnostic']['limite_effective'] === 1 && $regles_fo['diagnostic']['profil_session_applique'] === true, 'le profil visiteur FO est explicite');
 
-	$gabarit_simple = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement.html');
-	$gabarit_multi = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inscription_evenement_multi.html');
+	$gabarit_simple = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement.html');
+	$gabarit_multi = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_multi.html');
 	$inclusion = 'fond=formulaires/inc-diagnostic-inscription';
 	$verifier(strpos($gabarit_simple, '#SESSION{webmestre}') !== false && strpos($gabarit_simple, $inclusion) !== false, 'integration protegee dans le BO simple');
 	$verifier(strpos($gabarit_multi, '#SESSION{webmestre}') !== false && strpos($gabarit_multi, $inclusion) !== false, 'integration protegee dans le BO multi');
 	$verifier(strpos($gabarit_multi, '#ENV**|unserialize|foreach') === false, 'ancien dump brut retire du BO multi');
-	$verifier(strpos(file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/inc-diagnostic-inscription.html'), '#SESSION{webmestre}') !== false, 'protection maintenue dans le composant commun');
+	$verifier(strpos(file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inc-diagnostic-inscription.html'), '#SESSION{webmestre}') !== false, 'protection maintenue dans le composant commun');
 
 	if (!$echecs) {
 		echo "OK diagnostic formulaire inscription\n";

@@ -14,6 +14,22 @@
 	<necessite nom="agenda" compatibilite="[4.5.0;[" />
 	<necessite nom="saisies" compatibilite="[4.0.0;[" />
 	<necessite nom="verifier" compatibilite="[2.1.0;[" />
+	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
+	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_paiements" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="association_communication" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="cextras" compatibilite="[3.0.5;[" />
+	<options>association_evenements_options.php</options>
+	<pipeline nom="autoriser" inclure="association_evenements_autoriser.php" />
+	<pipeline nom="taches_generales_cron" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="declarer_champs_extras" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="formulaire_charger" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="formulaire_traiter" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="pre_insertion" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="post_insertion" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="pre_edition" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="post_edition" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="afficher_contenu_objet" inclure="association_evenements_pipelines.php" />
 
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_evenements.php" />
 	<pipeline nom="declarer_tables_auxiliaires" inclure="base/association_evenements.php" />

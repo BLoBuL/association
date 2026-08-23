@@ -45,3 +45,9 @@ function association_paiements_mode_icone($mode) {
 
 	return '<span class="association-paiement-mode" title="' . $label_attr . '"><i class="' . $classe . '" aria-hidden="true"></i><span class="visually-hidden">' . $label_attr . '</span></span>';
 }
+
+
+function filtre_bank_config_id($config){
+	include_spip('inc/bank');
+	return bank_config_id($config);
+}

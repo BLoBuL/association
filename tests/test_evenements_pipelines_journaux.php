@@ -2,8 +2,8 @@
 
 $racine = dirname(__DIR__);
 $paquet = file_get_contents($racine . '/plugins/association-evenements/paquet.xml');
-$backend = file_get_contents($racine . '/formulaires/inc/inscription_evenement_backend.php');
-$formater = file_get_contents($racine . '/formulaires/inc/inscription_evenement.php');
+$backend = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc/inscription_evenement_backend.php');
+$formater = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc/inscription_evenement.php');
 
 $erreurs = array();
 foreach (array(

@@ -30,8 +30,8 @@ function sql_allfetsel($select, $table, $where = '') {
     return array();
 }
 
-include_once PLUGIN_ROOT . '/inc/cotisations_devises.php';
-include_once PLUGIN_ROOT . '/inc/fonctions/comptes.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations_devises.php';
+include_once PLUGIN_ROOT . '/plugins/association-compta/inc/fonctions/comptes.php';
 
 function test_assert($condition, $message) {
     if (!$condition) {
@@ -48,9 +48,10 @@ test_assert($totaux['EUR']['depenses'] === 10.0, 'une écriture générique util
 test_assert($totaux['EUR']['solde'] === 40.0, 'le solde est calculé dans chaque devise');
 test_assert(count($totaux) === 2, 'aucune addition CNY/EUR n’est produite');
 
-$contenu = file_get_contents(PLUGIN_ROOT . '/prive/squelettes/contenu/comptes.html');
-$navigation = file_get_contents(PLUGIN_ROOT . '/prive/squelettes/navigation/comptes.html');
-$ligne_compte = file_get_contents(PLUGIN_ROOT . '/prive/objets/liste/item_compte.html');
+$racine_compta = PLUGIN_ROOT . '/plugins/association-compta';
+$contenu = file_get_contents($racine_compta . '/prive/squelettes/contenu/comptes.html');
+$navigation = file_get_contents($racine_compta . '/prive/squelettes/navigation/comptes.html');
+$ligne_compte = file_get_contents($racine_compta . '/prive/objets/liste/item_compte.html');
 test_assert(strpos($contenu, 'table_valeur{par_devise}') !== false, 'les cartes comptables principales affichent les totaux par devise');
 test_assert(strpos($navigation, 'table_valeur{par_devise}') !== false, 'la navigation comptable affiche les totaux par devise');
 test_assert(strpos($ligne_compte, "#SET{devise,''}") !== false, 'une ligne comptable laisse la catégorie surcharger la devise du site');

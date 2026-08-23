@@ -97,12 +97,12 @@ function sql_insertq() {
 	throw new RuntimeException('Le test ne doit effectuer aucune ecriture.');
 }
 
-require dirname(__DIR__) . '/inc/email_collectif.php';
-require dirname(__DIR__) . '/formulaires/inc/email_collectif.php';
-require dirname(__DIR__) . '/formulaires/email_collectif_adherent.php';
-require dirname(__DIR__) . '/formulaires/email_collectif_adherent/verifier_etape_post_saisies.php';
-require dirname(__DIR__) . '/formulaires/email_collectif_evenement.php';
-require dirname(__DIR__) . '/formulaires/email_collectif_evenement/verifier_etape_post_saisies.php';
+require dirname(__DIR__) . '/plugins/association-communication/inc/email_collectif.php';
+require dirname(__DIR__) . '/plugins/association-communication/formulaires/inc/email_collectif.php';
+require dirname(__DIR__) . '/plugins/association-adhesions/formulaires/email_collectif_adherent.php';
+require dirname(__DIR__) . '/plugins/association-adhesions/formulaires/email_collectif_adherent/verifier_etape_post_saisies.php';
+require dirname(__DIR__) . '/plugins/association-evenements/formulaires/email_collectif_evenement.php';
+require dirname(__DIR__) . '/plugins/association-evenements/formulaires/email_collectif_evenement/verifier_etape_post_saisies.php';
 
 $emails = association_email_collectif_resoudre_destinataires(array(1, 2), array(10, 11, 12, 13), 42);
 $attendus = array('membre@example.test', 'doublon@example.test', 'public@example.test');
@@ -233,8 +233,8 @@ if ($nombre_etapes_evenement !== 5 || $nombre_etapes_association !== 6) {
 }
 
 $racine = dirname(__DIR__);
-$contenu_prive = file_get_contents($racine . '/prive/squelettes/contenu/edit_email_collectif_activite.html');
-$liste_inscriptions = file_get_contents($racine . '/formulaires/inc-email-collectif-inscriptions-evenement.html');
+$contenu_prive = file_get_contents($racine . '/plugins/association-evenements/prive/squelettes/contenu/edit_email_collectif_activite.html');
+$liste_inscriptions = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc-email-collectif-inscriptions-evenement.html');
 if (!str_contains($liste_inscriptions, 'tableau_inscriptions_activite')
 	|| !str_contains($liste_inscriptions, 'selecteur_activite_evenement[]')
 	|| !str_contains($liste_inscriptions, 'activite_entete_statut_inscription')
@@ -246,8 +246,8 @@ if (!str_contains($liste_inscriptions, 'tableau_inscriptions_activite')
 	fwrite(STDERR, 'La liste historique detaillee des destinataires evenement doit etre conservee.' . PHP_EOL);
 	exit(1);
 }
-$raccourci = file_get_contents($racine . '/prive/squelettes/contenu/inc-voir_activites/bloc_raccourcis.html');
-$notification = file_get_contents($racine . '/notifications/email_collectif.html');
+$raccourci = file_get_contents($racine . '/plugins/association-evenements/prive/squelettes/contenu/inc-voir_activites/bloc_raccourcis.html');
+$notification = file_get_contents($racine . '/plugins/association-communication/notifications/email_collectif.html');
 if (file_exists($racine . '/exec/edit_email_collectif_activite.php')
 	|| !str_contains($contenu_prive, '#FORMULAIRE_EMAIL_COLLECTIF_EVENEMENT')
 	|| !str_contains($contenu_prive, 'email_collectif_evenement_gabarit_libre')

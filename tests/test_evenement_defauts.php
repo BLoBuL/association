@@ -58,7 +58,7 @@ if (!function_exists('parametre_url')) {
     }
 }
 
-require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/formulaires/editer_evenement.php';
+require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/editer_evenement.php';
 
 function association_test_evenement_defauts_scenario() {
     return array(

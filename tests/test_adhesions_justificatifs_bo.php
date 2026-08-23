@@ -83,7 +83,7 @@ function test_assert($condition, $message) {
     echo "OK: $message\n";
 }
 
-include_once PLUGIN_ROOT . '/inc/justificatifs_cotisation.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/justificatifs_cotisation.php';
 $etat = association_justificatifs_cotisation_etat(20);
 test_assert($etat['complet'] && !$etat['controle'], 'deux documents non vus sont prêts à contrôler');
 $resultat = association_justificatifs_cotisation_marquer(20, true);
@@ -93,8 +93,8 @@ $resultat = association_justificatifs_cotisation_marquer(20, false);
 test_assert($resultat['ok'] && !association_justificatifs_cotisation_etat(20)['controle'], 'le retour à revoir est possible');
 $GLOBALS['test_liens'] = array_slice($GLOBALS['test_liens'], 0, 1);
 test_assert(!association_justificatifs_cotisation_marquer(20, true)['ok'], 'un dossier incomplet ne peut pas être validé');
-$source_squelette = file_get_contents(PLUGIN_ROOT . '/prive/inclure/justificatifs_cotisation.html');
-$source_helper = file_get_contents(PLUGIN_ROOT . '/inc/justificatifs_cotisation.php');
+$source_squelette = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/prive/inclure/justificatifs_cotisation.html');
+$source_helper = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/inc/justificatifs_cotisation.php');
 test_assert(
     str_contains($source_helper, "autoriser('modifier', 'document', \$document_id)")
         && str_contains($source_helper, "objet_associer(array('document' => \$document_id), array('compte' => \$id_compte))"),
@@ -104,10 +104,10 @@ test_assert(str_contains($source_squelette, 'justificatifs-entete') && str_conta
 test_assert(str_contains($source_squelette, 'justificatif-description') && str_contains($source_squelette, 'justificatif-statut'), 'chaque document sépare description et statut');
 test_assert(str_contains($source_squelette, 'supprimer_justificatifs_cotisation') && str_contains($source_squelette, 'justificatifs_suppression_confirmation'), 'la suppression définitive exige une confirmation');
 test_assert(str_contains($source_squelette, '#ENV{id_compte}-#ID_DOCUMENT') && str_contains($source_squelette, '#ENV{id_compte}-0'), 'le bloc propose une suppression par document et une suppression globale');
-$source_ligne = file_get_contents(PLUGIN_ROOT . '/prive/objets/liste/item_cotisation_adherent.html');
+$source_ligne = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/prive/objets/liste/item_cotisation_adherent.html');
 test_assert(str_contains($source_ligne, 'cotisation-statut-stack') && !str_contains($source_ligne, 'cotisation-statut-principal') && str_contains($source_ligne, 'justificatifs-badge'), 'la liste masque le libellé métier et conserve le contrôle documentaire');
 test_assert(str_contains($source_ligne, 'fa-user-plus') && str_contains($source_ligne, 'fa-rotate') && str_contains($source_ligne, 'type-inscription-label'), 'les types d inscription utilisent des icônes Font Awesome accessibles');
-$source_liste = file_get_contents(PLUGIN_ROOT . '/prive/squelettes/contenu/cotisations.html');
+$source_liste = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/prive/squelettes/contenu/cotisations.html');
 test_assert(str_contains($source_liste, 'cotisations-legende') && str_contains($source_liste, 'statut_cotis_ok') && str_contains($source_liste, 'statut_cotis_demande') && str_contains($source_liste, 'statut_cotis_attente'), 'la liste explique les couleurs de statut dans une légende');
 $GLOBALS['test_liens'] = array(
     array('id_document' => 1, 'id_objet' => 20, 'objet' => 'compte', 'vu' => 'oui'),
