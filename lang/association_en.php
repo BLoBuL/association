@@ -853,6 +853,7 @@ Please do not reply to this automatic message
 'diagnostic_inscription_titre' => 'Registration diagnostics',
 'diagnostic_inscription_reference' => 'Diagnostic reference',
 'diagnostic_inscription_explication' => 'Technical data restricted to webmasters. Copy the code and details to identify the form scenario precisely.',
+'prets_retour_attente' => 'Not returned',
 // Close language array
 );
 // Harmonisation avec FR : garder une seule version cohérente

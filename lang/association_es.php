@@ -1228,4 +1228,5 @@ Aquí está la correspondencia de los campos (Página Unica -> Mensaje colectivo
 	'diagnostic_inscription_titre' => 'Diagnóstico de la inscripción',
 	'diagnostic_inscription_reference' => 'Referencia del diagnóstico',
 	'diagnostic_inscription_explication' => 'Datos técnicos reservados a los webmasters. Copie el código y los detalles para identificar con precisión el escenario del formulario.',
+	'prets_retour_attente' => 'No devuelto',
 );

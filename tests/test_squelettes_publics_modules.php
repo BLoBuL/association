@@ -30,4 +30,10 @@ if (!file_exists($racine . '/plugins/association-prets/modeles/asso_ressources.h
 	exit(1);
 }
 
+$modele_ressources = file_get_contents($racine . '/plugins/association-prets/modeles/asso_ressources.html');
+if (!str_contains($modele_ressources, 'match{^0000}') || !str_contains($modele_ressources, 'prets_retour_attente')) {
+	fwrite(STDERR, "Le catalogue public expose encore la date SQL nulle d'un prêt non restitué.\n");
+	exit(1);
+}
+
 echo "OK: les usages publics sont portés par leurs modules métier.\n";

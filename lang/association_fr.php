@@ -850,6 +850,7 @@ Commentaire: @commentaire@
 'prets_libelle_date_retour' => 'Date de retour',
 'prets_libelle_montant' => 'Montant',
 'prets_libelle_mode_paiement' => 'Mode de paiement',
+'prets_retour_attente' => 'Non restituée',
 #Votre association
 'votre_asso' => 'Votre association',
 'president' => 'President',

@@ -48,7 +48,10 @@
 	<B_dernier_retour>
 	<BOUCLE_dernier_retour(ASSO_PRETS){id_ressource}{!par date_retour}{0,1}>
 	[(#ENV{retour}|oui)
-		<td class="date">[(#DATE_RETOUR|affdate)]</td>
+		<td class="date">
+			[(#DATE_RETOUR|match{^0000}|non)[(#DATE_RETOUR|affdate)]]
+			[(#DATE_RETOUR|match{^0000}|oui)<:association:prets_retour_attente:>]
+		</td>
 	]
 	</BOUCLE_dernier_retour>
 	</B_dernier_retour>
