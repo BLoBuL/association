@@ -212,19 +212,6 @@ function association_module_actif($module) {
 
 
 /**
- * Autorisation générique 'modifier' pour l'objet 'asso'.
- * Permet aux administrateurs et aux rédacteurs responsables d'événements
- * d'exécuter les actions liées à la comptabilité/association.
- */
-
-
-// SPIP authorization lookup expects functions of the form autoriser_<faire>_<objet>
-// Ensure calls like autoriser('modifier','asso') are handled.
-
-
-
-
-/**
  * Autorisation pour modifier un compte (asso_compte)
  * Les administrateurs peuvent toujours modifier.
  * Les rédacteurs peuvent modifier uniquement si le compte est lié à un événement

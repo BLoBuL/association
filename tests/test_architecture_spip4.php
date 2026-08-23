@@ -20,9 +20,14 @@ $verifier(strpos($paquet, '<necessite nom="association_groupes"') !== false, 'Le
 $verifier(strpos($paquet, '<necessite nom="association_communication"') !== false, 'Le module Communication doit etre une dependance explicite.');
 $communication_paquet = file_get_contents($racine . '/plugins/association-communication/paquet.xml');
 $paiements_paquet = file_get_contents($racine . '/plugins/association-paiements/paquet.xml');
+$autorisation_compta = file_get_contents($racine . '/plugins/association-compta/association_compta_autoriser.php');
 $verifier(strpos($communication_paquet, 'nom="association_adhesions"') === false, 'Communication ne doit pas creer de cycle vers Adhesions.');
 $verifier(strpos($paiements_paquet, 'nom="association_adhesions"') === false, 'Paiements ne doit pas creer de cycle vers Adhesions.');
 $verifier(strpos($paiements_paquet, 'nom="association_evenements"') === false, 'Paiements ne doit pas creer de cycle vers Evenements.');
+$verifier(
+	!preg_match('/function autoriser_(?:asso_modifier|modifier_asso(?:_dist)?)\s*\(/', $autorisation_compta),
+	'L alias generique historique modifier/asso doit etre supprime au profit des objets metier.'
+);
 $adhesions_paquet = file_get_contents($racine . '/plugins/association-adhesions/paquet.xml');
 $evenements_paquet = file_get_contents($racine . '/plugins/association-evenements/paquet.xml');
 $verifier(strpos($adhesions_paquet, '<chemin path="squelettes"') === false, 'Adhesions doit exposer sa racine pour rendre prive/ chargeable.');

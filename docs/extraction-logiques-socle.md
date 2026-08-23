@@ -175,13 +175,7 @@ Le socle conserve uniquement :
 - `spip_association_metas`, la configuration commune et les migrations de
   compatibilité ;
 - le menu de la suite, les ressources communes et les utilitaires génériques ;
-- l'intégration RGPD et Familles transversale ;
-- les derniers alias d'autorisation historiques `modifier/asso`, maintenus
-  temporairement pour compatibilité avec des squelettes externes non inventoriés.
-
-Ces alias ne créent ni ne modifient de données métier. Leur suppression exige
-une recherche sur les squelettes des sites migrés et constitue le dernier lot
-de rupture de compatibilité.
+- l'intégration RGPD et Familles transversale.
 
 ## Lot 11 : migrations historiques distribuées
 
@@ -221,11 +215,18 @@ le format de l'exercice et les références comptables, Communication contrôle
 les listes d'adresses de notification, et le socle agrège leurs erreurs avec
 les seuls seuils de sa maintenance transversale.
 
+## Lot 13 : suppression de l'objet d'autorisation générique
+
+Les alias historiques `modifier/asso` ont été supprimés après inventaire du
+monorepo et des squelettes/plugins réellement servis sur test-fiafe. Aucun appel
+n'utilisait plus cet objet ambigu. Les actions comptables emploient désormais
+exclusivement les autorisations SPIP typées `asso_compte`, tandis que les
+événements conservent leurs autorisations propres.
+
 ## Lots restant après la migration et la première recette distante
 
 1. répartir les blocs métier du grand formulaire de configuration ;
-2. remplacer ou déplacer les alias historiques `modifier/asso` ;
-3. achever l'audit des inclusions inter-modules et des contrats publics.
+2. achever l'audit des inclusions inter-modules et des contrats publics.
 
 La passe Chrome authentifiée et responsive a été rejouée après le lot 8 ; elle
 est consignée dans `docs/recette-metier-test-fiafe.md`.
