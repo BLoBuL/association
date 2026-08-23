@@ -741,3 +741,22 @@ défaut de composition n'est journalisé. Chrome expose une session privée
 test-fiafe authentifiée, mais son contrôle a expiré deux fois lors de la
 première lecture DOM, y compris sans navigation : la preuve visuelle du menu
 rendu reste donc à reprendre, sans remettre en cause les preuves serveur.
+
+## Lot 59 — configuration entièrement composable
+
+Le commit `11918c6` a été déployé dans le socle et les cinq fournisseurs depuis
+l'artefact SHA-256
+`5a86910a488f3944518c6397348a997d73de33370097db78f5dd43a9af10c150`.
+La première sonde CLI a révélé que SPIP retourne directement `data` pour un
+pipeline structuré `args/data`, contrairement au double compatible du test.
+Le correctif `f73863e`, couvert par un double reproduisant désormais la forme
+native, a été redéployé dans le socle depuis l'artefact SHA-256
+`392e47c2cf95646b4b7686397dd90401da69ec438a700cf052ec4cc6c564be3e`.
+
+Le serveur charge les cinq fournisseurs. Leur ordre brut de pipeline est
+50/10/40/20/30, ce qui prouve l'utilité du tri explicite ; le CVT final restitue
+bien Communication, Adhésions, Événements, Paiements puis Comptabilité avant
+les fieldsets transversaux. Il expose 30 saisies racines et 127 noms de saisies
+au total, dont les 122 configurations persistantes couvertes par le registre
+CLI. L'installation reste valide et aucune erreur ne subsiste après la sonde de
+validation finale.
