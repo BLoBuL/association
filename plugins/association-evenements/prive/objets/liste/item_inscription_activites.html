@@ -10,10 +10,10 @@
     <td class="date">[(#DATE|affdate{'d/m/y'})][<br><small>(#DATE|affdate{"H:i"})</small>]</td>
     [(#SET{participants_json,#PARTICIPANTS_JSON|json_decode{true}})]<INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,nom_participants,participants_json=#GET{participants_json},date_adherent=oui,largeur=50,hauteur=50,id_activite}/>
     <td class="statut">
-        [(#STATUT|=={ok}|oui)<:association:activite_content_cotisation_ok:>]
-        [(#STATUT|=={preinscrit}|oui)<:association:activite_content_cotisation_preinscrit:>]
-            [(#STATUT|=={desinscrit}|oui)<:association:activite_content_cotisation_desinscrit:>]
-                [(#STATUT|=={liste_attente}|oui)<:association:activite_content_cotisation_liste_attente:>]
+        [(#STATUT|=={ok}|oui)<:association_evenements:activite_content_cotisation_ok:>]
+        [(#STATUT|=={preinscrit}|oui)<:association_evenements:activite_content_cotisation_preinscrit:>]
+            [(#STATUT|=={desinscrit}|oui)<:association_evenements:activite_content_cotisation_desinscrit:>]
+                [(#STATUT|=={liste_attente}|oui)<:association_evenements:activite_content_cotisation_liste_attente:>]
     </td>
     <td>#NOMBRE_INSCRITS</td>
     [(#REM) Récupérer le statut de la transaction pour les conditions d'affichage des boutons ]
@@ -35,7 +35,7 @@
     </td>
     <BOUCLE_boutons(CONDITION){si #ENV{bouton_action}|=={oui}}>
     <td class="">
-        <a href="[(#URL_ECRIRE{editer_asso_activite,id_activite=#ID_ACTIVITE})]" title="<:association:activite_bouton_modifier_inscription:>" class="lien_fa action-editer"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
+        <a href="[(#URL_ECRIRE{editer_asso_activite,id_activite=#ID_ACTIVITE})]" title="<:association_evenements:activite_bouton_modifier_inscription:>" class="lien_fa action-editer"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
     </td>
     <td class="actions">
         <div class="actions_wrap">
@@ -43,14 +43,14 @@
             {si #ENV{configuration_evenement/validation}}
             {si #STATUT|=={ok}}>
             <a href="[(#URL_ECRIRE{action_activites,act=devalider_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]"
-               title="<:association:activite_bouton_devalider_inscription:>" class="lien_fa action-devalider"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>
+               title="<:association_evenements:activite_bouton_devalider_inscription:>" class="lien_fa action-devalider"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>
             </BOUCLE_bouton_devalidation>
 
             <BOUCLE_bouton_preinscrire(CONDITION)
             {si #ENV{configuration_evenement/validation}}
             {si #STATUT|=={liste_attente}}>
             <a href="[(#URL_ECRIRE{action_activites,act=devalider_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]"
-               title="<:association:activite_bouton_preinscrire_inscription:>" class="lien_fa action-preinscrire"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>
+               title="<:association_evenements:activite_bouton_preinscrire_inscription:>" class="lien_fa action-preinscrire"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>
             </BOUCLE_bouton_preinscrire>
 
             [(#REM)
@@ -59,7 +59,7 @@
             <BOUCLE_bouton_validation(CONDITION)
             {si #LISTE{preinscrit,liste_attente}|find{#STATUT}}
             {si #ENV{configuration_evenement/validation_sur_paiement}|!={oui}|ou{#GET{statut_transaction}|=={ok}}|oui}>
-            <a href="[(#URL_ECRIRE{action_activites,act=valider_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]" title="<:association:activite_bouton_valider_inscription:>" class="lien_fa action-valider"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>
+            <a href="[(#URL_ECRIRE{action_activites,act=valider_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]" title="<:association_evenements:activite_bouton_valider_inscription:>" class="lien_fa action-valider"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>
             </BOUCLE_bouton_validation>
             <BOUCLE_bouton_attente(CONDITION)
             {si #ENV{configuration_evenement/validation}}
@@ -67,11 +67,11 @@
             {si #STATUT|=={preinscrit}}
             {si #NOMBRE_INSCRITS|<={#ENV{disponibilite/places_en_attentes_disponible}}}>
             <a href="[(#URL_ECRIRE{action_activites,act=mettre_en_attente_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]"
-               title="<:association:activite_bouton_mettre_en_attente_inscription:>" class="lien_fa action-attente">
+               title="<:association_evenements:activite_bouton_mettre_en_attente_inscription:>" class="lien_fa action-attente">
                 <i class="fa-regular fa-clock" aria-hidden="true"></i></a>
             </BOUCLE_bouton_attente>
             <BOUCLE_bouton_desinscrire(CONDITION){si #STATUT|!={desinscrit}}>
-            <a href="[(#URL_ECRIRE{action_activites,act=desinscrire_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]" title="<:association:activite_bouton_desinscription:>" class="lien_fa action-desinscrire"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></a>
+            <a href="[(#URL_ECRIRE{action_activites,act=desinscrire_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]" title="<:association_evenements:activite_bouton_desinscription:>" class="lien_fa action-desinscrire"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></a>
             </BOUCLE_bouton_desinscrire>
 
 
@@ -79,7 +79,7 @@
             <BOUCLE_bouton_reactiver_preinscription(CONDITION)
                     {si #STATUT|=={desinscrit}}>
             <a href="[(#URL_ECRIRE{action_activites,act=reactiver_preinscription_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]"
-               title="<:association:activite_bouton_reactiver_preinscription:>"
+               title="<:association_evenements:activite_bouton_reactiver_preinscription:>"
                class="lien_fa action-reactiver reactiver"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i></a>
             </BOUCLE_bouton_reactiver_preinscription>
 
@@ -87,7 +87,7 @@
                     {si #STATUT|=={desinscrit}}
                     {si #ENV{configuration_evenement/attentes}}>
             <a href="[(#URL_ECRIRE{action_activites,act=reactiver_liste_attente_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]"
-               title="<:association:activite_bouton_reactiver_liste_attente:>"
+               title="<:association_evenements:activite_bouton_reactiver_liste_attente:>"
                class="lien_fa action-reactiver action-reactiver-attente reactiver"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i></a>
             </BOUCLE_bouton_reactiver_liste_attente>
 
@@ -95,7 +95,7 @@
             {si #STATUT|=={desinscrit}}
             {si #GET{statut_transaction}|in_array{#LISTE{ok,rembourse}}|non}
             {si #SESSION{statut}|=={0minirezo}}>
-            <a href="[(#URL_ECRIRE{action_activites,act=supprimer_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]" title="<:association:activite_bouton_supprimer_inscription:>" class="lien_fa action-supprimer"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></a>
+            <a href="[(#URL_ECRIRE{action_activites,act=supprimer_inscription&id_evenement=#ID_EVENEMENT&id_activite=#ID_ACTIVITE})]" title="<:association_evenements:activite_bouton_supprimer_inscription:>" class="lien_fa action-supprimer"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></a>
             </BOUCLE_bouton_supprimer>
         </div>
     </td>

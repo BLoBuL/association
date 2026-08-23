@@ -17,7 +17,7 @@
         ]
     </BOUCLE_nb_inscrit>
 <tr class="ligne_activite  [(#GET{statut_inscription/statut_ouverture_inscription})]">
-    <td class="id"><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association:activite_bouton_gerer_inscription:>" class="bouton_editer">##ID_EVENEMENT</a></td>
+    <td class="id"><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association_evenements:activite_bouton_gerer_inscription:>" class="bouton_editer">##ID_EVENEMENT</a></td>
     <td class="date">[(#DATE_DEBUT|affdate{'d/m/y'})][<br><small>(#DATE_DEBUT|affdate{"H:i"})</small>]</td>
     <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement,date_evenement=non,cat_evenement=oui}/>
     <td class="quota">
@@ -29,7 +29,7 @@
     [<td class="">(#GET{gestions_places/total_encaisse}|sinon{0}|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})</td>]
     ,<td>/</td><td>/</td>})
     ]
-   <td class=""><a href="[(#URL_PAGE{inscriptions_evenement.csv}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-csv"></i></a></td>
-   <td class=""><a href="[(#URL_PAGE{export_compta.xml}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-excel"></i></a></td>
+   <td class=""><a href="[(#URL_PAGE{inscriptions_evenement.csv}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association_evenements:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-csv"></i></a></td>
+   <td class=""><a href="[(#URL_PAGE{export_compta.xml}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association_evenements:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-excel"></i></a></td>
 </tr>
 </BOUCLE_evenements>

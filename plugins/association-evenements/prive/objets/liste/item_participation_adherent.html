@@ -8,10 +8,10 @@
         <td>Le rendez-vous a été supprimé.</td>
         <//B_evenement>
         <td class="statut">
-            [(#STATUT|=={ok}|oui)<:association:activite_content_cotisation_ok:>]
-            [(#STATUT|=={preinscrit}|oui)<:association:activite_content_cotisation_preinscrit:>]
-            [(#STATUT|=={desinscrit}|oui)<:association:activite_content_cotisation_desinscrit:>]
-            [(#STATUT|=={liste_attente}|oui)<:association:activite_content_cotisation_liste_attente:>]
+            [(#STATUT|=={ok}|oui)<:association_evenements:activite_content_cotisation_ok:>]
+            [(#STATUT|=={preinscrit}|oui)<:association_evenements:activite_content_cotisation_preinscrit:>]
+            [(#STATUT|=={desinscrit}|oui)<:association_evenements:activite_content_cotisation_desinscrit:>]
+            [(#STATUT|=={liste_attente}|oui)<:association_evenements:activite_content_cotisation_liste_attente:>]
         </td>
         <td>#NOMBRE_INSCRITS</td>
         <td>

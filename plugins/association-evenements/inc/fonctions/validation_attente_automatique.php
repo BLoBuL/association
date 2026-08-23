@@ -82,16 +82,16 @@ function validation_attente_automatique($id_evenement , $source=''){
 
                 // Déterminer le message de journal en fonction du statut
                 if($statut == 'preinscrit'){
-                    $message_journal =  _T('association:journal_preinscription_validation_automatique');
+                    $message_journal =  _T('association_evenements:journal_preinscription_validation_automatique');
                 }elseif($statut == 'ok'){
-                    $message_journal =  _T('association:journal_inscription_validation_automatique');
+                    $message_journal =  _T('association_evenements:journal_inscription_validation_automatique');
                 }else{
                     // Valeur par défaut si jamais un autre statut est utilisé
-                    $message_journal =  _T('association:journal_validation_automatique');
+                    $message_journal =  _T('association_evenements:journal_validation_automatique');
                 }
 
                 // Préparer l'entrée du journal: date + libellé + ancien journal
-                $entree_journal = date('d/m/Y H:i') . " : " . _T('association:journal_validation_automatique') . "<br>" . $query_activite['journal'];
+                $entree_journal = date('d/m/Y H:i') . " : " . _T('association_evenements:journal_validation_automatique') . "<br>" . $query_activite['journal'];
 
                 // Mise à jour de l'activité (date/statut/journal)
                 $date = date('Y-m-d H:i:s');

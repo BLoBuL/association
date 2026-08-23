@@ -51,16 +51,16 @@ $quota_perso=($affichage_dans_activites['accompagnants']) ? $gestions_places['pl
 if($quota_perso > 1){
 $nb_personne = array();
 $i='2';
-$nb_personne += [ 1 => _T('association:activite_form_public_nb_personne')];
+$nb_personne += [ 1 => _T('association_evenements:activite_form_public_nb_personne')];
 while($i <= $quota_perso){
     $nb = $i++;
-    $nb_personne += [ $nb => _T('association:activite_form_public_nb_personnes', array('nb'=>$nb))];
+    $nb_personne += [ $nb => _T('association_evenements:activite_form_public_nb_personnes', array('nb'=>$nb))];
 }
 $saisies_selection_nb_inscrits= array(
     'saisie' => 'selection',
     'options' => array(
         'nom' => 'nb_inscrits',
-        'label' => _T('association:activite_form_public_nombre_participants'),
+        'label' => _T('association_evenements:activite_form_public_nombre_participants'),
         'defaut' => !empty(_request('nb_inscrits')) ? _request('nb_inscrits') : '',
         'obligatoire' => 'oui',
         'cacher_option_intro' => 'oui',
@@ -88,7 +88,7 @@ function champs_saisies_selection_membres_famille($data_famille, $accompagnants,
             'saisie' => 'checkbox',
             'options' => array(
                 'nom' => 'famille',
-                'label' => _T('association:activite_form_public_choix_membre_famille'),
+                'label' => _T('association_evenements:activite_form_public_choix_membre_famille'),
                 'defaut' => !empty(_request('famille')) ? _request('famille') : 'adherent',
                 'obligatoire' => 'oui',
                 'datas' => $data_famille,
@@ -101,7 +101,7 @@ function champs_saisies_selection_membres_famille($data_famille, $accompagnants,
             'saisie' => 'radio',
             'options' => array(
                 'nom' => 'famille',
-                'label' => _T('association:activite_form_public_choix_membre_famille'),
+                'label' => _T('association_evenements:activite_form_public_choix_membre_famille'),
                 'defaut' => !empty(_request('famille')) ? _request('famille') : 'adherent',
                 'obligatoire' => 'oui',
                 'datas' => $data_famille,
@@ -121,8 +121,8 @@ function champs_saisies_selection_membres_famille($data_famille, $accompagnants,
                 'saisie' => 'input',
                 'options' => array(
                     'nom' => 'nb_invite',
-                    'label' => _T('association:activite_form_public_nb_invites'),
-                    'explication' => _T('association:activite_form_public_nb_invites_explication', ['max' => $max_invites]),
+                    'label' => _T('association_evenements:activite_form_public_nb_invites'),
+                    'explication' => _T('association_evenements:activite_form_public_nb_invites_explication', ['max' => $max_invites]),
                     'defaut' => !empty(_request('nb_invite')) ? intval(_request('nb_invite')) : 0,
                     'obligatoire' => 'non',
                     'type' => 'number',
@@ -192,14 +192,14 @@ for ($i = 1; $i <= $nb_inscrits; $i++) {
         'saisie' => 'fieldset',
         'options' => array(
                 'nom' => "fieldset_$id_inscrit",
-                'label' => _T('association:fieldset_inscrit', array('nb'=>$i)),
+                'label' => _T('association_evenements:fieldset_inscrit', array('nb'=>$i)),
             ),
          'saisies' => array(
               array(
                   'saisie' => 'input',
                   'options' => array(
                       'nom' => "prenom_$id_inscrit",
-                      'label' => _T('association:activite_form_public_prenom_inscrit'),
+                      'label' => _T('association_evenements:activite_form_public_prenom_inscrit'),
                       'attributs' => 'autocomplete="given-name"',
                       'defaut' => !empty(_request("prenom_$id_inscrit")) ? _request("prenom_$id_inscrit") : ($defaut[$id_inscrit]['prenom'] ?? ''),
                       'obligatoire' => 'oui',
@@ -211,7 +211,7 @@ for ($i = 1; $i <= $nb_inscrits; $i++) {
                     'saisie' => 'input',
                     'options' => array(
                         'nom' => "nom_$id_inscrit",
-                        'label' => _T('association:activite_form_public_nom_inscrit'),
+                        'label' => _T('association_evenements:activite_form_public_nom_inscrit'),
                         'attributs' => 'autocomplete="family-name"',
                         'defaut' => !empty(_request("nom_$id_inscrit")) ? _request("nom_$id_inscrit") : ($defaut[$id_inscrit]['nom'] ?? ''),
                         'obligatoire' => 'oui',
@@ -299,14 +299,14 @@ function champs_saisies_famille($id_auteur,$affichage_dans_activites){
                 'saisie' => 'fieldset',
                 'options' => array(
                         'nom' => 'fieldset_inscrit_'. $cle,
-                        'label' => _T('association:fieldset_inscrit', array('nb'=>$famille[$cle]['prenom'] )),
+                        'label' => _T('association_evenements:fieldset_inscrit', array('nb'=>$famille[$cle]['prenom'] )),
                     ),
                  'saisies' => array(
                      array(
                         'saisie' => 'input',
                                 'options' => array(
                                         'nom' => "prenom_$cle",
-                                        'label' => _T('association:activite_form_public_prenom_inscrit'),
+                                        'label' => _T('association_evenements:activite_form_public_prenom_inscrit'),
                                         'defaut' => !empty(_request($cle)) ? _request($cle) : ($famille[$cle]['prenom'] ?? ''),
                                         'obligatoire' => 'oui',
                                         // Ne pas permettre la modification du prénom si connu (conjoint, enfants, invités)
@@ -318,7 +318,7 @@ function champs_saisies_famille($id_auteur,$affichage_dans_activites){
                             'saisie' => 'input',
                             'options' => array(
                                 'nom' => "nom_$cle",
-                                'label' => _T('association:activite_form_public_nom_inscrit'),
+                                'label' => _T('association_evenements:activite_form_public_nom_inscrit'),
                                 'defaut' => !empty(_request($cle)) ? _request($cle) : ($famille[$cle]['nom'] ?? ''),
                                 'obligatoire' => 'oui',
                                 // Ne pas permettre la modification du nom si connu (conjoint, enfants, invités)
@@ -428,7 +428,7 @@ function champs_saisies_tarifs($id_inscrit,$premier_inscrit,$array_type_adherent
         'options' => array(
             'nom' => "categorie_$id_inscrit",
             //'cacher_option_intro' => 1,
-            'label' => _T('association:activite_form_public_tarif'),
+            'label' => _T('association_evenements:activite_form_public_tarif'),
             'defaut' => ($valeur_postee !== null && $valeur_postee !== '') ? $valeur_postee : false,
             'obligatoire' => 'oui',
             'datas' => $datas_categories,
@@ -463,7 +463,7 @@ function champs_saisies_invites($nb_invite, $affichage_dans_activites) {
     foreach ($saisies_raw as $fieldset) {
         $j++;
         // Label invité à la place du label générique "Inscrit N"
-        $fieldset['options']['label'] = _T('association:fieldset_invite_ext', array('nb' => $j));
+        $fieldset['options']['label'] = _T('association_evenements:fieldset_invite_ext', array('nb' => $j));
         // Masquer dynamiquement si nb_invite < rang de cet invité
         $fieldset['options']['afficher_si'] = '@nb_invite@ >= ' . $j;
         $saisies_total[] = $fieldset;
@@ -553,7 +553,7 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "email_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:email'),
+                'label' => _T('association_evenements:email'),
                 'attributs' => 'autocomplete="email" inputmode="email"',
                 'defaut' => !empty(_request("email_$id_inscrit")) ? _request("email_$id_inscrit") : ($defaut_values[$id_inscrit]['email'] ?? ''),
                 'obligatoire' => ($premier_inscrit) ? 'oui' : 'non',
@@ -574,7 +574,7 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "telephone_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:telephone'),
+                'label' => _T('association_evenements:telephone'),
                 'type' => 'tel',
                 'attributs' => 'autocomplete="tel" inputmode="tel"',
                 'defaut' => !empty(_request("telephone_$id_inscrit")) ? _request("telephone_$id_inscrit") : ($defaut_values[$id_inscrit]['telephone'] ?? ''),
@@ -588,20 +588,20 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "type_document_identite_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:document_identite_label'),
-                'explication' => _T('association:document_identite_explication'),
+                'label' => _T('association_evenements:document_identite_label'),
+                'explication' => _T('association_evenements:document_identite_explication'),
                 'defaut' => !empty(_request('type_document_identite')) ? _request('type_document_identite') : 'passeport',
                 'obligatoire' => 'oui',
-                'datas' => array('passeport' => _T('association:passeport'), 'carte_id' => _T('association:carte_id')),
+                'datas' => array('passeport' => _T('association_evenements:passeport'), 'carte_id' => _T('association_evenements:carte_id')),
                 )
         );
         $saisies[$id_inscrit]['saisies'][]= array(
             'saisie' => 'input',
             'options' => array(
                 'nom' => "numero_document_identite_$id_inscrit",
-                //'explication' =>  _T('association:numero_document_identite_explication'),
+                //'explication' =>  _T('association_evenements:numero_document_identite_explication'),
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:numero_document_identite_label'),
+                'label' => _T('association_evenements:numero_document_identite_label'),
                 'defaut' => !empty(_request('numero_document_identite')) ? _request('numero_document_identite') : '',
                 'obligatoire' => 'oui',
                 )
@@ -611,8 +611,8 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "date_expiration_document_identite_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:date_expiration_document_identite'),
-                'explication' => _T('association:format_date_explication'),
+                'label' => _T('association_evenements:date_expiration_document_identite'),
+                'explication' => _T('association_evenements:format_date_explication'),
                 'defaut' => !empty(_request('date_expiration_document_identite')) ? _request('date_expiration_document_identite') : '',
                 'obligatoire' => 'oui',
                 ),
@@ -628,7 +628,7 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "lieu_naissance_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:lieu_naissance'),
+                'label' => _T('association_evenements:lieu_naissance'),
                 'defaut' => !empty(_request('lieu_naissance')) ? _request('lieu_naissance') : '',
                 'obligatoire' => 'oui',
                 )
@@ -641,8 +641,8 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "date_naissance_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:date_naissance'),
-                'explication' => _T('association:format_date_explication'),
+                'label' => _T('association_evenements:date_naissance'),
+                'explication' => _T('association_evenements:format_date_explication'),
                 'defaut' => !empty(_request("date_naissance_$id_inscrit")) ? _request("date_naissance_$id_inscrit") : ($defaut_values[$id_inscrit]['date_naissance'] ?? ''),
                 'obligatoire' => 'oui',
                 ),
@@ -660,7 +660,7 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "nationalite_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:nationalite'),
+                'label' => _T('association_evenements:nationalite'),
                 'defaut' =>  !empty(_request("nationalite_$id_inscrit")) ? _request("nationalite_$id_inscrit") : ($defaut_values[$id_inscrit]['nationalite'] ?? ''),
                 'obligatoire' => 'oui',
                 )
@@ -672,7 +672,7 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "fonction_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:fonction'),
+                'label' => _T('association_evenements:fonction'),
                 'defaut' =>  !empty(_request("fonction_$id_inscrit")) ? _request("fonction_$id_inscrit") : ($defaut_values[$id_inscrit]['fonction'] ?? ''),
                 'obligatoire' => 'oui',
                 )
@@ -684,7 +684,7 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => "entreprise_$id_inscrit",
                 //'cacher_option_intro' => 1,
-                'label' => _T('association:entreprise'),
+                'label' => _T('association_evenements:entreprise'),
                 'defaut' =>  !empty(_request("entreprise_$id_inscrit")) ? _request("entreprise_$id_inscrit") : ($defaut_values[$id_inscrit]['entreprise'] ?? ''),
                 'obligatoire' => 'oui',
                 )
@@ -696,7 +696,7 @@ function champs_saisies_info_supplementaire($id_inscrit,$info_supplementaire,$co
             'options' => array(
                 'nom' => $cas_autres_id. '_' .$id_inscrit,
                 //'cacher_option_intro' => 1,
-                'label' => _T("association:$cas_autres_label"),
+                'label' => $cas_autres_label,
                 'defaut' => '',
                 'obligatoire' => 'oui',
             )
@@ -740,7 +740,7 @@ function champs_saisies_modalites_evenement() {
             'saisie'  => 'case',
             'options' => [
                 'nom'        => $article['page'],
-                'label_case' => _T('association:message_conditions_generales', ['url_CGU' => $url, 'titre_CGU' => $titre]),
+                'label_case' => _T('association_evenements:message_conditions_generales', ['url_CGU' => $url, 'titre_CGU' => $titre]),
                 'obligatoire' => 'oui',
             ],
         ];

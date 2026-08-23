@@ -546,6 +546,16 @@ titre, le contenu, le pied et le bouton compatible Outlook. Les métas, langues,
 assets et signatures propres à Blobul CORE ont été retirés : Communication peut
 produire ses emails sans charger ce plugin historique.
 
+## Lot 47 : domaine de langue Événements
+
+Les libellés des événements, participations, inscriptions, exports et écrans
+privés sont fournis par `association_evenements_fr.php`. Les traductions
+historiques sont conservées et les libellés auparavant absents sont explicités.
+Les informations supplémentaires standards disposent de clés d’export stables ;
+un choix alternatif conserve directement son libellé administrateur, sans
+construire dynamiquement une fausse clé de langue. Le module n’utilise plus le
+domaine historique `association`.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

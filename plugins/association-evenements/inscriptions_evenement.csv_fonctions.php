@@ -31,10 +31,21 @@ function lister_label_info_supplementaire($id_evenement){
         foreach ($liste_info_supplementaire as $info_supplementaire) {
             if ($info_supplementaire == 'document_identite') {
                 // Ajoute les labels pour les informations de document d'identité
-                $labels .= "\"" . utf8_decode(_T("association:export_evenement_type_document_identite")) . "\";\"" . utf8_decode(_T("association:export_evenement_numero_document_identite")) . "\";\"" . utf8_decode(_T("association:export_evenement_date_expiration_document_identite")) . "\";\"" . utf8_decode(_T("association:export_evenement_lieu_naissance")) . "\";";
+                $labels .= "\"" . utf8_decode(_T("association_evenements:export_evenement_type_document_identite")) . "\";\"" . utf8_decode(_T("association_evenements:export_evenement_numero_document_identite")) . "\";\"" . utf8_decode(_T("association_evenements:export_evenement_date_expiration_document_identite")) . "\";\"" . utf8_decode(_T("association_evenements:export_evenement_lieu_naissance")) . "\";";
             } elseif (!empty($info_supplementaire) AND $info_supplementaire != 'email') {
-                // Ajoute les labels pour les autres informations supplémentaires
-                $labels .= "\"" . utf8_decode(_T("association:export_evenement_$info_supplementaire")) . "\";";
+                // Les choix standards ont une traduction ; un choix alternatif
+                // conserve le libellé saisi par l'administrateur.
+                $cles_export = array(
+                    'telephone' => 'export_evenement_telephone',
+                    'date_naissance' => 'export_evenement_date_naissance',
+                    'nationalite' => 'export_evenement_nationalite',
+                    'fonction' => 'export_evenement_fonction',
+                    'entreprise' => 'export_evenement_entreprise',
+                );
+                $label = isset($cles_export[$info_supplementaire])
+                    ? _T('association_evenements:' . $cles_export[$info_supplementaire])
+                    : trim(str_replace('@choix_alternatif', '', $info_supplementaire));
+                $labels .= "\"" . utf8_decode($label) . "\";";
             }
         }
         return $labels;

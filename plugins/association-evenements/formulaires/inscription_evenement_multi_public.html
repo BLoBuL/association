@@ -1,21 +1,21 @@
 #CACHE{0}
 <B_CONDITION>
     <BOUCLE_CONDITION(CONDITION){si #ENV{creation_inscription}|=={oui}|ou{#ENV{modification_inscription}|=={oui}}}>
-    <h2 class="titre-section-petit"><:association:titre_inscription_en_ligne:></h2>
+    <h2 class="titre-section-petit"><:association_evenements:titre_inscription_en_ligne:></h2>
     <div class="formulaire_spip formulaire_inscription_evenement_public formulaire_#FORM_#ENV{_etape}">
         <div class="inscription-evenement-public__intro">
         [(#SESSION{id_auteur}|non|et{#ENV{domaine_site}|non}|oui)
-            <h3 class="spip"><:association:formulaire_inscription_public_titre:></h3>
-            <p class="inscription-evenement-public__intro-text"><:association:formulaire_inscription_public_texte{self=#SELF}:></p>
+            <h3 class="spip"><:association_evenements:formulaire_inscription_public_titre:></h3>
+            <p class="inscription-evenement-public__intro-text"><:association_evenements:formulaire_inscription_public_texte{self=#SELF}:></p>
         ]
         [(#SESSION{id_auteur}|non|et{#ENV{domaine_site}|oui}|oui)
              [(#CHEMIN{img/logo_reseau_fiafe.jpg}|image_reduire{80,80}|image_recadre{80,80}|inserer_attribut{style,float:right})]
-            <h3 class="spip"><:association:formulaire_inscription_reseau_association_titre:></h3>
-            <p class="inscription-evenement-public__intro-text"><:association:formulaire_inscription_reseau_association_texte:></p>
+            <h3 class="spip"><:association_evenements:formulaire_inscription_reseau_association_titre:></h3>
+            <p class="inscription-evenement-public__intro-text"><:association_evenements:formulaire_inscription_reseau_association_texte:></p>
         ]
         [(#SESSION{id_auteur}|oui)
-            <h3 class="spip"><:association:formulaire_inscription_titre:></h3>
-            <p class="inscription-evenement-public__intro-text"><:association:formulaire_inscription_connecte_texte:></p>
+            <h3 class="spip"><:association_evenements:formulaire_inscription_titre:></h3>
+            <p class="inscription-evenement-public__intro-text"><:association_evenements:formulaire_inscription_connecte_texte:></p>
         ]
         </div>
         <div class="inscription-evenement-public__messages">
@@ -57,8 +57,8 @@
         <BOUCLE_affichage_recapitualif(CONDITION){si #ENV{_etapes}|=={#ENV{_etape}}|oui}>
             <input type="hidden" name="ie_recapitulatif" value="1" />
             <div class="inscription-evenement-public__recap">
-                <h3><:association:inscription_evenement_multi_prive_recap_titre:></h3>
-                <p class="inscription-evenement-public__recap-chapo"><strong><:association:inscription_evenement_multi_prive_recap_chapeau:></strong></p>
+                <h3><:association_evenements:inscription_evenement_multi_prive_recap_titre:></h3>
+                <p class="inscription-evenement-public__recap-chapo"><strong><:association_evenements:inscription_evenement_multi_prive_recap_chapeau:></strong></p>
                 <div class="inscription-evenement-public__recap-table-wrap">
                 <table class="inscription-evenement-public__recap-table">
                     <tbody>
@@ -85,7 +85,7 @@
                 </div>
             </BOUCLE_bouton_bottom>
                 <p class="boutons inscription-evenement-public__submit">
-                    <input type="submit" name="ok" value="<:association:validation_inscription:>" class="submit" id="envoyer" />
+                    <input type="submit" name="ok" value="<:association_evenements:validation_inscription:>" class="submit" id="envoyer" />
                 </p>
             <//B_bouton_bottom>
         </form>
@@ -291,7 +291,7 @@
         function desactiver(id) {
             id = document.getElementById('envoyer');
             id.disabled = "disabled";
-            id.value = "<:association:validation_inscription_en_cours:>";
+            id.value = "<:association_evenements:validation_inscription_en_cours:>";
             return;
         }
     </script>-->

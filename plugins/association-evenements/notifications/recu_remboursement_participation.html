@@ -16,8 +16,8 @@
         [(#SET{id_activite,#ID_ACTIVITE})]
     </BOUCLE_activite>                       
         [(#SET{pourcentage_taxe,#CONFIG{association_metas/meta_cfg_taxe_evenement}})]
-    <title><:association:email_recu_remboursement_participation_title:></title>
-    <intro><:association:email_recu_remboursement_participation_intro{numero_recu=#ENV{numero_recu}}:></intro>
+    <title><:association_evenements:email_recu_remboursement_participation_title:></title>
+    <intro><:association_evenements:email_recu_remboursement_participation_intro{numero_recu=#ENV{numero_recu}}:></intro>
 </head>
 <body>
         <div style="
@@ -27,27 +27,27 @@
                     padding: 1em;
                     text-align: center;
                     font-size: 19px;">
-            <h3 style="line-height: 180%;color: white !important;text-align: center;"><:association:email_recu_remboursement_participation_titre{titre_evenement = #GET{titre_evenement},date_evenement=#GET{date_evenement}}:></h3>
+            <h3 style="line-height: 180%;color: white !important;text-align: center;"><:association_evenements:email_recu_remboursement_participation_titre{titre_evenement = #GET{titre_evenement},date_evenement=#GET{date_evenement}}:></h3>
         </div>
         <p style="line-height: 180%;font-size:15px;color:#555">
-               <:association:email_recu_remboursement_participation_explication:>
+               <:association_evenements:email_recu_remboursement_participation_explication:>
         </p>
 
         <p style="line-height: 180%;font-size:15px;color:#555">
-         <:association:email_recu_remboursement_participation_information_complementaire:>
+         <:association_evenements:email_recu_remboursement_participation_information_complementaire:>
         </p>
 
         <ul>
         <BOUCLE_info_inscrit(ASSO_ACTIVITES){id_activite}>
-           <li><b><:association:email_recu_nom_inscrit:></b> [(#NOM_INSCRIT|strtoupper)] #PRENOM_INSCRIT</li>
-           <li><b><:association:email_recu_num_inscription:></b> ##ID_ACTIVITE</li>
+           <li><b><:association_evenements:email_recu_nom_inscrit:></b> [(#NOM_INSCRIT|strtoupper)] #PRENOM_INSCRIT</li>
+           <li><b><:association_evenements:email_recu_num_inscription:></b> ##ID_ACTIVITE</li>
         </BOUCLE_info_inscrit>
         <BOUCLE_info_transaction(TRANSACTIONS){id_transaction}>
-            <li><b><:association:email_recu_num_transaction:></b> ##ID_TRANSACTION</li>
-            <li><b><:association:email_recu_date_transaction:></b> [(#DATE_TRANSACTION|affdate{d/m/Y H:i})]</li>
-            <li><b><:association:email_recu_date_encaissement:></b> [(#DATE_PAIEMENT|affdate{d/m/Y H:i})]</li>
-            <li><b><:association:email_recu_mode_paiement:></b> [(#MODE)]</li>
-             <!--<li><b><:association:email_recu_autorisation:></b> [(#AUTORISATION_ID)]</li>-->
+            <li><b><:association_evenements:email_recu_num_transaction:></b> ##ID_TRANSACTION</li>
+            <li><b><:association_evenements:email_recu_date_transaction:></b> [(#DATE_TRANSACTION|affdate{d/m/Y H:i})]</li>
+            <li><b><:association_evenements:email_recu_date_encaissement:></b> [(#DATE_PAIEMENT|affdate{d/m/Y H:i})]</li>
+            <li><b><:association_evenements:email_recu_mode_paiement:></b> [(#MODE)]</li>
+             <!--<li><b><:association_evenements:email_recu_autorisation:></b> [(#AUTORISATION_ID)]</li>-->
         </BOUCLE_info_transaction>
         </ul>
 

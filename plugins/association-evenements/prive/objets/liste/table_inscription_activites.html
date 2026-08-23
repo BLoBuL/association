@@ -8,14 +8,14 @@
                 <th class="checkbox"> <input id="check_all" name="selecteur_id_activite[]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);"><label for="check_all" >
                 </label></th>
                 <th>[(#TRI{id_activite,'#',ajax})]</th>
-                <th>[(#TRI{date,<:association:activite_entete_date:>,ajax})]</th>
-                <th>[(#TRI{nom_inscrit,<:association:activite_entete_nom:>,ajax})]</th>
-                <th>[(#TRI{statut,<:association:activite_entete_statut_inscription:>,ajax})]</th>
-                <th>[(#TRI{nombre_inscrits,<:association:activite_entete_nombre_inscrit:>,ajax})]</th>
+                <th>[(#TRI{date,<:association_evenements:activite_entete_date:>,ajax})]</th>
+                <th>[(#TRI{nom_inscrit,<:association_evenements:activite_entete_nom:>,ajax})]</th>
+                <th>[(#TRI{statut,<:association_evenements:activite_entete_statut_inscription:>,ajax})]</th>
+                <th>[(#TRI{nombre_inscrits,<:association_evenements:activite_entete_nombre_inscrit:>,ajax})]</th>
                 [(#ENV{configuration_evenement/payant}|oui)
-                <th><:association:activite_entete_transaction:></th>
-                ]            <th colspan="4"><:association:activite_entete_voir:></th>
-                <th colspan="3"><:association:activite_entete_action:></th>
+                <th><:association_evenements:activite_entete_transaction:></th>
+                ]            <th colspan="4"><:association_evenements:activite_entete_voir:></th>
+                <th colspan="3"><:association_evenements:activite_entete_action:></th>
 
             </tr>
             <BOUCLE_tableau_inscriptions(ASSO_ACTIVITES){si #ENV{affichage}|=={inscriptions}|ou{#ENV{affichage}|non}}
@@ -28,25 +28,25 @@
             <tr class="traitement_lots">
                 <td colspan="4">
                     <select name="actions_inscription">
-                    <option disabled selected value><:association:activite_select_choisir_action:></option>
+                    <option disabled selected value><:association_evenements:activite_select_choisir_action:></option>
                     [(#ENV{configuration_evenement/validation}|oui)
-                    <option value="valider_inscription"><:association:activite_select_valider_inscriptions:></option>
-                    <option value="devalider_inscription"><:association:activite_select_devalider_inscriptions:></option>
+                    <option value="valider_inscription"><:association_evenements:activite_select_valider_inscriptions:></option>
+                    <option value="devalider_inscription"><:association_evenements:activite_select_devalider_inscriptions:></option>
                     ]
                     [(#ENV{configuration_evenement/attentes}|oui)
-                    <option value="mettre_en_attente_inscription"><:association:activite_select_mettre_en_attente_inscriptions:></option>
+                    <option value="mettre_en_attente_inscription"><:association_evenements:activite_select_mettre_en_attente_inscriptions:></option>
                     ]
-                    <option value="desinscrire_inscription"><:association:activite_select_desinscrire:></option>
-                    <option value="reactiver_preinscription_inscription"><:association:activite_select_reactiver_preinscription:></option>
+                    <option value="desinscrire_inscription"><:association_evenements:activite_select_desinscrire:></option>
+                    <option value="reactiver_preinscription_inscription"><:association_evenements:activite_select_reactiver_preinscription:></option>
                     [(#ENV{configuration_evenement/attentes}|oui)
-                    <option value="reactiver_liste_attente_inscription"><:association:activite_select_reactiver_liste_attente:></option>
+                    <option value="reactiver_liste_attente_inscription"><:association_evenements:activite_select_reactiver_liste_attente:></option>
                     ]
-                    <option value="supprimer_inscription"><:association:activite_select_supprimer_inscriptions:></option>
+                    <option value="supprimer_inscription"><:association_evenements:activite_select_supprimer_inscriptions:></option>
                 </select></td>
                 <td>
                     <input type="hidden" name="id_evenement" value="#ENV{id_evenement}">
                     <div class="bouton">
-                        <input type="submit" name="action_inscription" value="<:association:bouton_traiter_par_lot:>" />
+                        <input type="submit" name="action_inscription" value="<:association_evenements:bouton_traiter_par_lot:>" />
                     </div>
                 </td>
             </tr>

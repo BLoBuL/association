@@ -155,7 +155,7 @@ function action_exporter_activites_csv_dist()
 			$result = array();
 		}
 
-		$titre = _T('association:titre_csv_activites', array('id_evenement' => $id_evenement))."-".$GLOBALS['meta']['nom_site']."-".date('Y-m-d');
+		$titre = _T('association_evenements:titre_csv_activites', array('id_evenement' => $id_evenement))."-".$GLOBALS['meta']['nom_site']."-".date('Y-m-d');
 		$exporter_csv = charger_fonction('exporter_csv', 'inc/');
 		$exporter_csv($titre, $resultat_final, ",", $preas_clean);
 

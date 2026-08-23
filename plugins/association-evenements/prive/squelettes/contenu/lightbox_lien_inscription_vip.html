@@ -1,7 +1,7 @@
 <div style="max-width:  400px;margin: auto">
 <hr style="clear: both;background-color: #F5F5F5">        
-        <h3><:association:voir_activites_lien_inscription_invites:></h3>
-        <p><:association:voir_activites_lien_inscription_vip:></p>
+        <h3><:association_evenements:voir_activites_lien_inscription_invites:></h3>
+        <p><:association_evenements:voir_activites_lien_inscription_vip:></p>
         [(#SET{token,#ID_EVENEMENT|affichage_dans_activites|table_valeur{token}})]
 
         [<textarea  id="copy_url" rows="4" cols="50"  style="display: block;width: 100%" readonly>(#URL_EVENEMENT|parametre_url{token,#GET{token}}|url_absolue)</textarea>]

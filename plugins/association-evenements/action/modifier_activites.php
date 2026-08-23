@@ -153,13 +153,13 @@ function action_modifier_activites() {
     
     /*PREPARATION Message Journal*/
     if($cal_result['statut'] == 'preinscrit'){
-        $message_journal =  _T('association:journal_preinscription_site_prive');
+        $message_journal =  _T('association_evenements:journal_preinscription_site_prive');
     }elseif($cal_result['statut'] == 'ok'){
-        $message_journal =  _T('association:journal_inscription_site_prive');
+        $message_journal =  _T('association_evenements:journal_inscription_site_prive');
     }elseif($cal_result['statut'] == 'desinscrit'){
-        $message_journal =  _T('association:journal_desinscription_site_prive');
+        $message_journal =  _T('association_evenements:journal_desinscription_site_prive');
     }elseif($cal_result['statut'] == 'liste_attente'){
-        $message_journal =  _T('association:journal_liste_attente_site_prive');
+        $message_journal =  _T('association_evenements:journal_liste_attente_site_prive');
     }
     $entree_journal = date('d/m/Y H:i:s') . ' : ' . $message_journal . '<br>' . $query_activites['journal'];
 // Mise à jour de l'activité

@@ -16,7 +16,7 @@
         ]
     </BOUCLE_nb_inscrit>
 <tr class="ligne_activite">
-    <td class="id"><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association:activite_bouton_gerer_inscription:>" class="bouton_editer">##ID_EVENEMENT</a></td>
+    <td class="id"><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association_evenements:activite_bouton_gerer_inscription:>" class="bouton_editer">##ID_EVENEMENT</a></td>
     <td class="date">[(#DATE_DEBUT|affdate{'d/m/Y'})][<br><small>(#DATE_DEBUT|affdate{'H:i'})</small>]
         </td>
     <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement,date_evenement=non}/>
@@ -26,7 +26,7 @@
                     (#GET{gestions_places/places_disponibles}|=={0}|et{#GET{gestions_places/places_en_attentes_disponible}|>{0}}|oui)liste_attente]">
             [(#GET{statut_inscription/statut_ouverture_inscription}|=={inscription_ouverte}|?{<i class="fas fa-unlock"></i>,<i class="fas fa-lock"></i>})]
             <span class="tooltiptext">
-            <p>[(#VAL{association:}|concat{#GET{statut_inscription/statut_ouverture_inscription}}|_T)]</p>
+            <p>[(#VAL{association_evenements:}|concat{#GET{statut_inscription/statut_ouverture_inscription}}|_T)]</p>
             <br>---
             [<p class="msg_quota_plein">(#GET{statut_inscription/places_disponibles}|=={non}|oui)Quota plein, plus de place disponible</p>]
             [<p class="msg_liste_attente">(#GET{gestions_places/places_disponibles}|=={0}|et{#GET{gestions_places/places_en_attentes_disponible}|>{0}}|oui)Inscription uniquement en liste d'attente</p>]
@@ -70,9 +70,9 @@
         <div class="tooltip attente">[(#GET{nb_attente}|array_sum)]/[(#ATTENTES|=={0}|?{∞,#ATTENTES})]<span class="tooltiptext">Nombre de membres en liste d'attente</span></div>
         ]
     </td>
-    <td class=""><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association:activite_bouton_gerer_inscription:>" class="lien_fa"><i class="fa fa-list" aria-hidden="true"></i></a></td>
-    <td class=""><a href="[(#URL_ECRIRE{evenement_edit}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association:activite_bouton_editer_evenement:>" class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a></td>
-    <td class=""><a href="[(#URL_EVENEMENT)]" title="<:association:activite_bouton_voir_evenement:>" class="lien_fa"><i class="fa fa-desktop" aria-hidden="true"></i></a></td>
-   <td class=""><a href="[(#URL_PAGE{export_compta.xml}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+    <td class=""><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association_evenements:activite_bouton_gerer_inscription:>" class="lien_fa"><i class="fa fa-list" aria-hidden="true"></i></a></td>
+    <td class=""><a href="[(#URL_ECRIRE{evenement_edit}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association_evenements:activite_bouton_editer_evenement:>" class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a></td>
+    <td class=""><a href="[(#URL_EVENEMENT)]" title="<:association_evenements:activite_bouton_voir_evenement:>" class="lien_fa"><i class="fa fa-desktop" aria-hidden="true"></i></a></td>
+   <td class=""><a href="[(#URL_PAGE{export_compta.xml}|parametre_url{id_evenement,#ID_EVENEMENT})]" title="<:association_evenements:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa fa-download" aria-hidden="true"></i></a></td>
 </tr>
 </BOUCLE_evenements>

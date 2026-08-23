@@ -4,8 +4,8 @@
 [(#SET{id_evenement_contexte,#ID_EVENEMENT})]
 </BOUCLE_activite_contexte_hierarchie>
 <a href="#URL_ECRIRE{accueil}">Racine du site</a> &gt;
-<a href="#URL_ECRIRE{activites}"><:association:titre_onglet_activites:></a> &gt;
+<a href="#URL_ECRIRE{activites}"><:association_evenements:titre_onglet_activites:></a> &gt;
 <BOUCLE_evt_hierarchie(EVENEMENTS){id_evenement=#GET{id_evenement_contexte}}{tout}>
 <a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]">#TITRE</a> &gt;
 </BOUCLE_evt_hierarchie>
-<strong class="on"><:association:activite_ajouter_inscription:></strong>
+<strong class="on"><:association_evenements:activite_ajouter_inscription:></strong>

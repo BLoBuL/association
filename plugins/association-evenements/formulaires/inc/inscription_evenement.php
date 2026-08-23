@@ -404,7 +404,7 @@ function generer_saisies_info_public($formulaire){
         'saisie' => 'input',
         'options' => array(
             'nom' => 'prenom_inscrit',
-            'label' => _T('association:activite_form_public_prenom_inscrit'),
+            'label' => _T('association_evenements:activite_form_public_prenom_inscrit'),
             'defaut' => !empty(_request('prenom_inscrit')) ? _request('prenom_inscrit') : '',
             'obligatoire' => 'oui',
             'afficher_si' => $afficher_si,
@@ -416,7 +416,7 @@ function generer_saisies_info_public($formulaire){
         'saisie' => 'input',
         'options' => array(
             'nom' => 'nom_inscrit',
-            'label' => _T('association:activite_form_public_nom_inscrit'),
+            'label' => _T('association_evenements:activite_form_public_nom_inscrit'),
             'defaut' => !empty(_request('nom_inscrit')) ? _request('nom_inscrit') : '',
             'obligatoire' => 'oui',
             'afficher_si' => $afficher_si,
@@ -428,7 +428,7 @@ function generer_saisies_info_public($formulaire){
         'saisie' => 'input',
         'options' => array(
             'nom' => 'email_inscrit',
-            'label' => _T('association:activite_form_public_email_inscrit'),
+            'label' => _T('association_evenements:activite_form_public_email_inscrit'),
             'defaut' => !empty(_request('email_inscrit')) ? _request('email_inscrit') : '',
             'obligatoire' => 'oui',
             'afficher_si' => $afficher_si,
@@ -446,7 +446,7 @@ function generer_saisies_info_public($formulaire){
         'saisie' => 'input',
         'options' => array(
             'nom' => 'tel_inscrit',
-            'label' => _T('association:activite_form_public_tel_inscrit'),
+            'label' => _T('association_evenements:activite_form_public_tel_inscrit'),
             'defaut' => !empty(_request('tel_inscrit')) ? _request('tel_inscrit') : '',
             'afficher_si' => $afficher_si,
             //'obligatoire' => ''
@@ -1381,13 +1381,13 @@ function generer_recapitulatif_multi($valeur_post, $id_evenement, $public_or_pri
 
     // Ajout du nombre de participants au récapitulatif
     $res['nombre_participants'] = array(
-        'label' => _T('association:activite_form_public_nombre_participants'),
+        'label' => _T('association_evenements:activite_form_public_nombre_participants'),
         'data' => $data_form['nombre_participants']
     );
 
     // Ajout des noms des participants au récapitulatif
     $res['nom_participants'] = array(
-        'label' => _T('association:activite_form_public_nom_participants'),
+        'label' => _T('association_evenements:activite_form_public_nom_participants'),
         'data' => $data_form['nom_participants']
     );
 
@@ -1403,18 +1403,18 @@ function generer_recapitulatif_multi($valeur_post, $id_evenement, $public_or_pri
     // Ajout du statut de l'inscription au récapitulatif
     if ($activite_enregistrement_calculator['statut'] == 'ok') {
         $res['statut'] = array(
-            'label' => _T('association:activite_form_public_statut_inscription'),
-            'data' => _T('association:statut_ok')
+            'label' => _T('association_evenements:activite_form_public_statut_inscription'),
+            'data' => _T('association_evenements:statut_ok')
         );
     } elseif ($activite_enregistrement_calculator['statut'] == 'preinscrit') {
         $res['statut'] = array(
-            'label' => _T('association:activite_form_public_statut_inscription'),
-            'data' => _T('association:statut_preinscrit')
+            'label' => _T('association_evenements:activite_form_public_statut_inscription'),
+            'data' => _T('association_evenements:statut_preinscrit')
         );
     } elseif ($activite_enregistrement_calculator['statut'] == 'liste_attente') {
         $res['statut'] = array(
-            'label' => _T('association:activite_form_public_statut_inscription'),
-            'data' => _T('association:statut_attente')
+            'label' => _T('association_evenements:activite_form_public_statut_inscription'),
+            'data' => _T('association_evenements:statut_attente')
         );
     }
 
@@ -1434,16 +1434,16 @@ function generer_recapitulatif_multi($valeur_post, $id_evenement, $public_or_pri
             $libelles_categories[] = $categorie['titre'] . ' × ' . intval($categorie['nombre']);
         }
         $res['categorie_tarif'] = array(
-            'label' => _T('association:activite_recapitulatif_categorie_tarif'),
+            'label' => _T('association_evenements:activite_recapitulatif_categorie_tarif'),
             'data' => !empty($libelles_categories)
                 ? implode(', ', $libelles_categories)
-                : _T('association:activite_recapitulatif_categorie_absente')
+                : _T('association_evenements:activite_recapitulatif_categorie_absente')
         );
 
         // Ajout du montant total au récapitulatif
         $montant_total = $calculer_montant_total['montant_total'];
         $res['resultat_montant_total'] = array(
-            'label' => _T('association:activite_entete_montant_a_regler'),
+            'label' => _T('association_evenements:activite_entete_montant_a_regler'),
             'data' => $montant_total . ' ' . $devise_defaut['symbole']
         );
     }
@@ -1451,7 +1451,7 @@ function generer_recapitulatif_multi($valeur_post, $id_evenement, $public_or_pri
     // Ajout des commentaires au récapitulatif, s'ils existent
     if (!empty($data_form['commentaire'])) {
         $res['commentaire'] = array(
-            'label' => _T('association:activite_entete_commentaire'),
+            'label' => _T('association_evenements:activite_entete_commentaire'),
             'data' => $data_form['commentaire']
         );
     }
@@ -1600,11 +1600,11 @@ function modifier_asso_activites($id_activite,$data_form,$cal_result,$id_transac
 function preparer_entree_journal($cal_result_statut,$prive_ou_public='prive'){
     /* PREPARATION Message Journal */
     if ($cal_result_statut == 'preinscrit') {
-        $entree_journal = ($prive_ou_public == 'prive') ? _T('association:journal_preinscription_site_prive') : _T('association:journal_preinscription_site_public');
+        $entree_journal = ($prive_ou_public == 'prive') ? _T('association_evenements:journal_preinscription_site_prive') : _T('association_evenements:journal_preinscription_site_public');
     } elseif ($cal_result_statut == 'ok') {
-        $entree_journal = ($prive_ou_public == 'prive') ? _T('association:journal_inscription_site_prive') : _T('association:journal_inscription_site_public');
+        $entree_journal = ($prive_ou_public == 'prive') ? _T('association_evenements:journal_inscription_site_prive') : _T('association_evenements:journal_inscription_site_public');
     } elseif ($cal_result_statut == 'liste_attente') {
-        $entree_journal = ($prive_ou_public == 'prive') ? _T('association:journal_liste_attente_site_prive') : _T('association:journal_liste_attente_site_public');
+        $entree_journal = ($prive_ou_public == 'prive') ? _T('association_evenements:journal_liste_attente_site_prive') : _T('association_evenements:journal_liste_attente_site_public');
     }
     $message_journal = date('d/m/Y H:i:s') . ' : ' . $entree_journal . '<br>';
 

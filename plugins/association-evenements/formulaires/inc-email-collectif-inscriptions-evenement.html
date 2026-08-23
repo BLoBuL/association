@@ -1,7 +1,7 @@
 [(#ENV{id_evenement}|oui)
 <fieldset class="email_collectif_inscriptions_evenement">
-    <legend><:association:email_collectif_inscriptions_evenement_label:></legend>
-    <p class="explication"><:association:email_collectif_inscriptions_evenement_explication:></p>
+    <legend><:association_evenements:email_collectif_inscriptions_evenement_label:></legend>
+    <p class="explication"><:association_evenements:email_collectif_inscriptions_evenement_explication:></p>
     <B_filtre>
     <div class="onglets_simple email_collectif_filtre_statut">
         <ul>
@@ -43,11 +43,11 @@
         <thead>
             <tr>
                 <th>[(#TRI{id_activite,'#',ajax})]</th>
-                <th>[(#TRI{date,<:association:activite_entete_date:>,ajax})]</th>
-                <th>[(#TRI{nom_inscrit,<:association:activite_entete_nom:>,ajax})]</th>
-                <th>[(#TRI{statut,<:association:activite_entete_statut_inscription:>,ajax})]</th>
-                <th>[(#TRI{nombre_inscrits,<:association:activite_entete_nombre_inscrit:>,ajax})]</th>
-                <th><:association:activite_entete_voir:></th>
+                <th>[(#TRI{date,<:association_evenements:activite_entete_date:>,ajax})]</th>
+                <th>[(#TRI{nom_inscrit,<:association_evenements:activite_entete_nom:>,ajax})]</th>
+                <th>[(#TRI{statut,<:association_evenements:activite_entete_statut_inscription:>,ajax})]</th>
+                <th>[(#TRI{nombre_inscrits,<:association_evenements:activite_entete_nombre_inscrit:>,ajax})]</th>
+                <th><:association_evenements:activite_entete_voir:></th>
                 <th class="checkbox">
                     <input id="check_all_evenement" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);">
                     <label for="check_all_evenement"></label>
@@ -61,9 +61,9 @@
                 <td class="date">[(#DATE|affdate{d/m/Y})]</td>
                 <INCLURE{fond=prive/inclure/miniature_adherent,id_auteur,hauteur=40,largeur=40,id_activite,env}/>
                 <td class="statut">
-                    [(#STATUT|=={ok}|oui)<:association:activite_content_cotisation_ok:>]
-                    [(#STATUT|=={preinscrit}|oui)<:association:activite_content_cotisation_preinscrit:>]
-                    [(#STATUT|=={liste_attente}|oui)<:association:activite_content_cotisation_liste_attente:>]
+                    [(#STATUT|=={ok}|oui)<:association_evenements:activite_content_cotisation_ok:>]
+                    [(#STATUT|=={preinscrit}|oui)<:association_evenements:activite_content_cotisation_preinscrit:>]
+                    [(#STATUT|=={liste_attente}|oui)<:association_evenements:activite_content_cotisation_liste_attente:>]
                 </td>
                 <td>#NOMBRE_INSCRITS</td>
                 <td>
@@ -78,7 +78,7 @@
         </tbody>
     </table>
     </B_inscriptions>
-    <p><:association:email_collectif_inscriptions_evenement_vide:></p>
+    <p><:association_evenements:email_collectif_inscriptions_evenement_vide:></p>
     <//B_inscriptions>
 </fieldset>
 ]

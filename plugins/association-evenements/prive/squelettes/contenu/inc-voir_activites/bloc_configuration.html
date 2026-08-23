@@ -19,40 +19,40 @@
 [(#SET{statut_inscription,[(#ID_EVENEMENT|ouverture_inscription_evenement)]})]
 [(#SET{gestions_places,[(#ID_EVENEMENT|gestions_places)]})]
     <div class="voir_activites_bloc_configuration">
-        <h2 class="titre_boite_info"><:association:voir_activites_tableau_de_bord:></h2>
+        <h2 class="titre_boite_info"><:association_evenements:voir_activites_tableau_de_bord:></h2>
 
-        <h3><:association:voir_activites_statut_inscription:></h3>
+        <h3><:association_evenements:voir_activites_statut_inscription:></h3>
         <table class="table_configuration_activite">
             <tr class="#GET{statut_inscription/statut_ouverture_inscription}">
-                <th scope="row"><:association:voir_activites_libelle_statut_inscriptions:></th>
-                <td>[(#VAL{association:}|concat{#GET{statut_inscription/statut_ouverture_inscription}}|_T)]</td>
+                <th scope="row"><:association_evenements:voir_activites_libelle_statut_inscriptions:></th>
+                <td>[(#VAL{association_evenements:}|concat{#GET{statut_inscription/statut_ouverture_inscription}}|_T)]</td>
             </tr>
             <tr>
-                <th scope="row"><:association:voir_activites_libelle_date_ouverture:></th>
+                <th scope="row"><:association_evenements:voir_activites_libelle_date_ouverture:></th>
                 <td class="date_ouverture">[(#GET{statut_inscription/date_ouverture_inscription}|affdate{"d/m/Y H:i"})]</td>
             </tr>
             <tr>
-                <th scope="row"><:association:voir_activites_libelle_date_fermeture:></th>
+                <th scope="row"><:association_evenements:voir_activites_libelle_date_fermeture:></th>
                 <td class="date_fermeture">[(#GET{statut_inscription/date_fermeture_inscription}|affdate{"d/m/Y H:i"})]</td>
             </tr>
         </table>
 
-        <h3><:association:voir_activites_quota:></h3>
+        <h3><:association_evenements:voir_activites_quota:></h3>
         <ul class="quota quota_activite">
             [(#VALIDATION|=={oui}|oui)
-            <li class="tooltip preinscrit">[(#GET{gestions_places/places_a_valider}|sinon{0})]<span class="tooltiptext"><:association:voir_activites_nb_inscription_preinscrit:></span></li>
+            <li class="tooltip preinscrit">[(#GET{gestions_places/places_a_valider}|sinon{0})]<span class="tooltiptext"><:association_evenements:voir_activites_nb_inscription_preinscrit:></span></li>
             ]
-            <li class="tooltip inscrit">[(#GET{gestions_places/nombre_total_inscrits}|sinon{0})]/[(#PLACES|=={0}|?{∞,#PLACES})]<span class="tooltiptext"><:association:voir_activites_nb_inscription_valide:></span></li>
+            <li class="tooltip inscrit">[(#GET{gestions_places/nombre_total_inscrits}|sinon{0})]/[(#PLACES|=={0}|?{∞,#PLACES})]<span class="tooltiptext"><:association_evenements:voir_activites_nb_inscription_valide:></span></li>
             [(#FILE_ATTENTES|=={oui}|oui)
-            <li class="tooltip attente">[(#GET{gestions_places/places_en_attentes}|sinon{0})]/[(#ATTENTES|=={0}|?{∞,#ATTENTES})]<span class="tooltiptext"><:association:voir_activites_nb_inscription_attente:></span></li>
+            <li class="tooltip attente">[(#GET{gestions_places/places_en_attentes}|sinon{0})]/[(#ATTENTES|=={0}|?{∞,#ATTENTES})]<span class="tooltiptext"><:association_evenements:voir_activites_nb_inscription_attente:></span></li>
             ]
         </ul>
 
-        [<h3 class="titre_boite_info"><:association:voir_activites_suivi_paiement:></h3>
+        [<h3 class="titre_boite_info"><:association_evenements:voir_activites_suivi_paiement:></h3>
         <ul class="liste_configuration">
             (#ID_EVENEMENT|affichage_dans_activites|table_valeur{payant}|oui)
-            <li><span class="label"><:association:activite_liste_total_participations_encaisse:></span><span class="valeur">[(#GET{gestions_places}|table_valeur{total_encaisse}|bank_affiche_montant{#DEVISE,symbol,false,true}|replace{',00',''})]</span></li>
-            <li><span class="label"><:association:activite_liste_total_participations_attente:></span><span class="valeur">[(#GET{gestions_places}|table_valeur{total_paiement_attente}|bank_affiche_montant{#DEVISE,symbol,false,true}|replace{',00',''})]</span></li>
+            <li><span class="label"><:association_evenements:activite_liste_total_participations_encaisse:></span><span class="valeur">[(#GET{gestions_places}|table_valeur{total_encaisse}|bank_affiche_montant{#DEVISE,symbol,false,true}|replace{',00',''})]</span></li>
+            <li><span class="label"><:association_evenements:activite_liste_total_participations_attente:></span><span class="valeur">[(#GET{gestions_places}|table_valeur{total_paiement_attente}|bank_affiche_montant{#DEVISE,symbol,false,true}|replace{',00',''})]</span></li>
         </ul>]
     </div>
 </BOUCLE_voir_activite>

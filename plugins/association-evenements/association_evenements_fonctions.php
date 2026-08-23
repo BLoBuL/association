@@ -141,11 +141,11 @@ foreach($_REQUEST as $key => $val){
     if(stristr($key,'categorie_prix') && is_numeric($val) && !empty($val) ){
             $au_moins_une_categorie_valide = true;
     }elseif(stristr($key,'categorie_prix') && !is_numeric($val) && !empty($val)){
-        $erreurs[$key] = '<div style="color:red">' ._T('association:evenement_montant_erreur_categorie'). '</div>';
+        $erreurs[$key] = '<div style="color:red">' ._T('association_evenements:evenement_montant_erreur_categorie'). '</div>';
     }
 }
 if($au_moins_une_categorie_valide != true){
-    $erreurs['categorie_prix'] = '<div style="color:red">' ._T('association:evenement_montant_erreur'). '</div>';
+    $erreurs['categorie_prix'] = '<div style="color:red">' ._T('association_evenements:evenement_montant_erreur'). '</div>';
 }
 }
 #if (!count($erreurs))

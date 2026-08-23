@@ -382,7 +382,7 @@ function association_test_run_charger_suite() {
             association_test_assert_true(in_array('modif', $noms, true), 'Le mode modification doit rester poste');
             $saisies_par_nom = association_test_collect_saisies_by_name($res['_saisies']);
             association_test_assert_same(
-                _T('association:activite_bouton_notifier_modification_adherent'),
+                _T('association_evenements:activite_bouton_notifier_modification_adherent'),
                 $saisies_par_nom['notifier_adherent']['options']['label_case'] ?? '',
                 'La modification BO doit proposer explicitement l envoi de l email de modification'
             );

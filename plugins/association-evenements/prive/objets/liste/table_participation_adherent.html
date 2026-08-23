@@ -1,16 +1,16 @@
 <B_inscription_adherent>
-    <h2 class="spip"><:association:adherent_titre_historique_activites:></h2>
+    <h2 class="spip"><:association_evenements:adherent_titre_historique_activites:></h2>
     <p class="explication">
     </p>
     <table class="tableau_asso tableau_participation_adherent">
         <tr>
             <th>#</th>
-            <th><:association:adherent_libelle_date:></th>
-            <th><:association:adherent_libelle_titre_evenement:></th>
-            <th><:association:activite_entete_statut_inscription:></th>
-            <th><:association:activite_entete_nombre_inscrit:></th>
+            <th><:association_evenements:adherent_libelle_date:></th>
+            <th><:association_evenements:adherent_libelle_titre_evenement:></th>
+            <th><:association_evenements:activite_entete_statut_inscription:></th>
+            <th><:association_evenements:activite_entete_nombre_inscrit:></th>
             <th>Message</th>     
-            <th class="col_actions"><:association:activite_entete_transaction:></th>
+            <th class="col_actions"><:association_evenements:activite_entete_transaction:></th>
         </tr>
         <BOUCLE_inscription_adherent(ASSO_ACTIVITES){id_auteur}{tout}{!par date}>
              [(#INCLURE{fond=prive/objets/liste/item_participation_adherent,id_activite,env})]

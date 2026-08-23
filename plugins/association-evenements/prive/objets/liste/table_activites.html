@@ -8,12 +8,12 @@
         <tr>
             <th>[(#TRI{id_evenement,'#',ajax})]</th>
             <th>[(#TRI{date_debut,<:date:>,ajax})]</th>
-            <th><:association:activite_entete_intitule:></th>
-            <th><:association:activite_entete_statut_inscription:></th>
-            <th>[(#TRI{payant,<:association:activite_entete_participations:>,ajax})]</th>
-            <th><:association:activite_entete_type_inscrits:></th>
-            <th><:association:activite_entete_inscrits:></th>
-            <th colspan="4"><:association:adherent_entete_action:></th>
+            <th><:association_evenements:activite_entete_intitule:></th>
+            <th><:association_evenements:activite_entete_statut_inscription:></th>
+            <th>[(#TRI{payant,<:association_evenements:activite_entete_participations:>,ajax})]</th>
+            <th><:association_evenements:activite_entete_type_inscrits:></th>
+            <th><:association_evenements:activite_entete_inscrits:></th>
+            <th colspan="4"><:association_evenements:adherent_entete_action:></th>
         </tr>
         <BOUCLE_tableau_activites_futur(EVENEMENTS)
         {si #ENV{orientation}|!={passe}}
@@ -37,12 +37,12 @@
         <tr>
             <th>[(#TRI{id_evenement,'#',ajax})]</th>
             <th>[(#TRI{date_debut,<:date:>,ajax})]</th>
-            <th><:association:activite_entete_intitule:></th>
-            <th><:association:activite_entete_statut_inscription:></th>
-            <th>[(#TRI{payant,<:association:activite_entete_participations:>,ajax})]</th>
-            <th><:association:activite_entete_type_inscrits:></th>
-            <th><:association:activite_entete_inscrits:></th>
-            <th colspan="4"><:association:adherent_entete_action:></th>
+            <th><:association_evenements:activite_entete_intitule:></th>
+            <th><:association_evenements:activite_entete_statut_inscription:></th>
+            <th>[(#TRI{payant,<:association_evenements:activite_entete_participations:>,ajax})]</th>
+            <th><:association_evenements:activite_entete_type_inscrits:></th>
+            <th><:association_evenements:activite_entete_inscrits:></th>
+            <th colspan="4"><:association_evenements:adherent_entete_action:></th>
         </tr>
         <BOUCLE_tableau_activites_passe(EVENEMENTS)
         {si #ENV{orientation}|=={passe}}

@@ -187,7 +187,7 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
             'saisie' => 'fieldset',
             'options' => array(
                 'nom' => 'fieldset_selection_membre_famille',
-                'label' => '<:association:fieldset_selection_membre_famille_label:>',
+                'label' => '<:association_evenements:fieldset_selection_membre_famille_label:>',
             ),
             'saisies' => $saisies_selection_famille_array,
         );
@@ -205,7 +205,7 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
             'saisie' => 'fieldset',
             'options' => array(
                 'nom' => 'fieldset_info_supplementaire_famille',
-                'label' => '<:association:fieldset_info_supplementaire_famille_label:>',
+                'label' => '<:association_evenements:fieldset_info_supplementaire_famille_label:>',
             ),
             'saisies' => $saisies_famille,
         );
@@ -214,7 +214,7 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
             'saisie' => 'fieldset',
             'options' => array(
                 'nom' => 'fieldset_nb_inscrit',
-                'label' => '<:association:fieldset_nb_inscrit_label:>',
+                'label' => '<:association_evenements:fieldset_nb_inscrit_label:>',
             ),
             'saisies' => array(
                 champs_saisie_nb_inscrits($gestions_places, $affichage_dans_activites),
@@ -229,7 +229,7 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
             'saisie' => 'fieldset',
             'options' => array(
                 'nom' => 'fieldset_info_supplementaire',
-                'label' => '<:association:fieldset_info_supplementaire_label:>',
+                'label' => '<:association_evenements:fieldset_info_supplementaire_label:>',
             ),
             'saisies' => champs_saisies_inscrits($affichage_dans_activites, $nb_inscrits, $info_auteur_connecte),
         );
@@ -238,7 +238,7 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
             'saisie' => 'fieldset',
             'options' => array(
                 'nom' => 'fieldset_info_supplementaire',
-                'label' => '<:association:fieldset_info_supplementaire_label:>',
+                'label' => '<:association_evenements:fieldset_info_supplementaire_label:>',
             ),
             'saisies' => champs_saisies_inscrits($affichage_dans_activites, 1, $info_auteur_connecte),
         );
@@ -263,7 +263,7 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
         'saisie' => 'fieldset',
         'options' => array(
             'nom' => 'fieldset_modalites',
-            'label' => '<:association:fieldset_modalites:>',
+            'label' => '<:association_evenements:fieldset_modalites:>',
         ),
         'saisies' => array(),
     );
@@ -273,7 +273,7 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
             'saisie' => 'textarea',
             'options' => array(
                 'nom' => 'commentaire',
-                'label' => _T('association:activite_form_public_commentaires'),
+                'label' => _T('association_evenements:activite_form_public_commentaires'),
                 'defaut' => _request('commentaire') ?: '',
                 'obligatoire' => 'non',
                 'rows' => '4'
@@ -286,7 +286,7 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
             'saisie' => 'case',
             'options' => array(
                 'nom' => 'conditions_generales',
-                'label_case' => _T('association:message_conditions_generales', array('url_CGU' => $url_CGU, 'titre_CGU' => $titre_CGU)),
+                'label_case' => _T('association_evenements:message_conditions_generales', array('url_CGU' => $url_CGU, 'titre_CGU' => $titre_CGU)),
                 'obligatoire' => 'oui',
             )
         );

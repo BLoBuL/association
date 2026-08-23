@@ -41,7 +41,7 @@ function action_gerer_activites_dist() {
                 job_queue_add('facteur_envoyer_mail_activites', 'Notification - valider_activites', $arguments = array($id_evenement, $type, $id_activite_selection), $file = '', $no_duplicate = FALSE, $time=0, $priority=0) ;
             }
 
-            $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association:journal_inscription_site_prive') . '<br>' . $query_asso_activites['journal'];
+            $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association_evenements:journal_inscription_site_prive') . '<br>' . $query_asso_activites['journal'];
             sql_updateq('spip_asso_activites', array(
                                     "statut" => 'ok',
                                     "journal" => $entree_journal
@@ -58,7 +58,7 @@ function action_gerer_activites_dist() {
              if($notify_the_members == 1) {
                   job_queue_add('facteur_envoyer_mail_activites', 'Notification - devalider_activites', $arguments = array($id_evenement, $type, $id_activite_selection), $file = '', $no_duplicate = FALSE, $time=0, $priority=0) ;
             }
-            $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association:journal_preinscription_site_prive') . '<br>' . $query_asso_activites['journal'];
+            $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association_evenements:journal_preinscription_site_prive') . '<br>' . $query_asso_activites['journal'];
             $date = date('Y-m-d H:i:s');
             sql_updateq('spip_asso_activites', array(
                                 "date" => $date,
@@ -77,7 +77,7 @@ function action_gerer_activites_dist() {
              if($notify_the_members == 1) {
                  job_queue_add('facteur_envoyer_mail_activites', 'Notification - mettre_attente_activites', $arguments = array($id_evenement, $type, $id_activite_selection), $file = '', $no_duplicate = FALSE, $time=0, $priority=0) ;
             }
-            $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association:journal_liste_attente_site_prive') . '<br>' . $query_asso_activites['journal'];
+            $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association_evenements:journal_liste_attente_site_prive') . '<br>' . $query_asso_activites['journal'];
             sql_updateq('spip_asso_activites', array(
                                     "statut" => 'liste_attente',
                                     "journal" => $entree_journal
@@ -99,7 +99,7 @@ function action_gerer_activites_dist() {
             if($notify_the_members == 1) {
                  job_queue_add('facteur_envoyer_mail_activites', 'Notification - desinscription_backend', $arguments = array($id_evenement, $type, $id_activite_selection), $file = '', $no_duplicate = FALSE, $time=0, $priority=0) ;
             }
-            $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association:journal_desinscription_site_prive') . '<br>' . $query_asso_activites['journal'];
+            $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association_evenements:journal_desinscription_site_prive') . '<br>' . $query_asso_activites['journal'];
             sql_updateq('spip_asso_activites', array("statut" => 'desinscrit', "journal" => $entree_journal),"id_activite=$id_activite");
              if($id_transaction > 0 && isset($query_transaction['statut']) && $query_transaction['statut'] != 'ok'){
                 sql_updateq('spip_transactions', array('statut' => 'abandon'),'id_transaction=' . $id_transaction);
@@ -122,10 +122,10 @@ function action_gerer_activites_dist() {
          $nouveau_statut = ($type_reactivation === 'liste_attente') ? 'liste_attente' : 'preinscrit';
 
          if($nouveau_statut === 'liste_attente') {
-             $message_journal = _T('association:journal_reactivation_liste_attente_site_prive');
+             $message_journal = _T('association_evenements:journal_reactivation_liste_attente_site_prive');
              $type = 'attente_backend';
          } else {
-             $message_journal = _T('association:journal_reactivation_preinscription_site_prive');
+             $message_journal = _T('association_evenements:journal_reactivation_preinscription_site_prive');
              $type = 'preinscription_backend';
          }
 

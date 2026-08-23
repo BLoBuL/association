@@ -250,6 +250,19 @@ $verifier(
 		&& strpos($sources_emails_communication, 'association_communication:notification_automatique') !== false,
 	'Le gabarit email Communication doit être autonome vis-à-vis de Blobul CORE.'
 );
+$evenements_lang = file_get_contents($racine . '/plugins/association-evenements/lang/association_evenements_fr.php');
+$evenements_sources_lang = '';
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins/association-evenements')) as $evenements_source_lang) {
+	if ($evenements_source_lang->isFile() && preg_match('/\.(?:php|html)$/', $evenements_source_lang->getFilename()) && strpos($evenements_source_lang->getPathname(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) === false) {
+		$evenements_sources_lang .= file_get_contents($evenements_source_lang->getPathname());
+	}
+}
+$verifier(
+	!preg_match('/(?:<:|[\'\"]|\{)association:/', $evenements_sources_lang)
+		&& strpos($evenements_sources_lang, 'association_evenements:') !== false
+		&& strpos($evenements_lang, "'evenement_info_supplementaire'") !== false,
+	'Le plugin Événements doit utiliser son propre domaine de langue.'
+);
 $meta_association_restant = [];
 $iterateur_meta = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/plugins'));
 foreach ($iterateur_meta as $fichier_meta) {

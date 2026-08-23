@@ -54,12 +54,12 @@ function formulaires_desinscription_evenement_public_traiter_dist($id_evenement)
 
     if (empty($query_activite) || (!$proprietaire_connecte && !$proprietaire_anonyme)) {
         return array(
-            'message_erreur' => _T('association:erreur_action_non_autorisee'),
+            'message_erreur' => _T('association_evenements:erreur_action_non_autorisee'),
             'redirect' => generer_url_public('evenement', 'id_evenement=' . $id_evenement),
         );
     }
     
-    $message_journal = date('d/m/Y H:i') . " : " . _T('association:journal_desinscription_site_public') . "<br>" . $query_activite['journal'];
+    $message_journal = date('d/m/Y H:i') . " : " . _T('association_evenements:journal_desinscription_site_public') . "<br>" . $query_activite['journal'];
     
     sql_updateq('spip_asso_activites', array(
             'statut' => 'desinscrit',

@@ -7,11 +7,11 @@
             [(#VALEUR|propre|textebrut)]
         </td>
         <td class="">
-            [(#TYPE_INSCRIT|=={adherent}|oui)<:association:participation_adherent:>]
-            [(#TYPE_INSCRIT|=={non_adherent}|oui)<:association:participation_non_adherent:>]
-            [(#TYPE_INSCRIT|=={indifferent}|oui)<:association:participation_indifferent:>]
-            [(#TYPE_INSCRIT|=={special}|oui)<:association:participation_special:>]
-            [(#TYPE_INSCRIT|=={benevole}|oui)<:association:participation_benevole:>]
+            [(#TYPE_INSCRIT|=={adherent}|oui)<:association_evenements:participation_adherent:>]
+            [(#TYPE_INSCRIT|=={non_adherent}|oui)<:association_evenements:participation_non_adherent:>]
+            [(#TYPE_INSCRIT|=={indifferent}|oui)<:association_evenements:participation_indifferent:>]
+            [(#TYPE_INSCRIT|=={special}|oui)<:association_evenements:participation_special:>]
+            [(#TYPE_INSCRIT|=={benevole}|oui)<:association_evenements:participation_benevole:>]
         </td>
         <td class="">
             [(#QUANTITE)]
@@ -31,7 +31,7 @@
             <i class="fa-regular fa-trash-can" aria-hidden="true"></i>,
             #URL_ACTION_AUTEUR{supprimer_categorie_activite, #ID_CATEGORIE, #SELF},
             'lien_fa ajax',
-            <:association:confirmation_suppression_activite:>
+            <:association_evenements:confirmation_suppression_activite:>
                 })]
         </td>
     </tr>

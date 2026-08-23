@@ -229,13 +229,13 @@ function association_evenements_afficher_contenu_objet($flux) {
         return $flux;
     }
     $categories = sql_select('*', 'spip_asso_categories_activites');
-    $flux['data'] .= '<h3>' . propre(_T('association:evenement_montant_label')) . '</h3>';
+    $flux['data'] .= '<h3>' . propre(_T('association_evenements:evenement_montant_label')) . '</h3>';
     while ($categorie = sql_fetch($categories)) {
         $montant = sql_getfetsel('montant', 'spip_asso_categories_activites_liens', 'id_evenement=' . $id_evenement . ' AND id_categorie=' . intval($categorie['id_categorie']), '', 'montant DESC');
         if ($montant === null || $montant === false || $montant === '') {
             continue;
         }
-        $valeur = ($montant == 0) ? _T('association:montant_gratuit') : affiche_monnaie($montant);
+        $valeur = ($montant == 0) ? _T('association_evenements:montant_gratuit') : affiche_monnaie($montant);
         $flux['data'] .= '<div>' . propre($categorie['valeur'] . ' : ' . $valeur) . '</div>';
     }
     sql_free($categories);

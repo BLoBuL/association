@@ -24,11 +24,11 @@
         <tr>
             <th>#</th>
             <th>[(#TRI{date_debut,<:date:>,ajax})]</th>
-            <th><:association:activite_entete_intitule:></th>
-            <th><:association:activite_entete_inscrits:></th>
-            <th><:association:activite_entete_montant_attente:></th>
-            <th><:association:activite_entete_montant_total:></th>
-            <th colspan="4"><:association:adherent_entete_action:></th>
+            <th><:association_evenements:activite_entete_intitule:></th>
+            <th><:association_evenements:activite_entete_inscrits:></th>
+            <th><:association_evenements:activite_entete_montant_attente:></th>
+            <th><:association_evenements:activite_entete_montant_total:></th>
+            <th colspan="4"><:association_evenements:adherent_entete_action:></th>
         </tr>
         <BOUCLE_tableau_activites(EVENEMENTS)
                                                                     {inscription = 1}
@@ -47,12 +47,12 @@
                                                    |parametre_url{periode_debut,#DATE_DEBUT|affdate{'Y-01-01'}}
                                                    |parametre_url{periode_fin,#DATE_DEBUT|affdate{'Y-12-31'}}
                                                    |parametre_url{periode,annuel}
-                                                   |parametre_url{payant,#ENV{payant}})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-csv"></i></a></td>
+                                                   |parametre_url{payant,#ENV{payant}})]" title="<:association_evenements:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-csv"></i></a></td>
                     <th class=""><a href="[(#URL_PAGE{export_evenements_compta.xml}
                                                    |parametre_url{periode_debut,#DATE_DEBUT|affdate{'Y-01-01'}}
                                                    |parametre_url{periode_fin,#DATE_DEBUT|affdate{'Y-12-31'}}
                                                    |parametre_url{periode,annuel}
-                                                   |parametre_url{payant,#ENV{payant}})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-excel"></i></a></th>
+                                                   |parametre_url{payant,#ENV{payant}})]" title="<:association_evenements:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-excel"></i></a></th>
             </tr>]
             ]
             [(#DATE_DEBUT|affdate{'m-Y'}|unique|oui)
@@ -62,12 +62,12 @@
                                                     |parametre_url{periode_debut,#DATE_DEBUT|affdate{'Y-m-01'}}
                                                     |parametre_url{periode_fin,#DATE_DEBUT|affdate{'Y-m-t'}}
                                                     |parametre_url{periode,mensuel}
-                                                    |parametre_url{payant,#ENV{payant}})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-csv"></i></a></td>
+                                                    |parametre_url{payant,#ENV{payant}})]" title="<:association_evenements:activite_bouton_rapport_comptable:>" class="lien_fa"><i class="fa-solid fa-file-csv"></i></a></td>
                     <th class=""><a href="[(#URL_PAGE{export_evenements_compta.xml}
                                                     |parametre_url{periode_debut,#DATE_DEBUT|affdate{'Y-m-01'}}
                                                     |parametre_url{periode_fin,#DATE_DEBUT|affdate{'Y-m-t'}}
                                                     |parametre_url{periode,mensuel}
-                                                    |parametre_url{payant,#ENV{payant}})]" title="<:association:activite_bouton_rapport_comptable:>" class="lien_fa">
+                                                    |parametre_url{payant,#ENV{payant}})]" title="<:association_evenements:activite_bouton_rapport_comptable:>" class="lien_fa">
                             <i class="fa-solid fa-file-excel"></i></a></th>
             </tr>]
             ]            
@@ -75,4 +75,3 @@
         </BOUCLE_tableau_activites>
     </table>            
 </B_tableau_activites>
-        

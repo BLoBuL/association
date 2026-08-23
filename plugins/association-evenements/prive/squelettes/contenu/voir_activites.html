@@ -15,27 +15,27 @@
 <div class="onglets_simple onglets_voir_activites">
     <ul class="">
         [(#ENV{affichage}|=={inscriptions}|oui)
-            <li class="inscriptions"><strong class="on" aria-current="page"><:association:voir_activites_onglet_inscriptions:></strong></li>
+            <li class="inscriptions"><strong class="on" aria-current="page"><:association_evenements:voir_activites_onglet_inscriptions:></strong></li>
         ]
         [(#ENV{affichage}|=={inscriptions}|non)
-            <li class="inscriptions"><a href="[(#SELF|parametre_url{affichage,inscriptions})]" class="ajax"><:association:voir_activites_onglet_inscriptions:></a></li>
+            <li class="inscriptions"><a href="[(#SELF|parametre_url{affichage,inscriptions})]" class="ajax"><:association_evenements:voir_activites_onglet_inscriptions:></a></li>
         ]
         <!--<li class="participants"><a href="[(#SELF|parametre_url{affichage,participants})]" class="ajax">Participants</a></li>-->
         [(#AUTORISER{onglet_activites, evenement, #ENV{id}, '', #ARRAY{onglet,mailshots_activite}}|oui)
         [(#ENV{affichage}|=={mailshots_activite}|oui)
-            <li class="mailshots_activite"><strong class="on" aria-current="page"><:association:voir_activites_onglet_emails_collectifs:></strong></li>
+            <li class="mailshots_activite"><strong class="on" aria-current="page"><:association_evenements:voir_activites_onglet_emails_collectifs:></strong></li>
         ]
         [(#ENV{affichage}|=={mailshots_activite}|non)
-            <li class="mailshots_activite"><a href="[(#SELF|parametre_url{affichage,mailshots_activite})]" class="ajax"><:association:voir_activites_onglet_emails_collectifs:></a></li>
+            <li class="mailshots_activite"><a href="[(#SELF|parametre_url{affichage,mailshots_activite})]" class="ajax"><:association_evenements:voir_activites_onglet_emails_collectifs:></a></li>
         ]
         ]
         [(#AUTORISER{onglet_activites, evenement, #ENV{id}, '', #ARRAY{onglet,comptabilite}}|oui)
         [(#CONFIG{association_metas/comptes}|et{#GET{affichage_dans_activites/payant}|oui})
             [(#ENV{affichage}|=={comptabilite}|oui)
-                <li class="comptabilite"><strong class="on" aria-current="page"><:association:voir_activites_onglet_comptabilite:></strong></li>
+                <li class="comptabilite"><strong class="on" aria-current="page"><:association_evenements:voir_activites_onglet_comptabilite:></strong></li>
             ]
             [(#ENV{affichage}|=={comptabilite}|non)
-                <li class="comptabilite"><a href="[(#SELF|parametre_url{affichage,comptabilite})]" class="ajax"><:association:voir_activites_onglet_comptabilite:></a></li>
+                <li class="comptabilite"><a href="[(#SELF|parametre_url{affichage,comptabilite})]" class="ajax"><:association_evenements:voir_activites_onglet_comptabilite:></a></li>
             ]
         ]
         ]

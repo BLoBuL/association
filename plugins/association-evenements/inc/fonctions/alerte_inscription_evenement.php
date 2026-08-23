@@ -28,7 +28,7 @@ function alerte_inscription_evenement($id_evenement,$id_activite){
         AND $affichage_dans_activites['places'] == true
         AND $gestions_places['places_disponibles'] != 0) {
 
-        $alerte_inscription_evenement = _T('association:alerte_inscription_evenement', 
+        $alerte_inscription_evenement = _T('association_evenements:alerte_inscription_evenement',
                                            array(
                                                'places_disponibles' => $gestions_places['places_disponibles'],
                                                'places_limites' => $gestions_places['places_limites']));

@@ -10,61 +10,61 @@
 <BOUCLE_evenement(EVENEMENTS){id_evenement}>
     [(#REM) -> Boucle si en attente ]
 	<BOUCLE_attente(CONDITION){si #ENV{en_attente}}>
-			<h3 class="titre"><:association:titre_file_d_attente:></h3>
-			<p><:association:message_file_d_attente:></p>
+			<h3 class="titre"><:association_evenements:titre_file_d_attente:></h3>
+			<p><:association_evenements:message_file_d_attente:></p>
 	</BOUCLE_attente>
         
    [(#REM) -> File d'attente activé, mais plus de place dispo ]
       [(#ENV{plein_attente}|oui)
         
             [<p><b>(#ENV{nombre_place_attente}|>{10000}|oui)
-                <:association:info_inscription_plus_de_place_restante_attente_illimite:>
+                <:association_evenements:info_inscription_plus_de_place_restante_attente_illimite:>
               </b></p>]
           
-            [<p><b>(#ENV{nombre_place_attente}|<{10000}|oui)<:association:info_inscription_plus_de_place_restante_attente_limite{nombre_place_attente=#ENV{nombre_place_attente}}:></b></p>]    
+            [<p><b>(#ENV{nombre_place_attente}|<{10000}|oui)<:association_evenements:info_inscription_plus_de_place_restante_attente_limite{nombre_place_attente=#ENV{nombre_place_attente}}:></b></p>]
                      
       ]        
 [(#REM) <!--MESSAGES IMPORTANTS-->  ]
 <div class="inscription_evenement">
 [(#REM) -> ADHERENT EST UN ORGANISATEUR]
 	<BOUCLE_organisateur(CONDITION){si #ENV{responsable}}>
-	       <!-- <p><b><:association:vous_etes_organisateur:></b></p>-->
+	       <!-- <p><b><:association_evenements:vous_etes_organisateur:></b></p>-->
 	</BOUCLE_organisateur>
 [(#REM) -> moins de 5 places disponibles  ] 
   [(#ENV{warning_place}|oui)
-    <!--<p><b><:association:peu_de_place_restante{places_disponibles=#ENV{places_disponibles}}:></b></p>-->
+    <!--<p><b><:association_evenements:peu_de_place_restante{places_disponibles=#ENV{places_disponibles}}:></b></p>-->
   ]
 [(#REM) -> Boucle si il n'y a plus de place ]
     <BOUCLE_plein(CONDITION){si #ENV{plein}}>
-        <h3 class="titre"><:association:titre_quota_plein:></h3>
-        <p><:association:message_quota_plein:></p>
+        <h3 class="titre"><:association_evenements:titre_quota_plein:></h3>
+        <p><:association_evenements:message_quota_plein:></p>
     </BOUCLE_plein>
 [(#REM) -> MESSAGES INSCRIPTION --- ]
     [(#REM) -> <!--Affichage la necessité d'être validé--> ]
       [(#ENV{requiere_validation}|=={validation}|oui)
-        <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span><:association:requiere_validation:></span></p>
+        <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span><:association_evenements:requiere_validation:></span></p>
       ]     
 [(#REM) -> Affichage de l'activation des accompagnants ]
   [(#ENV{activation_accompagnant}|?{
-  <p><:association:accompagnant_active:></p>
+  <p><:association_evenements:accompagnant_active:></p>
   ,
-  <p><:association:accompagnant_desactive:></p>
+  <p><:association_evenements:accompagnant_desactive:></p>
   })]
 [(#REM) -> <!--Affichage du nombre de place--> ]
             
   [(#ENV{place_illimite}|oui)
-    <p><:association:places_illimite:></p>
+    <p><:association_evenements:places_illimite:></p>
     ]
    [(#ENV{place_illimite}|non)
-    [<p><:association:nombre_place_total:> <b>(#ENV{places_evenement})</b></p>]
-    [<p><:association:places_disponibles:> <b>(#ENV{places_disponibles})</b></p>]
+    [<p><:association_evenements:nombre_place_total:> <b>(#ENV{places_evenement})</b></p>]
+    [<p><:association_evenements:places_disponibles:> <b>(#ENV{places_disponibles})</b></p>]
  ]
 [(#REM) -> <!--Affichage du nombre de place en attente--> ]
   [(#ENV{attente_dispo}|?{
     [(#ENV{attente_illimite}|?{
-      <p><:association:place_attente_illimite:></p><:association:info_nombre_place_attente:>
+      <p><:association_evenements:place_attente_illimite:></p><:association_evenements:info_nombre_place_attente:>
       ,
-      <p><:association:nombre_place_attente:> [<b>(#ENV{nombre_place_attente})</b>]</p><:association:info_nombre_place_attente:>
+      <p><:association_evenements:nombre_place_attente:> [<b>(#ENV{nombre_place_attente})</b>]</p><:association_evenements:info_nombre_place_attente:>
     })]
   })]
 
@@ -72,7 +72,7 @@
      <B_categorie>     
            <div class="inscription_evenement">		
                     <b>
-                        <:association:texte_tarif_inscription_rendez_vous:>
+                        <:association_evenements:texte_tarif_inscription_rendez_vous:>
                             </b><br> <br>
                     <ul class="spip">
                       <BOUCLE_categorie(asso_categories_activites_liens id_categorie){id_evenement}{si #PAYANT|=={1}}{!par montant}>

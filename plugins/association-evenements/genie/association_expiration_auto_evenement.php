@@ -68,7 +68,7 @@ function genie_association_expiration_auto_evenement_dist($flux){
                         unset($id_activite_array);
 
                         // Met à jour le journal et le statut
-                        $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association:journal_expiration_automatique') . '<br>' . $journal;
+                        $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association_evenements:journal_expiration_automatique') . '<br>' . $journal;
                         sql_updateq('spip_asso_activites', array("statut" => 'desinscrit', "journal" => $entree_journal),"id_activite=$id_activite");
                         if($query_transaction['statut'] != 'ok'){
                             sql_updateq('spip_transactions', array('statut' => 'abandon'), "id_transaction = $id_transaction");

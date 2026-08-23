@@ -16,7 +16,7 @@
                 'saisie' => 'input',
                 'options' => [
                     'nom' => 'valeur',
-                    'label' => _T('association:nom_participation'),
+                    'label' => _T('association_evenements:nom_participation'),
                     'obligatoire' => 'oui',
                     'size' => 40
                 ]
@@ -25,10 +25,10 @@
                 'saisie' => 'selection',
                 'options' => [
                     'nom' => 'statut',
-                    'label' => _T('association:edit_participation_statut'),
+                    'label' => _T('association_evenements:edit_participation_statut'),
                     'datas' => [
-                        'ok' => _T('association:participation_active'),
-                        'desactive' => _T('association:participation_desactive')
+                        'ok' => _T('association_evenements:participation_active'),
+                        'desactive' => _T('association_evenements:participation_desactive')
                     ],
                     'defaut' => 'ok'
                 ]
@@ -37,17 +37,17 @@
                 'saisie' => 'selection',
                 'options' => [
                     'nom' => 'type_inscrit',
-                    'label' => _T('association:label_type_inscrit_participation'),
-                    'explication' => _T('association:explication_type_inscrit_participation'),
+                    'label' => _T('association_evenements:label_type_inscrit_participation'),
+                    'explication' => _T('association_evenements:explication_type_inscrit_participation'),
                     'datas' => [
-                        'indifferent' => _T('association:participation_indifferent'),
-                        'adherent' => _T('association:participation_adherent'),
-                        'couple' => _T('association:participation_couple'),
-                        'non_adherent' => _T('association:participation_non_adherent'),
-                        'enfant' => _T('association:participation_enfant'),
-                        'invite' => _T('association:participation_invite'),
-                        'special' => _T('association:participation_special'),
-                        'benevole' => _T('association:participation_benevole')
+                        'indifferent' => _T('association_evenements:participation_indifferent'),
+                        'adherent' => _T('association_evenements:participation_adherent'),
+                        'couple' => _T('association_evenements:participation_couple'),
+                        'non_adherent' => _T('association_evenements:participation_non_adherent'),
+                        'enfant' => _T('association_evenements:participation_enfant'),
+                        'invite' => _T('association_evenements:participation_invite'),
+                        'special' => _T('association_evenements:participation_special'),
+                        'benevole' => _T('association_evenements:participation_benevole')
                     ],
                     'defaut' => 'indifferent'
                 ]
@@ -56,10 +56,10 @@
                 'saisie' => 'radio',
                 'options' => [
                     'nom' => 'type_tarif',
-                    'label' => _T('association:type_tarif_participation'),
+                    'label' => _T('association_evenements:type_tarif_participation'),
                     'datas' => [
-                        'individuel' => _T('association:tarif_individuel_participation'),
-                        'groupe' => _T('association:tarif_groupe_participation')
+                        'individuel' => _T('association_evenements:tarif_individuel_participation'),
+                        'groupe' => _T('association_evenements:tarif_groupe_participation')
                     ],
                     'defaut' => 'individuel',
                     // Couple = groupe 2 par définition : inutile de choisir
@@ -70,7 +70,7 @@
                 'saisie' => 'selection',
                 'options' => [
                     'nom' => 'quantite',
-                    'label' => _T('association:nombre_de_personne'),
+                    'label' => _T('association_evenements:nombre_de_personne'),
                     'datas' => array_combine(range(1, 25), range(1, 25)),
                     'defaut' => '1',
                     // Visible si groupe ET pas couple (couple force 2 automatiquement)
@@ -82,8 +82,8 @@
                 'saisie' => 'input',
                 'options' => [
                     'nom' => 'quota_max',
-                    'label' => _T('association:quota_maximum'),
-                    'explication' => _T('association:explication_quota_maximum'),
+                    'label' => _T('association_evenements:quota_maximum'),
+                    'explication' => _T('association_evenements:explication_quota_maximum'),
                     'type' => 'number',
                     'min' => 0,
                     'size' => 5
@@ -93,7 +93,7 @@
                 'saisie' => 'textarea',
                 'options' => [
                     'nom' => 'commentaire',
-                    'label' => _T('association:explication_participation'),
+                    'label' => _T('association_evenements:explication_participation'),
                     'rows' => 3,
                     'cols' => 80
                 ]
@@ -149,7 +149,7 @@
 
         // Validation du valeur
         if (!_request('valeur')) {
-            $res['message_erreur'] = _T('association:erreur_valeur_obligatoire');
+            $res['message_erreur'] = _T('association_evenements:erreur_valeur_obligatoire');
             return $res;
         }
 
@@ -179,13 +179,13 @@
         // Modification d'une catégorie existante
         if (is_numeric($id_categorie) && $id_categorie > 0) {
             sql_updateq('spip_asso_categories_activites', $set, 'id_categorie=' . intval($id_categorie));
-            $res['message_ok'] = _T('association:categorie_activite_modifiee');
+            $res['message_ok'] = _T('association_evenements:categorie_activite_modifiee');
 
         }
         // Création d'une nouvelle catégorie
         else {
             $id_categorie = sql_insertq('spip_asso_categories_activites', $set);
-            $res['message_ok'] = _T('association:categorie_activite_creee');
+            $res['message_ok'] = _T('association_evenements:categorie_activite_creee');
         }
 
 

@@ -29,13 +29,13 @@ function action_exporter_activite_pdf_dist()
 	}
 
 	$pdf=new PDF();	
-	$pdf->titre = _T('association:activite_titre_inscriptions_activites');
+	$pdf->titre = _T('association_evenements:activite_titre_inscriptions_activites');
 	$pdf->titre =  $nom_evenement;
 	$pdf->Open();
 	$pdf->AddPage();
 	//On d�finit les colonnes (champs,largeur,intitul�,alignement)
 	$pdf->AddCol('id_activite',10,'ID','R');
-	$pdf->AddCol('nom',50,_T('association:activite_libelle_nomcomplet'),'L');
+	$pdf->AddCol('nom',50,_T('association_evenements:activite_libelle_nomcomplet'),'L');
 	$pdf->AddCol('id_adherent',20,'N� membre','R');
 	$pdf->AddCol('membres',50,'Membres','L');
 	$pdf->AddCol('non_membres',50,'Non membres','L');

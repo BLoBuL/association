@@ -1,16 +1,16 @@
 #SET{contexte,#SESSION{id_auteur}|association_activites_contexte{#ENV{orientation},#ENV{annee},#ENV{tripayant}}}
 [(#GET{contexte}|table_valeur{autorise}|sinon_interdire_acces)]
-<h1 class="grostitre"><:association:titre_onglet_activites:></h1>
-[(#BOITE_OUVRIR{<:association:titre_onglet_activites:>,'simple'})]
+<h1 class="grostitre"><:association_evenements:titre_onglet_activites:></h1>
+[(#BOITE_OUVRIR{<:association_evenements:titre_onglet_activites:>,'simple'})]
 <form method="get" action="[(#SELF|attribut_html)]" class="formulaire_spip formulaire_filtrer">
 	<input type="hidden" name="exec" value="activites" />
-	<label for="activites-orientation"><:association:activites_chronologie:></label>
+	<label for="activites-orientation"><:association_evenements:activites_chronologie:></label>
 	<select name="orientation" id="activites-orientation" onchange="this.form.submit()">
-		<option value="futur"[(#GET{contexte}|table_valeur{orientation}|=={futur}|oui) selected="selected"]><:association:activites_entete_chronologie_futur:></option>
-		<option value="passe"[(#GET{contexte}|table_valeur{orientation}|=={passe}|oui) selected="selected"]><:association:activites_entete_chronologie_passe:></option>
+		<option value="futur"[(#GET{contexte}|table_valeur{orientation}|=={futur}|oui) selected="selected"]><:association_evenements:activites_entete_chronologie_futur:></option>
+		<option value="passe"[(#GET{contexte}|table_valeur{orientation}|=={passe}|oui) selected="selected"]><:association_evenements:activites_entete_chronologie_passe:></option>
 	</select>
 	[(#GET{contexte}|table_valeur{orientation}|=={passe}|oui)
-		<label for="activites-annee"><:association:annee:></label>
+		<label for="activites-annee"><:association_evenements:annee:></label>
 		<input type="text" name="annee" id="activites-annee" value="[(#GET{contexte}|table_valeur{annee}|attribut_html)]" />
 	]
 	<noscript><button type="submit" class="btn btn_secondaire"><:bouton_valider:></button></noscript>
@@ -23,5 +23,5 @@
 		orientation=#GET{contexte}|table_valeur{orientation},
 		tripayant=#GET{contexte}|table_valeur{tripayant},env,ajax}>
 ]
-[(#GET{contexte}|table_valeur{affichage}|non)<div class="notice"><:association:activite_info_sans_activites:></div>]
+[(#GET{contexte}|table_valeur{affichage}|non)<div class="notice"><:association_evenements:activite_info_sans_activites:></div>]
 [(#BOITE_FERMER)]

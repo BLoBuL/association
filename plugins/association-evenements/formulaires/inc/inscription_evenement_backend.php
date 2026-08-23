@@ -369,13 +369,13 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
             'saisie' => 'selection',
             'options' => array(
                 'nom' => 'select_type_inscrit',
-                'label' => '<:association:fieldset_select_type_inscrit_label:>',
+                'label' => '<:association_evenements:fieldset_select_type_inscrit_label:>',
                 'obligatoire' => 'oui',
                 'datas' => array(
-                    'membre' => '<:association:fieldset_select_type_inscrit_choix_membre:>',
-                    'non_membre' => '<:association:fieldset_select_type_inscrit_choix_non_membre:>',
-                    'membre_reseau_fiafe' => '<:association:fieldset_select_type_inscrit_choix_fiafe:>',
-                    'public' => '<:association:fieldset_select_type_inscrit_choix_public:>'
+                    'membre' => '<:association_evenements:fieldset_select_type_inscrit_choix_membre:>',
+                    'non_membre' => '<:association_evenements:fieldset_select_type_inscrit_choix_non_membre:>',
+                    'membre_reseau_fiafe' => '<:association_evenements:fieldset_select_type_inscrit_choix_fiafe:>',
+                    'public' => '<:association_evenements:fieldset_select_type_inscrit_choix_public:>'
                 ),
                 'defaut' => _request('select_type_inscrit') ?: ($data_activite['select_type_inscrit'] ?? 'membre'),
             )
@@ -386,7 +386,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
             'options' => array(
                 'nom' => 'membre',
                 'id' => 'champ_membre',
-                'label' => '<:association:fieldset_select_type_inscrit_choix_membre:>',
+                'label' => '<:association_evenements:fieldset_select_type_inscrit_choix_membre:>',
                 'class' => 'select2',
                 'obligatoire' => 'oui',
                 'afficher_si' => "@select_type_inscrit@=='membre'",
@@ -401,7 +401,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
             'options' => array(
                 'nom' => 'non_membre',
                 'id' => 'champ_non_membre',
-                'label' => '<:association:fieldset_select_type_inscrit_choix_non_membre:>',
+                'label' => '<:association_evenements:fieldset_select_type_inscrit_choix_non_membre:>',
                 'class' => 'select2',
                 'obligatoire' => 'oui',
                 'afficher_si' => "@select_type_inscrit@=='non_membre'",
@@ -459,10 +459,10 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
 
     // Préparer tableau nb_personne utilisé pour les sélections de tarifs / nb inscrits
     $nb_personne = array();
-    $nb_personne[1] = _T('association:activite_form_public_nb_personne');
+    $nb_personne[1] = _T('association_evenements:activite_form_public_nb_personne');
     $max_places_limit = isset($gestions_places['places_limites']) ? intval($gestions_places['places_limites']) : 1;
     for ($i = 2; $i <= max(2, $max_places_limit); $i++) {
-        $nb_personne[$i] = _T('association:activite_form_public_nb_personnes', array('nb' => $i));
+        $nb_personne[$i] = _T('association_evenements:activite_form_public_nb_personnes', array('nb' => $i));
     }
 
     // EVENEMENT GRATUIT
@@ -529,7 +529,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
                 'options' => array(
                     'nom' => 'categorie',
                     'cacher_option_intro' => 0,
-                    'label' => _T('association:activite_form_public_tarif'),
+                    'label' => _T('association_evenements:activite_form_public_tarif'),
                     'defaut' => !empty(_request('categorie')) ? _request('categorie') : '',
                     'obligatoire' => 'oui',
                     'datas' => $datas_categories_filtrees,
@@ -587,7 +587,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
             $opts = array(
                 'nom' => 'categorie',
                 'cacher_option_intro' => 0,
-                'label' => _T('association:activite_form_public_tarif'),
+                'label' => _T('association_evenements:activite_form_public_tarif'),
                 'defaut' => !empty(_request('categorie')) ? _request('categorie') : '',
                 'obligatoire' => 'oui',
                 'datas' => $datas_categories,
@@ -612,7 +612,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
             'saisie' => 'textarea',
             'options' => array(
                 'nom' => 'nom_participants',
-                'label' => _T('association:activite_form_public_nom_participants'),
+                'label' => _T('association_evenements:activite_form_public_nom_participants'),
                 'defaut' => $defaut_nom_participants,
                 'obligatoire' => 'non',
                 'rows' => '4',
@@ -626,7 +626,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
             'saisie' => 'textarea',
             'options' => array(
                 'nom' => 'commentaire',
-                'label' => _T('association:activite_form_public_commentaires'),
+                'label' => _T('association_evenements:activite_form_public_commentaires'),
                 'defaut' => !empty(_request('commentaire')) ? _request('commentaire') : '',
                 'obligatoire' => 'non',
                 'rows' => '4'
@@ -647,8 +647,8 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
             'saisie' => 'textarea',
             'options' => array(
                 'nom' => 'annotation',
-                'label' => _T('association:activite_form_prive_annotation'),
-                'explication' => _T('association:activite_form_prive_annotation_explication'),
+                'label' => _T('association_evenements:activite_form_prive_annotation'),
+                'explication' => _T('association_evenements:activite_form_prive_annotation_explication'),
                 'defaut' => $defaut_annotation,
                 'obligatoire' => 'non',
                 'rows' => '4',
@@ -662,15 +662,15 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
     // par traiter().
     if ($est_mode_bo) {
         $label_notification = !empty($id_activite)
-            ? _T('association:activite_bouton_notifier_modification_adherent')
-            : _T('association:activite_bouton_notifier_adherent');
+            ? _T('association_evenements:activite_bouton_notifier_modification_adherent')
+            : _T('association_evenements:activite_bouton_notifier_adherent');
         $saisies_modalites[] = array(
             'saisie' => 'case',
             'options' => array(
                 'nom' => 'notifier_adherent',
-                'label' => _T('association:activite_bouton_notification_active'),
+                'label' => _T('association_evenements:activite_bouton_notification_active'),
                 'label_case' => $label_notification,
-                'explication' => _T('association:activite_bouton_notification_explication'),
+                'explication' => _T('association_evenements:activite_bouton_notification_explication'),
                 'defaut' => 'on',
                 'valeur_oui' => 'on',
                 'obligatoire' => 'non',
@@ -774,7 +774,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
                 'saisie' => 'fieldset',
                 'options' => array(
                     'nom' => 'fieldset_infos_generales',
-                    'label' => _T('association:fieldset_selection_membre_famille_label'),
+                    'label' => _T('association_evenements:fieldset_selection_membre_famille_label'),
                 ),
                 'saisies' => $saisies_general,
             );
@@ -813,7 +813,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
                 'saisie' => 'fieldset',
                 'options' => array(
                     'nom' => 'fieldset_info_supplementaire',
-                    'label' => _T('association:fieldset_info_supplementaire_label'),
+                    'label' => _T('association_evenements:fieldset_info_supplementaire_label'),
                 ),
                 'saisies' => $participant_fieldsets,
             );
@@ -824,7 +824,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
                 'saisie' => 'fieldset',
                 'options' => array(
                     'nom' => 'fieldset_tarifs',
-                    'label' => _T('association:activite_form_public_tarif'),
+                    'label' => _T('association_evenements:activite_form_public_tarif'),
                 ),
                 'saisies' => $saisies_tarifs,
             );
@@ -834,7 +834,7 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
                 'saisie' => 'fieldset',
                 'options' => array(
                     'nom' => 'fieldset_modalites',
-                    'label' => _T('association:fieldset_modalites'),
+                    'label' => _T('association_evenements:fieldset_modalites'),
                 ),
                 'saisies' => $saisies_modalites,
             );
@@ -1100,7 +1100,7 @@ function ie_verifier_tarifs_compatibles($id_evenement, $mode, $post, $data_form)
             : 'categorie';
 
         if (!$categorie) {
-            return array($cle_erreur => _T('association:erreur_tarif_incompatible'));
+            return array($cle_erreur => _T('association_evenements:erreur_tarif_incompatible'));
         }
 
         if ($type === 'couple') {
@@ -1109,14 +1109,14 @@ function ie_verifier_tarifs_compatibles($id_evenement, $mode, $post, $data_form)
                 || in_array('inscrit_2', $participants, true)
                 || intval($selection['quantite']) >= 2;
             if (!$premier || !$conjoint_present) {
-                return array($cle_erreur => _T('association:erreur_tarif_incompatible'));
+                return array($cle_erreur => _T('association_evenements:erreur_tarif_incompatible'));
             }
             continue;
         }
 
         $types_participant = association_types_tarifs_par_role($participant ?: 'inscrit_1', $types_auteur);
         if (!in_array($type, $types_participant, true)) {
-            return array($cle_erreur => _T('association:erreur_tarif_incompatible'));
+            return array($cle_erreur => _T('association_evenements:erreur_tarif_incompatible'));
         }
     }
 
@@ -1195,7 +1195,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
         $erreurs_tarifs = ie_verifier_tarifs_compatibles($id_evenement, $mode, $post_normalise, $data_form);
         if (!empty($erreurs_tarifs)) {
             $erreurs = array_merge($erreurs, $erreurs_tarifs);
-            $erreurs['message_erreur'] = _T('association:erreur_message_erreur');
+            $erreurs['message_erreur'] = _T('association_evenements:erreur_message_erreur');
         }
     }
 
@@ -1305,7 +1305,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
         $nb_resulat = count($id_participants);
         $filtre_doublon_resultats = array_unique($id_participants);
         if ($nb_resulat !== count($filtre_doublon_resultats)) {
-            $erreurs['nb_accompagnants'] = _T('association:erreur_participant_famille_doublon');
+            $erreurs['nb_accompagnants'] = _T('association_evenements:erreur_participant_famille_doublon');
         }
     }
 
@@ -1316,7 +1316,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
     if ($famille_a_verifier && !$mode_multi) {
         $id_participants_verif = isset($data_form['id_participants']) ? $data_form['id_participants'] : array();
         if (empty($id_participants_verif) || (is_array($id_participants_verif) && count($id_participants_verif) === 0)) {
-            $erreurs['famille'] = _T('association:erreur_aucun_membre_selectionne');
+            $erreurs['famille'] = _T('association_evenements:erreur_aucun_membre_selectionne');
         }
     }
 
@@ -1338,7 +1338,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
     if ($id_auteur_doublon > 0 && empty($id_activite)) {
         $query_activite_email = sql_fetsel('*', 'spip_asso_activites', "id_evenement=$id_evenement AND id_auteur = $id_auteur_doublon AND statut != 'desinscrit'");
         if (!empty($query_activite_email)) {
-            $erreurs['doublon'] = _T('association:erreur_doublon');
+            $erreurs['doublon'] = _T('association_evenements:erreur_doublon');
         }
     }
 
@@ -1354,11 +1354,11 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
                 "id_evenement=$id_evenement AND email_inscrit=" . sql_quote($email_multi_public) . " AND statut != 'desinscrit'"
             );
             if (!empty($query_activite_email)) {
-                $erreurs['email_inscrit_1'] = _T('association:erreur_email_inscrit_doublon');
+                $erreurs['email_inscrit_1'] = _T('association_evenements:erreur_email_inscrit_doublon');
             } else {
                 $query_auteur_email = sql_fetsel('*', 'spip_auteurs', "email=" . sql_quote($email_multi_public));
                 if (!empty($query_auteur_email['id_auteur'])) {
-                    $erreurs['email_inscrit_1'] = _T('association:erreur_email_inscrit_adherent', array(
+                    $erreurs['email_inscrit_1'] = _T('association_evenements:erreur_email_inscrit_adherent', array(
                         'login' => generer_url_public('login'),
                     ));
                 }
@@ -1466,17 +1466,17 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
     if ($doit_verifier_tarif) {
         $analyse_tarifs = analyser_selection_tarifs_evenement($id_evenement, $categorie_result);
         if (empty($categorie_result)) {
-            $erreurs['categorie'] = _T('association:erreur_categorie_tarif_obligatoire');
+            $erreurs['categorie'] = _T('association_evenements:erreur_categorie_tarif_obligatoire');
         } elseif (empty($analyse_tarifs['valide'])) {
-            $erreurs['categorie'] = _T('association:erreur_categorie_tarif_invalide');
+            $erreurs['categorie'] = _T('association_evenements:erreur_categorie_tarif_invalide');
         } elseif (intval($analyse_tarifs['nombre_participants']) !== intval($nombre_a_verifier)) {
-            $erreurs['categorie'] = _T('association:erreur_paiement_inscription_incoherent');
+            $erreurs['categorie'] = _T('association_evenements:erreur_paiement_inscription_incoherent');
         } elseif (array_key_exists('montant_total', $post)
             && abs(floatval($post['montant_total']) - floatval($analyse_tarifs['montant_total'])) > 0.0001
         ) {
-            $erreurs['categorie'] = _T('association:erreur_paiement_inscription_incoherent');
+            $erreurs['categorie'] = _T('association_evenements:erreur_paiement_inscription_incoherent');
         } elseif (!empty($post['transaction'])) {
-            $erreurs['categorie'] = _T('association:erreur_paiement_inscription_incoherent');
+            $erreurs['categorie'] = _T('association_evenements:erreur_paiement_inscription_incoherent');
         }
     }
 
@@ -1491,14 +1491,14 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
         || ($etape_validation === null && $participants_reels > 0);
     if ($mode_multi && $saisie_famille_active != 'oui') {
         if (empty($affichage_dans_activites['accompagnants']) && $quantite_demandee > 1) {
-            $erreurs['nb_inscrits'] = _T('association:erreur_nb_inscrits');
+            $erreurs['nb_inscrits'] = _T('association_evenements:erreur_nb_inscrits');
             $motifs_nb_inscrits[] = 'AC0';
         } elseif ($controle_identites_multi
             && $quantite_demandee > 0
             && $participants_reels > 0
             && $participants_reels !== $quantite_demandee
         ) {
-            $erreurs['nb_inscrits'] = _T('association:erreur_nb_inscrits');
+            $erreurs['nb_inscrits'] = _T('association_evenements:erreur_nb_inscrits');
             $motifs_nb_inscrits[] = 'ID';
         }
     }
@@ -1513,7 +1513,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
             return intval($quantite) > 0;
         })) === 0;
     if ($nombre_a_verifier <= 0 && !$est_recapitulatif_multi && !$aucune_quantite_tarifaire) {
-        $erreurs['nb_inscrits'] = _T('association:erreur_nb_inscrits');
+        $erreurs['nb_inscrits'] = _T('association_evenements:erreur_nb_inscrits');
         $motifs_nb_inscrits[] = 'ZE';
     }
     $nom_premier_inscrit = trim((string) ($data_form['premier_inscrit']['nom'] ?? ''));
@@ -1570,7 +1570,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
         }
         if ($total_categories_selectionnees <= 0) {
             $selection_tarif_vide = true;
-            $erreurs['categorie'] = _T('association:erreur_nb_inscrits_categorie');
+            $erreurs['categorie'] = _T('association_evenements:erreur_nb_inscrits_categorie');
         }
     }
 
@@ -1591,9 +1591,9 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
     $erreur_quota_cle = ($mode_multi && $saisie_famille_active == 'oui') ? 'famille' : 'nb_accompagnants';
 
     if ($demande_participants_positive && $places_limites < $nombre_a_verifier) {
-        $erreurs[$erreur_quota_cle] = _T('association:erreur_nb_accompagnants');
+        $erreurs[$erreur_quota_cle] = _T('association_evenements:erreur_nb_accompagnants');
         if ($erreur_quota_cle !== 'famille') {
-            $erreurs['nb_accompagnants'] = _T('association:erreur_nb_accompagnants');
+            $erreurs['nb_accompagnants'] = _T('association_evenements:erreur_nb_accompagnants');
         }
     }
 
@@ -1618,7 +1618,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
         )), 'association' . _LOG_DEBUG);
 
         if ($nom_participants === '') {
-            $erreurs['nom_participants'] = _T('association:erreur_nom_participants');
+            $erreurs['nom_participants'] = _T('association_evenements:erreur_nom_participants');
         }
     }
 
@@ -1636,7 +1636,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
     if ($demande_participants_positive && $capacite_places_bloquante) {
         if (empty($id_activite)) {
             if ($places_disponibles < $nombre_a_verifier && $places_en_attentes_disponible < $nombre_a_verifier) {
-                $erreurs['nb_inscrits'] = _T('association:erreur_nb_inscrits');
+                $erreurs['nb_inscrits'] = _T('association_evenements:erreur_nb_inscrits');
                 $motifs_nb_inscrits[] = 'PC';
             }
         } else {
@@ -1644,13 +1644,13 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
             $nombre_inscrits_pre_modif = $query_activite['nombre_inscrits'] ?? 0;
             $statut_pre_modif = $query_activite['statut'] ?? '';
             if ($statut_pre_modif == 'preinscrit' && (($places_disponibles + $nombre_inscrits_pre_modif) < $nombre_a_verifier) && ($places_en_attentes_disponible < $nombre_a_verifier)) {
-                $erreurs['nb_inscrits'] = _T('association:erreur_nb_inscrits');
+                $erreurs['nb_inscrits'] = _T('association_evenements:erreur_nb_inscrits');
                 $motifs_nb_inscrits[] = 'PM';
             } elseif ($statut_pre_modif == 'ok' && (($places_disponibles + $nombre_inscrits_pre_modif) < $nombre_a_verifier) && ($places_en_attentes_disponible < $nombre_a_verifier)) {
-                $erreurs['nb_inscrits'] = _T('association:erreur_nb_inscrits');
+                $erreurs['nb_inscrits'] = _T('association_evenements:erreur_nb_inscrits');
                 $motifs_nb_inscrits[] = 'PM';
             } elseif ($statut_pre_modif == 'liste_attente' && (($places_en_attentes_disponible + $nombre_inscrits_pre_modif) < $nombre_a_verifier) && $places_disponibles < $nombre_a_verifier) {
-                $erreurs['nb_inscrits'] = _T('association:erreur_nb_inscrits');
+                $erreurs['nb_inscrits'] = _T('association_evenements:erreur_nb_inscrits');
                 $motifs_nb_inscrits[] = 'PM';
             }
         }
@@ -1665,12 +1665,12 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
     $spam_erreurs = ie_verifier_spam($post, 'email_inscrit', $prenom_field_spam, $nom_field_spam, true, $id_auteur_spam);
     if ($spam_erreurs) {
         set_request('erreur_spam', $spam_erreurs);
-        $erreurs['spam'] = _T('association:erreur_message_erreur');
+        $erreurs['spam'] = _T('association_evenements:erreur_message_erreur');
     }
 
     // email valide
     if (!empty(_request('email_inscrit')) && !email_valide(_request('email_inscrit'))) {
-        $erreurs['email_inscrit'] = _T('association:erreur_email_inscrit_invalide');
+        $erreurs['email_inscrit'] = _T('association_evenements:erreur_email_inscrit_invalide');
     }
 
     // Extension metier: permet d'ajouter/adapter les erreurs de verification.
@@ -1763,7 +1763,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
             max(1, $nb_famille_total)
         );
         if ($nb_invite_soumis > $limite_invites) {
-            $erreurs['nb_invite'] = _T('association:erreur_nb_invite_depasse', array('max' => $limite_invites));
+            $erreurs['nb_invite'] = _T('association_evenements:erreur_nb_invite_depasse', array('max' => $limite_invites));
         } else {
             // Vérifier que prenom et nom sont remplis pour chaque invité déclaré
             for ($j = 1; $j <= $nb_invite_soumis; $j++) {
@@ -1771,10 +1771,10 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
                 $prenom_val = trim((string) ($post['prenom_' . $suffix] ?? ''));
                 $nom_val    = trim((string) ($post['nom_' . $suffix] ?? ''));
                 if ($prenom_val === '') {
-                    $erreurs['prenom_' . $suffix] = _T('association:erreur_message_erreur');
+                    $erreurs['prenom_' . $suffix] = _T('association_evenements:erreur_message_erreur');
                 }
                 if ($nom_val === '') {
-                    $erreurs['nom_' . $suffix] = _T('association:erreur_message_erreur');
+                    $erreurs['nom_' . $suffix] = _T('association_evenements:erreur_message_erreur');
                 }
             }
         }
@@ -1785,7 +1785,7 @@ function ie_verifier_commons($mode, $id_evenement = 0, $id_activite = null, $pos
     // et ne reporter les messages spécifiques que s'ils ne sont pas liés à un
     // champ affiché (les saisies/CVT afficheront automatiquement l'erreur par champ).
     $consolidated = array();
-    $generic_message = _T('association:erreur_message_erreur');
+    $generic_message = _T('association_evenements:erreur_message_erreur');
 
     // Rassembler les messages qui ne correspondent pas à un champ affiché
     $non_field_messages = array();
@@ -1975,7 +1975,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         )), 'association' . _LOG_DEBUG);
         return array(
             'editable' => true,
-            'message_erreur' => _T('association:erreur_message_erreur'),
+            'message_erreur' => _T('association_evenements:erreur_message_erreur'),
         );
     }
 
@@ -1995,7 +1995,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         )), 'association' . _LOG_DEBUG);
         return array(
             'editable' => true,
-            'message_erreur' => _T('association:erreur_paiement_inscription_incoherent'),
+            'message_erreur' => _T('association_evenements:erreur_paiement_inscription_incoherent'),
         );
     }
     if (!empty($affichage_traitement['payant']) && !empty($affichage_traitement['accompagnants'])) {
@@ -2013,7 +2013,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
             )), 'association' . _LOG_DEBUG);
             return array(
                 'editable' => true,
-                'message_erreur' => _T('association:erreur_nb_inscrits_categorie'),
+                'message_erreur' => _T('association_evenements:erreur_nb_inscrits_categorie'),
             );
         }
     }
@@ -2052,14 +2052,14 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         if (!empty($id_activite)) {
             $activite_existante = sql_fetsel('id_evenement,id_transaction', 'spip_asso_activites', 'id_activite=' . intval($id_activite));
             if (intval($activite_existante['id_evenement'] ?? 0) !== intval($id_evenement)) {
-                return array('editable' => true, 'message_erreur' => _T('association:erreur_paiement_inscription_incoherent'));
+                return array('editable' => true, 'message_erreur' => _T('association_evenements:erreur_paiement_inscription_incoherent'));
             }
             $id_transaction = intval($activite_existante['id_transaction'] ?? 0);
             if ($id_transaction_soumis > 0 && $id_transaction_soumis !== $id_transaction) {
-                return array('editable' => true, 'message_erreur' => _T('association:erreur_paiement_inscription_incoherent'));
+                return array('editable' => true, 'message_erreur' => _T('association_evenements:erreur_paiement_inscription_incoherent'));
             }
         } elseif ($id_transaction_soumis > 0) {
-            return array('editable' => true, 'message_erreur' => _T('association:erreur_paiement_inscription_incoherent'));
+            return array('editable' => true, 'message_erreur' => _T('association_evenements:erreur_paiement_inscription_incoherent'));
         }
         $calc_tr = $analyse_tarifs;
         $montant_total = $calc_tr['montant_total'] ?? ($data_form['montant_total'] ?? 0);
@@ -2083,7 +2083,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         if (empty($transaction_persistante['id_transaction'])
             || abs(floatval($transaction_persistante['montant'] ?? 0) - floatval($montant_total)) > 0.0001
         ) {
-            return array('editable' => true, 'message_erreur' => _T('association:erreur_paiement_inscription_incoherent'));
+            return array('editable' => true, 'message_erreur' => _T('association_evenements:erreur_paiement_inscription_incoherent'));
         }
         spip_log('[IE_TRAITER_TRANSACTION][' . $trace_id . '] ' . json_encode(array(
             'id_transaction_apres' => intval($id_transaction),
@@ -2462,7 +2462,7 @@ function ie_generer_saisies_par_etapes($saisies) {
 
 function ie_options_etapes_saisies($activer = true, $texte_submit = null) {
     $options = array(
-        'texte_submit' => $texte_submit ?: _T('association:validation_inscription'),
+        'texte_submit' => $texte_submit ?: _T('association_evenements:validation_inscription'),
         'etapes_presentation' => 'defaut',
         'etapes_activer' => $activer,
         'etapes_suivant' => 'Suivant',

@@ -195,7 +195,7 @@ $champs['spip_evenements']['descriptif'] = array(
         "label" => _T('agenda:evenement_descriptif'),
         "sql" => "TEXT NOT NULL",
         "defaut" => '',
-        "explication" => _T('association:evenement_descriptif_textarea_explication'),
+        "explication" => _T('association_evenements:evenement_descriptif_textarea_explication'),
         "class" => 'inserer_barre_edition inserer_previsualisation',
         "rows" => 5,
     ),
@@ -206,10 +206,10 @@ $champs['spip_evenements']['descriptif_securise'] = array(
     "source" => 'association',
     "options" => array(
         "nom" => 'descriptif_securise',
-        "label" => _T('association:evenement_descriptif_securise_textarea'),
+        "label" => _T('association_evenements:evenement_descriptif_securise_textarea'),
         "sql" => "TEXT NOT NULL",
         "defaut" => '',
-        "explication" => _T('association:evenement_descriptif_securise_textarea_explication'),
+        "explication" => _T('association_evenements:evenement_descriptif_securise_textarea_explication'),
         "traitements" => '_TRAITEMENT_RACCOURCIS',
         "inserer_barre" => 'edition',
         "rows" => 5,
@@ -222,14 +222,14 @@ $champs['spip_evenements']['presentiel'] = array(
     "saisie" => 'radio',
     "options" => array(
         "nom" => 'presentiel',
-        "label" => _T('association:presentiel_label'),
+        "label" => _T('association_evenements:presentiel_label'),
         "sql" => "varchar(12) NOT NULL",
         "defaut" => 'oui',
         "datas" => array(
-            "oui" => _T('association:choix_presentiel'),
-            "non" => _T('association:choix_en_ligne'),
+            "oui" => _T('association_evenements:choix_presentiel'),
+            "non" => _T('association_evenements:choix_en_ligne'),
         ),
-        "explication" => _T('association:presentiel_explication'),
+        "explication" => _T('association_evenements:presentiel_explication'),
     )
 );
 
@@ -242,7 +242,7 @@ $champs['spip_evenements']['lieu'] = array(
         "label" => _T('agenda:evenement_lieu'),
         "sql" => "TEXT NOT NULL",
         "defaut" => '',
-        "explication" => _T('association:evenement_lieu_input_explication'),
+        "explication" => _T('association_evenements:evenement_lieu_input_explication'),
         "afficher_si" => '@presentiel@ != "non" ',
     ),
 );
@@ -255,7 +255,7 @@ $champs['spip_evenements']['adresse'] = array(
         "label" => _T('agenda:evenement_adresse'),
         "sql" => "TEXT NOT NULL",
         "defaut" => '',
-        "explication" => _T('association:evenement_adresse_input_explication'),
+        "explication" => _T('association_evenements:evenement_adresse_input_explication'),
         "rows" => 3,
         "afficher_si" => '@presentiel@ != "non" ',
     ),
@@ -267,10 +267,10 @@ $champs['spip_evenements']['lien'] = array(
     "source" => 'lien',
     "options" => array(
         "nom" => 'lien',
-        "label" => _T('association:evenement_lien_label'),
+        "label" => _T('association_evenements:evenement_lien_label'),
         "sql" => "varchar(255)",
         "defaut" => '',
-        "explication" => _T('association:evenement_lien_explication'),
+        "explication" => _T('association_evenements:evenement_lien_explication'),
         "afficher_si" => '@presentiel@ == "non" ',
     ),
 );
@@ -282,11 +282,11 @@ $champs['spip_evenements']['responsables']= array(
     "source" => 'association',
     "options" => array(
         "nom" => 'responsables',
-        "label" => _T('association:choix_responsables_evenement_label'),
+        "label" => _T('association_evenements:choix_responsables_evenement_label'),
         "datas" =>  $donnees['data_input_choix_responsable'],
         "sql" => "varchar(255) NOT NULL",
         "defaut" => $donnees['liste_responsable']['auteur_array_defaut'],
-        "explication" =>  _T('association:choix_responsables_evenement_explication'),
+        "explication" =>  _T('association_evenements:choix_responsables_evenement_explication'),
         "disable" => $donnees['disable'],
     )
 );
@@ -299,11 +299,11 @@ $champs['spip_evenements']['inscription']= array(
     "source" => 'agenda',
     "options" => array(
         "nom" => 'inscription',
-        "label" => _T('association:label_inscription'),
+        "label" => _T('association_evenements:label_inscription'),
         "sql" => "BOOLEAN NOT NULL",
         "datas" => array(
-            "1" =>   _T('association:oui'),
-            "0" =>   _T('association:non'),
+            "1" =>   _T('association_evenements:oui'),
+            "0" =>   _T('association_evenements:non'),
         ),
     )
 );
@@ -326,7 +326,7 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
     "saisie" => 'fieldset',
     "options" => array(
         "nom" => "fieldset_inscription_en_ligne",
-        "label" => _T('association:label_inscription_en_ligne_fieldset'),
+        "label" => _T('association_evenements:label_inscription_en_ligne_fieldset'),
         "afficher_si" => '@inscription@ == "1"',
     ),
     'saisies' => array(
@@ -335,9 +335,9 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
             "source" => 'agenda',
             "options" => array(
                 "nom" => 'places',
-                "label" =>  _T('association:label_places'),
+                "label" =>  _T('association_evenements:label_places'),
                 "sql" => "int(11) DEFAULT '0' NOT NULL",
-                "explication" => _T('association:label_places_explication'),
+                "explication" => _T('association_evenements:label_places_explication'),
             )
         ),
 
@@ -349,16 +349,16 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'type_inscrits_evenement',
-                "label" => _T('association:evenement_type_inscrits_label'),
-                "explication" => _T('association:evenement_type_inscrits_explication'),
+                "label" => _T('association_evenements:evenement_type_inscrits_label'),
+                "explication" => _T('association_evenements:evenement_type_inscrits_explication'),
                 "sql" => "VARCHAR(30) DEFAULT 'strict' NOT NULL",
                 "disable_avec_post" => (association_champs_extras_meta('meta_cfg_event_type_inscrits_evenement', 'prive') == 'only_strict' ) ? '1' : '0',
                 "cacher_option_intro" => '1',
                 "datas" =>
                     array(
-                        'public' => _T('association:evenement_type_inscrits_public'),
-                        'prive' => _T('association:evenement_type_inscrits_prive'),
-                        'strict' => _T('association:evenement_type_inscrits_strict'),
+                        'public' => _T('association_evenements:evenement_type_inscrits_public'),
+                        'prive' => _T('association_evenements:evenement_type_inscrits_prive'),
+                        'strict' => _T('association_evenements:evenement_type_inscrits_strict'),
                     ),
             ),
         ),
@@ -367,14 +367,14 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'afficher_liste_inscrits',
-                "label" => _T('association:afficher_liste_inscrits_label'),
+                "label" => _T('association_evenements:afficher_liste_inscrits_label'),
                 "sql" => "BOOLEAN NULL",
                 //"defaut" =>$afficher_liste_inscrits_defaut,
-                "explication" => _T('association:afficher_liste_inscrits_explication'),
+                "explication" => _T('association_evenements:afficher_liste_inscrits_explication'),
                 "disable_avec_post" => $donnees['afficher_liste_inscrits_disable_avec_post'],
                 "datas" => array(
-                    "1" =>   _T('association:oui'),
-                    "0" =>   _T('association:non'),
+                    "1" =>   _T('association_evenements:oui'),
+                    "0" =>   _T('association_evenements:non'),
                 ),
 
             ),
@@ -385,20 +385,20 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'ouverture_differe',
-                "label" => _T('association:evenement_ouverture_differe_date'),
-                "explication" => _T('association:evenement_date_ouverture_differe_explication'),
+                "label" => _T('association_evenements:evenement_ouverture_differe_date'),
+                "explication" => _T('association_evenements:evenement_date_ouverture_differe_explication'),
                 "sql" => "VARCHAR(2) DEFAULT '0' NOT NULL",
                 "cacher_option_intro" => '1',
                 "datas" =>
                     array (
-                        "0" => _T('association:evenement_date_ouverture_differe_desactive'),
-                        "dt" => _T('association:evenement_date_ouverture_differe_date'),
-                        "7" => _T('association:evenement_date_ouverture_differe_une_semaine'),
-                        "14" => _T('association:evenement_date_ouverture_differe_deux_semaines'),
-                        "21" => _T('association:evenement_date_ouverture_differe_trois_semaines'),
-                        "28" => _T('association:evenement_date_ouverture_differe_un_mois'),
-                        "42" => _T('association:evenement_date_ouverture_differe_un_mois_et_demi'),
-                        "56" => _T('association:evenement_date_ouverture_differe_deux_mois'),
+                        "0" => _T('association_evenements:evenement_date_ouverture_differe_desactive'),
+                        "dt" => _T('association_evenements:evenement_date_ouverture_differe_date'),
+                        "7" => _T('association_evenements:evenement_date_ouverture_differe_une_semaine'),
+                        "14" => _T('association_evenements:evenement_date_ouverture_differe_deux_semaines'),
+                        "21" => _T('association_evenements:evenement_date_ouverture_differe_trois_semaines'),
+                        "28" => _T('association_evenements:evenement_date_ouverture_differe_un_mois'),
+                        "42" => _T('association_evenements:evenement_date_ouverture_differe_un_mois_et_demi'),
+                        "56" => _T('association_evenements:evenement_date_ouverture_differe_deux_mois'),
                     ),
                 "defaut" => association_champs_extras_meta('meta_cfg_event_ouverture_differe', '0'),
                 // "afficher_si" => '@inscription@ == "1"',
@@ -410,8 +410,8 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'ouverture_differe_date',
-                "label" => _T('association:evenement_ouverture_differe_date_label'),
-                "explication" => _T('association:evenement_ouverture_differe_date_explication'),
+                "label" => _T('association_evenements:evenement_ouverture_differe_date_label'),
+                "explication" => _T('association_evenements:evenement_ouverture_differe_date_explication'),
                 "obligatoire" => 'oui',
                 "sql" => "DATETIME NULL DEFAULT NULL",
                 "defaut" => '',
@@ -432,27 +432,27 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'fermeture_inscription',
-                "label" => _T('association:evenement_fermeture_inscription_label'),
-                "explication" => _T('association:evenement_fermeture_inscription_explication'),
+                "label" => _T('association_evenements:evenement_fermeture_inscription_label'),
+                "explication" => _T('association_evenements:evenement_fermeture_inscription_explication'),
                 "sql" => "VARCHAR(12) DEFAULT 'last_minute' NOT NULL",
                 "cacher_option_intro" => '1',
                 "datas" =>
                     array (
-                        "last_minute" => _T('association:evenement_fermeture_inscription_last_minute'),
-                        "dt" => _T('association:evenement_fermeture_inscription_date_precise'),
-                        "midnight" => _T('association:evenement_fermeture_inscription_midnight'),
-                        "midi" => _T('association:evenement_fermeture_inscription_midi'),
-                        "24h" => _T('association:evenement_fermeture_inscription_24h'),
-                        "48h" => _T('association:evenement_fermeture_inscription_48h'),
-                        "72h" => _T('association:evenement_fermeture_inscription_72h'),
-                        "96h" => _T('association:evenement_fermeture_inscription_96h'),
-                        "7j" => _T('association:evenement_fermeture_inscription_7j'),
-                        "14j" => _T('association:evenement_fermeture_inscription_14j'),
-                        "21j" => _T('association:evenement_fermeture_inscription_21j'),
-                        "30j" => _T('association:evenement_fermeture_inscription_30j'),
-                        "unlimited" => _T('association:evenement_fermeture_pas_de_limite'),
-                        "now" => _T('association:evenement_fermeture_suspendre_inscription'),
-                        "cancel" => _T('association:evenement_fermeture_annule_inscription'),
+                        "last_minute" => _T('association_evenements:evenement_fermeture_inscription_last_minute'),
+                        "dt" => _T('association_evenements:evenement_fermeture_inscription_date_precise'),
+                        "midnight" => _T('association_evenements:evenement_fermeture_inscription_midnight'),
+                        "midi" => _T('association_evenements:evenement_fermeture_inscription_midi'),
+                        "24h" => _T('association_evenements:evenement_fermeture_inscription_24h'),
+                        "48h" => _T('association_evenements:evenement_fermeture_inscription_48h'),
+                        "72h" => _T('association_evenements:evenement_fermeture_inscription_72h'),
+                        "96h" => _T('association_evenements:evenement_fermeture_inscription_96h'),
+                        "7j" => _T('association_evenements:evenement_fermeture_inscription_7j'),
+                        "14j" => _T('association_evenements:evenement_fermeture_inscription_14j'),
+                        "21j" => _T('association_evenements:evenement_fermeture_inscription_21j'),
+                        "30j" => _T('association_evenements:evenement_fermeture_inscription_30j'),
+                        "unlimited" => _T('association_evenements:evenement_fermeture_pas_de_limite'),
+                        "now" => _T('association_evenements:evenement_fermeture_suspendre_inscription'),
+                        "cancel" => _T('association_evenements:evenement_fermeture_annule_inscription'),
                     ),
                 "defaut" => association_champs_extras_meta('meta_cfg_event_inscription_deadline', 'last_minute')
             )
@@ -462,8 +462,8 @@ $champs['spip_evenements']['fieldset_inscription_en_ligne'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'fermeture_inscription_date',
-                "label" => _T('association:evenement_fermeture_inscription_date_label'),
-                "explication" => _T('association:evenement_fermeture_inscription_date_explication'),
+                "label" => _T('association_evenements:evenement_fermeture_inscription_date_label'),
+                "explication" => _T('association_evenements:evenement_fermeture_inscription_date_explication'),
                 "obligatoire" => 'oui',
                 "sql" => "DATETIME NULL DEFAULT NULL",
                 "defaut" => '',
@@ -492,7 +492,7 @@ $champs['spip_evenements']['evenement_fieldset'] = array(
     "saisie" => 'fieldset',
     "options" => array(
         "nom" => "association",
-        "label" => _T('association:evenement_fieldset'),
+        "label" => _T('association_evenements:evenement_fieldset'),
         "afficher_si" => '@inscription@ == "1"'
     ),
     'saisies' => array(
@@ -501,14 +501,14 @@ $champs['spip_evenements']['evenement_fieldset'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'validation',
-                "label" => _T('association:evenement_validation_radio_label'),
+                "label" => _T('association_evenements:evenement_validation_radio_label'),
                 "sql" => "varchar(30) NOT NULL",
                 "defaut" => 'oui',
                 "datas" => array(
-                    'oui' =>  _T('association:evenement_validation_radio_oui'),
-                    'non' =>  _T('association:evenement_validation_radio_non'),
+                    'oui' =>  _T('association_evenements:evenement_validation_radio_oui'),
+                    'non' =>  _T('association_evenements:evenement_validation_radio_non'),
                 ),
-                "explication" => _T('association:evenement_validation_radio_explication'),
+                "explication" => _T('association_evenements:evenement_validation_radio_explication'),
             ),
         ),
     ),
@@ -552,7 +552,7 @@ function association_champs_paiement($champs, $donnees_communes) {
         "saisie" => 'fieldset',
         "options" => array(
             "nom" => "evenement_payant",
-            "label" => _T('association:evenement_payant_fieldset'),
+            "label" => _T('association_evenements:evenement_payant_fieldset'),
             "afficher_si" => '@inscription@ == "1"',
         ),
         'saisies' => array(
@@ -561,15 +561,15 @@ function association_champs_paiement($champs, $donnees_communes) {
                 "source" => 'association',
                 "options" => array(
                     "nom" => 'payant',
-                    "label" => _T('association:evenement_payant_radio_label'),
+                    "label" => _T('association_evenements:evenement_payant_radio_label'),
                     "sql" => "BOOLEAN NOT NULL",
                     "defaut" => '0',
                     "cacher_option_intro" => '1',
                     "datas" => array(
-                        "1" => _T('association:evenement_payant_radio_oui'),
-                        "0" => _T('association:evenement_payant_radio_non')
+                        "1" => _T('association_evenements:evenement_payant_radio_oui'),
+                        "0" => _T('association_evenements:evenement_payant_radio_non')
                     ),
-                    "explication" => _T('association:evenement_payant_radio_explication'),
+                    "explication" => _T('association_evenements:evenement_payant_radio_explication'),
                 ),
             ),
             'validation_sur_paiement' => array(
@@ -577,18 +577,18 @@ function association_champs_paiement($champs, $donnees_communes) {
                 "source" => 'association',
                 "options" => array(
                     "nom" => 'validation_sur_paiement',
-                    "label" => _T('association:validation_auto_sur_paiement_label'),
+                    "label" => _T('association_evenements:validation_auto_sur_paiement_label'),
                     "sql" => "char(3) NOT NULL",
                     "defaut" => 'oui',
                     "datas" => array(
-                        'oui' => _T('association:validation_auto_sur_paiement_oui'),
-                        'non' => _T('association:validation_auto_sur_paiement_non'),
+                        'oui' => _T('association_evenements:validation_auto_sur_paiement_oui'),
+                        'non' => _T('association_evenements:validation_auto_sur_paiement_non'),
                     ),
                     // Le champ 'validation_sur_paiement' ne doit pas tester sa propre valeur
                     // (cela provoque des erreurs d'évaluation d'afficher_si en front).
                     // On affiche simplement ce champ si l'événement est payant.
                     "afficher_si" => '@payant@ == "1"',
-                    "explication" => _T('association:validation_auto_sur_paiement_explication'),
+                    "explication" => _T('association_evenements:validation_auto_sur_paiement_explication'),
                 ),
             )
         ),
@@ -619,11 +619,11 @@ function association_champs_paiement($champs, $donnees_communes) {
         "source" => 'association',
         "options" => array(
             "nom" => 'mode_paiement',
-            "label" => _T('association:mode_paiement_evenement_label'),
+            "label" => _T('association_evenements:mode_paiement_evenement_label'),
             "datas" => $mode_paiement_listes,
             "sql" => "varchar(255) NOT NULL",
             "defaut" => $mode_paiement_liste,
-            "explication" => _T('association:mode_paiement_evenement_explication'),
+            "explication" => _T('association_evenements:mode_paiement_evenement_explication'),
             "afficher_si" => '@payant@ == "1"',
         ),
     );
@@ -632,9 +632,9 @@ function association_champs_paiement($champs, $donnees_communes) {
         "saisie" => 'fieldset',
         "options" => array(
             "nom" => "categorie_prix",
-            "label" => _T('association:evenement_montant_label'),
+            "label" => _T('association_evenements:evenement_montant_label'),
             "afficher_si" => '@payant@ == "1"',
-            "explication" => _T('association:evenement_montant_explication')
+            "explication" => _T('association_evenements:evenement_montant_explication')
         ),
         'saisies' => $saisie_categorie,
     );
@@ -652,7 +652,7 @@ $champs['spip_evenements']['accompagnant'] = array(
     "saisie" => 'fieldset',
     "options" => array(
         "nom" => "accompagnant",
-        "label" => _T('association:accompagnant_fieldset'),
+        "label" => _T('association_evenements:accompagnant_fieldset'),
         "afficher_si" => '@inscription@ == "1"'
     ),
     'saisies' => array(
@@ -661,15 +661,15 @@ $champs['spip_evenements']['accompagnant'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'accompagnants',
-                "label" => _T('association:evenement_accompagnant_radio_label'),
+                "label" => _T('association_evenements:evenement_accompagnant_radio_label'),
                 "sql" => "varchar(30) NOT NULL",
                 "defaut" => 'non',
                 "cacher_option_intro" => '1',
                 "datas" => array(
-                    'oui' => _T('association:evenement_accompagnants_radio_oui'),
-                    'non' => _T('association:evenement_accompagnants_radio_non'),
+                    'oui' => _T('association_evenements:evenement_accompagnants_radio_oui'),
+                    'non' => _T('association_evenements:evenement_accompagnants_radio_non'),
                 ),
-                "explication" => _T('association:evenement_montant_radio_explication'),
+                "explication" => _T('association_evenements:evenement_montant_radio_explication'),
             ),
         ),
         'limite_places' => array(
@@ -677,21 +677,21 @@ $champs['spip_evenements']['accompagnant'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'limite_places',
-                "label" => _T('association:evenement_accompagnant_limite_label'),
+                "label" => _T('association_evenements:evenement_accompagnant_limite_label'),
                 "sql" => "INT(10) NOT NULL",
                 "defaut" => '2',
-                "explication" => _T('association:evenement_accompagnant_explication'),
+                "explication" => _T('association_evenements:evenement_accompagnant_explication'),
                 "afficher_si" => '@accompagnants@ != "non"',
                 "datas" => array(
-                    '2' => _T('association:evenement_nb_participant', array('nb'=>2)),
-                    '3' => _T('association:evenement_nb_participant', array('nb'=>3)),
-                    '4' => _T('association:evenement_nb_participant', array('nb'=>4)),
-                    '5' => _T('association:evenement_nb_participant', array('nb'=>5)),
-                    '6' => _T('association:evenement_nb_participant', array('nb'=>6)),
-                    '7' => _T('association:evenement_nb_participant', array('nb'=>7)),
-                    '8' => _T('association:evenement_nb_participant', array('nb'=>8)),
-                    '9' => _T('association:evenement_nb_participant', array('nb'=>9)),
-                    '10' => _T('association:evenement_nb_participant', array('nb'=>10)),
+                    '2' => _T('association_evenements:evenement_nb_participant', array('nb'=>2)),
+                    '3' => _T('association_evenements:evenement_nb_participant', array('nb'=>3)),
+                    '4' => _T('association_evenements:evenement_nb_participant', array('nb'=>4)),
+                    '5' => _T('association_evenements:evenement_nb_participant', array('nb'=>5)),
+                    '6' => _T('association_evenements:evenement_nb_participant', array('nb'=>6)),
+                    '7' => _T('association_evenements:evenement_nb_participant', array('nb'=>7)),
+                    '8' => _T('association_evenements:evenement_nb_participant', array('nb'=>8)),
+                    '9' => _T('association_evenements:evenement_nb_participant', array('nb'=>9)),
+                    '10' => _T('association_evenements:evenement_nb_participant', array('nb'=>10)),
                 ),
             ),
         ),
@@ -701,13 +701,13 @@ $champs['spip_evenements']['accompagnant'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'invites',
-                "label" => _T('association:evenement_invites_radio_label'),
+                "label" => _T('association_evenements:evenement_invites_radio_label'),
                 "sql" => "varchar(3) NOT NULL DEFAULT 'non'",
                 "defaut" => ($GLOBALS['association_metas']['meta_cfg_event_invites'] ?? 'non'),
                 "cacher_option_intro" => '1',
                 "datas" => array(
-                    'oui' => _T('association:evenement_invites_radio_oui'),
-                    'non' => _T('association:evenement_invites_radio_non'),
+                    'oui' => _T('association_evenements:evenement_invites_radio_oui'),
+                    'non' => _T('association_evenements:evenement_invites_radio_non'),
                 ),
                 "afficher_si" => '@accompagnants@ != "non"',
             ),
@@ -718,11 +718,11 @@ $champs['spip_evenements']['accompagnant'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'limite_invites',
-                "label" => _T('association:evenement_invites_limite_label'),
+                "label" => _T('association_evenements:evenement_invites_limite_label'),
                 "sql" => "INT(10) UNSIGNED NOT NULL DEFAULT '5'",
                 "defaut" => '5',
                 "type" => 'number',
-                "explication" => _T('association:evenement_invites_limite_explication'),
+                "explication" => _T('association_evenements:evenement_invites_limite_explication'),
                 "afficher_si" => '@invites@ == "oui"',
             ),
         ),
@@ -743,7 +743,7 @@ $champs['spip_evenements']['attente'] = array(
     "saisie" => 'fieldset',
     "options" => array(
         "nom" => "attente",
-        "label" => _T('association:attente_fieldset'),
+        "label" => _T('association_evenements:attente_fieldset'),
         "afficher_si" => '@inscription@ == "1" && @places@ > "0"'
     ),
     'saisies' => array(
@@ -752,15 +752,15 @@ $champs['spip_evenements']['attente'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'file_attentes',
-                "label" => _T('association:evenement_attente_radio_label'),
+                "label" => _T('association_evenements:evenement_attente_radio_label'),
                 "sql" => "varchar(30) NOT NULL",
                 "defaut" => 'oui',
                 "cacher_option_intro" => '1',
                 "datas" => array(
-                    'oui' => _T('association:evenement_attente_radio_oui'),
-                    'non' => _T('association:evenement_attente_radio_non'),
+                    'oui' => _T('association_evenements:evenement_attente_radio_oui'),
+                    'non' => _T('association_evenements:evenement_attente_radio_non'),
                 ),
-                "explication" => _T('association:evenement_file_attentes_radio_explication'),
+                "explication" => _T('association_evenements:evenement_file_attentes_radio_explication'),
             ),
         ),
         'accompagnants' => array(
@@ -768,14 +768,14 @@ $champs['spip_evenements']['attente'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'validation_attente_automatique',
-                "label" => _T('association:evenement_validation_attente_automatique_radio_label'),
+                "label" => _T('association_evenements:evenement_validation_attente_automatique_radio_label'),
                 "sql" => "varchar(3) NOT NULL",
                 "defaut" => association_champs_extras_meta('meta_cfg_event_validation_auto', 'non'),
                 "datas" => array(
-                    'oui' => _T('association:evenement_validation_attente_automatique_radio_oui'),
-                    'non' => _T('association:evenement_validation_attente_automatique_radio_non'),
+                    'oui' => _T('association_evenements:evenement_validation_attente_automatique_radio_oui'),
+                    'non' => _T('association_evenements:evenement_validation_attente_automatique_radio_non'),
                 ),
-                "explication" => _T('association:evenement_validation_attente_automatique_radio_explication'),
+                "explication" => _T('association_evenements:evenement_validation_attente_automatique_radio_explication'),
                 "afficher_si" => '@file_attentes@ == "oui"'
             ),
         ),
@@ -784,10 +784,10 @@ $champs['spip_evenements']['attente'] = array(
             "source" => 'association',
             "options" => array(
                 "nom" => 'attentes',
-                "label" => _T('association:evenement_attente_label'),
+                "label" => _T('association_evenements:evenement_attente_label'),
                 "sql" => "varchar(30) NOT NULL",
                 "defaut" => '',
-                "explication" => _T('association:evenement_attente_explication_explication'),
+                "explication" => _T('association_evenements:evenement_attente_explication_explication'),
                 "afficher_si" => '@file_attentes@ == "oui"'
             ),
         ),
@@ -813,7 +813,7 @@ if($condition_inscription_defaut == 'jamais') {
         "options" => array(
             "sql" => "varchar(3) DEFAULT 'non' NULL",
             "nom" => "condition_inscription",
-            "label" => _T('association:case_condition_inscription_label'),
+            "label" => _T('association_evenements:case_condition_inscription_label'),
             "defaut" => 'non',
         ),
     );
@@ -823,7 +823,7 @@ if($condition_inscription_defaut == 'jamais') {
         "options" => array(
             "sql" => "TEXT",
             "nom" => "message_condition_inscription",
-            "label" => _T('association:evenement_message_condition_inscription'),
+            "label" => _T('association_evenements:evenement_message_condition_inscription'),
             "defaut" => '',
         ),
     );
@@ -832,7 +832,7 @@ if($condition_inscription_defaut == 'jamais') {
         "saisie" => 'fieldset',
         "options" => array(
             "nom" => "fieldset_modalites",
-            "label" => _T('association:label_modalites'),
+            "label" => _T('association_evenements:label_modalites'),
             "afficher_si" => '@inscription@ == "1"',
         ),
         'saisies' => array(
@@ -840,15 +840,15 @@ if($condition_inscription_defaut == 'jamais') {
                 "saisie" => 'radio',
                 "source" => 'association',
                 "options" => array(
-                    "label" => _T('association:case_condition_inscription_label'),
+                    "label" => _T('association_evenements:case_condition_inscription_label'),
                     "nom" => 'condition_inscription',
                     "sql" => "varchar(3) DEFAULT 'non' NULL",
-                    "explication" => _T('association:case_condition_inscription_explication'),
+                    "explication" => _T('association_evenements:case_condition_inscription_explication'),
                     "defaut" => ($condition_inscription_defaut == 'toujours' ||
                                  $condition_inscription_defaut == 'oui') ? 'oui' : 'non',
                     "datas" => array(
-                        "oui" => _T('association:case_condition_inscription_oui'),
-                        "non" => _T('association:case_condition_inscription_non'),
+                        "oui" => _T('association_evenements:case_condition_inscription_oui'),
+                        "non" => _T('association_evenements:case_condition_inscription_non'),
                     ),
                 ),
             ),
@@ -857,10 +857,10 @@ if($condition_inscription_defaut == 'jamais') {
                 "source" => 'association',
                 "options" => array(
                     "nom" => 'message_condition_inscription',
-                    "label" => _T('association:evenement_message_condition_inscription'),
+                    "label" => _T('association_evenements:evenement_message_condition_inscription'),
                     "sql" => "varchar(255) NOT NULL",
                     "defaut" => association_champs_extras_meta('message_condition_inscription_defaut', ''),
-                    "explication" => _T('association:evenement_message_condition_inscription_textarea_explication'),
+                    "explication" => _T('association_evenements:evenement_message_condition_inscription_textarea_explication'),
                     "rows" => 5,
                     "afficher_si" => '@condition_inscription@ == "oui"',
                     "obligatoire" => 'oui',
@@ -888,18 +888,18 @@ if(isset($champs['spip_evenements']['fieldset_modalites']) &&
         "source" => 'association',
         "options" => array(
             "nom" => 'info_supplementaire',
-            "label" => _T('association:evenement_info_supplementaire'),
+            "label" => _T('association_evenements:evenement_info_supplementaire'),
             "sql" => "INT(10) NOT NULL",
             "defaut" => '2',
-            "explication" => _T('association:evenement_info_supplementaire_explication'),
+            "explication" => _T('association_evenements:evenement_info_supplementaire_explication'),
             "datas" => array(
-                'document_identite' => _T('association:document_identite_label'),
-                'telephone' => _T('association:telephone'),
-                'email' => _T('association:email'),
-                'date_naissance' => _T('association:date_naissance'),
-                'nationalite' => _T('association:nationalite'),
-                'fonction' => _T('association:fonction'),
-                'entreprise' => _T('association:entreprise'),
+                'document_identite' => _T('association_evenements:document_identite_label'),
+                'telephone' => _T('association_evenements:telephone'),
+                'email' => _T('association_evenements:email'),
+                'date_naissance' => _T('association_evenements:date_naissance'),
+                'nationalite' => _T('association_evenements:nationalite'),
+                'fonction' => _T('association_evenements:fonction'),
+                'entreprise' => _T('association_evenements:entreprise'),
             ),
             'choix_alternatif_label' => 'Autres',
             'choix_alternatif' => 'autres',
@@ -921,7 +921,7 @@ $champs['spip_evenements']['fieldset_communication'] = array(
     "saisie" => 'fieldset',
     "options" => array(
         "nom" => "fieldset_communication",
-        "label" => _T('association:label_communication'),
+        "label" => _T('association_evenements:label_communication'),
     ),
 );
 
@@ -929,14 +929,14 @@ $champs['spip_evenements']['reseau_fiafe'] = array(
     "saisie" => 'radio',
     "source" => 'association',
     "options" => array(
-        "label" => _T('association:reseau_fiafe_label'),
+        "label" => _T('association_evenements:reseau_fiafe_label'),
         "nom" => 'reseau_fiafe',
         "sql" => "varchar(3) DEFAULT 'non' NULL",
-        "explication" => _T('association:reseau_fiafe_explication'),
+        "explication" => _T('association_evenements:reseau_fiafe_explication'),
         "defaut" => 'non',
         "datas" => array(
-            "oui" => _T('association:oui'),
-            "non" => _T('association:non'),
+            "oui" => _T('association_evenements:oui'),
+            "non" => _T('association_evenements:non'),
         ),
         "afficher_si" => '@presentiel@ == "non"',
         "disable_avec_post" => (association_champs_extras_meta('meta_cfg_event_reseau_fiafe', 'active') == 'desactive') ? '1' : '0',

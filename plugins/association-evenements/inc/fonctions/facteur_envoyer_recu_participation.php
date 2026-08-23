@@ -55,7 +55,7 @@ function facteur_envoyer_recu_participation($email_inscrit,$id_transaction,$id_a
             // fallback : utiliser l'email comme repère si aucun nom
             $nom_adherent = $email_inscrit;
         }
-        $sujet = _T('association:email_recu_encaissement_participation_sujet', array(
+        $sujet = _T('association_evenements:email_recu_encaissement_participation_sujet', array(
                                 'nom_adherent' => $nom_adherent,
                                 'titre_evenement' => $titre_evenement,
                                 'numero_recu' => $numero_recu)
@@ -97,7 +97,7 @@ function facteur_envoyer_recu_participation($email_inscrit,$id_transaction,$id_a
         if (empty($nom_adherent)) {
             $nom_adherent = $email_inscrit;
         }
-         $sujet = _T('association:email_recu_remboursement_participation_sujet', array(
+         $sujet = _T('association_evenements:email_recu_remboursement_participation_sujet', array(
                                 'nom_adherent' => $nom_adherent,
                                 'titre_evenement' => $titre_evenement,
                                 'numero_recu' => $numero_recu)

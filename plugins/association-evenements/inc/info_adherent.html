@@ -32,7 +32,7 @@
 			<BOUCLE_activites_evenements(RUBRIQUES){composition IN activites, evenements}{doublons}><BOUCLE_articles_activites_evenements(ARTICLES){id_secteur}{doublons activites_evenements}></BOUCLE_articles_activites_evenements></BOUCLE_activites_evenements>
 				
 					<B_activite_responsable>
-						<!--<div class="item_info_fonction"><:association:responsable_de:></div>-->
+						<!--<div class="item_info_fonction"><:association_evenements:responsable_de:></div>-->
 						<ul class="activite_responsable">
 							<BOUCLE_activite_responsable(ARTICLES){id_auteur}{par titre}{!doublons activites_evenements}>
 								<li><a href="#URL_ARTICLE">[(#TITRE|supprimer_numero)]</a></li>

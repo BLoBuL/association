@@ -3,13 +3,13 @@
     [(#SET{titre,#TITRE})]
     [(#SET{titre_date,[(#TITRE)] - [(#DATE_DEBUT|Agenda_affdate_debut_fin{#DATE_FIN,#HORAIRE})]})]
 
-    [<p class="date_ouverture"><:association:voir_activites_libelle_date_debut:> <strong>(#DATE_DEBUT|affdate{"d/m/Y H:i"})</strong></p>]
+    [<p class="date_ouverture"><:association_evenements:voir_activites_libelle_date_debut:> <strong>(#DATE_DEBUT|affdate{"d/m/Y H:i"})</strong></p>]
     [<div class="logo_evenement">
         (#INCLURE{fond=prive/inclure/asso_logo_evenement,id_evenement,largeur=200,hauteur=100,mediabox=oui,env})
     </div>]
 [(#SET{ids_responsable,#ID_EVENEMENT|liste_responsables_evenement|table_valeur{auteur_array}})]
 <B_responsable><div class="bloc_responsables_separator"></div>
-<h4><:association:activite_liste_responsable:></h4>
+<h4><:association_evenements:activite_liste_responsable:></h4>
 <table class="table_responsables_activite">
 <BOUCLE_responsable(AUTEURS){id_auteur IN #GET{ids_responsable}}{tout}>
         <tr class="responsable">

@@ -11,7 +11,7 @@
 <BOUCLE_CONDITION(CONDITION){si #ENV{desinscription_possible}|=={possible}}
                                                             {si #ENV{statut_ouverture_inscription}|=={inscription_ouverte}}>
   <div>
-      <h3 class="titre"><i class="fa fa-times-circle"></i><span><:association:titre_desinscription:></span></h3>
+      <h3 class="titre"><i class="fa fa-times-circle"></i><span><:association_evenements:titre_desinscription:></span></h3>
      [<p class='formulaire_erreur'>(#ENV*{message_erreur})</p>]
 			<form action="#ENV{action}" method="post">
                 <div>
@@ -20,7 +20,7 @@
                         #GENERER_SAISIES{#ENV{saisies}}
                         <input type="hidden" name="id_activite" value="#ENV{id_activite}">
                         <div class="boutons">        
-                            <input type="submit" name="ok" value="<:association:me_desinscrire:>" class="submit"/>
+                            <input type="submit" name="ok" value="<:association_evenements:me_desinscrire:>" class="submit"/>
                         </div>
                     </div>
       </form>

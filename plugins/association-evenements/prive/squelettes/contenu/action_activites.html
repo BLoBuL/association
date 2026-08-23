@@ -9,7 +9,7 @@
 	<input type="hidden" name="action_activites" value="[(#GET{contexte}|table_valeur{action_activites}|attribut_html)]" />
 	[(#GET{contexte}|table_valeur{type_reactivation}|oui)<input type="hidden" name="type_reactivation" value="[(#GET{contexte}|table_valeur{type_reactivation}|attribut_html)]" />]
 	<BOUCLE_ids(DATA){source tableau,#GET{contexte}|table_valeur{ids}}><input type="hidden" name="selecteur_id_activite[]" value="#VALEUR" /></BOUCLE_ids>
-	[(#GET{contexte}|table_valeur{notifier}|oui)<div class="editer editer_notify_the_members"><div class="choix"><input type="checkbox" name="notify_the_members" id="notify_the_members" value="1" checked="checked" /><label for="notify_the_members"><:association:activite_bouton_notifier_adherents:></label></div></div>]
-	<p class="boutons"><button type="submit" class="submit"><:association:activite_bouton_confirmer:></button></p>
+	[(#GET{contexte}|table_valeur{notifier}|oui)<div class="editer editer_notify_the_members"><div class="choix"><input type="checkbox" name="notify_the_members" id="notify_the_members" value="1" checked="checked" /><label for="notify_the_members"><:association_evenements:activite_bouton_notifier_adherents:></label></div></div>]
+	<p class="boutons"><button type="submit" class="submit"><:association_evenements:activite_bouton_confirmer:></button></p>
 </form>
 [(#BOITE_FERMER)]

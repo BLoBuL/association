@@ -1,8 +1,8 @@
-#CACHE{0}#HTTP_HEADER{Content-Encoding: #CHARSET}#HTTP_HEADER{Content-Type: text/csv; charset=#CHARSET}[(#HTTP_HEADER{Content-Disposition: attachment; filename=Export  - Liste des événements - [(#DATE|Affdate{d-m-Y})].csv})]<B_evenements>[(#VAL{<:association:export_evenements_num_evenement:>}|textebrut|utf8_decode)];[(#VAL{<:association:export_evenements_date:>}|textebrut|utf8_decode)];[(#VAL{<:association:export_evenements_titre:>}|textebrut|utf8_decode)];[(#VAL{<:association:export_evenements_quota:>}|textebrut|utf8_decode)];[(#VAL{<:association:export_evenements_nb_inscrits:>}|textebrut|utf8_decode)];[(#VAL{<:association:export_evenements_encaisse:>}|textebrut|utf8_decode)];
+#CACHE{0}#HTTP_HEADER{Content-Encoding: #CHARSET}#HTTP_HEADER{Content-Type: text/csv; charset=#CHARSET}[(#HTTP_HEADER{Content-Disposition: attachment; filename=Export  - Liste des événements - [(#DATE|Affdate{d-m-Y})].csv})]<B_evenements>[(#VAL{<:association_evenements:export_evenements_num_evenement:>}|textebrut|utf8_decode)];[(#VAL{<:association_evenements:export_evenements_date:>}|textebrut|utf8_decode)];[(#VAL{<:association_evenements:export_evenements_titre:>}|textebrut|utf8_decode)];[(#VAL{<:association_evenements:export_evenements_quota:>}|textebrut|utf8_decode)];[(#VAL{<:association_evenements:export_evenements_nb_inscrits:>}|textebrut|utf8_decode)];[(#VAL{<:association_evenements:export_evenements_encaisse:>}|textebrut|utf8_decode)];
 <BOUCLE_evenements(EVENEMENTS){si #SESSION{id_auteur}}{inscription = 1}{payant = 1}{statut = publie}{par date_debut}{inverse}>
 [#(#ID_EVENEMENT)];[(#DATE_DEBUT|Affdate{d-m-Y})];[(#TITRE|supprimer_numero|textebrut|utf8_decode)];[(#PLACES|=={0}|?{'',#PLACES})];[(#ID_EVENEMENT|gestions_places|table_valeur{nombre_total_inscrits})];[(#ID_EVENEMENT|gestions_places|table_valeur{total_encaisse})]</BOUCLE_evenements>
 [(#SESSION{id_auteur}|non)
-    [(#VAL{<:association:export_evenements_message_non_connecte:>}|textebrut|utf8_decode)]
+    [(#VAL{<:association_evenements:export_evenements_message_non_connecte:>}|textebrut|utf8_decode)]
 ]
 <//B_evenements>   
 [(#REM) 

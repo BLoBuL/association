@@ -1,9 +1,9 @@
 [(#SET{selection_id_activites,#ENV{id_activites}})]
 <div class="formulaire_spip formulaire_asso">
-<h2 class="legend"><:association:email_collectif_destinataire_titre:></h2>
+<h2 class="legend"><:association_evenements:email_collectif_destinataire_titre:></h2>
 <B_filtre>
     <div class="filtre statut_interne">
-        <div class=""><span><:association:filtre_statut_cotisation:></span></div>
+        <div class=""><span><:association_evenements:filtre_statut_cotisation:></span></div>
         <div class="[(#ENV{statut}|non)selected]"><a href="[(#SELF|parametre_url{statut,''})]" class="ajax">Tous statuts</a></div>
         <BOUCLE_filtre(ASSO_ACTIVITES){tout} {id_activite IN  #GET{selection_id_activites}}{fusion statut}>
             <div class="[(#ENV{statut}=={#STATUT}|oui)selected]">
@@ -17,11 +17,11 @@
     <table id="tableau_inscriptions_activite" class=" tableau_asso">
         <tr>
         <th>[(#TRI{id_activite,'#',ajax})]</th>
-        <th>[(#TRI{date,<:association:activite_entete_date:>,ajax})]</th>
-       <th>[(#TRI{nom_inscrit,<:association:activite_entete_nom:>,ajax})]</th>
-        <th>[(#TRI{statut,<:association:activite_entete_statut_inscription:>,ajax})]</th>
-        <th>[(#TRI{nombre_inscrits,<:association:activite_entete_nombre_inscrit:>,ajax})]</th>
-        <th><:association:activite_entete_voir:></th>
+        <th>[(#TRI{date,<:association_evenements:activite_entete_date:>,ajax})]</th>
+       <th>[(#TRI{nom_inscrit,<:association_evenements:activite_entete_nom:>,ajax})]</th>
+        <th>[(#TRI{statut,<:association_evenements:activite_entete_statut_inscription:>,ajax})]</th>
+        <th>[(#TRI{nombre_inscrits,<:association_evenements:activite_entete_nombre_inscrit:>,ajax})]</th>
+        <th><:association_evenements:activite_entete_voir:></th>
         <th class="checkbox"> <input id="check_all" name="selecteur_inscription[]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);"><label for="check_all" >
             </label></th>
         </tr>
