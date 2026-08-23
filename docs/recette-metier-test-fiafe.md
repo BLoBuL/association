@@ -677,3 +677,16 @@ fournisseurs sont présents : `maintenance.active`, `adhesion.validite`,
 `comptabilite.active`. `spip test:spip` valide encore PDO, SPIP et la version
 4.4.21 ; aucun fatal, appel non capturé ou doublon du registre n’apparaît dans
 les journaux de la fenêtre de recette.
+
+## Lot 54 — inventaire d'installation distribué
+
+Le commit `4695033` a été déployé atomiquement dans les dix plugins depuis
+l'artefact SHA-256
+`9684bab6f2d6cc7d55aa21a343080f678ebea1d0feb646766e2cab171f25f78e`.
+Le registre des plugins et le cache ont été actualisés avec SPIP CLI.
+
+La commande réelle `association:installation:verifier` assemble les dix
+contributions et confirme 10 plugins actifs, 14 tables présentes, 12 objets SQL
+SPIP complets et 7 versions de schéma exactes. `spip test:spip` confirme PDO,
+SPIP et la version 4.4.21. Aucun fatal, fournisseur absent ou conflit de schéma
+n'apparaît dans les journaux couvrant le déploiement et la recette.
