@@ -715,3 +715,15 @@ l'empreinte historique
 `aeefc0bcd675e66c3ad52eeb6b033c031f59508cad4c8460a9e0641b91982670`.
 Le vérificateur d'installation reste valide et aucun fatal ni message de
 migration anormal n'est présent dans les journaux de la recette.
+
+## Lot 57 — catégories de logs distribuées
+
+Le commit `fa6c676` a été déployé atomiquement dans le socle, Adhésions,
+Communication, Comptabilité et Événements depuis l'artefact SHA-256
+`559e467e902f13a6538b977fc322687089286d875e840a13a0e6e0dea43bb274`.
+
+Le SPIP servi expose exactement 12 catégories dans l'ordre historique :
+autorisations, cotisations, notifications, inscriptions, comptabilité,
+adhérents, cron, spam, email, GIS, migration et synchronisation. Le registre
+CLI conserve simultanément ses 135 options. L'installation reste valide et
+aucun fatal ou défaut du pipeline n'est journalisé.
