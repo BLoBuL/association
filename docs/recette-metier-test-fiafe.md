@@ -200,3 +200,25 @@ et FO ne contiennent ni avertissement ni erreur.
 Le débordement propre à l'accueil du thème et le code de sortie non nul de la
 commande externe `spip test:spip` malgré tous ses contrôles affichés en vert
 restent consignés hors périmètre Association.
+
+## Contrôle après distribution complète de la configuration
+
+Le déploiement `713e752c` a été vérifié côté serveur après actualisation du
+registre des pipelines SPIP. Les six panneaux distribués retournent leurs
+structures complètes : Adhésions (8 fieldsets, 18 champs), Entreprise (4/10),
+Événement (4/18), Valeurs événement (1/14), Paiements (3/6) et Comptabilité
+(1/20). Les validations propres à Communication, Comptabilité et à la
+maintenance transversale sont toutes appelées.
+
+Le contrat Événements résout l'activité de contrôle vers l'événement 228, et
+les contrats Communication retournent cinq listes de diffusion. Les modules
+Adhésions, Événements, Paiements et Comptabilité sont chargés depuis leurs
+propres fichiers ; l'ancien alias d'autorisation générique `modifier/asso`
+reste absent.
+
+Les 66 tests autonomes passent sur ce commit. Une nouvelle passe Chrome a été
+engagée, mais la prise de contrôle de tout onglet authentifié bloque actuellement
+au niveau de l'extension avant même la lecture du DOM. Cette indisponibilité ne
+remet pas en cause la passe visuelle précédente ; elle empêche seulement de
+produire une nouvelle preuve visuelle postérieure à `713e752c` tant que la
+connexion Chrome n'est pas rétablie.

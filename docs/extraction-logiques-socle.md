@@ -242,13 +242,21 @@ Enfin, les helpers Bank/trésorier résident dans Paiements et les bibliothèque
 plan/destinations sont chargées par Comptabilité, plus par le formulaire du
 socle.
 
-## Lots restant après la migration et la première recette distante
+## État après le lot 14
 
-1. répartir les blocs métier du grand formulaire de configuration ;
-2. achever l'audit des inclusions inter-modules et des contrats publics.
+La répartition du grand formulaire de configuration est achevée pour les
+domaines actuellement extraits : Adhésions, Événements, Paiements,
+Comptabilité et Communication portent leurs saisies et validations métier. Le
+socle ne conserve que l'orchestration CVT, la maintenance transversale et la
+compatibilité de l'URL historique.
+
+L'audit des inclusions directes a également supprimé les couplages identifiés
+entre Comptabilité et Événements. Les prochaines extractions doivent désormais
+être pilotées par les responsabilités restantes du socle, et non par un nouveau
+découpage mécanique du formulaire déjà distribué.
 
 La passe Chrome authentifiée et responsive a été rejouée après le lot 8 ; elle
 est consignée dans `docs/recette-metier-test-fiafe.md`.
 
-Chaque lot doit passer les tests autonomes, le staging des dix plugins, puis une
+Chaque lot suivant doit passer les tests autonomes, le staging des dix plugins, puis une
 compilation et une recette SPIP réelle avant déploiement.
