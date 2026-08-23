@@ -38,4 +38,10 @@ if (!str_contains($edit_cotisation, '<h1 class="grostitre"><:association:ajout_d
 	exit(1);
 }
 
+$voir_activites = file_get_contents($racine . 'voir_activites.html');
+if (!str_contains($voir_activites, '<h1 class="grostitre">#TITRE</h1>')) {
+	fwrite(STDERR, "Le tableau de bord d'un événement n'utilise pas son titre comme H1 privé.\n");
+	exit(1);
+}
+
 echo "Titres des pages privées conformes\n";

@@ -1,6 +1,7 @@
 [(#AUTORISER{voir_activites, evenement, #ENV{id}}|sinon_interdire_acces)]
 
 <BOUCLE_evenement(EVENEMENTS){id_evenement=#ENV{id}}>
+<h1 class="grostitre">#TITRE</h1>
 [(#VALIDATION_ATTENTE_AUTOMATIQUE|=={oui}|oui)
 <!--Balise de déclenchement pour la validation automatique des inscriptions aux activités -->
 [(#ID_EVENEMENT|validation_attente_automatique{page_prive_voir_activites})]
