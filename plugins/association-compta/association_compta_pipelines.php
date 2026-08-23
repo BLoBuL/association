@@ -31,3 +31,19 @@ function association_compta_association_rgpd_export_auteur($flux) {
 	);
 	return $flux;
 }
+
+function association_compta_association_maintenance_auteurs_encaisses($flux) {
+	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_auteurs'] ?? array()))));
+	if (!$ids) { return $flux; }
+	$res = sql_select('DISTINCT id_auteur', 'spip_asso_comptes', sql_in('id_auteur', $ids) . ' AND recette > 0');
+	while ($row = sql_fetch($res)) { $flux['data'][] = intval($row['id_auteur']); }
+	$flux['data'] = array_values(array_unique(array_map('intval', (array) $flux['data'])));
+	return $flux;
+}
+
+function association_compta_association_maintenance_supprimer_donnees_auteurs($flux) {
+	include_spip('inc/association_compta_maintenance');
+	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_auteurs'] ?? array()))));
+	$flux['data']['supprimer_comptes_auteurs'] = asso_supprimer_comptes_auteurs($ids, (bool) ($flux['args']['dry_run'] ?? true));
+	return $flux;
+}

@@ -126,3 +126,27 @@ function association_bank_redirige_apres_retour_transaction($flux)
     }
     return $flux;
 }
+
+function association_paiements_association_maintenance_auteurs_encaisses($flux) {
+	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_auteurs'] ?? array()))));
+	if (!$ids) { return $flux; }
+	$res = sql_select(
+		'DISTINCT t.id_auteur',
+		'spip_transactions AS t',
+		sql_in('id_auteur', $ids) . ' AND t.statut=' . sql_quote('ok')
+		. ' AND ('
+		. 'EXISTS (SELECT 1 FROM spip_asso_comptes AS c WHERE c.id_transaction = t.id_transaction)'
+		. ' OR EXISTS (SELECT 1 FROM spip_asso_activites AS a WHERE a.id_transaction = t.id_transaction)'
+		. ')'
+	);
+	while ($row = sql_fetch($res)) { $flux['data'][] = intval($row['id_auteur']); }
+	$flux['data'] = array_values(array_unique(array_map('intval', (array) $flux['data'])));
+	return $flux;
+}
+
+function association_paiements_association_maintenance_supprimer_donnees_auteurs($flux) {
+	include_spip('inc/association_paiements_maintenance');
+	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_auteurs'] ?? array()))));
+	$flux['data']['supprimer_transactions_auteurs'] = asso_supprimer_transactions_auteurs($ids, (bool) ($flux['args']['dry_run'] ?? true));
+	return $flux;
+}

@@ -111,9 +111,12 @@ ou obsolètes. Le cron commun conserve l'ordre des traitements, le `dry_run`,
 les seuils et le rapport consolidé. Il charge l'API du module uniquement quand
 celui-ci est actif et ignore proprement cette tranche sinon.
 
-Les tranches Comptabilité/Paiements puis Communication doivent suivre le même
-contrat avant que le fichier du cron puisse devenir un orchestrateur sans
-requête métier.
+Communication possède maintenant les suppressions Mailsubscribers et URLs,
+Comptabilité les nettoyages de `spip_asso_comptes`, et Paiements ceux de
+`spip_transactions`. Deux pipelines SPIP collectent les historiques encaissés
+et coordonnent le nettoyage préalable à une suppression d'auteur. Le cron
+transversal ne requête donc plus que `spip_auteurs` et conserve la responsabilité
+de l'identité, du rapport consolidé et du mode `dry_run`.
 
 ## État résiduel du socle
 
@@ -133,10 +136,8 @@ de rupture de compatibilité.
 ## Lots restant après la migration et la première recette distante
 
 1. remplacer ou déplacer les alias historiques `modifier/asso` ;
-2. terminer la distribution de la maintenance BDD pour Comptabilité,
-   Paiements et Communication en conservant l'orchestrateur `dry_run` ;
-3. achever l'audit des inclusions inter-modules et des contrats publics ;
-4. rejouer la passe navigateur responsive finale sur test-fiafe.
+2. achever l'audit des inclusions inter-modules et des contrats publics ;
+3. rejouer la passe navigateur responsive finale sur test-fiafe.
 
 Chaque lot doit passer les tests autonomes, le staging des dix plugins, puis une
 compilation et une recette SPIP réelle avant déploiement.

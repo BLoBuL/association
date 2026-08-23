@@ -12,6 +12,23 @@ $GLOBALS['association_test_fail_delete_tables'] = array();
 $GLOBALS['association_test_fail_update_tables'] = array();
 
 function include_spip($path) { return true; }
+function pipeline($nom, $flux) {
+    $handlers = array(
+        'association_maintenance_auteurs_encaisses' => array(
+            'association_compta_association_maintenance_auteurs_encaisses',
+            'association_paiements_association_maintenance_auteurs_encaisses',
+        ),
+        'association_maintenance_supprimer_donnees_auteurs' => array(
+            'association_communication_association_maintenance_supprimer_donnees_auteurs',
+            'association_paiements_association_maintenance_supprimer_donnees_auteurs',
+            'association_compta_association_maintenance_supprimer_donnees_auteurs',
+        ),
+    );
+    foreach ($handlers[$nom] ?? array() as $handler) {
+        $flux = $handler($flux);
+    }
+    return $flux['data'];
+}
 function association_log($journal, $message, $niveau = 'info') {
     $GLOBALS['association_test_logs'][] = array($journal, $message, $niveau);
 }
@@ -247,6 +264,12 @@ function association_test_reset_tables() {
 }
 
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_maintenance.php';
+include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_communication_maintenance.php';
+include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_maintenance.php';
+include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_maintenance.php';
+include_once PLUGIN_ROOT . '/plugins/association-compta/association_compta_pipelines.php';
+include_once PLUGIN_ROOT . '/plugins/association-paiements/association_paiements_pipelines.php';
+include_once PLUGIN_ROOT . '/plugins/association-communication/association_communication_pipelines.php';
 include_once PLUGIN_ROOT . '/genie/association_maintenance_bdd.php';
 
 function association_test_assert($condition, $message) {

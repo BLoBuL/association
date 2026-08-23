@@ -8,20 +8,10 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 
 include_spip('base/abstract_sql');
 include_spip('inc/association_evenements_maintenance');
+include_spip('inc/association_communication_maintenance');
+include_spip('inc/association_compta_maintenance');
+include_spip('inc/association_paiements_maintenance');
 
-// Mapping spécifique des types 'spip_urls' vers la table/colonne réelles
-if (!function_exists('asso_table_col_for_type')) {
-    function asso_table_col_for_type($type) {
-        // Cas particuliers connus
-        $special = array(
-            'site' => array('spip_syndic', 'id_syndic'), // spip_sites n'existe pas sur certaines installations
-            // ajouter d'autres mappings si nécessaire
-        );
-        if (isset($special[$type])) return $special[$type];
-        // Valeur par défaut : spip_{type}s et id_{type}
-        return array('spip_' . $type . 's', 'id_' . $type);
-    }
-}
 
 
 
@@ -210,19 +200,19 @@ function association_maintenance_bdd_run($maintenant = null, array $opt = []) {
     }
 
     // 3) NETTOYAGE ORPHELINS / OBSOLÈTES
-    if (!empty($opt['actions']['supprimer_cotisations_orphelines'])) {
+    if (!empty($opt['actions']['supprimer_cotisations_orphelines']) && function_exists('asso_supprimer_cotisations_orphelines')) {
         $resume['supprimer_cotisations_orphelines'] = asso_supprimer_cotisations_orphelines($opt['dry_run'], $opt['lot']);
     } else {
         $resume['supprimer_cotisations_orphelines'] = array('skipped' => true);
     }
 
-    if (!empty($opt['actions']['supprimer_cotisations_non_encaissees'])) {
+    if (!empty($opt['actions']['supprimer_cotisations_non_encaissees']) && function_exists('asso_supprimer_cotisations_non_encaissees_anciennes')) {
         $resume['supprimer_cotisations_non_encaissees_anciennes'] = asso_supprimer_cotisations_non_encaissees_anciennes($maintenant, $opt['mois_non_encaisse'], $opt['dry_run'], $opt['lot']);
     } else {
         $resume['supprimer_cotisations_non_encaissees_anciennes'] = array('skipped' => true);
     }
 
-    if (!empty($opt['actions']['supprimer_transactions_orphelines'])) {
+    if (!empty($opt['actions']['supprimer_transactions_orphelines']) && function_exists('asso_supprimer_transactions_orphelines')) {
         $resume['supprimer_transactions_orphelines'] = asso_supprimer_transactions_orphelines($opt['dry_run'], $opt['lot']);
     } else {
         $resume['supprimer_transactions_orphelines'] = array('skipped' => true);
@@ -241,19 +231,19 @@ function association_maintenance_bdd_run($maintenant = null, array $opt = []) {
     }
 
     // 4) NETTOYAGE URLS
-    if (!empty($opt['actions']['supprimer_urls_mailsubscriber'])) {
+    if (!empty($opt['actions']['supprimer_urls_mailsubscriber']) && function_exists('asso_supprimer_urls_par_type')) {
         $resume['supprimer_urls_mailsubscriber'] = asso_supprimer_urls_par_type('mailsubscriber', $opt['dry_run'], 10000);
     } else {
         $resume['supprimer_urls_mailsubscriber'] = array('skipped' => true);
     }
-    if (!empty($opt['actions']['supprimer_urls_obsoletes'])) {
+    if (!empty($opt['actions']['supprimer_urls_obsoletes']) && function_exists('asso_supprimer_urls_obsoletes')) {
         $resume['supprimer_urls_obsoletes'] = asso_supprimer_urls_obsoletes($opt['dry_run'], 10000);
     } else {
         $resume['supprimer_urls_obsoletes'] = array('skipped' => true);
     }
 
     // 5) NETTOYAGE MAILSUBSCRIBERS
-    if (!empty($opt['actions']['supprimer_mailsubscribers_orphelines'])) {
+    if (!empty($opt['actions']['supprimer_mailsubscribers_orphelines']) && function_exists('asso_supprimer_mailsubscribers_orphelines')) {
         $resume['supprimer_mailsubscribers_orphelines'] = asso_supprimer_mailsubscribers_orphelines($opt['dry_run'], $opt['lot']);
     } else {
         $resume['supprimer_mailsubscribers_orphelines'] = array('skipped' => true);
@@ -331,30 +321,11 @@ function asso_recuperer_auteurs_inactifs($limite_inactifs, $lot = 1000) {
  */
 function asso_separer_auteurs_par_encaissements(array $ids_auteurs) {
     if (!$ids_auteurs) return [[], []];
-    $in = sql_in('id_auteur', $ids_auteurs);
-
-    $avec = [];
-
-    // Encaissement via comptes
-    $res = sql_select('DISTINCT id_auteur', 'spip_asso_comptes', "$in AND recette > 0");
-    while ($row = sql_fetch($res)) {
-        $avec[] = intval($row['id_auteur']);
-    }
-
-    // Encaissement via transactions rattachées au périmètre association uniquement.
-    $res2 = sql_select(
-        'DISTINCT t.id_auteur',
-        'spip_transactions AS t',
-        "$in AND t.statut=" . sql_quote('ok')
-        . ' AND ('
-        . 'EXISTS (SELECT 1 FROM spip_asso_comptes AS c WHERE c.id_transaction = t.id_transaction)'
-        . ' OR EXISTS (SELECT 1 FROM spip_asso_activites AS a WHERE a.id_transaction = t.id_transaction)'
-        . ')'
-    );
-    while ($row = sql_fetch($res2)) {
-        $avec[] = intval($row['id_auteur']);
-    }
-
+    $avec = pipeline('association_maintenance_auteurs_encaisses', array(
+        'args' => array('ids_auteurs' => array_values(array_map('intval', $ids_auteurs))),
+        'data' => array(),
+    ));
+    $avec = is_array($avec) ? $avec : array();
     $avec = array_values(array_unique($avec));
     $sans = array_values(array_diff($ids_auteurs, $avec));
     return [$sans, $avec];
@@ -375,11 +346,14 @@ function asso_supprimer_auteurs(array $ids_auteurs, $dry_run = true) {
     if (!$ids_auteurs) return ['supprimes' => 0];
 
     $in = sql_in('id_auteur', $ids_auteurs);
-    $resultat = [
-        'supprimer_mailsubscribers' => asso_supprimer_mailsubscribers_pour_auteurs($ids_auteurs, $dry_run),
-        'supprimer_transactions_auteurs' => asso_supprimer_transactions_auteurs($ids_auteurs, $dry_run),
-        'supprimer_comptes_auteurs' => asso_supprimer_comptes_auteurs($ids_auteurs, $dry_run),
-    ];
+    $resultat = pipeline('association_maintenance_supprimer_donnees_auteurs', array(
+        'args' => array(
+            'ids_auteurs' => array_values(array_map('intval', $ids_auteurs)),
+            'dry_run' => (bool) $dry_run,
+        ),
+        'data' => array(),
+    ));
+    $resultat = is_array($resultat) ? $resultat : array();
 
     if (asso_resultat_en_echec($resultat)) {
         $resultat['supprimes'] = 0;
@@ -399,100 +373,7 @@ function asso_supprimer_auteurs(array $ids_auteurs, $dry_run = true) {
 }
 
 /**
- * Supprimer les écritures de comptes/cotisations des auteurs.
- *
- * @param int[] $ids_auteurs
- * @param bool $dry_run
- * @return array
- */
-function asso_supprimer_comptes_auteurs(array $ids_auteurs, $dry_run = true) {
-    if (!$ids_auteurs) return ['supprimes' => 0];
-    $in = sql_in('id_auteur', $ids_auteurs);
-
-    $nb = $dry_run ? sql_countsel('spip_asso_comptes', $in) : sql_delete('spip_asso_comptes', $in);
-    return ['supprimes' => intval($nb)];
-}
-
-/**
- * Supprimer les transactions liées à des auteurs (si table disponible).
- *
- * @param int[] $ids_auteurs
- * @param bool $dry_run
- * @return array
- */
-function asso_supprimer_transactions_auteurs(array $ids_auteurs, $dry_run = true) {
-    if (!$ids_auteurs) return ['supprimes' => 0, 'ignore' => true];
-    $in = sql_in('id_auteur', $ids_auteurs);
-
-    $nb = $dry_run ? sql_countsel('spip_transactions', $in) : sql_delete('spip_transactions', $in);
-    return ['supprimes' => intval($nb)];
-}
-
-/**
- * Supprimer les mailsubscribers/mailsubscriptions liés aux emails d'auteurs.
- *
- * @param int[] $ids_auteurs
- * @param bool $dry_run
- * @return array
- */
-function asso_supprimer_mailsubscribers_pour_auteurs(array $ids_auteurs, $dry_run = true) {
-    $out = ['mailsubscribers_supprimes' => 0, 'mailsubscriptions_supprimees' => 0, 'mailshots_destinataires_supprimees' => 0, 'ignore' => false];
-
-    // Supposer la présence des tables mailsubscribers / mailsubscriptions
-    $has_ms = true;
-    $has_msubs = true;
-    $has_mailshots_dest = true; // on suppose la table et la colonne présentes
-    if (!$has_ms && !$has_msubs) {
-        $out['ignore'] = true;
-        return $out;
-    }
-
-    // Récupération des emails des auteurs
-    $emails = [];
-    $res = sql_select('email', 'spip_auteurs', sql_in('id_auteur', $ids_auteurs) . ' AND email<>""');
-    while ($row = sql_fetch($res)) {
-        $emails[] = $row['email'];
-    }
-    $emails = array_values(array_unique(array_filter($emails)));
-    if (!$emails) return $out;
-    $emails_md5 = array_map('md5', $emails);
-
-    if ($has_ms) {
-        // Trouver les ids des abonnés à supprimer
-        $ids_ms = [];
-        $where_ms = '(' . sql_in('email', $emails) . ' OR ' . sql_in('email', $emails_md5) . ')';
-        $res2 = sql_select('id_mailsubscriber', 'spip_mailsubscribers', $where_ms);
-        while ($r = sql_fetch($res2)) {
-            $ids_ms[] = intval($r['id_mailsubscriber']);
-        }
-        if ($ids_ms) {
-            $out['mailsubscriptions_supprimees'] = $dry_run
-                ? sql_countsel('spip_mailsubscriptions', sql_in('id_mailsubscriber', $ids_ms))
-                : sql_delete('spip_mailsubscriptions', sql_in('id_mailsubscriber', $ids_ms));
-            $out['mailshots_destinataires_supprimees'] = $dry_run
-                ? sql_countsel('spip_mailshots_destinataires', sql_in('id_mailsubscriber', $ids_ms))
-                : sql_delete('spip_mailshots_destinataires', sql_in('id_mailsubscriber', $ids_ms));
-            $out['mailsubscribers_supprimes'] = $dry_run
-                ? sql_countsel('spip_mailsubscribers', sql_in('id_mailsubscriber', $ids_ms))
-                : sql_delete('spip_mailsubscribers', sql_in('id_mailsubscriber', $ids_ms));
-        }
-    } elseif ($has_msubs) {
-        // Si seulement spip_mailsubscriptions et si une colonne email existe
-        // la colonne email existe
-        $where_msubs = '(' . sql_in('email', $emails) . ' OR ' . sql_in('email', $emails_md5) . ')';
-        $out['mailsubscriptions_supprimees'] = $dry_run
-            ? sql_countsel('spip_mailsubscriptions', $where_msubs)
-            : sql_delete('spip_mailsubscriptions', $where_msubs);
-    }
-    return $out;
-}
-
-/**
- * Anonymiser les auteurs et leurs donnees metier via l'API RGPD du plugin.
- *
- * @param int[] $ids_auteurs
- * @param bool $dry_run
- * @return array
+ * Anonymiser les auteurs et leurs données métier via l'API RGPD du plugin.
  */
 function asso_anonymiser_auteurs(array $ids_auteurs, $dry_run = true) {
     if (!$ids_auteurs) return ['anonymises' => 0];
@@ -551,490 +432,5 @@ function asso_anonymiser_auteurs(array $ids_auteurs, $dry_run = true) {
         'details' => $details,
         'erreurs' => $erreurs,
     ];
-}
-
-/**
- * Supprimer les anciennes écritures de cotisation sans auteur.
- */
-function asso_supprimer_cotisations_orphelines($dry_run = true, $lot = 1000) {
-
-    $orphans = [];
-    // Cotisations orphelines = sans auteur
-    $res = sql_select(
-        'c.id_compte,c.id_transaction',
-        'spip_asso_comptes AS c LEFT JOIN spip_auteurs AS a ON a.id_auteur=c.id_auteur',
-        'a.id_auteur IS NULL',
-        '',
-        '',
-        intval($lot)
-    );
-    while ($row = sql_fetch($res)) {
-        $orphans[intval($row['id_compte'])] = intval($row['id_transaction']);
-    }
-    if (!$orphans) {
-        return [
-            'supprimees' => 0,
-            'ids' => [],
-            'protegees' => 0,
-            'transactions_supprimees' => 0,
-            'transactions_ids' => []
-        ];
-    }
-
-    $protegees = [];
-    // Protéger celles liées à une transaction encaissée (statut ok)
-    $ids_tx = array_values(array_unique(array_filter($orphans)));
-    if ($ids_tx) {
-        $in_tx = sql_in('t.id_transaction', $ids_tx);
-        $res2 = sql_select(
-            't.id_transaction',
-            'spip_transactions AS t',
-            $in_tx . ' AND t.statut=' . sql_quote('ok')
-        );
-        $tx_ok = [];
-        while ($r = sql_fetch($res2)) {
-            $tx_ok[] = intval($r['id_transaction']);
-        }
-        if ($tx_ok) {
-            foreach ($orphans as $id_compte => $id_tx) {
-                if ($id_tx && in_array($id_tx, $tx_ok, true)) {
-                    $protegees[] = $id_compte;
-                }
-            }
-        }
-    }
-
-    // Cotisations à supprimer
-    $a_supprimer = array_values(array_diff(array_keys($orphans), $protegees));
-    if (!$a_supprimer) {
-        return [
-            'supprimees' => 0,
-            'ids' => [],
-            'protegees' => count($protegees),
-            'transactions_supprimees' => 0,
-            'transactions_ids' => []
-        ];
-    }
-
-    if (count($a_supprimer) > $lot) {
-        $a_supprimer = array_slice($a_supprimer, 0, $lot);
-    }
-
-    // Suppression des cotisations
-    $in = sql_in('id_compte', $a_supprimer);
-    $nb_cotisations = $dry_run
-        ? sql_countsel('spip_asso_comptes', $in)
-        : sql_delete('spip_asso_comptes', $in);
-
-    if ($nb_cotisations === false) {
-        return [
-            'supprimees' => 0,
-            'ids' => $a_supprimer,
-            'protegees' => count($protegees),
-            'transactions_supprimees' => 0,
-            'transactions_ids' => [],
-            'erreur' => 'suppression_cotisations_orphelines_echouee'
-        ];
-    }
-
-    // Transactions liées non réglées à supprimer
-    $transactions_supprimees = 0;
-    $transactions_ids = [];
-    // On suppose la présence de la table spip_transactions
-    {
-         // Collecter les id_transaction des cotisations supprimées
-         $tx_ids = [];
-         foreach ($a_supprimer as $id_compte) {
-             $id_tx = $orphans[$id_compte];
-             if ($id_tx) {
-                 $tx_ids[] = $id_tx;
-             }
-         }
-         $tx_ids = array_values(array_unique($tx_ids));
-         if ($tx_ids) {
-             $in_tx = sql_in('id_transaction', $tx_ids) . ' AND statut<>' . sql_quote('ok');
-             // Récupérer la liste exacte (filtrée statut <> ok) pour retour
-             $res_tx = sql_select('id_transaction', 'spip_transactions', $in_tx);
-             while ($r = sql_fetch($res_tx)) {
-                 $transactions_ids[] = intval($r['id_transaction']);
-             }
-             if ($transactions_ids) {
-                 $where_del = sql_in('id_transaction', $transactions_ids);
-                 $transactions_supprimees = $dry_run
-                     ? sql_countsel('spip_transactions', $where_del)
-                     : sql_delete('spip_transactions', $where_del);
-                 if ($transactions_supprimees === false) {
-                     return [
-                         'supprimees' => intval($nb_cotisations),
-                         'ids' => $a_supprimer,
-                         'protegees' => count($protegees),
-                         'transactions_supprimees' => 0,
-                         'transactions_ids' => $transactions_ids,
-                         'erreur' => 'suppression_transactions_cotisations_orphelines_echouee'
-                     ];
-                 }
-             }
-         }
-    }
-
-    return [
-        'supprimees' => intval($nb_cotisations),
-        'ids' => $a_supprimer,
-        'protegees' => count($protegees),
-        'transactions_supprimees' => intval($transactions_supprimees),
-        'transactions_ids' => $transactions_ids
-    ];
-}
-
-
-/**
- * Supprimer les transactions orphelines (non liées et non `ok`).
- *
- * @param bool $dry_run
- * @param int $lot
- * @return array
- */
-function asso_supprimer_transactions_orphelines($dry_run = true, $lot = 1000) {
-    // Préparer une limite temporelle (1 an)
-    $limite = date('Y-m-d H:i:s', time() - 365 * 86400);
-
-    // WHERE par type / condition (chacun dans sa variable)
-    // Colonnes supposées présentes
-    $where_date = 't.date_transaction<=' . sql_quote($limite);
-
-    $where_commandes = '';
-    if (test_plugin_actif('commandes')) {
-        $where_commandes = '(t.id_commande IS NULL OR t.id_commande=0 OR (t.id_commande>0 AND NOT EXISTS (SELECT 1 FROM spip_commandes AS cmd WHERE cmd.id_commande = t.id_commande)))';
-    } else {
-        $where_commandes = '(t.id_commande IS NULL OR t.id_commande=0)';
-    }
-
-    $where_formidable = '';
-    if (test_plugin_actif('formidable')) {
-        $where_formidable = 'NOT (t.tracking_id>0 AND t.parrain LIKE ' . sql_quote('formidable:%') . ' AND EXISTS (SELECT 1 FROM spip_formulaires_reponses AS r WHERE r.id_formulaires_reponse = t.tracking_id))';
-    } else {
-        $where_formidable = 'NOT (t.tracking_id>0 AND t.parrain LIKE ' . sql_quote('formidable:%') . ')';
-    }
-
-    // Conditions liées aux objets de l'application : utiliser NOT EXISTS pour éviter les duplications dues aux JOIN
-    $where_comptes = 'NOT EXISTS (SELECT 1 FROM spip_asso_comptes AS c WHERE c.id_transaction = t.id_transaction)';
-    $where_activites = 'NOT EXISTS (SELECT 1 FROM spip_asso_activites AS a WHERE a.id_transaction = t.id_transaction)';
-
-    // Statut de la transaction
-    $where_statut = 't.statut<>' . sql_quote('ok');
-
-    // Composer la clause WHERE finale depuis les morceaux non vides
-    $where_parts = array_filter([
-        $where_comptes,
-        $where_activites,
-        $where_statut,
-        $where_date,
-        $where_commandes,
-        $where_formidable
-    ]);
-
-    $where = $where_parts ? implode(' AND ', $where_parts) : '0'; // '0' pour sécurité
-
-    $ids = [];
-    // On sélectionne uniquement la table des transactions et on laisse le WHERE tester l'existence dans les tables liées
-    $res = sql_select(
-        't.id_transaction',
-        'spip_transactions AS t',
-        $where,
-        '',
-        '',
-        intval($lot)
-    );
-    while ($row = sql_fetch($res)) {
-        $ids[] = intval($row['id_transaction']);
-    }
-    if (!$ids) return ['supprimees' => 0];
-
-    $in = sql_in('id_transaction', $ids);
-    $nb = $dry_run ? sql_countsel('spip_transactions', $in) : sql_delete('spip_transactions', $in);
-
-    if ($nb === false) {
-        association_log('cron', 'Erreur suppression transactions orphelines (' . $where . ')', 'erreur');
-    }
-
-    return ['supprimees' => intval($nb), 'ids' => $ids, 'limite' => ($where_date ? $limite : null)];
-}
-
-/**
- * Supprimer les cotisations non encaissées trop anciennes, uniquement si
- * aucune transaction encaissée ne leur est liée.
- * Puis supprimer les transactions liées non encaissées.
- *
- * Critères:
- *  - c.objet = 'cotisation'
- *  - c.statut_cotisation <> 'ok'
- *  - c.date <= $limite (N mois en arrière)
- *  - (si table transactions) (t.id_transaction IS NULL OR t.statut <> 'ok')
- *
- * Retour:
- *  - supprimees: nb cotisations supprimées
- *  - ids: ids des cotisations supprimées
- *  - limite: date limite utilisée
- *  - transactions_supprimees: nb de transactions supprimées
- *  - transactions_ids: ids des transactions supprimées
- *
- * @param int $maintenant Timestamp courant
- * @param int $mois Nombre de mois de rétention
- * @param bool $dry_run
- * @param int $lot
- * @return array
- */
-function asso_supprimer_cotisations_non_encaissees_anciennes($maintenant, $mois, $dry_run = true, $lot = 1000) {
-    // Calcul de la date limite (simple: mois courant - N)
-    $limit_ts = mktime(date('H',$maintenant), date('i',$maintenant), date('s',$maintenant),
-        date('m',$maintenant) - intval($mois), date('d',$maintenant), date('Y',$maintenant));
-    $limite = date('Y-m-d H:i:s', $limit_ts);
-
-    $ids_cot = [];
-    $tx_ids_candidates = [];
-
-    // Jointure pour exclure les cotisations liées à une transaction encaissée
-    $where = "c.objet='cotisation'"
-        . " AND c.statut_cotisation<>" . sql_quote('ok')
-        . " AND c.date<=" . sql_quote($limite)
-        . " AND (t.id_transaction IS NULL OR t.statut<>" . sql_quote('ok') . ")";
-    $res = sql_select(
-        'c.id_compte,c.id_transaction',
-        'spip_asso_comptes AS c LEFT JOIN spip_transactions AS t ON t.id_transaction=c.id_transaction',
-        $where,
-        '',
-        '',
-        intval($lot)
-    );
-    while ($row = sql_fetch($res)) {
-        $idc = intval($row['id_compte']);
-        $ids_cot[] = $idc;
-        $idt = intval($row['id_transaction']);
-        if ($idt) {
-            $tx_ids_candidates[] = $idt;
-        }
-    }
-
-    if (!$ids_cot) {
-        return [
-            'supprimees' => 0,
-            'ids' => [],
-            'limite' => $limite,
-            'transactions_supprimees' => 0,
-            'transactions_ids' => []
-        ];
-    }
-
-    // Suppression des cotisations
-    $in_cot = sql_in('id_compte', $ids_cot);
-    $nb_cot = $dry_run
-        ? sql_countsel('spip_asso_comptes', $in_cot)
-        : sql_delete('spip_asso_comptes', $in_cot);
-
-    if ($nb_cot === false) {
-        return [
-            'supprimees' => 0,
-            'ids' => $ids_cot,
-            'limite' => $limite,
-            'transactions_supprimees' => 0,
-            'transactions_ids' => [],
-            'erreur' => 'suppression_cotisations_non_encaissees_echouee'
-        ];
-    }
-
-    // Suppression des transactions non encaissées associées
-    $transactions_supprimees = 0;
-    $transactions_ids = [];
-    if ($tx_ids_candidates) {
-        $tx_ids_candidates = array_values(array_unique(array_filter($tx_ids_candidates)));
-        if ($tx_ids_candidates) {
-            $where_tx = sql_in('id_transaction', $tx_ids_candidates) . ' AND statut<>' . sql_quote('ok');
-            // Lister exactement celles à supprimer
-            $res_tx = sql_select('id_transaction', 'spip_transactions', $where_tx);
-            while ($r = sql_fetch($res_tx)) {
-                $transactions_ids[] = intval($r['id_transaction']);
-            }
-            if ($transactions_ids) {
-                $in_tx_final = sql_in('id_transaction', $transactions_ids);
-                $transactions_supprimees = $dry_run
-                    ? sql_countsel('spip_transactions', $in_tx_final)
-                    : sql_delete('spip_transactions', $in_tx_final);
-                if ($transactions_supprimees === false) {
-                    return [
-                        'supprimees' => intval($nb_cot),
-                        'ids' => $ids_cot,
-                        'limite' => $limite,
-                        'transactions_supprimees' => 0,
-                        'transactions_ids' => $transactions_ids,
-                        'erreur' => 'suppression_transactions_cotisations_non_encaissees_echouee'
-                    ];
-                }
-            }
-        }
-    }
-
-    return [
-        'supprimees' => intval($nb_cot),
-        'ids' => $ids_cot,
-        'limite' => $limite,
-        'transactions_supprimees' => intval($transactions_supprimees),
-        'transactions_ids' => $transactions_ids
-    ];
-}
-/**
- * Supprimer les redirections SPIP qui ne ciblent plus aucun objet.
- */
-function asso_supprimer_urls_obsoletes($dry_run = true, $lot = 1000) {
-    $urls = [];
-    $ignores = [];
-    $types = [];
-    $res_types = sql_select('DISTINCT type', 'spip_urls');
-    while ($row = sql_fetch($res_types)) {
-        $types[] = $row['type'];
-    }
-    if (!$types) return ['supprimees' => 0, 'ignore' => true];
-
-    foreach ($types as $type) {
-        // Obtenir table/col réelles (mapping inline, garanti)
-        if ($type === 'site') {
-            $table = 'spip_syndic';
-            $col = 'id_syndic';
-        } else {
-            $table = 'spip_' . $type . 's';
-            $col = 'id_' . $type;
-        }
-
-         // Si le type est malformé (ex: contient un point -> base.qualifiee), on nettoie ces urls directement
-         if (preg_match('/\./', $type) || !preg_match('/^[a-z0-9_]+$/i', $type)) {
-             $res_bad = sql_select('url', 'spip_urls', 'type=' . sql_quote($type), '', '', intval($lot));
-             while ($r = sql_fetch($res_bad)) {
-                 $urls[] = $r['url'];
-             }
-             continue;
-         }
-
-         // Tentative protégée : effectuer la requête LEFT JOIN ; si échec SQL (table/colonne absente), on retombe sur la solution de repli
-         $join_query = "u.url";
-         $join_from = "spip_urls AS u LEFT JOIN $table AS o ON o.$col=u.id_objet AND u.type=" . sql_quote($type);
-         $join_where = "u.type=" . sql_quote($type) . " AND o.$col IS NULL";
-
-         $res = @sql_select($join_query, $join_from, $join_where, '', '', intval($lot));
-         if ($res === false) {
-            $ignores[] = $type;
-            association_log('cron', 'Nettoyage URLs ignoré pour type=' . $type . ' : table ou colonne cible introuvable.', 'erreur');
-            continue;
-        }
-
-        while ($row = sql_fetch($res)) {
-            $urls[] = $row['url'];
-        }
-    }
-
-    if (!$urls) return ['supprimees' => 0, 'types_ignores' => $ignores];
-    $urls = array_values(array_unique($urls));
-    if (count($urls) > $lot) {
-        $urls = array_slice($urls, 0, $lot);
-    }
-    $in = sql_in('url', $urls);
-    $nb = $dry_run ? sql_countsel('spip_urls', $in) : sql_delete('spip_urls', $in);
-    return ['supprimees' => intval($nb), 'urls' => $urls, 'types_ignores' => $ignores];
-}
-
-/**
- * Supprime les URLs d'un type spécifique dans la table `spip_urls`.
- *
- * Cette fonction permet de supprimer les URLs associées à un type donné.
- * Elle effectue une suppression par lot pour éviter de traiter un trop grand nombre d'entrées à la fois.
- *
- * Critères:
- * - Les URLs à supprimer sont filtrées par leur type (`type`).
- *
- * Paramètres:
- * @param string $type Le type des URLs à supprimer (ex: 'mailsubscriber').
- * @param bool $dry_run Si `true`, aucune suppression n'est effectuée, seulement un comptage.
- * @param int $lot Le nombre maximum d'entrées à traiter dans un lot.
- *
- * Retour:
- * @return array Un tableau contenant:
- * - `supprimees` (int): Le nombre d'URLs supprimées ou comptées.
- * - `ids` (array): Les identifiants des URLs à supprimer.
- */
-function asso_supprimer_urls_par_type($type, $dry_run = true, $lot = 1000) {
-    $ids = [];
-    $ignores = [];
-    // Mapping inline garanti (site -> spip_syndic)
-    if ($type === 'site') {
-        $table = 'spip_syndic';
-        $col = 'id_syndic';
-    } else {
-        $table = 'spip_' . $type . 's';
-        $col = 'id_' . $type;
-    }
-
-     // Si type invalide -> supprimer toutes les urls de ce type
-     if (preg_match('/\./', $type) || !preg_match('/^[a-z0-9_]+$/i', $type)) {
-         $res_all = sql_select('url', 'spip_urls', 'type=' . sql_quote($type), '', '', intval($lot));
-         while ($r = sql_fetch($res_all)) {
-             $ids[] = $r['url'];
-         }
-     } else {
-        // Tentative protégée : JOIN ; si échec SQL (table/colonne absente), on récupère toutes les urls de ce type
-        $join_query = "u.url";
-        $join_from = "spip_urls AS u LEFT JOIN $table AS o ON o.$col=u.id_objet AND u.type=" . sql_quote($type);
-        $join_where = "u.type=" . sql_quote($type) . " AND o.$col IS NULL";
-
-        $res = @sql_select($join_query, $join_from, $join_where, '', '', intval($lot));
-        if ($res === false) {
-            $ignores[] = $type;
-            association_log('cron', 'Nettoyage URLs ignoré pour type=' . $type . ' : table ou colonne cible introuvable.', 'erreur');
-        } else {
-            while ($row = sql_fetch($res)) {
-                $ids[] = $row['url'];
-            }
-        }
-    }
-
-    if (!$ids) return ['supprimees' => 0, 'types_ignores' => $ignores];
-    $in = sql_in('url', $ids);
-    $nb = $dry_run ? sql_countsel('spip_urls', $in) : sql_delete('spip_urls', $in);
-    return ['supprimees' => intval($nb), 'ids' => $ids, 'types_ignores' => $ignores];
-}
-
-/**
- * Supprimer les mailsubscribers orphelins (pas d'auteur associé via email).
- *
- * @param bool $dry_run
- * @param int $lot
- * @return array
- */
-function asso_supprimer_mailsubscribers_orphelines($dry_run = true, $lot = 1000) {
-    // on suppose la table spip_mailsubscribers présente
-
-    $ids = [];
-    // LEFT JOIN sur auteurs via email ; si aucun auteur correspondant alors orphelin
-    $res = sql_select(
-        'ms.id_mailsubscriber',
-        'spip_mailsubscribers AS ms LEFT JOIN spip_auteurs AS a ON a.email = ms.email',
-        'a.id_auteur IS NULL',
-        '',
-        '',
-        intval($lot)
-    );
-    while ($row = sql_fetch($res)) {
-        $ids[] = intval($row['id_mailsubscriber']);
-    }
-    if (!$ids) return ['supprimees' => 0, 'ids' => []];
-
-    $in = sql_in('id_mailsubscriber', $ids);
-    $nb = $dry_run ? sql_countsel('spip_mailsubscribers', $in) : sql_delete('spip_mailsubscribers', $in);
-
-    // Supposer la présence de spip_mailshots_destinataires
-    if ($dry_run) {
-        $dest = sql_countsel('spip_mailshots_destinataires', $in);
-    } else {
-        $dest = sql_delete('spip_mailshots_destinataires', $in);
-    }
-
-    return ['supprimees' => intval($nb), 'ids' => $ids, 'mailshots_destinataires_supprimees' => intval($dest)];
 }
 

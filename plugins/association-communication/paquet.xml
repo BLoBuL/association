@@ -7,6 +7,7 @@
 	<necessite nom="mailshot" compatibilite="[2.0.0;[" />
 	<pipeline nom="notifications_destinataires" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_notifications_metiers" action="" />
+	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" inclure="association_communication_pipelines.php" />
 	<pipeline nom="autoriser" inclure="association_communication_autoriser.php" />
 	<pipeline nom="mailsubscriber_informations_liees" inclure="association_communication_pipelines.php" />
 	<pipeline nom="corbeille_table_infos" inclure="association_communication_pipelines.php" />

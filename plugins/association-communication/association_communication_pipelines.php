@@ -216,3 +216,10 @@ function association_communication_notifications_destinataires($flux) {
     }
     return $flux;
 }
+
+function association_communication_association_maintenance_supprimer_donnees_auteurs($flux) {
+	include_spip('inc/association_communication_maintenance');
+	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_auteurs'] ?? array()))));
+	$flux['data']['supprimer_mailsubscribers'] = asso_supprimer_mailsubscribers_pour_auteurs($ids, (bool) ($flux['args']['dry_run'] ?? true));
+	return $flux;
+}
