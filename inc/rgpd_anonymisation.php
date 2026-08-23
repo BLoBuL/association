@@ -66,6 +66,9 @@ function association_rgpd_updateq($table, $champs, $where) {
 	if (!$champs) {
 		return 0;
 	}
-
-	return intval(sql_updateq($table, $champs, $where));
+	$nombre = intval(sql_countsel($table, $where));
+	if (!$nombre) {
+		return 0;
+	}
+	return sql_updateq($table, $champs, $where) === false ? 0 : $nombre;
 }

@@ -16,6 +16,8 @@ function pipeline($nom, $flux) {
 		'transactions_anonymisees' => 1,
 	);
 }
+function sql_countsel($table, $where) { return 0; }
+function sql_updateq($table, $champs, $where) { return true; }
 
 $racine = dirname(__DIR__);
 require $racine . '/inc/rgpd_anonymisation.php';
@@ -29,6 +31,10 @@ if (empty($resultat['ok']) || array_diff($attendues, array_keys($resultat['resum
 $socle = file_get_contents($racine . '/inc/rgpd_anonymisation.php');
 if (preg_match('/spip_(?:asso_|transactions)/', $socle)) {
 	fwrite(STDERR, "L'anonymisation du socle référence encore une table métier.\n");
+	exit(1);
+}
+if (association_rgpd_updateq('spip_test', array('champ' => ''), 'id=0') !== 0) {
+	fwrite(STDERR, "Une mise à jour sans ligne cible ne doit pas être comptée.\n");
 	exit(1);
 }
 foreach (array('evenements', 'dons', 'ventes', 'prets', 'compta', 'paiements') as $module) {
