@@ -36,6 +36,35 @@ WHERE table_schema = DATABASE()
 Le résultat doit être vide. Ne jamais supprimer les tables trouvées dans le
 cadre de cette procédure.
 
+Contrôler séparément les métas de schéma : une base sans table peut encore
+contenir les versions d'une ancienne activation interrompue. Dans ce cas SPIP
+considérerait à tort les créations comme déjà exécutées.
+
+```sql
+SELECT nom, valeur
+FROM spip_meta
+WHERE nom IN (
+  'association_base_version',
+  'association_adhesions_base_version',
+  'association_compta_base_version',
+  'association_dons_base_version',
+  'association_evenements_base_version',
+  'association_prets_base_version',
+  'association_ventes_base_version'
+);
+```
+
+Pour une vraie première installation, le résultat doit également être vide.
+Si les quatorze tables sont toutes absentes mais que certaines de ces sept
+métas subsistent, désactiver la suite puis supprimer uniquement ces métas de
+schéma avant l'activation. Ne jamais appliquer ce nettoyage lorsqu'une table
+Association existe : il ferait rejouer des migrations sur des données métier.
+
+Les réglages fonctionnels ne sont pas stockés dans ces sept lignes : ils
+appartiennent à `spip_association_metas`, créée vide lors de l'installation.
+Les valeurs absentes utilisent les défauts déclarés par le code et sont ensuite
+enregistrées depuis les formulaires de configuration ou la CLI documentée.
+
 ## Activer et initialiser
 
 Activer d'abord les dépendances, puis les modules et enfin le socle :
@@ -49,6 +78,11 @@ spip cache:vider
 L'activation seule n'est pas une preuve d'installation : la création des
 tables et l'écriture des versions de schéma sont réalisées par
 `plugins:maj:bdd`.
+
+La branche `create` du socle ne simule jamais une ancienne version : elle crée
+directement la structure finale et laisse chaque module propriétaire créer ses
+tables. Les migrations historiques ne sont donc pas rejouées sur une base
+vierge.
 
 ## Contrôler le résultat
 
@@ -84,6 +118,19 @@ spip_asso_ventes
 
 `spip_asso_comptes` appartient exclusivement au module Comptabilité et les
 cotisations sont conservées dans `spip_asso_cotisations`.
+
+Les sept métas de schéma attendues après installation sont celles de la requête
+de précontrôle, avec les valeurs suivantes :
+
+```text
+association_base_version=1.6.0
+association_adhesions_base_version=1.1.0
+association_compta_base_version=1.0.0
+association_dons_base_version=1.0.0
+association_evenements_base_version=1.1.0
+association_prets_base_version=1.0.0
+association_ventes_base_version=1.0.0
+```
 
 ## Vérifier l'idempotence et les journaux
 

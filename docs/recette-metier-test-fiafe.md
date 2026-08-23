@@ -32,6 +32,7 @@ ne suffit pas à valider son parcours métier.
 | Prêts | nettoyage | suppression transactionnelle ciblée, puis relecture : 0 prêt et 0 ressource synthétiques | validé |
 | Communication | abonnement newsletter | squelette public et formulaire natif Newsletter servis ; adresse invalide bloquée nativement, sans inscription ni envoi | validé sans envoi réel |
 | Front office | accueil, profil, inscription, événement, ressources et newsletter | H1, absence d'erreur fatale et absence de débordement horizontal sur les pages contrôlées | validé pour le rendu ; scénarios métier encore détaillés ci-dessus |
+| Interface | Font Awesome | glyphes calculés avec `Font Awesome 6 Free` sur adhérents, activités, bénévoles, comptabilité, cotisations et configuration | validé |
 
 ## Défauts trouvés et corrigés pendant la recette
 
@@ -75,12 +76,14 @@ ne suffit pas à valider son parcours métier.
 13. Les traces diagnostiques `IE_*` d'un parcours événementiel normal étaient
     écrites au niveau `CRITIQUE`. Elles passent au niveau `DEBUG` ; seule une
     impossibilité métier réelle de créer une liste de diffusion reste critique.
+14. La page canonique d'ajout d'une écriture comptable cumulait le H1 de sa
+    composition et celui de l'ancien fragment inclus. La composition réutilise
+    désormais le titre métier unique du fragment, y compris sur la route legacy.
 
 ## Non-régression
 
-- 56 tests PHP autonomes sont présents ; leur dernière passe complète est
-  consignée lors de la clôture ci-dessous ;
-- 272 fichiers PHP contrôlés sans erreur de syntaxe ;
+- 57 tests PHP autonomes réussis ;
+- 274 fichiers PHP contrôlés sans erreur de syntaxe ;
 - compilation réelle des squelettes vérifiée par les pages privées et publiques
   après purge du cache ;
 - aucune donnée synthétique des parcours prêts/ressources, dons, ventes et
@@ -104,7 +107,21 @@ SQL nommée vide. Ils ne sont pas attribués à Association sans reproduction ho
 reconstruction de cache ; les pages normales et le vérificateur d'installation
 restent fonctionnels.
 
+Après le déploiement `6464e4f`, les appels directs aux pipelines vérifier et
+traiter ne produisent plus de fonction `execute_pipeline_*` absente. La passe
+navigateur effectuée à partir de 10:45 n'a produit aucune erreur Association,
+erreur SQL, dépréciation ou erreur fatale. Le seul message de niveau erreur est
+le pipeline cron transitoire apparu après la purge globale de cache.
+
+La passe finale a contrôlé treize listes et tableaux de bord privés en bureau et
+mobile, neuf écrans de détail ou d'édition, les six squelettes publics de la
+suite, puis la matrice d'autorisation rédacteur. Toutes les pages Association
+ont un titre, aucune ne déborde horizontalement et aucune ne rend de fatal. La
+page d'accueil fournie par le thème actif conserve un débordement de 8 px à
+390 px ; ce défaut ne se reproduit sur aucun squelette public Association et
+reste hors du dépôt de la suite.
+
 ## Reste à clôturer
 
-- nouvelle passe multi-profils et responsive après ces scénarios ;
-- scan final des journaux à partir de l'heure de cette dernière passe.
+- audit final de cohérence entre cette matrice, l'installation à blanc, le
+  sommet Git poussé et les fichiers réellement déployés.

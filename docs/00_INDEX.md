@@ -5,6 +5,9 @@ Ce fichier est conserve pour ne pas casser les anciens liens internes.
 ## Documentation courante
 
 - `README.md` : index principal de la documentation technique du plugin.
+- `installation-staging-monorepo.md` : staging des dix plugins frères du monorepo.
+- `installation-base-sans-tables-association.md` : première installation et traitement sûr des métas de schéma résiduelles.
+- `recette-metier-test-fiafe.md` : preuves de recette privée, publique et métier.
 - `categories_cotisation.md` : règles métier des cotisations et justificatifs.
 - `notifications_cotisations.md` : notifications et audit des scénarios.
 - `tests_adhesions.md` : matrice de tests des adhésions.

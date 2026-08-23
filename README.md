@@ -24,3 +24,9 @@ Cette branche est en développement. Elle ne doit pas remplacer une installation
 - tests automatisés sous SPIP 4 et PHP 8.
 
 Voir [`docs/architecture-suite-4.md`](docs/architecture-suite-4.md).
+
+## Installer et qualifier
+
+- [`docs/installation-staging-monorepo.md`](docs/installation-staging-monorepo.md) : produire les dix dossiers frères depuis le monorepo ;
+- [`docs/installation-base-sans-tables-association.md`](docs/installation-base-sans-tables-association.md) : initialiser une base SPIP sans tables Association, y compris le contrôle des métas résiduelles ;
+- [`docs/recette-metier-test-fiafe.md`](docs/recette-metier-test-fiafe.md) : matrice de recette SPIP 4/PHP 8 réellement exécutée.
