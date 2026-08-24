@@ -5,6 +5,57 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 /**
+ * Cree un envoi Mailshot a partir d'adresses deja resolues.
+ */
+function association_communication_mailshot_creer($sujet, $html, array $emails, array $options = array()) {
+	$destinataires = array();
+	foreach ($emails as $email) {
+		$email = strtolower(trim((string) $email));
+		if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$destinataires[$email] = $email;
+		}
+	}
+	$date = (string) ($options['date'] ?? date('Y-m-d H:i:s'));
+	$donnees = array(
+		'sujet' => (string) $sujet,
+		'html' => (string) $html,
+		'listes' => (string) ($options['listes'] ?? 'Temporaire'),
+		'total' => count($destinataires),
+		'date' => $date,
+		'date_start' => (string) ($options['date_start'] ?? $date),
+		'statut' => 'init',
+		'composition_lock' => 0,
+	);
+	foreach (array('id_evenement', 'from_name', 'from_email') as $champ) {
+		if (array_key_exists($champ, $options)) {
+			$donnees[$champ] = $options[$champ];
+		}
+	}
+	$id_mailshot = (int) sql_insertq('spip_mailshots', $donnees);
+	if (!$id_mailshot) {
+		return 0;
+	}
+	$inserees = 0;
+	foreach ($destinataires as $email) {
+		if (sql_insertq('spip_mailshots_destinataires', array(
+			'id_mailshot' => $id_mailshot,
+			'email' => $email,
+			'date' => $date,
+			'statut' => 'todo',
+		))) {
+			$inserees++;
+		}
+	}
+	if ($inserees !== count($destinataires)) {
+		sql_updateq('spip_mailshots', array('total' => $inserees), 'id_mailshot=' . $id_mailshot);
+	}
+	ecrire_meta('mailshot_processing', 'oui');
+	include_spip('inc/genie');
+	genie_queue_watch_dist();
+	return $id_mailshot;
+}
+
+/**
  * Retourne les inscriptions valides d'un evenement, sans exposer leur email.
  */
 function association_email_collectif_inscriptions_evenement($id_evenement) {

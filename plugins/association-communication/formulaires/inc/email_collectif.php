@@ -548,51 +548,14 @@ function association_formulaire_email_collectif_traiter($mode = 'adherent', $id_
         );
     }
 
-    // Créer le mailshot avec le total initial correspondant au nombre d'IDs valides
-    $id_mailshot = sql_insertq('spip_mailshots', array(
-            "sujet" => $sujet,
-            "html" => $html,
-            "listes" => "Temporaire",
-            "id_evenement" => $id_evenement,
-            "total" => $count_selecteur_adherent,
-            "date" => $date,
-            "date_start" => $date_start,
-            "from_name" => $from_name,
-            "from_email" => $from_email,
-            "statut" => "init",
-            "composition_lock" => 0,
-        )
-    );
-
-    // Si des destinataires valides existent après nettoyage, insérer leurs adresses
-    $inserted_count = 0;
-    $emails_vus = array();
-    if ($count_selecteur_adherent > 0) {
-        foreach ($destinataires as $email) {
-            if (!isset($emails_vus[$email])) {
-                $emails_vus[$email] = true;
-                sql_insertq('spip_mailshots_destinataires',array(
-                    'id_mailshot' => $id_mailshot,
-                    'email' => $email,
-                    'date' => $date,
-                    'statut' => 'todo',
-                ));
-                $inserted_count++;
-            }
-        }
-    }
-
-    // Si le nombre d'adresses réellement insérées diffère du total enregistré,
-    // mettre à jour la colonne total pour refléter le nombre réel d'envois prévus.
-    if ($id_mailshot && $inserted_count !== $count_selecteur_adherent) {
-        sql_updateq('spip_mailshots', array('total' => intval($inserted_count)), 'id_mailshot=' . intval($id_mailshot));
-    }
-
-    // Indiquer qu'il y a du traitement à faire (mÃªme si total = 0)
-    ecrire_meta("mailshot_processing",'oui');
-    // reprogrammer le cron
-    include_spip('inc/genie');
-    genie_queue_watch_dist();
+    include_spip('inc/email_collectif');
+    $id_mailshot = association_communication_mailshot_creer($sujet, $html, $destinataires, array(
+        'id_evenement' => $id_evenement,
+        'date' => $date,
+        'date_start' => $date_start,
+        'from_name' => $from_name,
+        'from_email' => $from_email,
+    ));
 
     if (!$id_mailshot) {
         $res['message_erreur'] = 'Erreur lors de la création de l\'envoi';
