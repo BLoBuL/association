@@ -1270,3 +1270,21 @@ treize résultats ; la fiche de l'événement 183 conserve ses cinq inscriptions
 Les 90 tests autonomes et le test des squelettes publics passent. Le serveur
 valide dix plugins, quatorze tables, douze objets SQL et sept schémas, puis
 compile 221 squelettes privés, douze pages publiques et 64 composants front.
+
+## Lot 115 — migration reproductible depuis la base DEV
+
+La base de `test-fiafe` a été remplacée, sans sauvegarde conformément à la
+consigne propre à ce site de test, par une copie de la base DEV historique.
+La mise à jour SPIP a installé ou actualisé les schémas des dix plugins. Le
+contrôle final valide dix plugins actifs, quatorze tables, douze objets SQL et
+sept schémas à jour.
+
+Le vérificateur fonctionnel
+`plugins/association-adhesions/tests/verifier_migration_cotisations_spip.php`
+rend ce scénario rejouable. Sur la copie DEV, il retrouve dix écritures
+historiques et exactement dix cotisations, sans orphelin, devise vide ni date
+de validité inventée. Deux exécutions successives conservent l'empreinte
+canonique
+`6d207697e5e6a4ecc279769b1b15fb14fcee1d748095a8e934692b0158c5b69f` :
+la migration est idempotente et la répartition métier est strictement égale à
+la source comptable historique.

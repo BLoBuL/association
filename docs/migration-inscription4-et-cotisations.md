@@ -41,3 +41,15 @@ de `spip_asso_comptes` pendant la transition. Les écritures passent par
 `inc/cotisations_stockage.php`, qui alimente la table métier. La suppression
 des colonnes historiques ne devra intervenir qu'après conversion et test de
 tous les lecteurs, exports, notifications et intégrations de paiement.
+## Contrôle sur une base migrée
+
+Le contrôle fonctionnel sans données personnelles s'exécute depuis la racine
+du site SPIP :
+
+```bash
+spip php:run --include=plugins/association-adhesions/tests/verifier_migration_cotisations_spip.php
+```
+
+Il vérifie la correspondance exacte entre les anciennes écritures et la table
+`spip_asso_cotisations`, le rattachement comptable, l'absence de validités
+inventées, la présence des devises et l'idempotence de la migration.
