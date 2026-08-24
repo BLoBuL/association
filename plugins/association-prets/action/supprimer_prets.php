@@ -29,7 +29,7 @@ function action_supprimer_prets_dist() {
 		}
 		sql_query('START TRANSACTION');
 		$ok = sql_delete('spip_asso_prets', 'id_pret=' . $id_pret) !== false;
-		$ok = $ok && sql_delete('spip_asso_comptes', association_pret_compte_where($id_pret)) !== false;
+		$ok = $ok && association_prets_compte_supprimer($id_pret);
 		$ok = $ok && association_prets_synchroniser_statut_ressource($id_ressource);
 		sql_query($ok ? 'COMMIT' : 'ROLLBACK');
 	}

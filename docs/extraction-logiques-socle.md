@@ -1255,3 +1255,16 @@ des cotisations et une variable d'email indéfinie. Il sélectionne maintenant
 les dons de l'adhérent pour l'année demandée, puis Comptabilité agrège leurs
 écritures validées avec l'imputation `pc_dons`. L'absence de montant produit un
 message SPIP explicite sans exposer de donnée personnelle.
+
+## Lot 116 : écritures de Prêts par API Comptabilité
+
+Prêts possède désormais un adaptateur complet pour lire, créer, modifier et
+supprimer l'écriture associée à un prêt. Il utilise le lien canonique
+`objet='pret'` / `id_objet`, conserve l'emprunteur dans `id_auteur` et reprend
+les anciens `id_journal` uniquement lorsque leur justification porte le préfixe
+historique d'un prêt.
+
+Le CVT et l'action de suppression restent transactionnels, mais ne nomment plus
+`spip_asso_comptes` ni ses ventilations. Une réservation ramenée à zéro retire
+son écriture via Comptabilité ; une suppression passe par la même primitive et
+nettoie donc aussi les destinations comptables.

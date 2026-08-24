@@ -78,7 +78,11 @@ function association_compta_ecritures_objet_lister($objet, $id_objet, array $opt
 	}
 	$where = "(objet=" . sql_quote($objet) . ' AND id_objet=' . $id_objet . ')';
 	if (!empty($options['legacy_id_journal'])) {
-		$where = '(' . $where . ' OR id_journal=' . $id_objet . ')';
+		$legacy = 'id_journal=' . $id_objet;
+		if (!empty($options['legacy_justification_prefix'])) {
+			$legacy .= ' AND justification LIKE ' . sql_quote((string) $options['legacy_justification_prefix'] . '%');
+		}
+		$where = '(' . $where . ' OR (' . $legacy . '))';
 	}
 	$imputations = array_values(array_unique(array_filter(array_map('strval', (array) ($options['imputations'] ?? array())), 'strlen')));
 	if ($imputations) {

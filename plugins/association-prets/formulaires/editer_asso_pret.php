@@ -24,7 +24,7 @@ function formulaires_editer_asso_pret_charger_dist($id_pret = 0, $id_ressource =
 	if (!$ressource) {
 		return false;
 	}
-	$compte = $id_pret ? sql_fetsel('journal,recette', 'spip_asso_comptes', association_pret_compte_where($id_pret)) : array();
+	$compte = $id_pret ? association_prets_compte_lire($id_pret) : array();
 
 	return array(
 		'id_pret' => $id_pret,
@@ -114,34 +114,21 @@ function formulaires_editer_asso_pret_traiter_dist($id_pret = 0, $id_ressource =
 		'journal' => trim((string) _request('journal')),
 		'recette' => association_recupere_montant(_request('montant')),
 		'imputation' => $GLOBALS['association_metas']['pc_prets'] ?? '',
+		'id_auteur' => (int) $pret['id_emprunteur'],
 	);
 	$montant = (float) $compte['recette'];
 
 	sql_query('START TRANSACTION');
 	if ($id_pret) {
 		$ok = sql_updateq('spip_asso_prets', $pret, 'id_pret=' . $id_pret);
-		$where_compte = association_pret_compte_where($id_pret);
-		$id_compte = sql_getfetsel('id_compte', 'spip_asso_comptes', $where_compte);
-		if ($montant > 0 && $id_compte) {
-			$ok = ($ok !== false) && sql_updateq('spip_asso_comptes', $compte, 'id_compte=' . (int) $id_compte) !== false;
-		} elseif ($montant > 0) {
-			$compte['objet'] = 'pret';
-			$compte['id_objet'] = $id_pret;
-			$compte['id_journal'] = $id_pret;
-			$compte['justification'] = _T('association_prets:pret_nd') . $id_ressource . '/' . $id_pret;
-			$ok = ($ok !== false) && (bool) sql_insertq('spip_asso_comptes', $compte);
-		} elseif ($id_compte) {
-			$ok = ($ok !== false) && sql_delete('spip_asso_comptes', 'id_compte=' . (int) $id_compte) !== false;
-		}
+		$compte['justification'] = _T('association_prets:pret_nd') . $id_ressource . '/' . $id_pret;
+		$ok = ($ok !== false) && association_prets_compte_enregistrer($id_pret, $compte);
 	} else {
 		$id_pret = (int) sql_insertq('spip_asso_prets', $pret);
 		$ok = (bool) $id_pret;
 		if ($ok && $montant > 0) {
 			$compte['justification'] = _T('association_prets:pret_nd') . $id_ressource . '/' . $id_pret;
-			$compte['id_journal'] = $id_pret;
-			$compte['objet'] = 'pret';
-			$compte['id_objet'] = $id_pret;
-			$ok = (bool) sql_insertq('spip_asso_comptes', $compte);
+			$ok = association_prets_compte_enregistrer($id_pret, $compte);
 		}
 	}
 	$ok = $ok && association_prets_synchroniser_statut_ressource($id_ressource);

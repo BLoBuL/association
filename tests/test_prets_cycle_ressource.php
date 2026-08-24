@@ -67,12 +67,14 @@ prets_cycle_assert(
 );
 prets_cycle_assert(
 	str_contains($pret, 'association_prets_synchroniser_statut_ressource($id_ressource)')
-		&& str_contains($pret, "sql_countsel('spip_asso_ressources'"),
+		&& str_contains($pret, "sql_countsel('spip_asso_ressources'")
+		&& str_contains($pret, 'association_prets_compte_enregistrer('),
 	'Le formulaire Prêt ne valide ou ne synchronise pas la ressource.'
 );
 prets_cycle_assert(
 	str_contains($suppression, "sql_getfetsel('id_ressource', 'spip_asso_prets'")
 		&& !preg_match('/list\s*\([^)]*\$id_ressource/', $suppression)
+		&& str_contains($suppression, 'association_prets_compte_supprimer(')
 		&& str_contains($bouton, '#URL_ACTION_AUTEUR{supprimer_prets,#ID_PRET,#SELF}'),
 	'La suppression fait encore confiance à un identifiant de ressource transmis par le client.'
 );
