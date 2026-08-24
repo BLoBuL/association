@@ -2,6 +2,20 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+/**
+ * Charge les styles publics des modèles de paiement.
+ *
+ * @pipeline insert_head_css
+ * @param string $flux
+ * @return string
+ */
+function association_paiements_insert_head_css($flux) {
+	$css = find_in_path('css/association_paiements.css');
+	return $css
+		? $flux . '<link rel="stylesheet" type="text/css" media="all" href="' . $css . '" />' . "\n"
+		: $flux;
+}
+
 function association_paiements_association_config_cli_registre($flux) {
 	include_spip('inc/association_paiements_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_paiements_config_cli_definitions());

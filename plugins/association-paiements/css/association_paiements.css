@@ -1,0 +1,20 @@
+.payer_mode .boutons form,
+.payer_mode .boutons form div {
+	display: inline-block;
+}
+
+.payer_mode .boutons .submit {
+	cursor: pointer;
+}
+
+.payer_mode .submit .logo {
+	display: none;
+}
+
+.prefer-logo .payer_mode .submit .logo {
+	display: block;
+}
+
+.prefer-logo .payer_mode .submit .logo + .texte {
+	display: none;
+}
