@@ -12,6 +12,8 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
+include_spip('inc/association_dons_comptabilite');
+
 function action_supprimer_dons_dist() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
 	$id_don = (int) $securiser_action();
@@ -22,7 +24,8 @@ function action_supprimer_dons_dist() {
 	}
 
 	// on recupere l'id_compte correspondant au don
-	$id_compte = (int) sql_getfetsel('id_compte', 'spip_asso_comptes', 'imputation=' . sql_quote($GLOBALS['association_metas']['pc_dons']) . ' AND id_journal=' . $id_don);
+	$compte = association_dons_compte_lire($id_don);
+	$id_compte = (int) ($compte['id_compte'] ?? 0);
 
 	if ($id_compte) {
 		sql_delete('spip_asso_destination_op', 'id_compte=' . $id_compte);

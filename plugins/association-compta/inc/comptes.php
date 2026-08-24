@@ -838,24 +838,6 @@ function compte_vente_frais_envoi(
     );
 }
 
-function compte_don(
-    $date,
-    $montant_don,
-    $journal,
-    $bienfaiteur,
-    $id_don
-) {
-    return inserer_compte(
-        $date,
-        $montant_don,
-        0,
-        "[->don$id_don] - $bienfaiteur",
-        $GLOBALS['association_metas']['pc_dons'],
-        $journal,
-        $id_don
-    );
-}
-
 /**
  * Enregistre une cotisation dans les comptes.
  *
@@ -944,24 +926,6 @@ function modifier_activite_vente_frais_envoi(
 }
 
 
-function modifier_compte_don(
-    $id_activite,
-    $date,
-    $montant_don,
-    $journal,
-    $bienfaiteur,
-    $id_don
-) {
-    modifier_compte(
-        $id_activite,
-        $date,
-        $montant_don,
-        0,
-        "[->don$id_don] - $bienfaiteur",
-        $GLOBALS['association_metas']['pc_dons'],
-        $journal
-    );
-}
 /**
  * Modifie une cotisation dans la table `spip_asso_comptes`.
  *

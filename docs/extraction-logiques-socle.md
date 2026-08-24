@@ -865,3 +865,16 @@ Dons résout désormais le titre du bienfaiteur avec `generer_info_entite()` et
 enregistre un raccourci SPIP vers `auteur`, sans dépendre d'une table ni d'un
 helper historique d'Adhésions. Un test parcourt tout le code exécutable et
 interdit toute nouvelle référence à `spip_asso_membres`.
+
+## Lot 72 : cycle comptable canonique des dons
+
+L'adaptateur `compte_don()` résidait encore dans Comptabilité et décalait
+l'identifiant du don dans la colonne `id_auteur`. Dons possède maintenant son
+API comptable : une écriture neuve conserve le véritable auteur et rattache le
+don par `objet='asso_don'` et `id_objet`. La modification normalise également
+les écritures plus anciennes.
+
+La lecture accepte provisoirement l'ancien lien `id_journal` pour permettre
+l'édition et la suppression des données migrées. Le formulaire, l'action et la
+suppression utilisent tous la même résolution, tandis que Comptabilité ne
+conserve que ses primitives génériques.

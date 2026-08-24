@@ -4,6 +4,7 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
 include_spip('inc/actions');
 include_spip('inc/editer');
 include_spip('formulaires/inc/destinations');
+include_spip('inc/association_dons_comptabilite');
 
 /***************************************************************************\
  *  Associaspip, extension de SPIP pour gestion d'associations             *
@@ -24,7 +25,7 @@ function formulaires_editer_asso_dons_charger_dist($id_don='') {
 		$id_compte = '';
 		$journal = '';
 	} else { /* sinon on recupere l'id_compte correspondant et le journal dans la table des comptes */
-		$comptes = sql_fetsel("id_compte,journal", "spip_asso_comptes", "imputation=".$GLOBALS['association_metas']['pc_dons']." AND id_journal=$id_don");
+		$comptes = association_dons_compte_lire($id_don);
 		$id_compte = $comptes['id_compte'];
 		$journal = $comptes['journal'];
 	}

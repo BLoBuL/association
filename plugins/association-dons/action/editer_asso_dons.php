@@ -12,7 +12,7 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
-include_spip('inc/comptes');
+include_spip('inc/association_dons_comptabilite');
 
 function action_editer_asso_dons($id_don = null) {
 	if ($id_don === null) {
@@ -45,8 +45,8 @@ function action_editer_asso_dons($id_don = null) {
 		$id_compte = _request('id_compte');
 
 		// on modifie l'operation comptable associe au don
-		modifier_compte_don(
-			$id_compte, $date_don, $argent, $journal, $bienfaiteur, $id_don
+		association_dons_compte_modifier(
+			$id_compte, $date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent
 		);
 
 		sql_updateq('spip_asso_dons', array(
@@ -70,7 +70,7 @@ function action_editer_asso_dons($id_don = null) {
 			'contrepartie' => $contrepartie,
 		 	'commentaire' => $commentaire));
 
-		compte_don($date_don, $argent, $journal, $bienfaiteur, $id_don);
+		association_dons_compte_creer($date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent);
 	}
 
 	return array($id_don, '');
