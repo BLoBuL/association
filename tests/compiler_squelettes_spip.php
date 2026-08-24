@@ -38,6 +38,12 @@ foreach ($racines as $module => $racine_module) {
 		'racine_fond' => $racine_module . '/squelettes',
 		'chemin' => $racine_module . '/squelettes',
 	);
+	foreach (array('modeles', 'emails', 'notifications') as $type_fond) {
+		$repertoires[$type_fond . '_' . $module] = array(
+			'racine_fond' => $racine_module,
+			'chemin' => $racine_module . '/' . $type_fond,
+		);
+	}
 }
 
 foreach ($racines as $racine_plugin) {

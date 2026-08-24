@@ -56,6 +56,20 @@ rangées dans leur plugin métier :
 | pages `profil`, `fiche_adherent`, `inscription` | Adhésions : `squelettes/*.html` | compositions SPIP 4 autonomes |
 | page `evenement` | Événements : `squelettes/evenement.html` | composition SPIP 4 autonome |
 
+Les ressources indispensables provenant des autres plugins Blobul historiques
+sont également internalisées dans les chemins standards de leur module métier :
+
+| Source historique | Module autonome | Contrat conservé |
+|---|---|---|
+| `blobul-BANK/modeles/payer_acte*.html` | Paiements : `modeles/` | sélection des configurations Bank et rendu de `#PAYER_ACTE`, avec lecture des métas par `#CONFIG` |
+| `blobul-CORE/emails/` | Communication : `emails/` | coque HTML responsive, logo du site, titre, contenu, bouton et pied de page, sans configuration ni marque Blobul |
+| `blobul-ASSO_FO/inclure/album_photos_evenement*.html` | Événements : `squelettes/inclure/` | portfolio public et variante verrouillée, inclus directement par `squelettes/evenement.html` |
+
+Le compilateur SPIP de la suite parcourt désormais, pour chaque module, les
+dossiers `squelettes/`, `modeles/`, `emails/` et `notifications/`. Une ressource
+rapatriée n'est donc pas seulement inventoriée : son chargement comme fond SPIP
+est contrôlé sans activer `blobul-BANK`, `blobul-CORE` ni `blobul-ASSO_FO`.
+
 Les pages privées n'incluent plus de fragments `content/` ou `right_col/`
 fournis par un thème ou un plugin FO. Le logo d'événement utilisé dans le BO
 est rendu par `prive/inclure/asso_logo_evenement.html` et le récapitulatif

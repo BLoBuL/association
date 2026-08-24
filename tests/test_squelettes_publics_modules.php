@@ -54,6 +54,37 @@ foreach ($actifs_blobul_interdits as $dossier => $marqueurs) {
 	}
 }
 
+$modeles_paiement = array(
+	'payer_acte.html',
+	'payer_acte_adhesion.html',
+	'payer_acte_formidable.html',
+	'payer_acte_participation.html',
+);
+foreach ($modeles_paiement as $modele_paiement) {
+	$chemin_modele = $racine . '/plugins/association-paiements/modeles/' . $modele_paiement;
+	if (!is_file($chemin_modele)) {
+		fwrite(STDERR, "Modèle Bank rapatrié absent : $modele_paiement.\n");
+		exit(1);
+	}
+	$contenu_modele = file_get_contents($chemin_modele);
+	if (!str_contains($contenu_modele, '#PAYER_ACTE') || !str_contains($contenu_modele, 'TRANSACTIONS')) {
+		fwrite(STDERR, "Contrat Bank incomplet dans $modele_paiement.\n");
+		exit(1);
+	}
+	if (str_contains($contenu_modele, '#META{/association/')) {
+		fwrite(STDERR, "Lecture de méta historique dans $modele_paiement.\n");
+		exit(1);
+	}
+}
+
+$coque_email = file_get_contents($racine . '/plugins/association-communication/emails/texte.html');
+foreach (array('inc-header', 'inc-title', 'inc-content', 'inc-footer') as $fragment_email) {
+	if (!str_contains($coque_email, 'fond=emails/inc/' . $fragment_email)) {
+		fwrite(STDERR, "Fragment autonome absent de la coque email : $fragment_email.\n");
+		exit(1);
+	}
+}
+
 if (file_exists($racine . '/modeles/asso_ressources.html')) {
 	fwrite(STDERR, "Le modèle Ressources appartient encore au socle au lieu du module Prêts.\n");
 	exit(1);
