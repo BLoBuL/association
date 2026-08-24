@@ -1224,3 +1224,17 @@ navigation, l'ajout d'une réservation, l'accès aux ressources et son état vid
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
+
+## Lot 112 — statuts métier autonomes
+
+Le commit `2a61276c` est déployé depuis l'artefact SHA-256
+`cd37c2a47c9744438c34d628e023be4dfb16ff2c62778f8a983292897e5f0953`.
+Les couleurs d'état sont désormais portées par Adhésions, Événements et
+Paiements. La page Adhérents conserve ses treize résultats et ses filtres
+colorés ; la fiche de l'événement 183 conserve ses cinq inscriptions et leurs
+états ; la transaction 1112 conserve son montant, son statut OK et sa date de
+règlement. Aucun formulaire ni aucune action métier n'a été déclenché.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
