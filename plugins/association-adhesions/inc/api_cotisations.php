@@ -329,16 +329,20 @@ function api_traiter_cotisation($params) {
             // Récupération de l'ID de transaction associée à ce compte
             $id_transaction = intval($query_cotisation['id_transaction'] ?? 0);
 
-            if (!$id_transaction) {
+            if (!$id_transaction && !$cotisation_gratuite) {
                 return ['statut' => 'erreur', 'message' => 'Transaction inexistante'];
             }
 
-            // Mise à jour de la transaction avec le nouveau montant
-            sql_updateq('spip_transactions', [
-                'montant'     => $montant_final,
-                'montant_ht'  => $montant_ht,
-                'devise'      => $devise,
-            ], "id_transaction=$id_transaction");
+            // Une cotisation gratuite ne fabrique jamais de transaction Bank.
+            // Si une transaction existe déjà, elle reste synchronisée (y compris
+            // lors d'une correction du montant à zéro).
+            if ($id_transaction) {
+                sql_updateq('spip_transactions', [
+                    'montant'     => $montant_final,
+                    'montant_ht'  => $montant_ht,
+                    'devise'      => $devise,
+                ], "id_transaction=$id_transaction");
+            }
 
             // Modification de la cotisation dans les comptes
             include_spip('inc/association_adhesions_comptabilite');

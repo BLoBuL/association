@@ -1330,3 +1330,18 @@ squelettes privés, douze pages publiques et 64 composants front.
 Les dépréciations visibles proviennent toujours d'Accès Restreint 6.3.1 sous
 PHP 8.4 ; elles sont extérieures aux dix plugins Association et ne masquent pas
 les formulaires servis.
+
+## Lot 118 — édition des cotisations gratuites sans Bank
+
+L'API d'Adhésions accepte désormais la modification d'une cotisation gratuite
+sans exiger ni fabriquer une transaction Bank. Une cotisation payante sans
+transaction reste refusée, car créer silencieusement un paiement depuis une
+édition administrative serait une modification financière implicite.
+
+La suite fonctionnelle couvre le montant et les dates saisis en BO, leur
+impossibilité de surcharge côté public, puis l'édition gratuite sans appel à
+Bank. La copie DEV ne contient actuellement aucune des dix cotisations sans
+transaction ou à montant nul, mais le parcours est protégé pour les nouvelles
+catégories gratuites. Après déploiement ciblé et vidage du cache, l'empreinte
+des dix cotisations migrées reste inchangée et les 221 squelettes privés,
+douze pages publiques et 64 composants front compilent toujours.

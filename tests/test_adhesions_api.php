@@ -355,6 +355,35 @@ foreach (array('auto' => 'ok', 'post-paiement' => 'demande') as $validation => $
     test_assert($GLOBALS['test_transactions'][205]['devise'] === 'EUR', "un encaissement $validation synchronise la devise sans doublon");
 }
 
+test_reset('auto', 0);
+$GLOBALS['test_comptes'][5] = array(
+    'id_compte' => 5,
+    'id_auteur' => 1,
+    'id_categorie' => 10,
+    'id_transaction' => 0,
+    'reinscription' => 'inscription',
+    'statut_cotisation' => 'ok',
+);
+$GLOBALS['test_cotisations'][5] = array(
+    'id_cotisation' => 5,
+    'id_compte' => 5,
+    'id_auteur' => 1,
+    'id_categorie' => 10,
+    'id_transaction' => 0,
+    'inscription' => 'inscription',
+    'statut' => 'ok',
+);
+$resultat = api_traiter_cotisation(array(
+    'id_auteur' => 1,
+    'id_compte' => 5,
+    'id_categorie' => 10,
+    'origine' => 'prive',
+    'montant' => 0,
+    'statut_cotisation' => 'ok',
+));
+test_assert(($resultat['statut'] ?? '') !== 'erreur', 'une cotisation gratuite reste modifiable sans transaction Bank');
+test_assert($resultat['id_transaction'] === 0, 'l édition gratuite ne fabrique pas de transaction Bank');
+
 $upgrade_source = file_get_contents(PLUGIN_ROOT . '/association_administrations.php');
 $compta_migration_source = file_get_contents(PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_migration_legacy.php');
 $adhesions_migration_source = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_migration_legacy.php');

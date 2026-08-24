@@ -110,4 +110,6 @@ echo json_encode(array(
 	'cotisations' => count($apres['cotisations']),
 	'empreinte' => $apres['hash_cotisations'],
 	'idempotente' => true,
+	'sans_transaction' => (int) sql_countsel('spip_asso_cotisations', 'id_transaction=0'),
+	'gratuites' => (int) sql_countsel('spip_asso_cotisations', 'montant=0'),
 ), JSON_UNESCAPED_SLASHES) . "\n";
