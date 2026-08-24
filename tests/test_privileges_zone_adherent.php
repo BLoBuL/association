@@ -4,6 +4,22 @@ define('_ECRIRE_INC_VERSION', 1);
 
 $GLOBALS['association_test_zones_liees'] = array();
 $GLOBALS['association_test_where'] = '';
+$GLOBALS['association_test_plugins'] = array('accesrestreint' => true, 'gis' => false);
+
+function include_spip($fichier) {
+	$chemin = dirname(__DIR__) . '/plugins/association-adhesions/' . $fichier . '.php';
+	if (is_file($chemin)) {
+		require_once $chemin;
+	}
+}
+
+function test_plugin_actif($prefixe) {
+	return !empty($GLOBALS['association_test_plugins'][$prefixe]);
+}
+
+function sql_in($champ, $valeurs) {
+	return $champ . ' IN (' . implode(',', array_map('intval', $valeurs)) . ')';
+}
 
 function sql_allfetsel($select, $table, $where = '') {
     $GLOBALS['association_test_where'] = $where;

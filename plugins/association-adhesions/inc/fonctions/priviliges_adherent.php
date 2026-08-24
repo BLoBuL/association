@@ -13,16 +13,8 @@ function association_zones_adherent_normaliser($zones) {
 
 function association_auteur_zones_adherent_liees($zones, $id_auteur) {
 	$zones = association_zones_adherent_normaliser($zones);
-	$id_auteur = (int) $id_auteur;
-	if (!$zones || !$id_auteur) {
-		return array();
-	}
-	$lignes = sql_allfetsel(
-		'id_zone',
-		'spip_zones_liens',
-		sql_in('id_zone', $zones) . " AND objet='auteur' AND id_objet=" . $id_auteur
-	) ?: array();
-	return array_values(array_unique(array_filter(array_map('intval', array_column($lignes, 'id_zone')))));
+	include_spip('inc/association_adhesions_integrations');
+	return association_adhesions_zones_auteur_liees($zones, $id_auteur);
 }
 
 function association_privileges_auteur_lire($id_auteur) {
@@ -35,7 +27,8 @@ function association_privileges_auteur_lire($id_auteur) {
 }
 
 function association_privileges_zones_lier($id_auteur, array $zones) {
-	if (!$zones) {
+	include_spip('inc/association_adhesions_integrations');
+	if (!$zones || !association_adhesions_integration_active('accesrestreint')) {
 		return;
 	}
 	include_spip('inc/autoriser');
@@ -46,7 +39,8 @@ function association_privileges_zones_lier($id_auteur, array $zones) {
 }
 
 function association_privileges_zones_delier($id_auteur, array $zones) {
-	if (!$zones) {
+	include_spip('inc/association_adhesions_integrations');
+	if (!$zones || !association_adhesions_integration_active('accesrestreint')) {
 		return;
 	}
 	include_spip('inc/autoriser');
@@ -80,12 +74,10 @@ function desactiver_privileges_adherent($id_auteur) {
 	association_privileges_zones_delier((int) $id_auteur, $zones_liees);
 	include_spip('inc/association_communication_privileges');
 	association_communication_privileges_desactiver($auteur);
-	if (test_plugin_actif('gis')) {
-		$id_gis = (int) sql_getfetsel(
-			'G.id_gis',
-			'spip_gis AS G LEFT JOIN spip_gis_liens AS T ON T.id_gis=G.id_gis',
-			'T.id_objet=' . (int) $id_auteur . " AND T.objet='auteur'"
-		);
+	include_spip('inc/association_adhesions_integrations');
+	if (association_adhesions_integration_active('gis')) {
+		$point_gis = association_adhesions_gis_point_auteur($id_auteur);
+		$id_gis = (int) ($point_gis['id_gis'] ?? 0);
 		if ($id_gis) {
 			include_spip('inc/fonctions/gis_auteur');
 			gis_auteur($id_auteur, 'suppression', $id_gis);
@@ -116,13 +108,11 @@ function verifier_privileges_adherent($id_auteur, $reinscription = null) {
 		association_privileges_zones_delier((int) $id_auteur, $zones_liees);
 	}
 
-	if (test_plugin_actif('gis')) {
+	include_spip('inc/association_adhesions_integrations');
+	if (association_adhesions_integration_active('gis')) {
 		include_spip('inc/fonctions/gis_auteur');
-		$id_gis = (int) sql_getfetsel(
-			'G.id_gis',
-			'spip_gis AS G LEFT JOIN spip_gis_liens AS T ON T.id_gis=G.id_gis',
-			'T.id_objet=' . (int) $id_auteur . " AND T.objet='auteur'"
-		);
+		$point_gis = association_adhesions_gis_point_auteur($id_auteur);
+		$id_gis = (int) ($point_gis['id_gis'] ?? 0);
 		if (!$id_gis && $statut_interne === 'ok') {
 			gis_auteur($id_auteur, 'creation');
 		} elseif ($id_gis && $statut_interne !== 'ok') {

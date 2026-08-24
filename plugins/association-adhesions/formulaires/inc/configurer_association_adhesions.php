@@ -13,11 +13,8 @@ function verifier_categorie_adherent_entreprise() {
 }
 
 function preparer_liste_zones() {
-	$zones = array();
-	foreach (sql_allfetsel('id_zone,titre', 'spip_zones') ?: array() as $zone) {
-		$zones[$zone['id_zone']] = $zone['titre'];
-	}
-	return saisies_tableau2chaine($zones);
+	include_spip('inc/association_adhesions_integrations');
+	return saisies_tableau2chaine(association_adhesions_zones_options());
 }
 
 function preparer_liste_mailsubscribinglists() {

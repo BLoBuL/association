@@ -239,7 +239,8 @@ function association_adhesions_pre_insertion($flux) {
 }
 
 function association_adhesions_post_edition($flux) {
-    if (($flux['args']['table'] ?? '') === 'spip_auteurs' && ($id_auteur = intval($flux['args']['id_objet'] ?? 0)) && test_plugin_actif('gis')) {
+	include_spip('inc/association_adhesions_integrations');
+    if (($flux['args']['table'] ?? '') === 'spip_auteurs' && ($id_auteur = intval($flux['args']['id_objet'] ?? 0)) && association_adhesions_integration_active('gis')) {
         include_spip('inc/fonctions/gis_auteur');
         gis_auteur($id_auteur, 'modification');
     }

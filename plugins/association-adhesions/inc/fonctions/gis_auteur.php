@@ -16,14 +16,25 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
  * @return void
  */
 function gis_auteur($id_auteur, $action, $id_gis = null) {
+	include_spip('inc/association_adhesions_integrations');
+	if (!association_adhesions_integration_active('gis')) {
+		return false;
+	}
+	include_spip('action/editer_gis');
+	if ($action === 'suppression') {
+		return $id_gis ? gis_supprimer((int) $id_gis) : false;
+	}
     // Appel au service de géocodage
     include_spip('inc/config');
     include_spip('inc/gis_geocode');
-    include_spip('action/editer_gis');
     include_spip('action/editer_objet');
 
     // Récupération de la configuration des notifications GIS
-    $notification_gis_config_action = unserialize($GLOBALS['association_metas']['notification_gis_config_action']);
+	$notification_gis_config_action = $GLOBALS['association_metas']['notification_gis_config_action'] ?? array();
+	if (is_string($notification_gis_config_action)) {
+		$notification_gis_config_action = @unserialize($notification_gis_config_action, array('allowed_classes' => false));
+	}
+	$notification_gis_config_action = is_array($notification_gis_config_action) ? $notification_gis_config_action : array();
     $query_auteur = sql_fetsel('*', 'spip_auteurs', 'id_auteur=' . intval($id_auteur));
     $nom_auteur = $query_auteur['prenom'] . ' ' . $query_auteur['nom_famille'];
 
@@ -75,7 +86,7 @@ function gis_auteur($id_auteur, $action, $id_gis = null) {
                 'pays' => $adresse_complete['country'],
                 'code_pays' => $adresse_complete['countrycode']
             ];
-            $point_auteur_gis = sql_fetsel('G.*', 'spip_gis AS G LEFT JOIN spip_gis_liens AS T ON T.id_gis=G.id_gis', 'T.id_objet=' . intval($id_auteur) . " AND T.objet='auteur'");
+			$point_auteur_gis = association_adhesions_gis_point_auteur($id_auteur);
 
             // Mise à jour ou création du point GIS
             if ($action == 'modification' && !empty($point_auteur_gis)
@@ -84,7 +95,7 @@ function gis_auteur($id_auteur, $action, $id_gis = null) {
 
                 // Notification en cas de modification
                 if (!empty($GLOBALS['association_metas']['notification_gis_config_email'])
-                    && in_array("modification_adherent", $notification_gis_config_action)) {
+					&& in_array('modification_adherent', $notification_gis_config_action, true)) {
                     job_queue_add('facteur_envoyer_notification_gis', 'Notification - Mise à jour adresse GPS', [
                         $id_auteur, $nom_auteur, $string_recherche, $adresse_complete, $point_auteur_gis['id_gis'], 'modification'
                     ], '', true, 0, 0);
@@ -97,17 +108,12 @@ function gis_auteur($id_auteur, $action, $id_gis = null) {
         } else {
             // Notification en cas d'échec
             if (!empty($GLOBALS['association_metas']['notification_gis_config_email'])
-                && in_array("echec_adherent", $notification_gis_config_action)) {
+				&& in_array('echec_adherent', $notification_gis_config_action, true)) {
                 job_queue_add('facteur_envoyer_notification_gis', 'Notification - Echec création adresse GPS', [
                     $id_auteur, $nom_auteur, $string_recherche, false, false, 'echec'
                 ], '', true, 0, 0);
             }
         }
     }
-    if ($action == 'suppression') {
-        // Suppression du point GIS associé à l'auteur
-        gis_supprimer($id_gis);
-
-    }
-
+	return true;
 }
