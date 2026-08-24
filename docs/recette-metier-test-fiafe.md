@@ -1590,3 +1590,44 @@ recette est restée en lecture seule : aucune inscription, transaction ou
 écriture n'a été modifiée, aucun reçu ni email n'a été envoyé. Les empreintes
 déployées correspondent aux sources et SPIP 4.4.21 compile 221 squelettes
 privés, douze pages publiques et 64 composants front.
+
+## Lots 134 a 137 - derniers parcours Evenements distribues
+
+Les calculs de places, les exports, la maintenance et la migration comptable
+d'Evenements passent maintenant par les contrats des plugins Paiements et
+Comptabilite. La migration reste idempotente et conserve la reconnaissance des
+liens historiques `activite`; la maintenance interroge chaque module metier
+avant de proposer une transaction a la suppression.
+
+Les comparaisons en lecture seule sur test-fiafe retrouvent les memes places,
+totaux d'export et references que les lectures historiques. Aucun doublon
+supprimable n'a ete applique et aucune migration destructive n'a ete executee.
+
+## Lots 138 a 141 - Adhesions decouple de Bank et du journal
+
+Les lecteurs de cotisations, notifications, suppressions et transitions de
+paiement utilisent la facade Paiements. Les ecritures sont lues par l'API de
+Comptabilite et la maintenance des cotisations est distribuee par pipeline. La
+mise a jour de l'ancien champ `statut_cotisation` demeure uniquement dans
+l'adaptateur de stockage, pour les installations qui possedent encore cette
+colonne; les migrations historiques restent volontairement conservees.
+
+La simulation de maintenance ne trouve aucune correction a appliquer et son
+empreinte de base est stable. Les 26 ecritures et les dix cotisations
+fusionnees par l'API correspondent aux donnees historiques de la copie DEV.
+
+## Lots 142 et 143 - devises et informations de paiement distribuees
+
+Comptabilite ne joint plus directement Bank pour enrichir ses ecritures. Les
+devises et les informations minimales de transaction sont fournies par les
+plugins proprietaires au moyen de pipelines, ce qui evite une dependance
+circulaire entre Comptabilite et Paiements. La facade Paiements expose
+uniquement les champs effectivement necessaires aux consommateurs.
+
+Sur test-fiafe, les 45 transactions exposees par la facade correspondent aux
+champs historiques. Les quatre commandes ont ete comparees sur les six champs
+reellement consommes, sans ecart. Les statistiques des exercices 2024, 2025 et
+2026 sont identiques aux anciennes jointures. Les cinq fichiers du lot 143 ont
+des empreintes SHA-256 locales et distantes identiques; leur lint PHP est
+valide. SPIP 4.4.21 compile enfin 221 squelettes prives, douze pages publiques
+et 64 composants front.
