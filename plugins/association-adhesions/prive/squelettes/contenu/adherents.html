@@ -8,7 +8,7 @@
 [(#SET{defaut_tri,#VAL|association_defaut_tri_adherents})]
 [(#SET{tri_dyn_actuel,#ENV{tri_dyn}})]
 [(#SET{tri_dyn_sens_actuel,#ENV{tri_dyn_sens,asc}})]
-[(#SET{url_self_saine,#SELF|parametre_url{clear_filters,''}|parametre_url{clear_search,''}|parametre_url{clear_search_field,''}|parametre_url{periode_contexte,#GET{periode_contexte}|scalar_val{}}})]
+[(#SET{url_self_saine,#SELF|parametre_url{clear_filters,''}|parametre_url{clear_search,''}|parametre_url{clear_search_field,''}|parametre_url{periode_contexte,#GET{periode_contexte}|association_adhesions_valeur_scalaire{}}})]
 
 [(#REM) Breadcrumb des filtres actifs - simplifié sans objet context ]
 [(#SET{recherche_resume,#VAL|get_recherche_active_resume})]

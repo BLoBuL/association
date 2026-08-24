@@ -13,8 +13,8 @@
 
             <!-- Toggle contexte periode: adherent / entreprise -->
             <div class="options options-contexte" style="margin-bottom:6px;">
-                <a href="[(#SELF|parametre_url{periode_contexte,adherent})]" class="ajax option [(#GET{periode_contexte}|scalar_val{ }|=={adherent}|?{'selected',''})]">Adhérents</a>
-                <a href="[(#SELF|parametre_url{periode_contexte,entreprise})]" class="ajax option [(#GET{periode_contexte}|scalar_val{ }|=={entreprise}|?{'selected',''})]">Entreprises</a>
+                <a href="[(#SELF|parametre_url{periode_contexte,adherent})]" class="ajax option [(#GET{periode_contexte}|association_adhesions_valeur_scalaire{ }|=={adherent}|?{'selected',''})]">Adhérents</a>
+                <a href="[(#SELF|parametre_url{periode_contexte,entreprise})]" class="ajax option [(#GET{periode_contexte}|association_adhesions_valeur_scalaire{ }|=={entreprise}|?{'selected',''})]">Entreprises</a>
             </div>
 
             <div class="options">
@@ -92,12 +92,12 @@
 
 <div class="asso-actions">
     <div class="bouton">
-        <a href="[(#URL_PAGE{export_cotisations.csv}|parametre_url{periode,#GET{f_cot}|table_valeur{periode}}|parametre_url{statut_cotisation,#GET{f_cot}|table_valeur{statut_cotisation}}|parametre_url{reinscription,#GET{f_cot}|table_valeur{reinscription}}|parametre_url{id_categorie,#GET{f_cot}|table_valeur{id_categorie}}|parametre_url{type_cotisation,#GET{f_cot}|table_valeur{type_cotisation}}|parametre_url{periode_contexte,#GET{periode_contexte}|scalar_val{}})]" class="btn-export lien_avec_fa">
+        <a href="[(#URL_PAGE{export_cotisations.csv}|parametre_url{periode,#GET{f_cot}|table_valeur{periode}}|parametre_url{statut_cotisation,#GET{f_cot}|table_valeur{statut_cotisation}}|parametre_url{reinscription,#GET{f_cot}|table_valeur{reinscription}}|parametre_url{id_categorie,#GET{f_cot}|table_valeur{id_categorie}}|parametre_url{type_cotisation,#GET{f_cot}|table_valeur{type_cotisation}}|parametre_url{periode_contexte,#GET{periode_contexte}|association_adhesions_valeur_scalaire{}})]" class="btn-export lien_avec_fa">
             <span class="fa_icone"><i class="fa-solid fa-file-export"></i></span><span><:association_adhesions:label_exporter_selection_cotisation:></span>
         </a>
     </div>
     <div class="bouton">
-        <a href="[(#URL_PAGE{export_cotisations.csv}|parametre_url{periode_contexte,#GET{periode_contexte}|scalar_val{}})]" class="btn-export lien_avec_fa">
+        <a href="[(#URL_PAGE{export_cotisations.csv}|parametre_url{periode_contexte,#GET{periode_contexte}|association_adhesions_valeur_scalaire{}})]" class="btn-export lien_avec_fa">
             <span class="fa_icone"><i class="fa-solid fa-file-export"></i></span><span><:association_adhesions:label_exporter_toutes_cotisations:></span>
         </a>
     </div>
