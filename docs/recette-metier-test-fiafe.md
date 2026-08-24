@@ -1480,3 +1480,20 @@ identiques à leur source, le cache a été vidé et SPIP 4.4.21 compile toujour
 221 squelettes privés, douze pages publiques et 64 composants front. Aucun prêt
 ni aucune écriture comptable n'a été créé, modifié ou supprimé pendant cette
 recette.
+
+## Lot 128 — références métier des transactions distribuées
+
+Paiements ne consulte plus directement les tables de Comptabilité et
+Événements pour décider si une transaction Bank est encore utilisée. Il publie
+désormais le pipeline `association_paiements_transactions_references` ; chaque
+plugin métier répond depuis sa propre table. Ce contrat est utilisé à la fois
+pour protéger les auteurs encaissés et pour exclure les transactions référencées
+du nettoyage des transactions anciennes non abouties.
+
+Sur test-fiafe, le contrôle en lecture seule porte sur 45 transactions. Le
+pipeline distribué retrouve exactement les 26 transactions que l'ancienne
+lecture croisée identifiait, sans écart dans aucun sens. La maintenance simulée
+ne trouve aucune transaction supprimable et aucune donnée n'a été modifiée. Les
+sept fichiers déployés ont des empreintes SHA-256 identiques à leur source ; le
+cache a été vidé et les 221 squelettes privés, douze pages publiques et 64
+composants front compilent sous SPIP 4.4.21.
