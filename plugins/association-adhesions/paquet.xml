@@ -16,6 +16,7 @@
 	<necessite nom="intl" compatibilite="[1.3.0;[" />
 	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
 	<necessite nom="association_communication" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="medias" />
 	<utilise nom="familles" compatibilite="[0.2.25;[" />
 	<utilise nom="accesrestreint" />
 	<utilise nom="gis" />
