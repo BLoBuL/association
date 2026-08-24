@@ -1121,3 +1121,16 @@ les largeurs minimales restent appliqués sans erreur de squelette.
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
+
+## Lot 104 — tableau autonome des cotisations
+
+Les commits `ec4bbef7` et `1079e1cf` sont déployés depuis l'artefact SHA-256
+`c0ccc9cfaf19cb0bfd5c3c126b9e8c0b223bc1c52862b88b965602d807ea538a`.
+La session navigateur authentifiée affiche les dix cotisations, les huit
+colonnes, la légende, les états de paiement, les types d'inscription et les
+actions. Les filtres de période, statut, inscription et catégorie restent
+présents et mis en forme sans erreur de squelette.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
