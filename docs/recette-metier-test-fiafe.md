@@ -1707,3 +1707,17 @@ restent recuperables dans Git. SPIP compile toujours 221 squelettes prives,
 douze pages publiques et 64 composants front. La recette Chrome authentifiee
 sert la page « Analyse comptable des activites », son tableau, ses totaux et ses
 deux liens d'export sans erreur visible.
+
+## Lot 149 - actions du journal centralisees
+
+Les actions de validation, invalidation, suppression unitaire et traitement en
+masse ne modifient plus directement `spip_asso_comptes`. Elles appellent l'API
+du journal. La maintenance des auteurs charge aussi les identifiants puis
+supprime chaque ecriture par cette API, afin que les ventilations analytiques
+ne survivent jamais a leur compte.
+
+Sur test-fiafe, les 26 ecritures sont identiques lorsqu'elles sont relues par
+l'API. La maintenance simule vingt suppressions pour les auteurs rattaches et
+l'empreinte du journal et des ventilations reste stable. Aucun compte n'a ete
+valide, invalide ou supprime. La page Chrome « Informations comptables » sert
+son tableau et ses actions sans erreur visible; tous les squelettes compilent.
