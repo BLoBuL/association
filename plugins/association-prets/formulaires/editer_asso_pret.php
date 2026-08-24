@@ -15,18 +15,25 @@ function formulaires_editer_asso_pret_charger_dist($id_pret = 0, $id_ressource =
 
 	$pret = $id_pret ? sql_fetsel('*', 'spip_asso_prets', 'id_pret=' . $id_pret) : array();
 	if ($id_pret && !$pret) {
-		return false;
+		return array(
+			'editable' => false,
+			'message_erreur' => _T('association_prets:pret_introuvable'),
+		);
 	}
 	if ($pret) {
 		$id_ressource = (int) $pret['id_ressource'];
 	}
 	$ressource = $id_ressource ? sql_fetsel('*', 'spip_asso_ressources', 'id_ressource=' . $id_ressource) : array();
 	if (!$ressource) {
-		return false;
+		return array(
+			'editable' => false,
+			'message_erreur' => _T('association_prets:ressource_introuvable'),
+		);
 	}
 	$compte = $id_pret ? association_prets_compte_lire($id_pret) : array();
 
 	return array(
+		'editable' => true,
 		'id_pret' => $id_pret,
 		'id_ressource' => $id_ressource,
 		'ressource' => $ressource['intitule'],

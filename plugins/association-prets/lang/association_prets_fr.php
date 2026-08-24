@@ -20,6 +20,7 @@ $GLOBALS[$GLOBALS["idx_lang"]] = array (
   'pret_enregistrement_erreur' => 'La réservation n’a pas pu être enregistrée.',
   'pret_enregistrement_ok' => 'La réservation a été enregistrée.',
   'pret_imputation_obligatoire' => 'Configurez le compte comptable des prêts avant d’enregistrer une réservation payante.',
+  'pret_introuvable' => 'La réservation demandée est introuvable.',
   'pret_nd' => 'Prêt n&deg;',
   'prets_entete_date_retour' => 'Date retour',
   'prets_entete_date_sortie' => 'Date sortie',

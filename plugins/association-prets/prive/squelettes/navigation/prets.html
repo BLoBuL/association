@@ -2,7 +2,9 @@
 [(#AUTORISER{prets_menu}|oui)
 	[(#BOITE_OUVRIR{<:association_prets:prets_titre_gestion_prets:>,'raccourcis'})]
 	<ul class="liste-items">
-		<li class="item"><a href="[(#URL_ECRIRE{edit_pret,id_objet=#GET{id_ressource}})]" class="btn"><:association_prets:prets_nav_ajouter:></a></li>
+		<BOUCLE_ressource_selectionnee(ASSO_RESSOURCES){id_ressource=#GET{id_ressource}}{0,1}>
+		<li class="item"><a href="[(#URL_ECRIRE{edit_pret,id_objet=#ID_RESSOURCE})]" class="btn"><:association_prets:prets_nav_ajouter:></a></li>
+		</BOUCLE_ressource_selectionnee>
 		<li class="item"><a href="[(#URL_ECRIRE{ressources})]"><:association_prets:ressources_titre_liste_ressources:></a></li>
 	</ul>
 	[(#BOITE_FERMER)]

@@ -1,6 +1,7 @@
 <div class="formulaire_spip formulaire_editer formulaire_editer_asso_pret">
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[(#ENV{editable}|oui)
 	<form method="post" action="#ENV{action}"><div>
 		#ACTION_FORMULAIRE{#ENV{action}}
 		<h3 class="legend">[(#ENV{ressource})]</h3>
@@ -33,5 +34,5 @@
 			<div class="editer editer_commentaire_retour"><label for="commentaire_retour"><:association_prets:prets_libelle_commentaires:></label><textarea name="commentaire_retour" id="commentaire_retour" rows="3">[(#ENV{commentaire_retour})]</textarea></div>
 		</div></fieldset>
 		<p class="boutons"><button type="submit" class="submit"><:bouton_enregistrer:></button></p>
-	</div></form>
+	</div></form>]
 </div>

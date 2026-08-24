@@ -6,6 +6,9 @@ $include = file_get_contents($racine . '/prive/squelettes/inclure/prets_ressourc
 $edition = file_get_contents($racine . '/prive/squelettes/contenu/edit_pret.html');
 $formulaire_ressource = file_get_contents($racine . '/formulaires/editer_asso_ressources.html');
 $charger_ressource = file_get_contents($racine . '/formulaires/editer_asso_ressources.php');
+$formulaire_pret = file_get_contents($racine . '/formulaires/editer_asso_pret.html');
+$charger_pret = file_get_contents($racine . '/formulaires/editer_asso_pret.php');
+$navigation = file_get_contents($racine . '/prive/squelettes/navigation/prets.html');
 
 if (!str_contains($page, 'BOUCLE_ressources_toutes(ASSO_RESSOURCES)')) {
 	fwrite(STDERR, "La page Prêts sans identifiant ne liste pas toutes les ressources.\n");
@@ -31,6 +34,17 @@ if (!str_contains($formulaire_ressource, 'devise=#ENV{devise}')
 	|| str_contains($formulaire_ressource, '#META{/association/symbole}')
 	|| !str_contains($charger_ressource, 'intl_devise_defaut()')) {
 	fwrite(STDERR, "Le prix de location ne reprend pas la devise Intl du site.\n");
+	exit(1);
+}
+if (!str_contains($charger_pret, "'editable' => false")
+	|| !str_contains($charger_pret, "_T('association_prets:ressource_introuvable')")
+	|| !str_contains($formulaire_pret, '[(#ENV{editable}|oui)')) {
+	fwrite(STDERR, "Le formulaire de prêt sans ressource ne rend pas son erreur explicite.\n");
+	exit(1);
+}
+if (!str_contains($navigation, 'BOUCLE_ressource_selectionnee(ASSO_RESSOURCES)')
+	|| !str_contains($navigation, 'id_objet=#ID_RESSOURCE')) {
+	fwrite(STDERR, "Le raccourci de création d'un prêt n'est pas borné à une ressource existante.\n");
 	exit(1);
 }
 
