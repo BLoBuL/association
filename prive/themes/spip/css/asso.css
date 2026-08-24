@@ -2290,22 +2290,6 @@ form.formulaire_asso {
     background: transparent;
 }
 
-/* PAGE IMPORT PLAN COMPTABLE*/
-.formulaire_spip .editer.classe {
-    padding-left: 20px;
-}
-.formulaire_spip .editer.compte.niveau-1 {
-    padding-left: 40px;
-}
-.formulaire_spip .editer.compte.niveau-2 {
-    padding-left: 60px;
-}
-.formulaire_spip .editer.compte.niveau-3 {
-    padding-left: 80px;
-}
-.formulaire_spip .editer.compte.niveau-4 {
-    padding-left: 100px;
-}
 /* ==================================================================
    FILTRES (PÉRIODE, STATUT, TYPE)
    Design compact, lumineux et minimaliste

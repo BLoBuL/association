@@ -338,6 +338,8 @@ $options_evenements = file_get_contents($racine . '/plugins/association-evenemen
 $maintenance_socle = file_get_contents($racine . '/genie/association_maintenance_bdd.php');
 $utils_socle = file_get_contents($racine . '/inc/association/utils.php');
 $compta_script_destinations = $racine . '/plugins/association-compta/javascript/jquery.destinations_form.js';
+$css_socle = file_get_contents($racine . '/prive/themes/spip/css/asso.css');
+$css_compta = file_get_contents($racine . '/plugins/association-compta/prive/themes/spip/css/comptabilite.css');
 $compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
@@ -353,6 +355,11 @@ $verifier(
 	strpos($utils_socle, 'function is_db_value_true') === false
 		&& strpos($utils_socle, 'function association_valeur_bdd_est_vraie') !== false,
 	'Le helper de normalisation BDD doit porter le préfixe du plugin.'
+);
+$verifier(
+	strpos($css_socle, '.editer.compte.niveau-1') === false
+		&& strpos($css_compta, '.formulaire_importer_plan_comptable .editer.compte.niveau-1') !== false,
+	'Les styles du plan comptable doivent appartenir au plugin Comptabilité.'
 );
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');

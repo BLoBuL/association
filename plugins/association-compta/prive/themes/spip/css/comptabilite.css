@@ -275,3 +275,24 @@
     padding: 10px 8px;
   }
 }
+
+/* Hiérarchie du formulaire d'import du plan comptable. */
+.formulaire_importer_plan_comptable .editer.classe {
+  padding-left: 20px;
+}
+
+.formulaire_importer_plan_comptable .editer.compte.niveau-1 {
+  padding-left: 40px;
+}
+
+.formulaire_importer_plan_comptable .editer.compte.niveau-2 {
+  padding-left: 60px;
+}
+
+.formulaire_importer_plan_comptable .editer.compte.niveau-3 {
+  padding-left: 80px;
+}
+
+.formulaire_importer_plan_comptable .editer.compte.niveau-4 {
+  padding-left: 100px;
+}
