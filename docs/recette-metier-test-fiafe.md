@@ -2187,3 +2187,20 @@ recompilent. Dans Chrome authentifié, la combinaison `statut_interne=ok` et
 restaure le même résultat depuis la session SPIP. L'effacement ciblé ramène les
 14 adhérents attendus. Les trois états sont servis sans erreur PHP et la page
 ne déborde pas horizontalement à sa largeur de recette.
+
+## Lot 178 - modèles front Paiements et feuille publique autonome
+
+Les quatre modèles récupérés de l'ancien plugin Bank conservent le contrat de
+confirmation attendu par Bank, mais ne dupliquent plus de balise `<style>` ni
+de CSS commenté. Leurs règles communes résident dans
+`css/association_paiements.css`, chargée sur les pages publiques par le
+pipeline SPIP `insert_head_css`. Un garde vérifie les quatre modèles, le
+contrat Bank, la déclaration du pipeline et les sélecteurs indispensables. La
+suite locale atteint 136 tests, tous valides.
+
+Le commit `ac62f9b2` est déployé sur test-fiafe avec les sept empreintes de
+l'artefact Git conformes. Paiements reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome, la page publique de l'événement 231 charge bien
+`plugins/association-paiements/css/association_paiements.css`, sans erreur ni
+débordement horizontal. La ressource répond en HTTP 200 avec le type
+`text/css`. Aucun paiement ni formulaire n'a été déclenché.
