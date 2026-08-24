@@ -1055,3 +1055,17 @@ Le correctif `f7da0ef0`, déployé depuis l'artefact SHA-256
 préfixe ces quatre appels et les couvre par le test. Chrome authentifié affiche
 de nouveau la liste de treize adhérents, les périodes et les filtres sans table
 d'erreur de squelette. La suite compte désormais 90 tests autonomes réussis.
+
+## Lot 97 — export CSV Événements
+
+Le commit `42189995` est déployé depuis l'artefact SHA-256
+`cf507c51df0c89b851826e094b8ea049ab4422d2e14149a236f34772a0777b4c`.
+Les 90 tests autonomes passent, l'installation des dix plugins et des quatorze
+tables est valide, et le serveur compile 221 squelettes privés, douze pages
+publiques et 64 composants front.
+
+Depuis la session Chrome authentifiée, l'URL publique
+`inscriptions_evenement.csv` de l'événement 183 répond en HTTP 200 avec le type
+`text/csv`, 2 948 octets et aucune erreur de squelette. Les avertissements PHP
+8.4 imprimés en tête de réponse proviennent toujours d'Accès restreint 6.3.1,
+hors du monorepo Association.

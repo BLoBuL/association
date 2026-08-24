@@ -1100,3 +1100,17 @@ périodes des adhérents et cotisations, quitte le socle. Adhésions fournit
 `association_adhesions_valeur_scalaire()` et l'appelle directement dans ses
 filtres publics et privés, sans branche de repli dépendant de l'ordre de
 chargement des plugins.
+
+## Lot 97 : filtre de l'export CSV Événements
+
+L'export public des inscriptions ne contient plus l'enchaînement invalide
+`||textebrut`. Son test de filtres couvre désormais les notifications et le
+CSV, qui se compile et répond sans erreur de squelette sous SPIP 4.
+
+## Lot 98 : helpers transverses préfixés
+
+Les deux derniers helpers historiques aux noms génériques
+`asso_resultat_en_echec()` et `is_db_value_true()` adoptent le préfixe du
+plugin. Leurs consommateurs métier appellent respectivement
+`association_maintenance_resultat_en_echec()` et
+`association_valeur_bdd_est_vraie()`, sans alias global conservé.
