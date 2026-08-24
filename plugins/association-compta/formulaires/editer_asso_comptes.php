@@ -240,17 +240,10 @@ function formulaires_editer_asso_comptes_charger_dist($id_compte = 'new') {
  * @return array Liste formatée des événements
  */
 function preparer_liste_evenements() {
-    $evenements = [];
-
-    // Récupérer les événements de la base de données
-    $query = sql_select('id_evenement, titre, date_debut', 'spip_evenements', '', '', 'date_debut DESC');
-
-    while ($row = sql_fetch($query)) {
-        $date_formatee = affdate_court($row['date_debut']);
-        $evenements[$row['id_evenement']] = $date_formatee . ' - ' . $row['titre'];
-    }
-
-    return $evenements;
+	return (array) pipeline('association_compta_objets_lister', array(
+		'args' => array('objet' => 'evenement'),
+		'data' => array(),
+	));
 }
 /**
  * Vérifie les données soumises dans le formulaire d'édition des comptes associatifs.

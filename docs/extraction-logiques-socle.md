@@ -996,3 +996,10 @@ statistiques comptables propres aux événements sont déplacés avec elles.
 Le formulaire de migration comptable ne lit plus `spip_asso_activites` : il
 publie `association_compta_migration_metiers`, auquel Événements contribue en
 synchronisant ses propres inscriptions.
+
+## Lot 85 : sélecteur comptable distribué
+
+Le formulaire d'écriture comptable ne requête plus `spip_evenements` pour
+construire son sélecteur. Il demande les objets disponibles via
+`association_compta_objets_lister` ; Événements fournit les libellés datés de
+ses événements. Comptabilité reste utilisable sans la table Agenda.

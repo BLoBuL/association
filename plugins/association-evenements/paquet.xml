@@ -54,4 +54,5 @@
 	<pipeline nom="association_paiements_redirection_transaction" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_paiements_remboursement_traiter" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_compta_migration_metiers" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="association_compta_objets_lister" inclure="association_evenements_pipelines.php" />
 </paquet>

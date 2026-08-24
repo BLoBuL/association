@@ -3,6 +3,7 @@
 $racine = dirname(__DIR__);
 $comptes = file_get_contents($racine . '/plugins/association-compta/inc/comptes.php');
 $migration = file_get_contents($racine . '/plugins/association-compta/formulaires/migrer_asso_comptabilite.php');
+$edition = file_get_contents($racine . '/plugins/association-compta/formulaires/editer_asso_comptes.php');
 $evenements = file_get_contents($racine . '/plugins/association-evenements/inc/association_evenements_comptabilite.php');
 $pipelines = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
 
@@ -24,6 +25,10 @@ if (file_exists($racine . '/plugins/association-compta/prive/objets/liste/table_
 }
 if (str_contains($migration, 'spip_asso_activites') || str_contains($migration, 'synchroniser_comptabilite_evenement(')) {
 	$erreurs[] = "La migration Comptabilité connaît encore l'implémentation Événements.";
+}
+if (str_contains($edition, 'spip_evenements')
+	|| !str_contains($edition, "pipeline('association_compta_objets_lister'")) {
+	$erreurs[] = "Le formulaire Comptabilité charge encore directement les événements.";
 }
 foreach (array('association_evenements_compte_inscription_creer', 'association_evenements_compte_inscription_actualiser', 'association_evenements_compte_remboursement_creer') as $fonction) {
 	if (!str_contains($evenements, 'function ' . $fonction . '(')) {

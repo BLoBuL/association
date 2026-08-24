@@ -85,6 +85,17 @@ function association_evenements_association_compta_migration_metiers($flux) {
 	return $flux;
 }
 
+function association_evenements_association_compta_objets_lister($flux) {
+	if (($flux['args']['objet'] ?? '') !== 'evenement') {
+		return $flux;
+	}
+	$evenements = sql_select('id_evenement,titre,date_debut', 'spip_evenements', '', '', 'date_debut DESC');
+	while ($evenement = sql_fetch($evenements)) {
+		$flux['data'][(int) $evenement['id_evenement']] = affdate_court($evenement['date_debut']) . ' - ' . $evenement['titre'];
+	}
+	return $flux;
+}
+
 function association_evenements_association_config_cli_registre($flux) {
 	include_spip('inc/association_evenements_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_evenements_config_cli_definitions());
