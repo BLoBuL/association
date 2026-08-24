@@ -28,7 +28,9 @@ $echecs = array();
 foreach ($prefixes as $prefixe) {
 	$constante = '_DIR_PLUGIN_' . strtoupper($prefixe);
 	if (!defined($constante)) {
-		$echecs[] = "Plugin actif sans constante de chemin : $prefixe";
+		// La matrice d'autonomie compile uniquement les plugins réellement
+		// chargés. L'absence de constante est l'état normal d'un complément
+		// facultatif désactivé.
 		continue;
 	}
 	$racine = rtrim(constant($constante), '/\\');

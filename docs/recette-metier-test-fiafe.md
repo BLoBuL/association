@@ -2473,7 +2473,45 @@ horizontal à 390, 768 et 1440 pixels. Aucun fatal récent n'est présent dans l
 journaux après ces parcours.
 
 La suite complète et les comportements facultatifs sont donc validés par les
-tests unitaires, statiques et la recette servie. La matrice d'activation réelle
-de chaque module isolé reste à exécuter dans une installation SPIP jetable
-distincte : elle n'a pas été simulée en désactivant les modules du site de
-recette, afin de ne pas perturber ses données et son état partagé.
+tests unitaires, statiques et la recette servie.
+
+## Lot 191 - matrice réelle sur installation propre
+
+L'autorisation de réinitialiser les tables de test a permis de compléter la
+preuve auparavant manquante. Les neuf modules métier et le socle ont été
+désactivés, puis les quinze tables historiques `spip_asso_*` et la table du
+socle ont été supprimées. Les métas de schéma Association ont également été
+effacées. Les auteurs, articles, événements Agenda et tables étrangères à la
+suite n'ont pas été supprimés.
+
+L'activation du socle seul recrée uniquement `spip_association_metas`, avec la
+méta `association_base_version`. Chacun des neuf modules a ensuite été activé
+seul avec le socle et ses dépendances externes. Chaque scénario installe
+uniquement ses tables et son schéma, puis compile ses propres squelettes :
+
+- Adhésions : catégories adhérents et cotisations, 83 squelettes ;
+- Événements : activités, catégories et liens, 109 squelettes ;
+- Comptabilité : comptes, plan, destinations et opérations, 45 squelettes ;
+- Paiements : aucune table Association supplémentaire, 26 squelettes ;
+- Communication : aucune table Association supplémentaire, 17 squelettes ;
+- Groupes : aucune table Association supplémentaire, 14 squelettes ;
+- Dons : table des dons, 13 squelettes ;
+- Prêts : ressources et prêts, 19 squelettes ;
+- Ventes : table des ventes, 13 squelettes.
+
+Les combinaisons Événements avec Adhésions, Comptabilité, Paiements ou
+Communication passent séparément. Adhésions avec Comptabilité et Paiements,
+ainsi que Dons, Ventes ou Prêts avec Comptabilité, passent également. Après
+chaque combinaison, le module est désactivé et les tables métier sont remises à
+zéro avant le scénario suivant.
+
+Enfin, la suite complète a été réinstallée sur ces tables propres. Le
+vérificateur retrouve 10 contributeurs actifs, 14 tables, 12 objets SQL et
+7 schémas à jour ; les 283 squelettes recompilent sous SPIP 4.4.21. La recette
+termine donc avec les dix plugins actifs et une base Association neuve, sans
+données métier historiques.
+
+Cette campagne a révélé un défaut du compilateur de recette : il considérait
+l'absence de constante d'un module désactivé comme une erreur. Il utilise
+désormais les constantes réellement chargées comme autorité et ignore
+normalement les compléments facultatifs inactifs.

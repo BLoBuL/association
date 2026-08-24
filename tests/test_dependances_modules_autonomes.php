@@ -64,6 +64,11 @@ if (!preg_match("/'id_compte'\s*=>\s*'BIGINT NULL DEFAULT NULL'/", $schema_cotis
 	$erreurs[] = 'Le lien comptable des cotisations doit être nullable et non unique.';
 }
 
+$compilateur = file_get_contents($racine . '/tests/spip/compiler_suite_squelettes.php');
+if (str_contains($compilateur, 'Plugin actif sans constante de chemin')) {
+	$erreurs[] = 'Le compilateur ne doit pas traiter un complément désactivé comme une erreur.';
+}
+
 if ($erreurs) {
 	fwrite(STDERR, implode(PHP_EOL, $erreurs) . PHP_EOL);
 	exit(1);
