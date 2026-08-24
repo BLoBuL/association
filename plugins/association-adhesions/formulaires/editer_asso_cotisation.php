@@ -86,6 +86,46 @@ function formulaires_editer_asso_cotisation_saisies($id_compte = 'new') {
     // Construire dynamiquement les saisies du fieldset admin
     $admin_saisies = array();
 
+    $date_operation = isset($cot['date_creation']) && $cot['date_creation']
+        ? substr($cot['date_creation'], 0, 10)
+        : date('Y-m-d');
+    $montant_defaut = isset($cot['montant']) ? (float) $cot['montant'] : '';
+    $validite_defaut = isset($cot['date_fin_validite'])
+        ? substr((string) $cot['date_fin_validite'], 0, 10)
+        : '';
+
+    $admin_saisies[] = array(
+        'saisie' => 'date',
+        'options' => array(
+            'nom' => 'date_operation',
+            'label' => '<:association_adhesions:form_cotisation_date_operation_label:>',
+            'explication' => '<:association_adhesions:form_cotisation_date_operation_explication:>',
+            'obligatoire' => 'oui',
+            'defaut' => $date_operation,
+        ),
+    );
+    $admin_saisies[] = array(
+        'saisie' => 'input',
+        'options' => array(
+            'nom' => 'montant',
+            'label' => '<:association_adhesions:form_cotisation_montant_label:>',
+            'explication' => '<:association_adhesions:form_cotisation_montant_explication:>',
+            'type' => 'number',
+            'step' => '0.01',
+            'min' => '0',
+            'defaut' => $montant_defaut,
+        ),
+    );
+    $admin_saisies[] = array(
+        'saisie' => 'date',
+        'options' => array(
+            'nom' => 'date_fin_validite',
+            'label' => '<:association_adhesions:form_cotisation_validite_label:>',
+            'explication' => '<:association_adhesions:form_cotisation_validite_explication:>',
+            'defaut' => $validite_defaut,
+        ),
+    );
+
     // Ne proposer le statut QUE si on édite une cotisation existante
     if (intval($id_compte)) {
         // Déterminer la catégorie sélectionnée (préférer la valeur POST si présente)
@@ -302,7 +342,7 @@ function formulaires_editer_asso_cotisation_verifier_dist($id_compte = 'new') {
     }
 
     // Champs obligatoires minimaux
-    $champs_obligatoires = array('id_categorie');
+    $champs_obligatoires = array('id_categorie', 'date_operation');
     foreach ($champs_obligatoires as $obligatoire) {
         if (!_request($obligatoire)) {
             $erreurs[$obligatoire] = _T('info_obligatoire');
@@ -352,6 +392,15 @@ function formulaires_editer_asso_cotisation_verifier_dist($id_compte = 'new') {
         $montant_sanitized = str_replace(',', '.', $montant_raw);
         if (!is_numeric($montant_sanitized)) {
             $erreurs['montant'] = _T('association_adhesions:erreur_montant_invalide');
+        } elseif ((float) $montant_sanitized < 0) {
+            $erreurs['montant'] = _T('association_adhesions:erreur_montant_invalide');
+        }
+    }
+
+    foreach (array('date_operation', 'date_fin_validite') as $champ_date) {
+        $date_saisie = trim((string) _request($champ_date));
+        if ($date_saisie !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $date_saisie)) {
+            $erreurs[$champ_date] = _T('association_adhesions:erreur_date_invalide');
         }
     }
 
@@ -417,6 +466,8 @@ function formulaires_editer_asso_cotisation_traiter($id_compte = 'new') {
         'reinscription' => _request('reinscription'),
         'statut_cotisation' => _request('statut_cotisation'),
         'notifier' => _request('notifier') ? _request('notifier') : null,
+        'date_operation' => _request('date_operation'),
+        'date_fin_validite' => _request('date_fin_validite'),
     ];
 
     // Ajouter le montant si fourni (normaliser la valeur numérique)

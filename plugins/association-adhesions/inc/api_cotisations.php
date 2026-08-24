@@ -178,6 +178,13 @@ function api_traiter_cotisation($params) {
         $notifier = isset($params['notifier']) ? true : false;
         // Date et paramètres comptables
         $date = date('Y-m-d H:i:s');
+        if ($origine === 'prive' && !empty($params['date_operation'])) {
+            $date_operation = trim((string) $params['date_operation']);
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date_operation)) {
+                return ['statut' => 'erreur', 'message' => _T('association_adhesions:erreur_date_invalide')];
+            }
+            $date = $date_operation . ' 00:00:00';
+        }
         $journal = lire_config('/association_metas/pc_cotisations_creance') ?: '101';
         $imputation = lire_config('/association_metas/pc_cotisations_creance') ?: '101';
 
@@ -201,6 +208,9 @@ function api_traiter_cotisation($params) {
         }
 
         $montant_choisi = floatval($query_categories['cotisation']);
+        if ($origine === 'prive' && array_key_exists('montant', $params) && $params['montant'] !== '') {
+            $montant_choisi = (float) $params['montant'];
+        }
         $devise = association_cotisation_resoudre_devise($query_categories['devise'] ?? '');
         $validation_categorie = $query_categories['validation'];
         $type_adherent_categorie = $query_categories['type_adherent'];
@@ -286,7 +296,8 @@ function api_traiter_cotisation($params) {
                 $reinscription,
                 $id_categorie,
                 $statut_cotisation,
-                $id_transaction
+                $id_transaction,
+                $params['date_fin_validite'] ?? null
             );
 
             // Propagation d'erreur si le helper renvoie un tableau
@@ -341,7 +352,8 @@ function api_traiter_cotisation($params) {
                 $id_categorie,
                 $id_compte,
                 $statut_cotisation,
-                $id_transaction
+                $id_transaction,
+                $params['date_fin_validite'] ?? null
             );
         }
         // Traitement des documents si fournis

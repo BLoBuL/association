@@ -52,6 +52,12 @@ function association_cotisation_synchroniser_depuis_compte($id_compte, $donnees 
 		'montant' => (float) ($donnees['recette'] ?? $donnees['montant'] ?? $compte['recette'] ?? 0),
 		'devise' => $devise,
 	);
+	if (array_key_exists('date_debut_validite', $donnees)) {
+		$valeurs['date_debut_validite'] = $donnees['date_debut_validite'] ?: null;
+	}
+	if (array_key_exists('date_fin_validite', $donnees)) {
+		$valeurs['date_fin_validite'] = $donnees['date_fin_validite'] ?: null;
+	}
 	$id_cotisation = (int) sql_getfetsel('id_cotisation', 'spip_asso_cotisations', 'id_compte=' . $id_compte);
 	if ($id_cotisation) {
 		sql_updateq('spip_asso_cotisations', $valeurs, 'id_cotisation=' . $id_cotisation);

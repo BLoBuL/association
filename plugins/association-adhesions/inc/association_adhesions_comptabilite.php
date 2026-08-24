@@ -14,11 +14,13 @@ function association_adhesions_compte_cotisation_creer(
 	$inscription,
 	$id_categorie,
 	$statut,
-	$id_transaction
+	$id_transaction,
+	$date_fin_validite = null
 ) {
 	include_spip('inc/association_compta_ecritures');
 	$id_compte = association_compta_ecriture_creer(array(
 		'date' => $date,
+		'date_fin_validite' => $date_fin_validite,
 		'recette' => $montant,
 		'depense' => 0,
 		'justification' => $justification,
@@ -50,11 +52,13 @@ function association_adhesions_compte_cotisation_modifier(
 	$id_categorie,
 	$id_compte,
 	$statut,
-	$id_transaction
+	$id_transaction,
+	$date_fin_validite = null
 ) {
 	include_spip('inc/association_compta_ecritures');
 	$id_compte = association_compta_ecriture_modifier($id_compte, array(
 		'date' => $date,
+		'date_fin_validite' => $date_fin_validite,
 		'recette' => $montant,
 		'depense' => 0,
 		'justification' => $justification,
