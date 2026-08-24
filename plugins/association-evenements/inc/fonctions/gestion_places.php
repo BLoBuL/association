@@ -14,31 +14,34 @@ function gestions_places($id_evenement){
     $result = array();
     $query_evenement = sql_fetsel("*", "spip_evenements", "id_evenement=" . intval($id_evenement));
 
-    // Vérifier si la table spip_transactions existe avant d'essayer des JOIN
-    // Appel direct de sql_showtable (suppression du guard function_exists)
-    $desc_transactions = @sql_showtable('spip_transactions', true);
-    $transactions_table_exists = (!empty($desc_transactions) && is_array($desc_transactions));
+    include_spip('inc/association_paiements_transactions');
+    $activites_paiements = sql_allfetsel(
+        'id_transaction,statut,nombre_inscrits',
+        'spip_asso_activites',
+        'id_evenement=' . intval($id_evenement) . ' AND id_transaction>0'
+    );
+    $ids_transactions = array_column($activites_paiements ?: array(), 'id_transaction');
+    $transactions = association_paiements_transactions_lire($ids_transactions);
 
     /*SUIVI DES PAIEMENT*/
     
     if($affichage_dans_activites['payant']){
        
         if($affichage_dans_activites['validation'] == '1'){
-            // Si la table transactions manque, éviter le JOIN qui provoque mysql error 1146
-            if ($transactions_table_exists) {
-                //$critere_statut_activite  = ($meta_type_quota == 'strict') ? "AND a.statut!='desinscrit'" : "AND a.statut=='inscrit'";
-                $critere_statut_activite = ($affichage_dans_activites['validation_sur_paiement'] == 'oui') ? "AND a.statut='ok' AND b.statut ='ok'" : "AND a.statut='ok' " ;
-                $query_activites = sql_fetsel("*, sum(a.nombre_inscrits ) AS total", "spip_asso_activites AS a JOIN spip_transactions AS b ON (b.id_transaction=a.id_transaction) $critere_statut_activite", "a.id_evenement=$id_evenement ");
-                $query_activites_valider = sql_fetsel("sum(nombre_inscrits) AS total_a_valider", "spip_asso_activites", "id_evenement=$id_evenement AND statut = 'preinscrit'");
-                $result['nombre_total_inscrits']  = $query_activites['total'];
-            } else {
-                // Table transactions manquante : loguer et utiliser une requête sans JOIN
-                // previously logged missing spip_transactions for diagnostics; removed to reduce log noise
-                // On récupère un total basé uniquement sur spip_asso_activites si possible
-                $query_activites_simple = @sql_fetsel("sum(nombre_inscrits) AS total", "spip_asso_activites", "id_evenement=$id_evenement AND statut='ok'");
-                $query_activites_valider = @sql_fetsel("sum(nombre_inscrits) AS total_a_valider", "spip_asso_activites", "id_evenement=$id_evenement AND statut = 'preinscrit'");
-                $result['nombre_total_inscrits']  = !empty($query_activites_simple['total']) ? $query_activites_simple['total'] : 0;
+            $result['nombre_total_inscrits'] = 0;
+            foreach ($activites_paiements ?: array() as $activite_paiement) {
+                $transaction = $transactions[(int) $activite_paiement['id_transaction']] ?? array();
+                if (($activite_paiement['statut'] ?? '') !== 'ok') {
+                    continue;
+                }
+                if ($affichage_dans_activites['validation_sur_paiement'] === 'oui' && ($transaction['statut'] ?? '') !== 'ok') {
+                    continue;
+                }
+                if ($transaction) {
+                    $result['nombre_total_inscrits'] += (int) $activite_paiement['nombre_inscrits'];
+                }
             }
+            $query_activites_valider = sql_fetsel("sum(nombre_inscrits) AS total_a_valider", "spip_asso_activites", "id_evenement=$id_evenement AND statut = 'preinscrit'");
         }else{
 
     //$critere_statut_activite  = ($meta_type_quota == 'strict') ? "AND statut!='desinscrit'" : "AND statut=='inscrit'";
@@ -52,16 +55,20 @@ function gestions_places($id_evenement){
         
     
     //Ici on compte la somme des paiements en attente (sauf liste d'attente')
-    if ($transactions_table_exists) {
-        $query_total_paiement_attente = sql_fetsel("*, sum(b.montant) AS total_paiement_attente", "spip_asso_activites AS a JOIN spip_transactions AS b ON (b.id_transaction=a.id_transaction) AND a.statut NOT IN ('desinscrit','liste_attente') AND b.statut IN ('attente','commande')", "a.id_evenement=$id_evenement ");
-        //Ici on compte la somme des paiements encaissés (y compris désinscrits)
-        $query_total_paiement = sql_fetsel("*, sum(b.montant) AS total_paiement", "spip_asso_activites AS a JOIN spip_transactions AS b ON (b.id_transaction=a.id_transaction)  AND b.statut ='ok'", "a.id_evenement=$id_evenement ");
-        $result['total_paiement_attente'] =  $query_total_paiement_attente['total_paiement_attente'];
-        # Total des paiements encaissés
-        $result['total_encaisse'] =  $query_total_paiement['total_paiement'];
-    } else {
-        $result['total_paiement_attente'] = 0;
-        $result['total_encaisse'] = 0;
+    $result['total_paiement_attente'] = 0;
+    $result['total_encaisse'] = 0;
+    foreach ($activites_paiements ?: array() as $activite_paiement) {
+        $transaction = $transactions[(int) $activite_paiement['id_transaction']] ?? array();
+        if (!$transaction) {
+            continue;
+        }
+        if (!in_array($activite_paiement['statut'], array('desinscrit', 'liste_attente'), true)
+            && in_array($transaction['statut'], array('attente', 'commande'), true)) {
+            $result['total_paiement_attente'] += (float) $transaction['montant'];
+        }
+        if ($transaction['statut'] === 'ok') {
+            $result['total_encaisse'] += (float) $transaction['montant'];
+        }
     }
 
     }else{

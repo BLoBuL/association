@@ -1556,6 +1556,22 @@ attente d'une recette fonctionnelle de l'action. Les empreintes des fichiers
 déployés correspondent aux sources et les 221 squelettes privés, douze pages
 publiques et 64 composants front compilent sous SPIP 4.4.21.
 
+## Lot 133 - formulaires et editions Evenements distribues
+
+Les formulaires d'inscription publics et prives, ainsi que les anciennes
+actions BO d'ajout et de modification, lisent et mettent desormais a jour les
+transactions par la facade Paiements. Les actions conservent leurs controles
+d'autorisation et la mise a jour du montant reste limitee par l'API du module
+proprietaire.
+
+Les matrices CLI couvrent 41 scenarios de verification, quinze scenarios de
+traitement et quatorze scenarios de chargement sans echec. La page publique de
+l'evenement 224 produit 16 878 octets de HTML, expose le formulaire public et
+ne bascule pas sur une page 404. La recette est restee en lecture seule : aucun
+formulaire n'a ete soumis, aucun paiement et aucun email n'ont ete declenches.
+Les empreintes des actions BO deployees correspondent exactement au commit
+`1c4653a8`.
+
 ## Lot 132 — façade Paiements pour les parcours Événements
 
 La comptabilisation, les reçus de participation, les contrôles d'éligibilité,

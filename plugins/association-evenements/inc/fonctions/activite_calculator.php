@@ -25,8 +25,13 @@ function activite_calculator($id_auteur, $id_evenement, $front_end = false){
         if(!$gestion['payant']) {
             $query_activite = sql_fetsel('*', 'spip_asso_activites', "id_evenement = $id_evenement AND id_auteur = $id_auteur AND statut !='desinscrit'");
         } else {
-            // Cas payant : joindre les transactions (comportement original, sans trace de debug)
-            $query_activite = @sql_fetsel('*', 'spip_asso_activites AS b JOIN spip_transactions AS a ON (b.id_transaction = a.id_transaction)', "b.id_evenement = $id_evenement AND b.id_auteur = $id_auteur AND b.statut !='desinscrit'");
+            $query_activite = sql_fetsel('*', 'spip_asso_activites', "id_evenement = $id_evenement AND id_auteur = $id_auteur AND statut !='desinscrit'");
+            if ($query_activite) {
+                include_spip('inc/association_paiements_transactions');
+                $transaction = association_paiements_transaction_lire((int) $query_activite['id_transaction']);
+                // Le SELECT * historique donnait la priorité aux champs homonymes de la transaction.
+                $query_activite = $transaction ? array_merge($query_activite, $transaction) : array();
+            }
         }
     }
     $contexte['payant'] = $gestion['payant'];
