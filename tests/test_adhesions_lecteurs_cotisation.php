@@ -3,6 +3,10 @@
 $racine = dirname(__DIR__) . '/plugins/association-adhesions/';
 $notification = file_get_contents($racine . 'action/test_notification_cotisation.php');
 $recu = file_get_contents($racine . 'inc/fonctions/facteur_envoyer_recu_adhesion.php');
+$recherche = file_get_contents($racine . 'inc/adherents_search_context.php');
+$recherche_avancee = file_get_contents($racine . 'formulaires/inc/adherents_recherche_avancee.php');
+$justificatifs = file_get_contents($racine . 'action/valider_justificatifs_cotisation.php');
+$cotisations = file_get_contents($racine . 'inc/cotisations.php');
 $erreurs = array();
 
 foreach (array(
@@ -26,6 +30,18 @@ if (strpos($recu, "'email' => \$email_adherent") !== false
 	|| strpos($recu, "'bcc' => \$bcc") !== false
 	|| strpos($recu, "'bcc_meta='") !== false) {
 	$erreurs[] = 'Le reçu journalise encore des adresses destinataires.';
+}
+foreach (array(
+	'inc/adherents_search_context.php' => $recherche,
+	'formulaires/inc/adherents_recherche_avancee.php' => $recherche_avancee,
+	'action/valider_justificatifs_cotisation.php' => $justificatifs,
+) as $fichier => $contenu) {
+	if (strpos($contenu, 'spip_asso_comptes') !== false) {
+		$erreurs[] = "$fichier lit encore les colonnes métier du journal comptable.";
+	}
+}
+if (strpos($cotisations, "sql_countsel('spip_asso_comptes', 'id_transaction='") !== false) {
+	$erreurs[] = 'La détection des paiements en cours lit encore les statuts historiques.';
 }
 
 if ($erreurs) {

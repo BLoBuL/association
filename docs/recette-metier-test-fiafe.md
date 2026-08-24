@@ -1376,3 +1376,18 @@ la configuration brute des destinataires ; ils conservent uniquement la
 validité de l'adresse et le nombre de copies. Aucun email de recette n'a été
 envoyé. Après déploiement, cache vidé et compilation, l'empreinte des dix
 cotisations migrées reste inchangée.
+
+## Lot 121 — recherches Adhérents branchées sur les cotisations métier
+
+Les filtres d'adhérents par catégorie, le chargement des cotisations par
+période, le contrôle documentaire et la détection d'un paiement d'adhésion en
+cours ne lisent plus les colonnes historiques de `spip_asso_comptes`. Ils
+utilisent `spip_asso_cotisations`, avec l'adaptateur Adhésions uniquement quand
+les informations de l'écriture comptable sont réellement nécessaires.
+
+Un vérificateur SPIP compare les deux sources sur la copie DEV avant abandon
+des anciens lecteurs. Il valide les deux types d'adhérents configurés, les deux
+transactions en cours et l'empreinte des dates
+`e4d25f28c50d8965a8b37e748719fd641272d3ce57d67180a0328f5df0164fea`.
+L'empreinte canonique de migration des dix cotisations reste elle aussi
+inchangée et tous les squelettes compilent.

@@ -20,7 +20,8 @@ function action_valider_justificatifs_cotisation_dist() {
         // Uniquement "A revoir" informe l'adherent, afin d'eviter un email
         // supplementaire lors d'un simple controle positif.
         include_spip('inc/cotisations');
-        $compte = sql_fetsel('*', 'spip_asso_comptes', 'id_compte=' . $id_compte);
+        include_spip('inc/cotisations_stockage');
+        $compte = association_cotisation_lire_par_compte($id_compte);
         if ($compte) {
             $categorie = sql_fetsel('*', 'spip_asso_categories_adherents', 'id_categorie=' . intval($compte['id_categorie'] ?? 0));
             $transaction = !empty($compte['id_transaction'])

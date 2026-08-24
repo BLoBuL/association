@@ -610,12 +610,11 @@ function generer_array_adherents($criteres_sql, $periode_selectionnee = array())
     // On ne filtre PLUS par cotisations ici, on les charge juste pour affichage
     if ($date_debut && $date_fin) {
         $where_comptes = array(
-            "objet = " . sql_quote('cotisation'),
-            "date >= " . sql_quote($date_debut),
-            "date <= " . sql_quote($date_fin),
+            "date_creation >= " . sql_quote($date_debut),
+            "date_creation <= " . sql_quote($date_fin),
         );
-        $champs_comptes = 'id_auteur, id_compte, date';
-        $query_comptes = sql_select($champs_comptes, 'spip_asso_comptes', $where_comptes, '', 'id_auteur, date DESC');
+        $champs_comptes = 'id_auteur, id_compte, date_creation AS date';
+        $query_comptes = sql_select($champs_comptes, 'spip_asso_cotisations', $where_comptes, '', 'id_auteur, date_creation DESC');
 
         $nb_cotisations = 0;
         while ($compte = sql_fetch($query_comptes)) {

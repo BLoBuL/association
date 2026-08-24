@@ -1563,7 +1563,7 @@ function association_contexte_adhesion($id_auteur, $date_reference = null) {
     $transactions = sql_allfetsel('id_transaction', 'spip_transactions', 'id_auteur=' . $id_auteur . " AND statut IN ('commande','attente')");
     foreach ($transactions as $transaction) {
         $id_transaction = intval($transaction['id_transaction'] ?? 0);
-        if ($id_transaction && sql_countsel('spip_asso_comptes', 'id_transaction=' . $id_transaction . " AND statut_cotisation IN ('demande','attente')")) {
+        if ($id_transaction && sql_countsel('spip_asso_cotisations', 'id_transaction=' . $id_transaction . " AND statut IN ('demande','attente')")) {
             $contexte['adhesion_transaction_en_cours'] = true;
             break;
         }

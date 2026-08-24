@@ -506,10 +506,9 @@ class AdherentsSearchContext {
 
         // Générer une subquery EXISTS pour filtrer les adhérents ayant une cotisation de ce type
         $subquery = "EXISTS (
-            SELECT 1 FROM spip_asso_comptes 
-            WHERE spip_asso_comptes.id_auteur = spip_auteurs.id_auteur 
-            AND spip_asso_comptes.objet = 'cotisation'
-            AND spip_asso_comptes.id_categorie IN (" . implode(',', $ids_categories) . ")
+            SELECT 1 FROM spip_asso_cotisations
+            WHERE spip_asso_cotisations.id_auteur = spip_auteurs.id_auteur
+            AND spip_asso_cotisations.id_categorie IN (" . implode(',', $ids_categories) . ")
         )";
 
         return $subquery;
