@@ -419,7 +419,10 @@ function sql_in($field, $values) {
 }
 
 function sql_allfetsel($select, $table, $where = '', $group = '', $order = '') {
-	$fixture = $table === 'spip_transactions' ? 'transactions' : $table;
+	$fixture = array(
+		'spip_transactions' => 'transactions',
+		'spip_asso_comptes' => 'comptes',
+	)[$table] ?? $table;
     $rows = array_values(association_test_charger_fixture($fixture, array()));
 	if ($table === 'spip_transactions' && preg_match('/\[\[IN:id_transaction:([^\]]+)\]\]/', (string) $where, $matches)) {
 		$ids = array_map('intval', explode('|', $matches[1]));

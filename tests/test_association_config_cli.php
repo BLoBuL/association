@@ -59,6 +59,7 @@ include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_l
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_log.php';
 include_once PLUGIN_ROOT . '/inc/association_config_cli_registre.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_config_cli.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_integrations.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_config_cli.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_pipelines.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/association_adhesions_pipelines.php';

@@ -1815,3 +1815,17 @@ temps de la recette puis restaurees exactement a vide ; `comptes` est reste sur
 de l'evenement 231 affichent un titre, un H1 et leur formulaire sans erreur.
 Aucun formulaire n'a ete soumis. Tous les squelettes compilent apres
 restauration de la configuration.
+
+## Lot 156 - alignement de la suite de tests modulaire
+
+La suite autonome simulait encore trois contrats historiques : le chargement
+implicite des integrations Adhesions, la fixture `spip_asso_comptes` sous son
+nom SQL et la lecture directe de la devise dans `spip_transactions`. Les
+fixtures chargent maintenant explicitement le helper optionnel, routent les
+ecritures vers le jeu `comptes` et verifient le passage par l'API publique de
+Paiements.
+
+Les 114 tests `tests/test_*.php` passent. Le scenario apres paiement confirme
+notamment la validation de l'inscription, les deux notifications et la mise a
+jour de l'ecriture comptable par l'API modulaire. Aucune logique metier servie
+ni aucune donnee du site n'est modifiee par ce lot.
