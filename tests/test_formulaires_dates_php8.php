@@ -6,7 +6,6 @@ $fichiers = array(
 	'plugins/association-ventes/formulaires/editer_asso_ventes.php',
 	'plugins/association-prets/formulaires/editer_asso_ressources.php',
 	'plugins/association-compta/formulaires/editer_asso_plan.php',
-	'formulaires/editer_asso_membres.php',
 );
 
 foreach ($fichiers as $fichier) {

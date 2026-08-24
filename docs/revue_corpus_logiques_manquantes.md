@@ -178,7 +178,6 @@ Fichiers a couvrir:
 - `genie/association_maintenance_bdd.php`;
 - `genie/association_expiration_auto_evenement.php`;
 - `action/envoyer_relances.php`;
-- `action/modifier_relances.php`;
 - `exec/action_relances.php` et `exec/edit_relances.php`.
 
 Logiques metier a documenter:
@@ -213,16 +212,13 @@ Fichiers a couvrir:
 - `export_evenements_compta.xml.html`;
 - `export_comptes_evenement.csv.html`;
 - `inscriptions_evenement.csv.html`;
-- `formulaires/importer_*`;
-- `formulaires/synchro_asso_membres.php`;
-- `action/synchroniser_asso_membres.php`.
+- `formulaires/importer_*`.
 
 Logiques metier a documenter:
 
 - structure des exports;
 - colonnes metiers;
 - import de comptabilite;
-- synchronisation des membres;
 - conventions de nommage des fichiers.
 
 ### 12. Commandes et factures

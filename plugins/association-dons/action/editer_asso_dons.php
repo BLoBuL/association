@@ -28,12 +28,11 @@ function action_editer_asso_dons($id_don = null) {
 	$id_adherent = intval(_request('id_adherent'));
 
 	if (!$bienfaiteur AND $id_adherent) {
-		$data =  sql_fetsel('sexe, nom_famille, prenom', 'spip_asso_membres', "id_auteur=$id_adherent");
-		$bienfaiteur = association_calculer_nom_membre($data['sexe'], $data['prenom'], $data['nom_famille']);
+		$bienfaiteur = generer_info_entite($id_adherent, 'auteur', 'titre');
 	}
 
 	if ($id_adherent) {
-		$bienfaiteur = "[$bienfaiteur" . "->membre$id_adherent]";
+		$bienfaiteur = "[$bienfaiteur" . "->auteur$id_adherent]";
 	}
 
 	$argent = association_recupere_montant(_request('argent'));

@@ -853,3 +853,15 @@ le génie de contrôle des échéances d'Adhésions. Il quitte donc les options 
 socle et devient `association_adhesions_nombre_jours()` dans le plugin métier.
 Le comportement calendaire, le signe optionnel et le retour contrôlé sur une
 date invalide sont conservés, avec une catégorie de journal propre au module.
+
+## Lot 71 : suppression de la table fantôme des membres
+
+Les adhérents de la branche 4 sont les objets SPIP `auteur`; la table
+`spip_asso_membres` n'existe plus dans le schéma. Trois actions et deux
+formulaires sans page appelante tentaient pourtant encore de la synchroniser ou
+de la modifier. Ces contrôleurs morts sont supprimés.
+
+Dons résout désormais le titre du bienfaiteur avec `generer_info_entite()` et
+enregistre un raccourci SPIP vers `auteur`, sans dépendre d'une table ni d'un
+helper historique d'Adhésions. Un test parcourt tout le code exécutable et
+interdit toute nouvelle référence à `spip_asso_membres`.

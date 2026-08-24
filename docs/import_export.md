@@ -85,16 +85,11 @@ La couche d'export et d'import s'appuie sur:
 
 ## Synchronisation des membres
 
-Le plugin expose aussi une synchronisation des membres:
-
-- [`formulaires/synchro_asso_membres.php`](../formulaires/synchro_asso_membres.php)
-- [`action/synchroniser_asso_membres.php`](../action/synchroniser_asso_membres.php)
-
-Cette brique est utile pour:
-
-- aligner les donnees d'adhérents;
-- mettre a jour les listes;
-- preparer certains exports ou traitements.
+La branche 4 n'utilise plus la table historique `spip_asso_membres`. Les
+adhérents sont les objets SPIP `auteur`, enrichis par les Champs Extras du
+plugin Adhésions. Les anciens formulaire et action de synchronisation ont été
+supprimés : ils n'avaient plus de page appelante et tentaient d'alimenter une
+table qui n'appartient pas au schéma de la suite.
 
 ## Regles communes
 

@@ -408,20 +408,6 @@ Please do not reply to this automatic message
 'adherent_liste_nombre_ok_titulaire' => 'Current members',
 'adherent_liste_nombre_echu_titulaire' => 'Expired members',
 
-# synchro adherents/auteurs
-'synchroniser_asso_membres' => 'Synchronise the list of members with the SPIS authorsS',
-'synchroniser_choix' => 'Check the status of SPIP authors des auteurs SPIP to be imported in the list of members, you can check more than one box.',
-'synchroniser_note' => 'Notes:<p> Authors who never connected will be imported in the list of members of the association (on the basis of the selection you do).</p><p>If too many authors are imported you can always delete them from the list of members with no incidence on their status of SPIP author.</p><p> Even if you click "all the authors" , deleted authors will not be imported as members.</p> By default, only authors who are not in the list of members are imported. The last case allows you to force insertion of all authors in the list of members. This will not modify the status of members already present but allows to be clear when you activate/desactivate the plug in while modifying the SPIP authors .',
-'synchroniser_tous' => 'All the authors',
-'synchroniser_visiteurs' => 'Visitors',
-'synchroniser_redacteurs' => 'Editors',
-'synchroniser_administrateurs' => 'The administrators',
-'synchroniser_forcer' => 'Force insertion of authors already present as members',
-'pas_de_categorie' => 'Do not fill this field',
-'synchronise_asso_membre_lien' => 'Synchronise the list of members from the list of authors',
-'membres_ajoutes' => ' members inserted in the list of members',
-'membre_ajoute' => ' member inserted in the list of members',
-
 # ACTIVITES
 # Titres
 'activite_titre_action_sur_inscriptions' => 'Action on registrations',

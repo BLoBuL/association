@@ -367,20 +367,6 @@ Merci de ne pas répondre directement à ce message automatique
 'adherent_liste_nombre_ok_titulaire' => 'Nombres titulaires à jour',
 'adherent_liste_nombre_echu_titulaire' => 'Nombres titulaires échus',
 
-# synchro adherents/auteurs
-'synchroniser_asso_membres' => 'Synchroniser la liste des membres avec les auteurs SPIP',
-'synchroniser_choix' => 'Cocher le statut des auteurs SPIP à importer dans la liste des membres, vous pouvez cocher plusieurs cases.',
-'synchroniser_note' => 'Notes:<p> Les auteurs jamais connectés seront aussi importés dans la liste des membres de l\'association(en fonction de la séléction que vous faites).</p><p>Si trop d\'auteurs sont importés, vous pourrez toujours les supprimer de la liste des membres, cela n\'a aucune incidence sur leur statut d\'auteur SPIP.</p><p>Meme si vous cochez "Tous les auteurs", les auteurs à la poubelle ne seront pas importés comme membres.</p>Par défaut, seul les auteurs non présents dans la liste des membres sont importés. La dernière case vous permet de forcer l\'insertion de tous les auteurs dans la liste des membres. Cela ne modifiera toutefois pas le statut des membres déjà présents mais permet de repartir du bon pied quand on active/desactive le plugin tout en modifiant les auteurs SPIP.',
-'synchroniser_tous' => 'Tous les auteurs',
-'synchroniser_visiteurs' => 'Les visiteurs',
-'synchroniser_redacteurs' => 'Les rédacteurs',
-'synchroniser_administrateurs' => 'Les administrateurs',
-'synchroniser_forcer' => 'Forcer l\'insertion des auteurs déjà présents comme membres',
-'pas_de_categorie' => 'Ne pas renseigner ce champ',
-'synchronise_asso_membre_lien' => 'Synchroniser la liste des membres depuis la liste des auteurs',
-'membres_ajoutes' => ' membres insérés dans la liste des membres',
-'membre_ajoute' => ' membre inséré dans la liste des membres',
-
 # ACTIVITES
 # Titres
 'activite_titre_action_sur_inscriptions' => 'Action sur les inscriptions',
