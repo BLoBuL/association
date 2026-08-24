@@ -15,39 +15,67 @@ function stats_compta_activites_lister_evenements_exercice($exercice){
     $bornes = association_comptes_bornes_exercice($exercice);
     $date_debut = $bornes['debut'];
     $date_fin = $bornes['prochain_debut'];
-    $rows = array();
-    // Agrégation des comptes liés aux activités (journal activite|id_activite) par événement.
-    // On passe par la table spip_asso_activites pour obtenir l'id_evenement
-    // On ne tient pas compte des lignes sans mouvement (recette = 0 et depense = 0).
-    $res = sql_select(
-        "a.id_evenement, e.titre, e.date_debut, e.date_fin, SUM(c.recette) AS total_recettes, SUM(c.depense) AS total_depenses, COUNT(c.id_compte) AS nb_ops",
-        "spip_asso_comptes c 
-         INNER JOIN spip_asso_activites a ON a.id_activite = SUBSTRING(c.journal, 10)
-         LEFT JOIN spip_evenements e ON e.id_evenement = a.id_evenement",
-        "c.journal LIKE " . sql_quote('activite|%') .
-        " AND c.date >= " . sql_quote($date_debut) . " AND c.date < " . sql_quote($date_fin),
-        "a.id_evenement",
-        "e.date_debut ASC"
-    );
-    while($row = sql_fetch($res)){
-        $r = floatval($row['total_recettes']);
-        $d = floatval($row['total_depenses']);
+	include_spip('inc/association_compta_ecritures');
+	$ecritures = association_compta_ecritures_lister(array(
+		'date_debut' => $date_debut,
+		'date_fin' => $date_fin,
+		'journal_prefix' => 'activite|',
+	));
+	$ids_activites = array();
+	foreach ($ecritures as $ecriture) {
+		$ids_activites[] = (int) substr((string) ($ecriture['journal'] ?? ''), strlen('activite|'));
+	}
+	$activites = array();
+	$ids_evenements = array();
+	$ids_activites = array_values(array_filter(array_unique($ids_activites)));
+	if ($ids_activites) {
+		foreach (sql_allfetsel('id_activite,id_evenement', 'spip_asso_activites', sql_in('id_activite', $ids_activites)) as $activite) {
+			$activites[(int) $activite['id_activite']] = (int) $activite['id_evenement'];
+			$ids_evenements[] = (int) $activite['id_evenement'];
+		}
+	}
+	$evenements = array();
+	if ($ids_evenements) {
+		foreach (sql_allfetsel('id_evenement,titre,date_debut', 'spip_evenements', sql_in('id_evenement', array_unique($ids_evenements))) as $evenement) {
+			$evenements[(int) $evenement['id_evenement']] = $evenement;
+		}
+	}
+	$agregats = array();
+	foreach ($ecritures as $ecriture) {
+		$id_activite = (int) substr((string) ($ecriture['journal'] ?? ''), strlen('activite|'));
+		$id_evenement = (int) ($activites[$id_activite] ?? 0);
+		if ($id_evenement <= 0) {
+			continue;
+		}
+		if (!isset($agregats[$id_evenement])) {
+			$agregats[$id_evenement] = array('recettes' => 0.0, 'depenses' => 0.0, 'operations' => 0);
+		}
+		$agregats[$id_evenement]['recettes'] += (float) ($ecriture['recette'] ?? 0);
+		$agregats[$id_evenement]['depenses'] += (float) ($ecriture['depense'] ?? 0);
+		$agregats[$id_evenement]['operations']++;
+	}
+	$rows = array();
+	foreach ($agregats as $id_evenement => $agregat) {
+		$r = (float) $agregat['recettes'];
+		$d = (float) $agregat['depenses'];
         if($r == 0 && $d == 0){
             continue; // pas payant
         }
         $solde = $r - $d;
         $rentabilite = ($d > 0) ? ($solde / $d * 100) : null; // null si aucune dépense
+		$evenement = $evenements[$id_evenement] ?? array();
         $rows[] = array(
-            'id_evenement' => intval($row['id_evenement']),
-            'titre' => $row['titre'],
-            'date_evenement' => $row['date_debut'],
+			'id_evenement' => (int) $id_evenement,
+			'titre' => $evenement['titre'] ?? '',
+			'date_evenement' => $evenement['date_debut'] ?? '',
             'recettes' => $r,
             'depenses' => $d,
             'solde' => $solde,
-            'operations' => intval($row['nb_ops']),
+			'operations' => (int) $agregat['operations'],
             'rentabilite_percent' => $rentabilite,
         );
     }
+	usort($rows, function ($a, $b) { return strcmp($a['date_evenement'], $b['date_evenement']); });
     return $rows;
 }
 /**
@@ -56,4 +84,3 @@ function stats_compta_activites_lister_evenements_exercice($exercice){
 function filtre_stats_compta_activites_lister_evenements_exercice($exercice){
     return stats_compta_activites_lister_evenements_exercice($exercice);
 }
-
