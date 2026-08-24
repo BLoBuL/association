@@ -2138,3 +2138,11 @@ de l'ancien FO et n'ouvre plus la connexion dans un nouvel onglet. Ses deux
 liens utilisent la page de connexion SPIP et conservent l'URL de retour. La
 galerie ouverte déclare explicitement la classe `mediabox` de SPIP 4. La suite
 locale atteint 131 tests, tous valides.
+
+Le commit `e987ff5a` est déployé sur test-fiafe avec les deux empreintes de
+l'artefact Git conformes. Événements reste actif en 4.0.0 et les 297 fonds
+recompilent. La page publique anonyme de l'événement 231 reste sans erreur. Les
+neuf événements possédant un document sont tous postérieurs au 24 août 2026 ;
+la galerie historique conditionnée par `{age>0}` ne peut donc pas être rendue
+visuellement sans altérer les données de recette. Ses deux états restent
+couverts par compilation et test structurel.
