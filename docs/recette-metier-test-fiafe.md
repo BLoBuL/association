@@ -1253,7 +1253,10 @@ La session publique authentifiée sert les pages Inscription, Profil/Fiche
 d'adhésion, Événement 183, Ressources et Newsletter depuis les squelettes SPIP
 standards des modules. Les formulaires de profil et newsletter, le message
 d'inscription déjà connecté, la fiche événement et l'état vide des ressources
-sont présents. Aucun formulaire n'a été soumis.
+sont présents. Le contrôle HTTP sans session confirme aussi le formulaire
+public complet de l'événement 183 (identité, contact, message, CGV et bouton de
+validation) ; son absence dans la session navigateur était donc le comportement
+attendu d'un adhérent déjà inscrit. Aucun formulaire n'a été soumis.
 
 ## Lot 114 — retrait des reliquats CSS inactifs
 
