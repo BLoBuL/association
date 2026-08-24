@@ -70,6 +70,21 @@ function association_evenements_association_paiements_remboursement_traiter($flu
 	return $flux;
 }
 
+function association_evenements_association_compta_migration_metiers($flux) {
+	include_spip('action/synchroniser_comptabilite_evenement');
+	$evenements = sql_allfetsel('DISTINCT id_evenement', 'spip_asso_activites', 'id_transaction>0');
+	$nb = 0;
+	foreach ($evenements as $evenement) {
+		$id_evenement = (int) ($evenement['id_evenement'] ?? 0);
+		if ($id_evenement > 0) {
+			synchroniser_comptabilite_evenement($id_evenement);
+			$nb++;
+		}
+	}
+	$flux['data']['evenements_synchronises'] = $nb;
+	return $flux;
+}
+
 function association_evenements_association_config_cli_registre($flux) {
 	include_spip('inc/association_evenements_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_evenements_config_cli_definitions());

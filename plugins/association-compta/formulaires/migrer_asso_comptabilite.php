@@ -129,7 +129,6 @@ function formulaires_migrer_asso_comptabilite_traiter_dist(){
     } else {
         // Nouveau: en mode auto, on nettoie d'abord la BDD puis on applique la migration et on synchronise les événements
         include_spip('genie/association_maintenance_bdd');
-        include_spip('action/synchroniser_comptabilite_evenement');
 
         // 1) Nettoyages liés aux cotisations (exécution réelle: dry_run = false)
         $lot_max = 100000;
@@ -144,14 +143,11 @@ function formulaires_migrer_asso_comptabilite_traiter_dist(){
         $cfg = get_config_plan_comptable_migration();
         appliquer_migration_auto($cfg);
 
-        // 3) Synchroniser tous les événements ayant des transactions
-        $evenements = sql_allfetsel('DISTINCT id_evenement', 'spip_asso_activites', 'id_transaction > 0');
-        foreach ($evenements as $e) {
-            $id_evenement = intval($e['id_evenement']);
-            if ($id_evenement > 0) {
-                synchroniser_comptabilite_evenement($id_evenement);
-            }
-        }
+		// 3) Laisser chaque plugin métier synchroniser ses propres écritures.
+		pipeline('association_compta_migration_metiers', array(
+			'args' => array('mode' => 'auto'),
+			'data' => array(),
+		));
     }
 
     $retour['message_ok'] = _T('association_compta:message_import_reussi');

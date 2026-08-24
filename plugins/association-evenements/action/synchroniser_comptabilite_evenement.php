@@ -1,6 +1,6 @@
 <?php
 /**
- * Action de synchronisation de la comptabilité d'un événement
+ * Action métier de synchronisation de la comptabilité d'un événement
  *
  * Compare les inscriptions payantes d'une activité avec les enregistrements comptables
  * existants, puis ajoute ou supprime des entrées dans spip_asso_comptes selon le cas.

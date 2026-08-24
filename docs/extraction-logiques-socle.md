@@ -986,3 +986,13 @@ La création et l'actualisation des écritures d'inscription rejoignent l'API
 comptable d'Événements. Le formulaire d'inscription et la synchronisation
 historique appellent désormais les fonctions préfixées du propriétaire métier ;
 ils ne dépendent plus des anciens helpers globaux de Comptabilité.
+
+## Lot 84 : synchronisation comptable propriétaire
+
+Les trois anciens helpers globaux d'activité sont supprimés de Comptabilité.
+L'action de synchronisation et la liste privée associée rejoignent Événements.
+Les exports CSV, pages d'analyse, hiérarchies, navigations et fonctions de
+statistiques comptables propres aux événements sont déplacés avec elles.
+Le formulaire de migration comptable ne lit plus `spip_asso_activites` : il
+publie `association_compta_migration_metiers`, auquel Événements contribue en
+synchronisant ses propres inscriptions.

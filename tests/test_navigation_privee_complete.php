@@ -6,10 +6,10 @@ $pages = array(
 		'editer_asso_categorie_activite' => 'categories_activites',
 		'suivi_activites' => 'activites',
 		'export_activites' => 'activites',
-	),
-	'plugins/association-compta' => array(
 		'analyse_compta_activites' => 'activites',
 		'export_activites_compta' => 'comptes',
+	),
+	'plugins/association-compta' => array(
 		'editer_asso_comptes' => 'comptes',
 		'editer_asso_destinations' => 'destinations',
 		'editer_asso_plan' => 'plan_comptable',

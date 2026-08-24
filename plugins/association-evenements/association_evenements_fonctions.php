@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/inc/association_evenements_statistiques_compta.php';
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
