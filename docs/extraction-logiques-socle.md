@@ -1021,3 +1021,11 @@ et leurs justifications ; Événements ajuste les imputations des participations
 avant leur synchronisation ; Paiements nettoie ses transactions orphelines.
 Les écritures anciennes identifiées uniquement par `id_categorie` restent
 prises en charge pendant la reprise d'une base 2.x.
+
+## Lot 88 : API structurée des écritures
+
+Comptabilité expose désormais `association_compta_ecriture_creer()` et
+`association_compta_ecriture_modifier()`, alimentées par un tableau de champs
+comptables en liste blanche. Adhésions utilise cette API sans transmettre ses
+anciens paramètres positionnels (`reinscription`, catégorie et statut), puis
+synchronise explicitement sa propre table de cotisations.

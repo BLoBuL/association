@@ -16,24 +16,28 @@ function association_adhesions_compte_cotisation_creer(
 	$statut,
 	$id_transaction
 ) {
-	include_spip('inc/comptes');
-
-	return inserer_compte(
-		$date,
-		$montant,
-		0,
-		$justification,
-		$imputation,
-		$journal,
-		(int) $id_auteur,
-		null,
-		'cotisation',
-		$inscription,
-		(int) $id_categorie,
-		$statut,
-		(int) $id_transaction,
-		0
-	);
+	include_spip('inc/association_compta_ecritures');
+	$id_compte = association_compta_ecriture_creer(array(
+		'date' => $date,
+		'recette' => $montant,
+		'depense' => 0,
+		'justification' => $justification,
+		'imputation' => $imputation,
+		'journal' => $journal,
+		'id_auteur' => (int) $id_auteur,
+		'objet' => 'cotisation',
+		'id_transaction' => (int) $id_transaction,
+		'vu' => $statut === 'ok' ? 1 : 0,
+	));
+	association_adhesions_compte_cotisation_synchroniser($id_compte, array(
+		'reinscription' => $inscription,
+		'statut_cotisation' => $statut,
+		'id_categorie' => (int) $id_categorie,
+		'id_transaction' => (int) $id_transaction,
+		'montant' => (float) $montant,
+		'date' => $date,
+	));
+	return $id_compte;
 }
 
 function association_adhesions_compte_cotisation_modifier(
@@ -48,23 +52,30 @@ function association_adhesions_compte_cotisation_modifier(
 	$statut,
 	$id_transaction
 ) {
-	include_spip('inc/comptes');
+	include_spip('inc/association_compta_ecritures');
+	$id_compte = association_compta_ecriture_modifier($id_compte, array(
+		'date' => $date,
+		'recette' => $montant,
+		'depense' => 0,
+		'justification' => $justification,
+		'imputation' => $imputation,
+		'journal' => $journal,
+		'objet' => 'cotisation',
+		'id_transaction' => (int) $id_transaction,
+		'vu' => $statut === 'ok' ? 1 : 0,
+	));
+	association_adhesions_compte_cotisation_synchroniser($id_compte, array(
+		'inscription' => $inscription,
+		'statut' => $statut,
+		'id_categorie' => (int) $id_categorie,
+		'id_transaction' => (int) $id_transaction,
+		'montant' => (float) $montant,
+		'date' => $date,
+	));
+	return $id_compte;
+}
 
-	return modifier_compte(
-		$id_compte,
-		$date,
-		$montant,
-		0,
-		$justification,
-		$imputation,
-		$journal,
-		null,
-		'cotisation',
-		$inscription,
-		(int) $id_categorie,
-		$statut,
-		(int) $id_transaction,
-		0,
-		create_destination_map_for_montant('dc_cotisations', $montant)
-	);
+function association_adhesions_compte_cotisation_synchroniser($id_compte, array $donnees) {
+	include_spip('inc/cotisations_stockage');
+	return association_cotisation_synchroniser_depuis_compte((int) $id_compte, $donnees);
 }
