@@ -1109,3 +1109,15 @@ recette est restée en lecture seule : aucun fichier, statut ou formulaire n'a
 Les deux lots passent chacun les 90 tests autonomes. Le serveur valide toujours
 les dix plugins, quatorze tables, douze objets SQL et sept schémas, puis compile
 221 squelettes privés, douze pages publiques et 64 composants front.
+
+## Lot 103 — tableau autonome des adhérents
+
+Le commit `2f3878e3` est déployé depuis l'artefact SHA-256
+`d68312f0dcd036c102e783b20cdc90ec45847b7c132e6bdf2559f9dce7eacd02`.
+Chrome authentifié confirme les treize adhérents, les neuf colonnes, les comptes
+secondaires, dates, types, cotisations et actions. Le conteneur horizontal et
+les largeurs minimales restent appliqués sans erreur de squelette.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
