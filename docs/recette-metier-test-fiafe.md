@@ -1904,3 +1904,10 @@ Les autorisations et les URLs d'action restent inchangées. Le contrôle
 d'architecture utilise désormais une détection exacte du domaine historique,
 afin qu'une clé comme `reinscription_association` ne soit pas prise à tort pour
 le domaine `association`. La suite locale atteint 118 tests, tous valides.
+
+Le commit `157e4cb2` est deploye sur test-fiafe avec les six empreintes de
+l'artefact Git conformes. Paiements reste actif en 4.0.0, SPIP est sain et les
+297 fonds recompilent. Dans Chrome authentifie, la liste, la transaction 783,
+l'annulation de la transaction 1120 et la suppression autorisee de la
+transaction abandonnee 783 affichent leurs titres et actions traduits sans
+erreur. Aucune action n'a ete declenchee.
