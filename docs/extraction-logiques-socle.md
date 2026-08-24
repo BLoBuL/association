@@ -1136,3 +1136,9 @@ Les cartes, options et variantes de filtres des listes Adhérents et Cotisations
 quittent la feuille générale. Adhésions fournit sa première feuille privée et
 borne les sélecteurs à `body.adherents` et `body.cotisations`, conformément aux
 classes que SPIP 4 applique aux pages réellement servies.
+
+## Lot 102 : contrôle documentaire des cotisations
+
+Le bloc complet de présentation des justificatifs quitte la fin de la feuille
+du socle. Adhésions porte désormais l'en-tête, les vignettes, statuts, actions
+de validation ou de reprise et leur adaptation mobile dans sa feuille privée.
