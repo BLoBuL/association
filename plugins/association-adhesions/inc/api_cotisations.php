@@ -468,7 +468,11 @@ function cotisation_verifier_documents_justificatifs($id_categorie, $files = arr
     $minimum = $obligatoire ? 2 : 0;
     $existants = 0;
     if ($obligatoire && is_numeric($id_compte) && intval($id_compte) > 0) {
-        $existants = intval(sql_countsel('spip_documents_liens', "objet='compte' AND id_objet=" . intval($id_compte)));
+		include_spip('inc/justificatifs_cotisation');
+        $existants = intval(sql_countsel(
+			'spip_documents_liens',
+			association_justificatifs_cotisation_condition((int) $id_compte)
+		));
     }
 
     $valides = 0;
@@ -618,6 +622,15 @@ function traiter_upload_justificatif($id_auteur, $id_compte, $files = null) {
         return array();
     }
 
+    $id_cotisation = (int) sql_getfetsel(
+		'id_cotisation',
+		'spip_asso_cotisations',
+		'id_compte=' . (int) $id_compte
+	);
+	if (!$id_cotisation) {
+		return array();
+	}
+
     // Récupération des informations de l'auteur pour le titre
     $query_auteur = sql_fetsel('*', 'spip_auteurs', "id_auteur=$id_auteur");
     $nom_prenom = ($query_auteur['nom_famille']) ? $query_auteur['nom_famille']. ' ' . $query_auteur['prenom'] : $query_auteur['nom'];
@@ -653,24 +666,24 @@ function traiter_upload_justificatif($id_auteur, $id_compte, $files = null) {
                         'spip_documents',
                         array(
                             'titre' => $titre,
-                            'descriptif' => "Document justificatif pour la cotisation ID $id_compte"
+							'descriptif' => "Document justificatif pour la cotisation ID $id_cotisation"
                         ),
                         "id_document=$id"
                     );
 
-                    // Liaison du document au compte uniquement si $id_compte est numérique
-                    if (is_numeric($id_compte)) {
+                    // Liaison au véritable objet métier cotisation.
+                    if ($id_cotisation) {
                         if (!sql_getfetsel(
                             'id_document',
                             'spip_documents_liens',
-                            "id_objet=$id_compte AND objet='compte' AND id_document=$id"
+							"id_objet=$id_cotisation AND objet='cotisation' AND id_document=$id"
                         )) {
                             sql_insertq(
                                 'spip_documents_liens',
                                 array(
                                     'id_document' => $id,
-                                    'id_objet' => $id_compte,
-                                    'objet' => 'compte'
+									'id_objet' => $id_cotisation,
+									'objet' => 'cotisation'
                                 )
                             );
                         }

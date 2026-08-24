@@ -223,6 +223,10 @@ function association_adhesions_maintenance_supprimer_cotisations(array $ids_comp
         return $nombre;
     }
 
+	$ids_cotisations = array_values(array_filter(array_map('intval', array_column(
+		sql_allfetsel('id_cotisation', 'spip_asso_cotisations', $where) ?: array(),
+		'id_cotisation'
+	))));
     $supprimees = sql_delete('spip_asso_cotisations', $where);
     if ($supprimees === false) {
         return false;
@@ -232,6 +236,12 @@ function association_adhesions_maintenance_supprimer_cotisations(array $ids_comp
         'spip_documents_liens',
         "objet='compte' AND " . sql_in('id_objet', $ids_compte)
     );
+	if ($ids_cotisations) {
+		sql_delete(
+			'spip_documents_liens',
+			"objet='cotisation' AND " . sql_in('id_objet', $ids_cotisations)
+		);
+	}
     include_spip('inc/association_compta_ecritures');
     foreach ($ids_compte as $id_compte) {
         association_compta_ecriture_supprimer($id_compte);

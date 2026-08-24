@@ -67,8 +67,11 @@ function formulaires_supprimer_asso_cotisation_traiter_dist() {
 		sql_delete('spip_asso_cotisations', 'id_cotisation=' . $id_cotisation);
 	}
 	// Les documents ne sont pas détruits ici : seuls leurs liens vers l'ancien
-	// compte sont retirés, conformément au comportement natif de SPIP.
+	// compte et vers la cotisation sont retirés, conformément à SPIP.
 	sql_delete('spip_documents_liens', "objet='compte' AND id_objet=" . $id_compte);
+	if ($id_cotisation) {
+		sql_delete('spip_documents_liens', "objet='cotisation' AND id_objet=" . $id_cotisation);
+	}
 
 	include_spip('inc/association_compta_ecritures');
 	association_compta_ecriture_supprimer($id_compte);

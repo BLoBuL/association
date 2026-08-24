@@ -8,7 +8,9 @@
 <div class="cadre-formulaire-editer">
 
     [(#ENV{id_compte}|intval|>{0}|oui)
-        <INCLURE{fond=prive/inclure/justificatifs_cotisation,id_compte=#ENV{id_compte},justificatifs_ok=#ENV{justificatifs_ok},justificatifs_erreur=#ENV{justificatifs_erreur}}>
+		<BOUCLE_cotisation_justificatifs(ASSO_COTISATIONS){id_compte=#ENV{id_compte}}{0,1}>
+		<INCLURE{fond=prive/inclure/justificatifs_cotisation,id_compte,id_cotisation,justificatifs_ok=#ENV{justificatifs_ok},justificatifs_erreur=#ENV{justificatifs_erreur}}>
+		</BOUCLE_cotisation_justificatifs>
     ]
 
     <div class="ajax">

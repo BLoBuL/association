@@ -33,9 +33,9 @@
     <//B_categorie_cotisation>
     <td class="statut">
         <div class="cotisation-statut-stack">
-            <BOUCLE_docs_compte(DOCUMENTS spip_documents_liens){objet=compte}{id_objet=#ID_COMPTE}{tout}>
-            </BOUCLE_docs_compte>
-            <BOUCLE_docs_a_controler(DOCUMENTS spip_documents_liens){objet=compte}{id_objet=#ID_COMPTE}{vu!=oui}{tout}>
+			<BOUCLE_docs_cotisation(DOCUMENTS spip_documents_liens){objet=cotisation}{id_objet=#ID_COTISATION}{tout}>
+			</BOUCLE_docs_cotisation>
+			<BOUCLE_docs_a_controler(DOCUMENTS spip_documents_liens){objet=cotisation}{id_objet=#ID_COTISATION}{vu!=oui}{tout}>
             </BOUCLE_docs_a_controler>
             <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="badge notice justificatifs-badge" title="<:association_adhesions:justificatifs_cotisation_titre:>">
                 <i class="fa-regular fa-id-card" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
                 <span><:association_adhesions:justificatif_controle:></span>
             </a>
             <//B_docs_a_controler>
-            </B_docs_compte>
+			</B_docs_cotisation>
         </div>
     </td>
     <INCLURE{fond=prive/inclure/miniature_transaction,id_transaction,id_compte}/>

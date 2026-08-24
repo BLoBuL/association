@@ -13,7 +13,7 @@
         [<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV{justificatifs_erreur})</p>]
     </div>
     <ul class="liste-items justificatifs-liste">
-        <BOUCLE_justificatifs(DOCUMENTS spip_documents_liens){objet=compte}{id_objet=#ENV{id_compte}}{tout}{par id_document}>
+		<BOUCLE_justificatifs(DOCUMENTS spip_documents_liens){objet=cotisation}{id_objet=#ENV{id_cotisation}}{tout}{par id_document}>
         <li class="item justificatif [(#VU|=={oui}|?{valide,a_controler})]">
             <a href="#URL_DOCUMENT" target="_blank" rel="noopener" class="justificatif-apercu">
                 <span class="justificatif-vignette">[(#LOGO_DOCUMENT|image_reduire{80,80})]</span>
