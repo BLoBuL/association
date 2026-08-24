@@ -790,32 +790,6 @@ tr.relance,
 tr.echec {
     background-color: #ff9999;
 }
-.miniature_transaction {}
-.miniature_transaction .statut_transaction {
-    display: table;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.6);
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-    margin: 0;
-    font-size: 15px;
-    padding: 0;
-}
-.miniature_transaction .statut_transaction > * {
-    display: table-cell;
-    vertical-align: middle;
-    /*padding: 5px;*/
-    text-align: center;
-    min-width: 25px;
-    border-right: 1px solid rgba(0, 0, 0, 0.08);
-}
-.miniature_transaction .statut_transaction span i {
-    font-size: 20px;
-}
-.miniature_transaction .statut_transaction .tooltip {
-    border-radius: 0;
-}
 .tableau_asso .nom a.bouton_editer {
     display: table;
     margin: 5px;
@@ -1582,36 +1556,6 @@ form.formulaire_asso {
 .filtre.statut_interne .selected {
     text-decoration: underline;
 }
-.tableau_asso .statut_transaction.ok {
-    border: 2px solid #849c00;
-}
-.tableau_asso .statut_transaction.ok i {
-    color: #849c00;
-}
-.tableau_asso .statut_transaction.attente,
-.tableau_asso .statut_transaction.commande {
-    border: 2px solid #ffad00;
-}
-.tableau_asso .statut_transaction.attente i,
-.tableau_asso .statut_transaction.commande i,
-.tableau_asso .statut_transaction.attente a,
-.tableau_asso .statut_transaction.commande a {
-    color: #bd8000;
-}
-.tableau_asso .statut_transaction.abandon {
-    border: 2px solid #9a9a9a;
-}
-.tableau_asso .statut_transaction.echec {
-    border: 2px solid #fb2626;
-}
-.tableau_asso .statut_transaction.rembourse {
-    border: 2px solid #a8c3ff;
-}
-.tableau_asso .statut_transaction.rembourse i,
-.tableau_asso .statut_transaction.rembourse a {
-    color: #3670ef;
-}
-
 /* Boutons de réactivation */
 .tableau_asso .lien_fa.reactiver {
     color: inherit;
@@ -1626,17 +1570,6 @@ form.formulaire_asso {
     color: white;
 }
 
-.tableau_asso .statut_transaction.echec,
-.tableau_asso .statut_transaction.no_transaction .tooltip {
-    border: 2px solid red;
-}
-.tableau_asso .statut_transaction.no_transaction a i {
-    color: red;
-}
-.tableau_asso .statut_transaction .tooltip:hover a {
-    color: white;
-    display: block
-}
 .bouton.page_cotisation{
     display: table;
     margin: 2em;

@@ -343,6 +343,7 @@ $css_compta = file_get_contents($racine . '/plugins/association-compta/prive/the
 $css_communication = file_get_contents($racine . '/plugins/association-communication/prive/themes/spip/css/communication.css');
 $css_adhesions = file_get_contents($racine . '/plugins/association-adhesions/prive/themes/spip/css/adhesions.css');
 $css_evenements = file_get_contents($racine . '/plugins/association-evenements/prive/themes/spip/css/evenements.css');
+$css_paiements = file_get_contents($racine . '/plugins/association-paiements/prive/themes/spip/css/paiements.css');
 $compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
@@ -433,6 +434,13 @@ $verifier(
 		&& strpos($css_evenements, '.formulaire_editer_evenement') !== false
 		&& strpos($css_adhesions, '.formulaire_editer_auteur') !== false,
 	'Les adaptations des formulaires doivent appartenir à leur module métier.'
+);
+$verifier(
+	strpos($css_socle, '.miniature_transaction') === false
+		&& strpos($css_socle, '.statut_transaction.ok') === false
+		&& strpos($css_paiements, '.miniature_transaction .statut_transaction') !== false
+		&& strpos($css_paiements, '.statut_transaction.rembourse') !== false,
+	'Les miniatures et statuts des transactions doivent appartenir à Paiements.'
 );
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
