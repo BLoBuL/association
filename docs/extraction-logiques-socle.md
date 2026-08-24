@@ -1193,3 +1193,9 @@ profil auteur rejoint Adhésions. Ces adaptations ne résident plus dans le socl
 Paiements déclare désormais sa feuille privée. Les miniatures Bank et les
 états réglé, attente, commande, abandon, échec, remboursement ou transaction
 absente quittent le CSS du socle et restent disponibles aux modules consommateurs.
+
+## Lot 111 : recherche adhérents et formulaire de prêt
+
+La recherche rapide, le statut de diffusion et le bouton de cotisation
+rejoignent Adhésions. Prêts déclare sa première feuille privée pour son
+formulaire. Ces derniers sélecteurs explicitement métier quittent le socle.
