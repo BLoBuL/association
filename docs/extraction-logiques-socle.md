@@ -751,6 +751,24 @@ Communication consulte cette liste pour filtrer les destinataires collectifs,
 mais utilise désormais un accès défensif lorsque l'intégration Adhésions n'est
 pas chargée. Le socle ne possède donc plus de catalogue de statuts d'adhérent.
 
+## Lot 61 : actifs front Blobul rendus exploitables par les modules
+
+Les actifs indispensables issus des plugins historiques sont désormais traités
+comme un contrat fonctionnel de la suite, et non comme de simples copies :
+
+- les quatre modèles de `blobul-BANK/modeles` sont fournis par Paiements et
+  lisent la configuration Association par l'API SPIP ;
+- la coque email inspirée de `blobul-CORE/emails` est fournie par Communication,
+  sans configuration, signature, logo ni domaine de langue Blobul ;
+- les albums Événements issus de `blobul-ASSO_FO` sont fournis dans le dossier
+  `squelettes` d'Événements et sont effectivement inclus par sa page publique.
+
+Sur la page `evenement`, un auteur authentifié reçoit le portfolio complet et
+un visiteur anonyme la variante verrouillée avec le parcours de connexion. Un
+test parcourt récursivement ces actifs et interdit le retour de références aux
+trois plugins Blobul historiques. La suite reste donc utilisable en front office
+avec les plugins métier seuls et leurs dépendances publiques déclarées.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

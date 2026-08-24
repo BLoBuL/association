@@ -24,6 +24,15 @@
 					[<div class="texte">(#LIEU)</div>]
 					[<div class="notes"><hr />(#NOTES)</div>]
 				</article>
+				[(#REM) Les albums historiques de ASSO_FO sont servis par le module.
+					Le visiteur authentifie accede au portfolio ; le visiteur anonyme
+					voit la variante verrouillee avec le lien de connexion SPIP. ]
+				[(#SESSION{id_auteur}|oui)
+					<INCLURE{fond=inclure/album_photos_evenement,id_article,env} />
+				]
+				[(#SESSION{id_auteur}|non)
+					<INCLURE{fond=inclure/album_photos_evenement_locked,id_article,env} />
+				]
 				<div class="ajax">#FORMULAIRE_INSCRIPTION_EVENEMENT_PUBLIC{#ID_EVENEMENT}</div>
 			</div>
 		</div>

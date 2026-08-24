@@ -21,6 +21,39 @@ foreach ($attendus as $fichier => $usage) {
 	}
 }
 
+$page_evenement = file_get_contents($racine . '/plugins/association-evenements/squelettes/evenement.html');
+foreach (array('album_photos_evenement', 'album_photos_evenement_locked') as $album) {
+	if (!str_contains($page_evenement, 'fond=inclure/' . $album)) {
+		fwrite(STDERR, "Le composant front Événements $album n'est pas intégré à la page publique.\n");
+		exit(1);
+	}
+}
+if (!str_contains($page_evenement, '#SESSION{id_auteur}|oui') || !str_contains($page_evenement, '#SESSION{id_auteur}|non')) {
+	fwrite(STDERR, "La page Événements ne sépare pas le portfolio public authentifié de sa variante verrouillée.\n");
+	exit(1);
+}
+
+$actifs_blobul_interdits = array(
+	'plugins/association-paiements/modeles' => array('blobul-BANK', 'zblobul'),
+	'plugins/association-communication/emails' => array('blobul-CORE', 'zblobul_core', 'logo_blobul'),
+	'plugins/association-evenements/squelettes' => array('blobul-ASSO_FO', 'zblobul_core', 'zblobul_asso'),
+);
+foreach ($actifs_blobul_interdits as $dossier => $marqueurs) {
+	$iterateur = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . '/' . $dossier));
+	foreach ($iterateur as $fichier) {
+		if (!$fichier->isFile() || !in_array($fichier->getExtension(), array('html', 'php', 'css'), true)) {
+			continue;
+		}
+		$contenu = file_get_contents($fichier->getPathname());
+		foreach ($marqueurs as $marqueur) {
+			if (stripos($contenu, $marqueur) !== false) {
+				fwrite(STDERR, "Dépendance Blobul résiduelle ($marqueur) dans {$fichier->getPathname()}.\n");
+				exit(1);
+			}
+		}
+	}
+}
+
 if (file_exists($racine . '/modeles/asso_ressources.html')) {
 	fwrite(STDERR, "Le modèle Ressources appartient encore au socle au lieu du module Prêts.\n");
 	exit(1);
