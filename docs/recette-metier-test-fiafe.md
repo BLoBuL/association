@@ -1288,3 +1288,24 @@ canonique
 `6d207697e5e6a4ecc279769b1b15fb14fcee1d748095a8e934692b0158c5b69f` :
 la migration est idempotente et la répartition métier est strictement égale à
 la source comptable historique.
+
+## Lot 116 — restauration du véritable formulaire BO de cotisation
+
+Le commit `08c05231` rétablit les données que le formulaire historique
+d'Association permettait de saisir et que la reprise de `blobul-ASSO_BO` avait
+perdues : date de l'opération, montant réellement enregistré et fin de
+validité propre à la cotisation. Les catégories, statuts, justificatifs et
+notifications du formulaire moderne restent conservés. Le montant BO est
+désormais prioritaire sur le tarif de catégorie uniquement dans le privé ; le
+formulaire public conserve donc ses règles tarifaires.
+
+La date comptable reste transmise à Compta et la validité est enregistrée dans
+`spip_asso_cotisations`, sans réintroduire ces données métier dans
+`spip_asso_comptes`. La suite Adhésions et le test des squelettes publics
+passent. Sur la copie DEV migrée, le contrôle SPIP retrouve les dix champs
+métier attendus du formulaire et la compilation conserve 221 squelettes
+privés, douze pages publiques et 64 composants front.
+
+La session Chrome antérieure est invalidée par le remplacement de la base :
+la preuve serveur est complète, mais la validation visuelle authentifiée de ce
+nouveau rendu reste à reprendre après reconnexion du compte de recette.
