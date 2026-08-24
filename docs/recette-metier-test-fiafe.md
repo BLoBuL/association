@@ -2029,3 +2029,10 @@ cotisation utilise des libellés du domaine Adhésions et réactive surtout un
 garde SPIP `autoriser('modifier', 'asso_compte')` avant tout rendu du
 formulaire. Le lien de paiement ouvert dans un nouvel onglet est isolé. La
 suite locale atteint 125 tests, tous valides.
+
+Le commit `83d3cca6` est déployé sur test-fiafe avec les quatre empreintes de
+l'artefact Git conformes. Adhésions reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, la liste des cotisations est saine et la
+page de suppression de la cotisation 957 affiche son titre, l'auteur lié et le
+formulaire sans erreur ni clé brute. Le formulaire n'a pas été soumis et aucune
+donnée n'a été supprimée.
