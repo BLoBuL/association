@@ -24,5 +24,9 @@ foreach ($modules as $dossier => [$prefixe, $dependances, $page]) {
 if (!is_file("$racine/plugins/association-commerce/squelettes/boutique.html")) { $erreurs[] = 'page publique commerce absente'; }
 if (!is_file("$racine/plugins/association-partenaires/squelettes/partenaires.html")) { $erreurs[] = 'page publique partenaires absente'; }
 if (!is_file("$racine/plugins/association-bannieres/modeles/asso_bannieres.html")) { $erreurs[] = 'modèle public bannières absent'; }
+foreach (array('association-partenaires' => 'partenaires', 'association-bannieres' => 'bannieres') as $module => $objet) {
+	$administration = file_get_contents("$racine/plugins/$module/association_{$objet}_administrations.php");
+	if (!str_contains($administration, "'1.0.0' =>")) { $erreurs[] = "$module ne reprend pas une installation interrompue à init"; }
+}
 if ($erreurs) { fwrite(STDERR, implode("\n", $erreurs) . "\n"); exit(1); }
 echo "OK nouveaux modules autonomes\n";
