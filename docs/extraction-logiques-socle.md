@@ -1160,3 +1160,9 @@ quittent le socle. Toute cette présentation appartient maintenant à Adhésions
 Les listes d'activités et leurs exports quittent la feuille transversale. Le
 plugin Événements déclare sa propre feuille privée et porte les titres, états
 d'ouverture, quotas, listes d'attente et séparateurs annuels ou mensuels.
+
+## Lot 106 : fiche activité et inscriptions
+
+La présentation de la fiche d'un événement rejoint Événements : onglets,
+configuration, quotas, responsables, logos des participations et largeur du
+formulaire d'inscription privé ne sont plus fournis par le socle historique.
