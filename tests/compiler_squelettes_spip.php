@@ -131,4 +131,9 @@ if ($echecs) {
 
 $prives = array_sum(array_filter($compiles, fn($nombre, $type) => str_starts_with($type, 'prives'), ARRAY_FILTER_USE_BOTH));
 $publics = array_sum(array_filter($compiles, fn($nombre, $type) => str_starts_with($type, 'publics_'), ARRAY_FILTER_USE_BOTH));
-echo "OK: {$prives} squelettes prives et {$publics} squelettes publics compiles sous SPIP " . $GLOBALS['spip_version_branche'] . ".\n";
+$composants = array_sum(array_filter(
+	$compiles,
+	fn($nombre, $type) => preg_match('/^(?:modeles|emails|notifications)_/', $type),
+	ARRAY_FILTER_USE_BOTH
+));
+echo "OK: {$prives} squelettes prives, {$publics} pages publiques et {$composants} composants front compiles sous SPIP " . $GLOBALS['spip_version_branche'] . ".\n";
