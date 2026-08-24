@@ -1,6 +1,6 @@
     <tr>
         <td colspan="4">
-            <h2>Notifications liées à la création/validation des comptes auteurs</h2></td>
+            <h2><:association_communication:notifications_validation_titre:></h2></td>
     </tr>
 
     <B_notif_defaut>
@@ -14,7 +14,7 @@
                     <td>[(#VALEUR)]</td>
                     </BOUCLE_description_defaut>
                     <BOUCLE_page_editable_defaut(ARTICLES){tout}{page=#CLE}>
-                       <td style="min-width:270px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank">EDITION</a></td>
+                       <td style="min-width:270px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank" rel="noopener noreferrer"><:association_communication:notifications_editer:></a></td>
                     </BOUCLE_page_editable_defaut><td></td><//B_page_editable_defaut>
             </tr>
             </BOUCLE_notif_defaut>
@@ -30,7 +30,7 @@
                     <td>[(#VALEUR)]</td>
                     </BOUCLE_description_validation>
                     <BOUCLE_page_editable_validation(ARTICLES){tout}{page=#CLE}>
-                       <td style="min-width:270px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank">EDITION</a></td>
+                       <td style="min-width:270px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank" rel="noopener noreferrer"><:association_communication:notifications_editer:></a></td>
                     </BOUCLE_page_editable_validation><td></td><//B_page_editable_validation>
             </tr>
             </BOUCLE_notif_validation>

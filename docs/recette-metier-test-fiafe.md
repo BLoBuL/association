@@ -2003,3 +2003,12 @@ Informations et la fiche de l'auteur 1 affiche la colonne Message, sans erreur
 ni clé brute. Cette fiche ne contient pas de paiement en attente permettant de
 matérialiser son infobulle ; sa structure et sa traduction restent couvertes
 par le test automatisé. Aucune action n'a été déclenchée.
+
+## Lot 166 - catalogue privé Communication
+
+Les sections Validation, GIS et Personnalisations du catalogue de notifications
+ainsi que les actions d'édition utilisent le domaine
+`association_communication`. Les liens ouvrant l'éditeur dans un nouvel onglet
+sont isolés avec `noopener noreferrer`. Le maintien de la méta historique
+`inscription3` est volontaire : Inscription 4 la fournit comme contrat de
+compatibilité. La suite locale atteint 124 tests, tous valides.

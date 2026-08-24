@@ -1,7 +1,7 @@
 <B_notif_gis>
     <tr>
         <td colspan="4">
-            <h2>Notifications liées à GIS</h2>
+            <h2><:association_communication:notifications_gis_titre:></h2>
         </td>
     </tr>
     <BOUCLE_notif_gis(DATA){source glob, #CHEMIN{notifications/}*_gis.html}{si #PLUGIN{gis}|oui}>
@@ -20,7 +20,7 @@
 <B_notif_autres>
     <tr>
         <td colspan="4">
-            <h2>Personnalisations</h2>
+            <h2><:association_communication:notifications_personnalisations_titre:></h2>
         </td>
     </tr>
     <BOUCLE_notif_autres(DATA){source glob,#CHEMIN{notifications/}*.html}>
