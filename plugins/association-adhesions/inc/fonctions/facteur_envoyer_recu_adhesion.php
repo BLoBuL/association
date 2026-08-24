@@ -61,8 +61,17 @@ function facteur_envoyer_recu_adhesion($id_auteur, $id_transaction, $type_recu, 
         }
     }
 
-    // Récupération des données du compte et de la catégorie
-    $query_compte = sql_fetsel('*', 'spip_asso_comptes', "id_transaction=$id_transaction");
+    // La cotisation est la source métier ; son écriture comptable est fusionnée
+    // uniquement par l'adaptateur public d'Adhésions.
+    include_spip('inc/cotisations_stockage');
+    $id_compte = (int) sql_getfetsel(
+        'id_compte',
+        'spip_asso_cotisations',
+        'id_transaction=' . $id_transaction,
+        '',
+        'id_cotisation DESC'
+    );
+    $query_compte = $id_compte ? association_cotisation_lire_par_compte($id_compte) : array();
     if (empty($query_compte)) {
         association_log('notifications', "Compte introuvable pour la transaction : $id_transaction", 'critique');
         return array('success' => false, 'message' => "Compte introuvable pour la transaction : $id_transaction");
@@ -131,15 +140,18 @@ function facteur_envoyer_recu_adhesion($id_auteur, $id_transaction, $type_recu, 
     // Parser BCC multiple si la configuration contient plusieurs adresses
 
     $bcc_meta = $GLOBALS['association_metas']['config_envoi_recu_adhesion_cc'] ?? '';
-    association_log('notifications', 'bcc_meta=' . $bcc_meta, 'critique');
     $bcc_parsed = parser_emails_depuis_config($bcc_meta);
-
-    association_log('notifications', 'bcc_parsed=' . print_r($bcc_parsed, true), 'critique');
     // facteur_envoyer_app accepte soit string soit tableau. Si vide, garder false.
     $bcc = !empty($bcc_parsed) ? $bcc_parsed : false;
 
     // Journaliser le début de traitement pour le debug des jobs
-    association_log('notifications', ['action' => 'facteur_envoyer_recu_adhesion.start', 'id_auteur' => $id_auteur, 'id_transaction' => $id_transaction, 'email' => $email_adherent, 'bcc' => $bcc], 'critique');
+    association_log('notifications', array(
+        'action' => 'facteur_envoyer_recu_adhesion.start',
+        'id_auteur' => $id_auteur,
+        'id_transaction' => $id_transaction,
+        'destinataire_valide' => (bool) filter_var($email_adherent, FILTER_VALIDATE_EMAIL),
+        'nb_bcc' => is_array($bcc_parsed) ? count($bcc_parsed) : 0,
+    ), 'info');
 
     // Envoi de l'email
     try {

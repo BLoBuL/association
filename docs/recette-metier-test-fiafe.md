@@ -1363,3 +1363,16 @@ La recette reste volontairement non destructive : aucune des dix cotisations
 DEV n'a été supprimée. Après déploiement et vidage du cache, leur empreinte est
 inchangée et les 221 squelettes privés, douze pages publiques et 64 composants
 front compilent sous SPIP 4.4.21.
+
+## Lot 120 — notifications et reçus branchés sur la table métier
+
+La prévisualisation des notifications et la génération des reçus d'adhésion ne
+recherchent plus une cotisation directement dans `spip_asso_comptes`. Elles
+partent de `spip_asso_cotisations`, puis utilisent l'adaptateur Adhésions pour
+fusionner l'écriture comptable lorsque celle-ci est nécessaire au rendu.
+
+Les journaux du reçu ne contiennent plus l'adresse du destinataire, les BCC ni
+la configuration brute des destinataires ; ils conservent uniquement la
+validité de l'adresse et le nombre de copies. Aucun email de recette n'a été
+envoyé. Après déploiement, cache vidé et compilation, l'empreinte des dix
+cotisations migrées reste inchangée.

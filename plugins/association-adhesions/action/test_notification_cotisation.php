@@ -75,8 +75,9 @@ function action_test_notification_cotisation_dist() {
     $contexte = null;
     $id_compte = intval($id_compte ?: 0);
     $id_auteur = intval($id_auteur ?: 0);
+    include_spip('inc/cotisations_stockage');
     if ($id_compte > 0) {
-        $query_cot = sql_fetsel('*', 'spip_asso_comptes', 'id_compte=' . intval($id_compte));
+        $query_cot = association_cotisation_lire_par_compte($id_compte);
         if ($query_cot) {
             $query_cat = sql_fetsel('*', 'spip_asso_categories_adherents', 'id_categorie=' . intval($query_cot['id_categorie'] ?? 0));
             $query_tx = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . intval($query_cot['id_transaction'] ?? 0));
@@ -98,9 +99,9 @@ function action_test_notification_cotisation_dist() {
     }
     // Si pas de contexte via id_compte, mais id_auteur fourni, tenter de prendre le dernier compte de l'auteur
     if (!$contexte && $id_auteur > 0) {
-        $last_id_compte = sql_getfetsel('id_compte', 'spip_asso_comptes', 'id_auteur=' . intval($id_auteur), '', 'id_compte DESC');
+        $last_id_compte = sql_getfetsel('id_compte', 'spip_asso_cotisations', 'id_auteur=' . intval($id_auteur), '', 'id_cotisation DESC');
         if ($last_id_compte) {
-            $query_cot = sql_fetsel('*', 'spip_asso_comptes', 'id_compte=' . intval($last_id_compte));
+            $query_cot = association_cotisation_lire_par_compte($last_id_compte);
             if ($query_cot) {
                 $query_cat = sql_fetsel('*', 'spip_asso_categories_adherents', 'id_categorie=' . intval($query_cot['id_categorie'] ?? 0));
                 $query_tx = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . intval($query_cot['id_transaction'] ?? 0));
