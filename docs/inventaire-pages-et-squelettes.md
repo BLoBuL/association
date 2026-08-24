@@ -32,7 +32,7 @@ CVT lorsque la suppression demande plusieurs choix métier.
 | `edit_vente` | `contenu/edit_vente.html` + CVT existant | migré |
 | `dons`, `ressources`, `prets`, `ventes` | contenu et navigation privés | migré ; éditeur de prêt converti en CVT |
 | `bilan` | `contenu/bilan.html` + fonctions de calcul structurées | migré |
-| `activites`, `adherents_bck`, `voir_adherent` | pages privées déjà partiellement éclatées | à rationaliser |
+| `activites`, `voir_adherent` | contenus, navigation, hiérarchie et composants privés de leurs modules | migré et rationalisé |
 | `action_*` sous `exec/` | squelette de confirmation + actions SPIP signées | migré |
 | exports CSV/PDF | actions de téléchargement autorisées | migré hors de `exec/` |
 

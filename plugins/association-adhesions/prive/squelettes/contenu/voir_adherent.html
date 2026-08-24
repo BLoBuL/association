@@ -1,6 +1,7 @@
 [(#AUTORISER{adherents_menu}|sinon_interdire_acces)]
 <BOUCLE_adherent(AUTEURS){id_auteur}{tout}>
-[(#BOITE_OUVRIR{#NOM,'simple'})]
+<h1 class="grostitre"><:association_adhesions:fiche_adherent_privee_titre:> — [(#NOM|sinon{#LOGIN}|textebrut)]</h1>
+[(#BOITE_OUVRIR{<:association_adhesions:informations_adherent:>,'simple'})]
 <INCLURE{fond=prive/squelettes/contenu/inc-voir_adherent/voir_adherent-info,id_auteur,env}>
 <INCLURE{fond=prive/squelettes/contenu/inc-voir_adherent/voir_adherent-statut,id_auteur,env}>
 [(#BOITE_FERMER)]

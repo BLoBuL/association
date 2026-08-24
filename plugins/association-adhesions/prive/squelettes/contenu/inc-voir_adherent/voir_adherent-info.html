@@ -1,6 +1,6 @@
 <BOUCLE_AUTEUR(AUTEURS){id_auteur} {tout}>
 <div class="adherent">
-		<div class="item_content">	
+		<div class="item_content">
             [<div class="item_logo" style="float:right">
             <a href="[(#LOGO_AUTEUR|image_passe_partout{500,500}|image_recadre{500,500,top center}|extraire_attribut{src})]" type="image/jpeg" title="#PRENOM #NOM_FAMILLE" onclick="" class="cboxElement hasbox">
 				(#LOGO_AUTEUR
@@ -22,15 +22,14 @@
                         </h2>
                         [<div class="item_info_fonction"><i>(#LISTER_VALEURS{fonction}|sinon{#FONCTION})</i></div>]	
             </div>    
-			<div class="item_info_supp">	
-                <h4>Contact :</h4>
+			<div class="item_info_supp">
+                <h3><:association_adhesions:contact_adherent:></h3>
                     <div class="item_info_email">
-                        <a href="[(#URL_PAGE{ecrire_auteur,id_auteur=#ID_AUTEUR})]" rel="nofollow" target="_blank" class="spip_in" onclick="if (jQuery.modalbox){jQuery.modalbox('[(#URL_PAGE{ecrire_auteur,id_auteur=#ID_AUTEUR}|parametre_url{url,#SELF}|parametre_url{var_zajax,content})]');return false;}">#EMAIL</a></div>
-                    [<div class="item_info_mobile"><a href="call:#MOBILE">(#MOBILE)</a></div>
-                    ][<div class="item_info_telephone"><a href="call:#TELEPHONE">(#TELEPHONE)</a></div>]
+                        <a href="mailto:[(#EMAIL|attribut_html)]">[(#EMAIL|entites_html)]</a></div>
+                    [<div class="item_info_mobile"><a href="tel:[(#MOBILE|attribut_html)]">(#MOBILE)</a></div>
+                    ][<div class="item_info_telephone"><a href="tel:[(#TELEPHONE|attribut_html)]">(#TELEPHONE)</a></div>]
 			</div>
 		</div>
 		<div style="clear:both"></div>
 </div>
 </BOUCLE_AUTEUR>
-    

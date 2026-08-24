@@ -1829,3 +1829,17 @@ Les 114 tests `tests/test_*.php` passent. Le scenario apres paiement confirme
 notamment la validation de l'inscription, les deux notifications et la mise a
 jour de l'ecriture comptable par l'API modulaire. Aucune logique metier servie
 ni aucune donnee du site n'est modifiee par ce lot.
+
+## Lot 157 - fiche privee adherent native SPIP 4
+
+La fiche `voir_adherent` possede maintenant un H1 explicite, une autorisation
+au niveau du contenu et des boites dont les titres viennent du domaine de
+langue Adhesions. Les informations de contact utilisent les schemas standards
+`mailto:` et `tel:` ; les textes de situation et de statut ne sont plus codes
+en dur dans le squelette et les formulations historiques erronees sont
+corrigees.
+
+Un test structurel verrouille le titre, l'autorisation, l'autonomie du contact
+et l'absence des anciens textes. La suite locale atteint 115 tests, tous
+valides. L'inventaire des pages privees classe desormais `activites` et
+`voir_adherent` comme rationalisees dans leurs plugins proprietaires.

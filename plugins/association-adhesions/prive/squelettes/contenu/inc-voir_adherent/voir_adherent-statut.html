@@ -3,43 +3,43 @@
 <div class="adherent">
 		<div class="item_content">	
             <div class="item_info">	
-                  <h4>Informations à propos de l'adhérent :</h4>
-                    [<p>Inscrit depuis le <b>(#INSCRIPTION|affdate{'d/m/Y'})</b>.</p>]
+                  <h3><:association_adhesions:statut_adherent_titre:></h3>
+                    [<p><:association_adhesions:adherent_inscrit_depuis:> <strong>(#INSCRIPTION|affdate{d/m/Y})</strong>.</p>]
                     [<p>(#STATUT_INTERNE|=={ok}|oui)
-                        Ce membre est à jour de sa cotisation jusqu'au [<b>(#VALIDITE|affdate{'d/m/Y'})</b>].</p>
+                        <:association_adhesions:adherent_cotisation_a_jour:> [<strong>(#VALIDITE|affdate{d/m/Y})</strong>].</p>
                     ]
                     [<p>(#STATUT_INTERNE|=={prospect}|oui)
-                        Ce membre est <b>un nouvel inscrit</b>.</p>
+                        <:association_adhesions:adherent_nouvel_inscrit:></p>
                     ]
                     [<p>(#STATUT_INTERNE|=={relance}|oui)
-                        Ce membre est <b>n'est plus à jour</b> et a déjà été relancé par email.</p>
+                        <:association_adhesions:adherent_cotisation_relancee:></p>
                     ]
                     [<p>(#STATUT_INTERNE|=={desactive}|oui)
-                        Ce membre a été désactivé.</p>
+                        <:association_adhesions:adherent_desactive:></p>
                     ]
                     [<p>(#STATUT_INTERNE|=={echu}|oui)
-                        Ce membre est <b>n'est plus à jour</b>.</p>
+                        <:association_adhesions:adherent_cotisation_echue:></p>
                     ]                     
 					<p>
 				    [(#STATUT|=={0minirezo}|oui)
-                        Ce membre est "Administrateur de ce site" 
+                        <:association_adhesions:adherent_statut_administrateur:>
 				    [<div class="item_info_email"><a href="mailto:#INPUT_EMAIL_MEMBRES_ASSO">(#INPUT_EMAIL_MEMBRES_ASSO)</a></div>]
 					[<div class="item_info_bio #EDIT{bio}">(#BIO)</div>]
                     ]
                     [(#STATUT|=={1comite}|oui)
-                        Ce membre est "Rédacteur de ce site"
+                        <:association_adhesions:adherent_statut_redacteur:>
 					[<div class="item_info_fonction">(#LISTER_VALEURS{fonction}|sinon{#FONCTION})</div>]	
 				    [<div class="item_info_email"><a href="mailto:#INPUT_EMAIL_MEMBRES_ASSO">(#INPUT_EMAIL_MEMBRES_ASSO)</a></div>]
 					[<div class="item_info_bio #EDIT{bio}">(#BIO)</div>]
                     ]
                     [(#STATUT|=={6forum}|oui)
-                        Ce membre est "Visiteur" de ce site"
+                        <:association_adhesions:adherent_statut_visiteur:>
                     ]
                     [(#STATUT|=={5poubelle}|oui)
-                        Ce membre a été mis "à la corbeille"
+                        <:association_adhesions:adherent_statut_corbeille:>
                     ]
                     [(#STATUT|=={8aconfirmer}|oui)
-                        Ce membre est en attente de confirmation par un administrateur
+                        <:association_adhesions:adherent_statut_a_confirmer:>
                     ]
                     </p>	
                     <B_activite_responsable>
