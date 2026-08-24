@@ -1,5 +1,6 @@
 ﻿[(#AUTORISER{menu,_transactions}|sinon_interdire_acces)]
 <BOUCLE_transaction(TRANSACTIONS){id_transaction}>
+[(#AUTORISER{supprimer,transaction,#ID_TRANSACTION}|sinon_interdire_acces)]
 <h1 class="grostitre">Suppression de la transaction ##ID_TRANSACTION</h1>
 <div class="transaction">
 	#BOITE_OUVRIR{'',infos simple}

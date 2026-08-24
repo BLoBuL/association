@@ -130,7 +130,7 @@
                     [(#STATUT|in_array{#LISTE{commande,attente}}|oui)
                         <a href="[(#URL_ECRIRE{transaction_abandon,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer"><i class="fa fa-ban"></i></a>
                     ]
-                   [(#STATUT|match{abandon}|oui)
+                   [(#AUTORISER{supprimer,transaction,#ID_TRANSACTION}|oui)
                         <a href="[(#URL_ECRIRE{transaction_suppression,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer"><i class="fa-regular fa-trash-can"></i></a>
                     ]
                 </td>
