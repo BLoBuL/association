@@ -1187,3 +1187,9 @@ sa typographie et sa structure.
 La mise en évidence de l'inscription dans le formulaire Agenda rejoint
 Événements. Le masquage des champs éditoriaux PGP, nom de site et URL dans le
 profil auteur rejoint Adhésions. Ces adaptations ne résident plus dans le socle.
+
+## Lot 110 : états visuels des transactions
+
+Paiements déclare désormais sa feuille privée. Les miniatures Bank et les
+états réglé, attente, commande, abandon, échec, remboursement ou transaction
+absente quittent le CSS du socle et restent disponibles aux modules consommateurs.

@@ -1185,3 +1185,16 @@ Les anciennes règles Jupiter et le titre global à 60 pixels ne sont plus servi
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
+
+## Lot 109 — formulaires événement et adhérent
+
+Les commits `3c4a66b6` et `4c676897` sont déployés depuis l'artefact SHA-256
+`32b6a66cae13f2aea0aa4c499cc793e7cf107227263c4e698cb2296ee9efb85f`.
+Le formulaire Agenda de l'événement 183 conserve ses dates et ses paramètres
+d'inscription. Le formulaire auteur de Nicolas Dupont conserve toutes les
+informations d'adhésion tandis que PGP, nom et URL de site restent masqués.
+Aucun des deux formulaires n'a été soumis.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
