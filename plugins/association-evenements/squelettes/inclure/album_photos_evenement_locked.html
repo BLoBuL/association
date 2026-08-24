@@ -7,13 +7,13 @@
 	[<h2 class="h2">(#VAL{<:association_evenements:galerie_photos:>}|unique)</h2>]	
 		<div id="album_evenement">
 			<div class="info_non_adherent"><:association_evenements:info_non_adherent_galerie:><br /><br />
-				<a href="[(#URL_PAGE{login}|parametre_url{url,#SELF})]"	rel="nofollow" target="_blank"onclick="if (jQuery.modalbox) {jQuery.modalbox('[(#URL_PAGE{login}|parametre_url{url,#SELF}|parametre_url{var_zajax,contenu})]');return false;}">
+				<a href="[(#URL_PAGE{login}|parametre_url{url,#SELF})]" rel="nofollow" class="login-galerie">
 					<:association_evenements:s_identifier:>
 				</a>
 			</div>
 				
 			<BOUCLE_premiere_image(DOCUMENTS){id_evenement?}{extension IN png,jpg,gif} {par num titre, date}{vu=non}{0,1}{doublons}>
-			<a href="[(#URL_PAGE{login}|parametre_url{url,#SELF})]"	rel="nofollow" target="_blank"onclick="if (jQuery.modalbox) {jQuery.modalbox('[(#URL_PAGE{login}|parametre_url{url,#SELF}|parametre_url{var_zajax,contenu})]');return false;}">
+			<a href="[(#URL_PAGE{login}|parametre_url{url,#SELF})]" rel="nofollow" class="login-galerie">
 			[(#LOGO_EVENEMENT|sinon{#FICHIER}|image_passe_partout{175,120}|image_recadre{175,120}|image_nb{330,330,330}|inserer_attribut{class,spip_logos}|inserer_attribut{title,[(#TITRE|attribut_html|couper{80})]})]
 			</a>
 			</BOUCLE_premiere_image>

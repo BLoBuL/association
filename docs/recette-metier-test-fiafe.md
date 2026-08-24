@@ -2130,3 +2130,11 @@ d'adhésion, Newsletter, Événement 231 et Ressources. Profil, Inscription,
 Événement et Ressources ne présentent aucun débordement horizontal à 390 px ;
 Événement est également conforme à 768 et 1440 px. Aucun formulaire public n'a
 été soumis.
+
+## Lot 174 - galeries publiques Événements autonomes
+
+La galerie verrouillée ne dépend plus d'un gestionnaire `onclick` jQuery issu
+de l'ancien FO et n'ouvre plus la connexion dans un nouvel onglet. Ses deux
+liens utilisent la page de connexion SPIP et conservent l'URL de retour. La
+galerie ouverte déclare explicitement la classe `mediabox` de SPIP 4. La suite
+locale atteint 131 tests, tous valides.
