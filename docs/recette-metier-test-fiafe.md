@@ -1884,3 +1884,10 @@ Les onglets, filtres et colonnes ne contiennent plus de français codé en dur.
 Le tableau adopte les classes privées SPIP `spip liste`, un `caption` hors
 écran, des en-têtes `scope="col"` et un intitulé accessible pour la colonne des
 personnalisations. La suite locale atteint 117 tests, tous valides.
+
+Le commit `ca977b6d` est deploye sur test-fiafe avec les deux empreintes de
+l'artefact Git conformes. Communication reste actif en 4.0.0, SPIP est sain et
+les 297 fonds recompilent. Dans Chrome authentifie, le H1, les quatre onglets,
+le catalogue, son caption et ses cinq en-têtes sont rendus sans texte BETA ni
+erreur d'execution. L'audit affiche 11 scenarios conformes, sans envoi ; aucun
+bouton de test n'a ete actionne.
