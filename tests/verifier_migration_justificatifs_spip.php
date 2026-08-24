@@ -31,4 +31,6 @@ echo json_encode(array(
 	'liens_cotisation' => $canoniques,
 	'doublons_a_fusionner' => $doublons,
 	'liens_compte_hors_cotisation' => count($hors_cotisations),
+	'schema' => (string) sql_getfetsel('valeur', 'spip_meta', "nom='association_adhesions_base_version'"),
+	'metas_schema' => sql_allfetsel('nom,valeur', 'spip_meta', "nom LIKE 'association_adhesions%version'", '', 'nom'),
 ), JSON_UNESCAPED_SLASHES) . "\n";

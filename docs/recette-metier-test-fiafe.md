@@ -1674,3 +1674,23 @@ abonnements; l'empreinte des tables Mailsubscribers est strictement identique
 avant et apres le controle. Aucun abonnement, desabonnement ou email n'a ete
 declenche. Le lint PHP et la compilation des 221 squelettes prives, douze pages
 publiques et 64 composants front sont valides.
+
+## Lot 147 - justificatifs rattaches aux cotisations
+
+Les nouveaux justificatifs sont desormais lies a l'objet SPIP `cotisation` et
+a son `id_cotisation`, plutot qu'a l'ancienne ecriture `compte`. La migration
+1.3.0 deplace les liens historiques lorsqu'une cotisation correspondante
+existe, fusionne les doublons et reste idempotente. Les deux anciens liens
+`compte` presents sur la copie DEV ne correspondent pas a des cotisations : ils
+ont ete correctement classes hors perimetre et preserves.
+
+Les API de validation et de suppression reconnaissent temporairement les deux
+formats, tandis que les nouveaux uploads et tous les squelettes utilisent le
+lien canonique. La meta de schema distante vaut `1.3.0`, les dix fichiers
+deployes ont des empreintes identiques et les 221 squelettes prives, douze
+pages publiques et 64 composants front compilent sous SPIP 4.4.21.
+
+La recette Chrome authentifiee affiche dix cotisations sans erreur. La fiche
+du compte 957 charge le veritable formulaire BO, le bloc « Controle des
+justificatifs » et son etat vide, sans erreur d'execution. Aucun formulaire n'a
+ete soumis et aucun document, paiement ou email n'a ete cree.
