@@ -1734,3 +1734,20 @@ la reprise de la date et du montant du paiement. Sur test-fiafe, les quatre
 commandes et les statistiques 2024 a 2026 restent identiques aux lectures
 historiques. Le formulaire du compte 955 est servi dans Chrome sans erreur et
 n'a pas ete soumis. Le lint PHP et tous les squelettes sont valides.
+
+## Lot 151 - integrations optionnelles Acces restreint et GIS
+
+Les lectures des tables Zones et GIS sont centralisees dans un adaptateur du
+plugin Adhesions. Celui-ci refuse toute requete vers les tables d'un plugin
+inactif. Les ecritures continuent d'utiliser les API natives `zone_lier()` et
+`gis_*()` ; les deux integrations sont desormais declarees par `utilise` dans
+le paquet. Des tests autonomes couvrent les branches avec et sans plugins.
+
+Le commit `a26e39c0` est deploye sur test-fiafe avec des empreintes SHA-256
+identiques a l'artefact Git. Acces restreint est actif avec une zone et GIS est
+inactif ; le verificateur SPIP confirme qu'aucun point GIS n'est lu. Le plugin
+Adhesions reste actif en 4.0.0 et les 221 squelettes prives, 12 pages publiques
+et 64 composants front compilent. Dans Chrome authentifie, la configuration
+Adhesions affiche « Zone adherent » cochee sans erreur. La page d'accueil et la
+fiche d'adhesion publiques sont rendues sans erreur visible et repondent en
+HTTP 200. Aucun formulaire n'a ete soumis et aucune donnee n'a ete modifiee.
