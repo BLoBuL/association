@@ -19,7 +19,7 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
     $res = sql_select(
         'c.id_compte,c.id_transaction',
         'spip_asso_comptes AS c LEFT JOIN spip_auteurs AS a ON a.id_auteur=c.id_auteur',
-		"c.objet='cotisation' AND a.id_auteur IS NULL",
+		"(c.objet='cotisation' OR c.id_categorie>0) AND a.id_auteur IS NULL",
         '',
         '',
         intval($lot)
@@ -161,7 +161,7 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
     $tx_ids_candidates = [];
 
     // Jointure pour exclure les cotisations liées à une transaction encaissée
-    $where = "c.objet='cotisation'"
+    $where = "(c.objet='cotisation' OR c.id_categorie>0)"
         . " AND c.statut_cotisation<>" . sql_quote('ok')
         . " AND c.date<=" . sql_quote($limite)
         . " AND (t.id_transaction IS NULL OR t.statut<>" . sql_quote('ok') . ")";

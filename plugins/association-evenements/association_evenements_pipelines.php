@@ -71,6 +71,11 @@ function association_evenements_association_paiements_remboursement_traiter($flu
 }
 
 function association_evenements_association_compta_migration_metiers($flux) {
+	if (($flux['args']['mode'] ?? '') !== 'auto') {
+		return $flux;
+	}
+	include_spip('inc/association_evenements_migration_compta');
+	$flux['data']['ecritures_evenements_migrees'] = association_evenements_migration_compta_automatique();
 	include_spip('action/synchroniser_comptabilite_evenement');
 	$evenements = sql_allfetsel('DISTINCT id_evenement', 'spip_asso_activites', 'id_transaction>0');
 	$nb = 0;

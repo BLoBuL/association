@@ -26,6 +26,11 @@ if (file_exists($racine . '/plugins/association-compta/prive/objets/liste/table_
 if (str_contains($migration, 'spip_asso_activites') || str_contains($migration, 'synchroniser_comptabilite_evenement(')) {
 	$erreurs[] = "La migration Comptabilité connaît encore l'implémentation Événements.";
 }
+foreach (array("objet='cotisation'", "objet='evenement'", 'statut_cotisation', '_migration_generer_justification_cotisation') as $logique_metier) {
+	if (str_contains($migration, $logique_metier)) {
+		$erreurs[] = "La migration Comptabilité contient encore la logique métier $logique_metier.";
+	}
+}
 if (str_contains($edition, 'spip_evenements')
 	|| !str_contains($edition, "pipeline('association_compta_objets_lister'")) {
 	$erreurs[] = "Le formulaire Comptabilité charge encore directement les événements.";

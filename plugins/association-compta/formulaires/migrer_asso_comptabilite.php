@@ -125,18 +125,22 @@ function formulaires_migrer_asso_comptabilite_traiter_dist(){
         $pc_cotisations_creance = _request('pc_cotisations_creance');
         $pc_cotisations_paiement = _request('pc_cotisations_paiement');
 
-        appliquer_migration_manuelle($imputations_existantes, $pc_cotisations_creance, $pc_cotisations_paiement);
+		pipeline('association_compta_migration_metiers', array(
+			'args' => array(
+				'mode' => 'manuelle',
+				'imputations_existantes' => (array) $imputations_existantes,
+				'pc_cotisations_creance' => $pc_cotisations_creance,
+				'pc_cotisations_paiement' => $pc_cotisations_paiement,
+			),
+			'data' => array(),
+		));
     } else {
         // Nouveau: en mode auto, on nettoie d'abord la BDD puis on applique la migration et on synchronise les événements
         include_spip('genie/association_maintenance_bdd');
 
 		$lot_max = 100000;
 
-        // 2) Migration automatique des imputations selon la config
-        $cfg = get_config_plan_comptable_migration();
-        appliquer_migration_auto($cfg);
-
-		// 3) Laisser chaque plugin métier synchroniser ses propres écritures.
+		// Laisser chaque plugin métier migrer puis synchroniser ses écritures.
 		pipeline('association_compta_migration_metiers', array(
 			'args' => array('mode' => 'auto', 'lot' => $lot_max, 'maintenant' => time(), 'mois_non_encaisse' => 6),
 			'data' => array(),
@@ -147,136 +151,6 @@ function formulaires_migrer_asso_comptabilite_traiter_dist(){
     $retour['redirect'] = generer_url_ecrire('comptes');
 
     return $retour;
-}
-
-// Migration manuelle: remplace l'imputation selon statut cotisation (ok = paiement, sinon créance)
-function appliquer_migration_manuelle($imputations_existantes, $pc_cotisations_creance, $pc_cotisations_paiement) {
-    if (!$imputations_existantes || !is_array($imputations_existantes) || !count($imputations_existantes)) {
-        return;
-    }
-
-    $where = 'id_categorie > 0 AND ' . sql_in('imputation', $imputations_existantes); // bugfix: espace après AND
-    $query_comptes = sql_select('*', 'spip_asso_comptes', $where);
-
-    while ($row = sql_fetch($query_comptes)) {
-        $id_compte = intval($row['id_compte']);
-        $statut_cotisation = isset($row['statut_cotisation']) ? $row['statut_cotisation'] : '';
-        $pc_cible = ($statut_cotisation === 'ok') ? $pc_cotisations_paiement : $pc_cotisations_creance;
-
-        if ($pc_cible && $pc_cible !== $row['imputation']) {
-            sql_updateq(
-                'spip_asso_comptes',
-                array('imputation' => $pc_cible),
-                'id_compte=' . $id_compte
-            );
-        }
-    }
-}
-
-// Migration automatique: utilise la config du site pour cotisations et activités
-function appliquer_migration_auto(array $cfg) {
-    // 0) Normalisation: une cotisation ne doit jamais avoir de dépense
-    sql_updateq(
-        'spip_asso_comptes',
-        ['depense' => 0],
-        "(objet='cotisation' OR id_categorie>0) AND depense>0"
-    );
-
-    // 1) Cotisations (objet='cotisation')
-    $res_cot = sql_select('id_compte, imputation, statut_cotisation', 'spip_asso_comptes', "objet='cotisation'");
-    while ($row = sql_fetch($res_cot)) {
-        $id_compte = intval($row['id_compte']);
-        $imputation_actuelle = isset($row['imputation']) ? $row['imputation'] : '';
-        $is_paye = (isset($row['statut_cotisation']) && $row['statut_cotisation'] === 'ok');
-        $pc_cible = $is_paye ? $cfg['pc_cotisations_paiement'] : $cfg['pc_cotisations_creance'];
-        if ($pc_cible && $pc_cible !== $imputation_actuelle) {
-            sql_updateq('spip_asso_comptes', ['imputation' => $pc_cible], 'id_compte=' . $id_compte);
-        }
-    }
-
-    // 2) Activités (inscriptions) liées à un évènement (objet='evenement')
-    $res_act = sql_select(
-        'c.id_compte, c.imputation, c.id_transaction, t.statut AS statut_tx',
-        'spip_asso_comptes AS c LEFT JOIN spip_transactions AS t ON t.id_transaction=c.id_transaction',
-        "c.objet='evenement' AND c.id_transaction>0"
-    );
-    while ($row = sql_fetch($res_act)) {
-        $id_compte = intval($row['id_compte']);
-        $imputation_actuelle = isset($row['imputation']) ? $row['imputation'] : '';
-        $is_paye = (isset($row['statut_tx']) && $row['statut_tx'] === 'ok');
-        $pc_cible = $is_paye ? $cfg['pc_activites_paiement'] : $cfg['pc_activites_creance'];
-        if ($pc_cible && $pc_cible !== $imputation_actuelle) {
-            sql_updateq('spip_asso_comptes', ['imputation' => $pc_cible], 'id_compte=' . $id_compte);
-        }
-    }
-
-    // 3) Justifications des cotisations: appliquer la règle actif/inactif
-    // - Actif: « Cotisation de Nom Prenom #ID_AUTEUR »
-    // - Inactif: « Cotisation de #ID_AUTEUR »
-    $res_just = sql_select('id_compte,id_auteur', 'spip_asso_comptes', "objet='cotisation' OR id_categorie>0");
-    while ($row = sql_fetch($res_just)) {
-        $id_compte = intval($row['id_compte']);
-        $id_auteur = intval($row['id_auteur']);
-        if ($id_compte && $id_auteur) {
-            $justification = _migration_generer_justification_cotisation($id_auteur);
-            sql_updateq('spip_asso_comptes', ['justification' => $justification], 'id_compte=' . $id_compte);
-        }
-    }
-}
-
-// --- Fonctions utilitaires locales (limitées à ce formulaire/migration) ---
-/**
- * Retourne true si l'adhérent est actif:
- *  - auteur existe ET statut != 5poubelle ET validite >= (now - 24 mois)
- */
-function _migration_est_adherent_actif($id_auteur) {
-    $id_auteur = intval($id_auteur);
-    if (!$id_auteur) return false;
-    $auteur = sql_fetsel('*', 'spip_auteurs', 'id_auteur=' . $id_auteur);
-    if (!$auteur) return false; // inexistant
-    if (isset($auteur['statut']) && $auteur['statut'] === '5poubelle') return false;
-    $validite = isset($auteur['validite']) ? $auteur['validite'] : '';
-    if (!$validite || $validite === '0000-00-00 00:00:00') return false;
-    try {
-        $seuil = new DateTime();
-        $seuil->modify('-24 months');
-        $dv = new DateTime($validite);
-        return ($dv >= $seuil);
-    } catch (Exception $e) {
-        return false;
-    }
-}
-
-/**
- * Génère la justification pour une cotisation selon l'activité de l'adhérent
- */
-function _migration_generer_justification_cotisation($id_auteur) {
-    $id_auteur = intval($id_auteur);
-    $auteur = sql_fetsel('*', 'spip_auteurs', 'id_auteur=' . $id_auteur);
-    $nom_prenom = '';
-    if ($auteur) {
-        if (!empty($auteur['nom_famille']) || !empty($auteur['prenom'])) {
-            $nom_prenom = trim(($auteur['nom_famille'] ?? '') . ' ' . ($auteur['prenom'] ?? ''));
-        } elseif (!empty($auteur['nom'])) {
-            $nom_prenom = trim($auteur['nom']);
-        }
-    }
-    $actif = _migration_est_adherent_actif($id_auteur);
-    if ($actif && $nom_prenom !== '') {
-        return 'Cotisation de ' . $nom_prenom . ' #' . $id_auteur;
-    }
-    return 'Cotisation de #' . $id_auteur;
-}
-
-// Lit la configuration des comptes pour la migration automatique
-function get_config_plan_comptable_migration() {
-    $cfg = $GLOBALS['association_metas'];
-    return array(
-        'pc_cotisations_creance'   => !empty($cfg['pc_cotisations_creance'])   ? $cfg['pc_cotisations_creance']   : '101',
-        'pc_cotisations_paiement'  => !empty($cfg['pc_cotisations_paiement'])  ? $cfg['pc_cotisations_paiement']  : '102',
-        'pc_activites_creance'     => !empty($cfg['pc_activites_creance'])  ? $cfg['pc_activites_creance'] : '103',
-        'pc_activites_paiement'    => !empty($cfg['pc_activites_paiement'])  ? $cfg['pc_activites_paiement'] : '104',
-    );
 }
 
 // Prépare la liste des comptes d'imputation existants

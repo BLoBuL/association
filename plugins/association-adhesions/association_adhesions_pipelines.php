@@ -68,9 +68,20 @@ function association_adhesions_association_maintenance_bdd_executer($flux) {
 }
 
 function association_adhesions_association_compta_migration_metiers($flux) {
-	if (($flux['args']['mode'] ?? '') !== 'auto') {
+	$mode = $flux['args']['mode'] ?? '';
+	include_spip('inc/association_adhesions_migration_compta');
+	if ($mode === 'manuelle') {
+		$flux['data']['cotisations_migrees'] = association_adhesions_migration_compta_manuelle(
+			(array) ($flux['args']['imputations_existantes'] ?? array()),
+			(string) ($flux['args']['pc_cotisations_creance'] ?? ''),
+			(string) ($flux['args']['pc_cotisations_paiement'] ?? '')
+		);
 		return $flux;
 	}
+	if ($mode !== 'auto') {
+		return $flux;
+	}
+	$flux['data']['cotisations_migrees'] = association_adhesions_migration_compta_automatique();
 	include_spip('inc/association_adhesions_maintenance_cotisations');
 	$lot = (int) ($flux['args']['lot'] ?? 100000);
 	$maintenant = (int) ($flux['args']['maintenant'] ?? time());

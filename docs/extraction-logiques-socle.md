@@ -1011,3 +1011,13 @@ Adhésions. La détection des orphelines est désormais bornée explicitement à
 `objet='cotisation'`, ce qui évite de supprimer une autre écriture comptable
 simplement parce que son auteur a disparu. La maintenance planifiée et la
 migration automatique utilisent les mêmes services préfixés d'Adhésions.
+
+## Lot 87 : transformations comptables distribuées
+
+Le formulaire de migration ne transforme plus directement les écritures de
+cotisation ou d'événement. En mode manuel comme automatique, il publie le
+pipeline métier commun. Adhésions normalise les cotisations, leurs imputations
+et leurs justifications ; Événements ajuste les imputations des participations
+avant leur synchronisation ; Paiements nettoie ses transactions orphelines.
+Les écritures anciennes identifiées uniquement par `id_categorie` restent
+prises en charge pendant la reprise d'une base 2.x.
