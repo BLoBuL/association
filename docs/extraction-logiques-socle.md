@@ -1114,3 +1114,10 @@ Les deux derniers helpers historiques aux noms génériques
 plugin. Leurs consommateurs métier appellent respectivement
 `association_maintenance_resultat_en_echec()` et
 `association_valeur_bdd_est_vraie()`, sans alias global conservé.
+
+## Lot 99 : styles du plan comptable
+
+La hiérarchie visuelle du formulaire d'import du plan comptable quitte la
+feuille générale du socle. Elle rejoint la feuille privée de Comptabilité et
+ses sélecteurs sont bornés à `.formulaire_importer_plan_comptable`, afin de ne
+plus modifier globalement toutes les saisies nommées `classe` ou `compte`.
