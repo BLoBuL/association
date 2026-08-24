@@ -891,3 +891,15 @@ La modification normalise les liens et les justifications. La suppression
 efface toutes les écritures et destinations canoniques ou historiques de la
 sélection. Les quatre helpers Ventes ont quitté `inc/comptes.php`, qui ne
 conserve plus que les primitives et domaines dont Comptabilité est propriétaire.
+
+## Lot 74 : filtres autonomes des groupes
+
+Le modèle des responsables utilisait le filtre téléphonique du socle et le
+composeur de nom d'Adhésions sans déclarer cette relation. Groupes fournit
+maintenant ses deux filtres sous son propre préfixe. Le helper téléphonique
+quitte le socle et le composeur historique sans autre appelant est supprimé.
+
+Comme le modèle affiche les Champs Extras `sexe`, `prenom`, `nom_famille`,
+`telephone` et `mobile` portés par Adhésions, cette dépendance est désormais
+explicite dans `paquet.xml`. Le plugin ne peut plus être activé dans un état où
+son modèle compile mais ne dispose pas de son contrat de données.

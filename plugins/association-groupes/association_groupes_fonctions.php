@@ -22,3 +22,20 @@ function filtre_roles_association($fonctions_benevole = []) {
 
 	return $roles;
 }
+
+function association_groupes_nom_membre($civilite, $prenom, $nom_famille) {
+	return trim(implode(' ', array_filter(array(
+		trim((string) $civilite),
+		trim((string) $prenom),
+		trim((string) $nom_famille),
+	), 'strlen')));
+}
+
+function association_groupes_telephone($numero) {
+	$numero = preg_replace('/\D/', '', (string) $numero);
+	if ($numero === '') {
+		return '';
+	}
+
+	return trim((string) preg_replace('/(\d{2})/', '$1&nbsp;', $numero));
+}

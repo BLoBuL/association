@@ -138,18 +138,3 @@ function association_recupere_montant($valeur) {
 
 	return $valeur !== '' ? (float) $valeur : 0.0;
 }
-
-/**
- * Formater un numéro de téléphone français par groupes de deux chiffres.
- *
- * @param mixed $numero
- * @return string
- */
-function association_telfr($numero) {
-	$numero = preg_replace('/\D/', '', (string) $numero);
-	if (!(int) $numero) {
-		return '';
-	}
-
-	return trim((string) preg_replace('/(\d{2})/', '$1&nbsp;', $numero));
-}

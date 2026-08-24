@@ -61,13 +61,6 @@ function generer_url_membre($id, $param = '', $ancre = '') {
 }
 
 
-function association_calculer_nom_membre($civilite, $prenom, $nom_famille) {
-    $res = (!empty($civilite))?$civilite.' ':'';
-    $res .= (!empty($prenom))?$prenom.' ':'';
-    $res .= $nom_famille;
-    return $res;
-}
-
 function adherent_correction_statut(){
     # Recherche et correction des status des adhérents (évite de se retrouver avec une liste vide lors de l'installation)
     $auteurs_query = sql_select('statut_interne, id_auteur', 'spip_auteurs', "statut_interne=''");

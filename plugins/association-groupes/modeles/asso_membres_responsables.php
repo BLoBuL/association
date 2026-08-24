@@ -17,10 +17,10 @@
 	{pagination #ENV{pagination,10} assoequipe}
 	>
 	<tr class="agent vcard [row_(#COMPTEUR_BOUCLE|alterner{'odd','even'})]">
-		<td><a class="spip_in fn" title="<:association_groupes:adherent_label_modifier_visiteur:>" href="[(#ID_AUTEUR|generer_objet_url{auteur})]">[(#SEXE|association_calculer_nom_membre{#PRENOM, #NOM_FAMILLE})]</a></td>
+		<td><a class="spip_in fn" title="<:association_groupes:adherent_label_modifier_visiteur:>" href="[(#ID_AUTEUR|generer_objet_url{auteur})]">[(#SEXE|association_groupes_nom_membre{#PRENOM, #NOM_FAMILLE})]</a></td>
 		<td>[<a class="spip_out email" href="mailto:(#EMAIL)">#EMAIL</a>]</td>
-		<td>[<a class="spip_out tel" href="tel:[(#TELEPHONE|replace{\D})]">(#TELEPHONE|association_telfr)</a>]</td>
-		<td>[<a class="spip_out tel" href="tel:[(#MOBILE|replace{\D})]">(#MOBILE|association_telfr)</a>]</td>
+		<td>[<a class="spip_out tel" href="tel:[(#TELEPHONE|replace{\D})]">(#TELEPHONE|association_groupes_telephone)</a>]</td>
+		<td>[<a class="spip_out tel" href="tel:[(#MOBILE|replace{\D})]">(#MOBILE|association_groupes_telephone)</a>]</td>
 		<td>
 		<BOUCLE_correspondance(SPIP_AUTEURS_LIENS){id_auteur}>
 			<BOUCLE_articles(ARTICLES){id_article = #ID_OBJET}{0,5}{doublons}>

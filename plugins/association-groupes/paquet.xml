@@ -5,4 +5,5 @@
 	<pipeline nom="autoriser" inclure="association_groupes_autoriser.php" />
 	<pipeline nom="association_installation_inventaire" inclure="inc/association_groupes_installation.php" />
 	<pipeline nom="association_menu_entrees" inclure="inc/association_groupes_menu.php" />
+	<necessite nom="association_adhesions" compatibilite="[4.0.0;4.*]" />
 </paquet>
