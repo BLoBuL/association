@@ -13,7 +13,8 @@ function action_supprimer_compte_dist() {
     }
 
     if (intval($id_compte) > 0) {
-        sql_delete('spip_asso_comptes', 'id_compte='.intval($id_compte));
+		include_spip('inc/association_compta_ecritures');
+		association_compta_ecriture_supprimer((int) $id_compte);
     }
 
 }

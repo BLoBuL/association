@@ -9,7 +9,8 @@ function action_invalider_compte_dist() {
     }
 
     if (intval($id_compte) > 0) {
-        sql_updateq('spip_asso_comptes', array('vu' => 0), 'id_compte='.intval($id_compte));
+		include_spip('inc/association_compta_ecritures');
+		association_compta_ecriture_modifier((int) $id_compte, array('vu' => 0));
     }
     // Redirection vers la page d'origine
     if ($redirect = _request('redirect')) {

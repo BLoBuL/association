@@ -13,6 +13,7 @@ function action_traiter_comptes_dist() {
 
     $comptes = _request('selecteur_comptes');
     $action = _request('action_masse');
+	include_spip('inc/association_compta_ecritures');
 
     if (is_array($comptes) && count($comptes) > 0) {
         foreach ($comptes as $id_compte) {
@@ -20,13 +21,13 @@ function action_traiter_comptes_dist() {
             if ($id_compte > 0 && autoriser('modifier', 'asso_compte', $id_compte)) {
                 switch ($action) {
                     case 'valider':
-                        sql_updateq('spip_asso_comptes', array('vu' => 1), 'id_compte=' . $id_compte);
+						association_compta_ecriture_modifier($id_compte, array('vu' => 1));
                         break;
                     case 'invalider':
-                        sql_updateq('spip_asso_comptes', array('vu' => 0), 'id_compte=' . $id_compte);
+						association_compta_ecriture_modifier($id_compte, array('vu' => 0));
                         break;
                     case 'supprimer':
-                        sql_delete('spip_asso_comptes', 'id_compte=' . $id_compte);
+						association_compta_ecriture_supprimer($id_compte);
                         break;
                 }
             }
