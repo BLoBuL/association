@@ -2102,3 +2102,31 @@ L'ancien onglet Participants d'Événements et les anciennes colonnes
 Autorisation/Parrain/Commande/Facture de Paiements étaient conservés sous forme
 de HTML commenté. Ils sont supprimés afin que les squelettes ne portent plus
 d'interface morte. La suite locale atteint 130 tests, tous valides.
+
+Le commit `e6f9446b` est déployé sur test-fiafe avec les deux empreintes de
+l'artefact Git conformes. Événements et Paiements restent actifs en 4.0.0 et
+les 297 fonds recompilent. Dans Chrome authentifié, Transactions et la fiche
+activité 231 restent servies sans erreur après le retrait des blocs inactifs.
+
+## Lot 173 - recette publique anonyme et compatibilité Accès Restreint
+
+Le contexte Chrome isolé a mis en évidence des avertissements PHP 8.4 publics
+dans Accès Restreint 6.3.1 : un identifiant d'auteur `null` était utilisé comme
+clé de tableaux statiques. SVP ne propose aucune mise à jour, mais le dépôt
+officiel corrige exactement ce défaut dans le commit amont `84ebc5b` sans
+changer encore le numéro 6.3.1.
+
+Le fichier officiel corrigé est installé uniquement sur test-fiafe avec son
+empreinte SHA-256 `4e5915f8029dd846b1f6f8143f568a6f0cd71c350d1d6b595639588a01643ad7`.
+Le fichier précédent, dont l'empreinte est
+`5d8e812b19bb7c514b150d2712e508a8ec33a2a99f44a9534b43f2540a6a5f4f`,
+reste disponible dans
+`.spip-cli-backups/accesrestreint-6.3.1-php84-20260824/inc/accesrestreint.php`.
+Le cache a été vidé et le fichier PHP relu sans erreur.
+
+Après correction, un Chrome sans cookie ni session obtient un HTTP 200 sans
+avertissement, erreur fatale ou clé brute sur Inscription, Profil, Fiche
+d'adhésion, Newsletter, Événement 231 et Ressources. Profil, Inscription,
+Événement et Ressources ne présentent aucun débordement horizontal à 390 px ;
+Événement est également conforme à 768 et 1440 px. Aucun formulaire public n'a
+été soumis.
