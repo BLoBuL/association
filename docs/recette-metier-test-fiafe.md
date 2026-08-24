@@ -1173,3 +1173,15 @@ filtre, export ni bouton d'écriture n'a été déclenché pendant cette recette
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
+
+## Lot 108 — retrait du thème public historique
+
+Le commit `1c950847` est déployé depuis l'artefact SHA-256
+`d385ff14e1117da6f40c9c59c6e02c7af6edc7f1c911a15dcc86b56748783522`.
+L'accueil privé SPIP conserve sa navigation, ses boîtes et la liste des articles.
+La page Comptabilité conserve sa typographie native, ses cartes et son tableau.
+Les anciennes règles Jupiter et le titre global à 60 pixels ne sont plus servis.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
