@@ -1,27 +1,22 @@
-<div style="max-width:  400px;margin: auto">
-<hr style="clear: both;background-color: #F5F5F5">        
-        <h3><:association_evenements:voir_activites_lien_inscription_invites:></h3>
-        <p><:association_evenements:voir_activites_lien_inscription_vip:></p>
-        [(#SET{token,#ID_EVENEMENT|affichage_dans_activites|table_valeur{token}})]
-
-        [<textarea  id="copy_url" rows="4" cols="50"  style="display: block;width: 100%" readonly>(#URL_EVENEMENT|parametre_url{token,#GET{token}}|url_absolue)</textarea>]
-        <button onclick="myFunction()"><i class="fa-solid fa-copy"></i> Copier le lien</button>
-    </p>
+<div class="asso-lien-inscription-vip" style="max-width:400px;margin:auto">
+    <hr style="clear:both;background-color:#f5f5f5">
+    <h3><:association_evenements:voir_activites_lien_inscription_invites:></h3>
+    <p><:association_evenements:voir_activites_lien_inscription_vip:></p>
+    [(#SET{token,#ID_EVENEMENT|affichage_dans_activites|table_valeur{token}})]
+    [<textarea id="copy_url" rows="4" cols="50" style="display:block;width:100%" readonly>(#URL_EVENEMENT|parametre_url{token,#GET{token}}|url_absolue)</textarea>]
+    <button type="button" class="js-copier-lien-vip"><i class="fa-solid fa-copy" aria-hidden="true"></i> <:association_evenements:copier_lien_inscription:></button>
 </div>
 <script>
-function myFunction() {
-  // Get the text field
-  var copyText = document.getElementById("copy_url");
-  // Select the text field
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); // For mobile devices
-  // Copy the text inside the text field
-  navigator.clipboard.writeText(copyText.value);
-  // Alert the copied text
-  alert(" Le lien texte à bien été copié");
-}
+(function () {
+  const button = document.querySelector('.js-copier-lien-vip');
+  const field = document.getElementById('copy_url');
+  if (!button || !field) return;
+  button.addEventListener('click', function () {
+    field.select();
+    field.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(field.value).then(function () {
+      button.textContent = '<:association_evenements:lien_inscription_copie|attribut_html|texte_script:>';
+    });
+  });
+}());
 </script>
-<style> 
-    
-    
-</style>

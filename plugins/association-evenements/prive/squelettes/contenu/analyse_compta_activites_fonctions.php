@@ -301,7 +301,7 @@ function filtre_analyse_compta_activites_normaliser_type($type) {
 }
 
 /**
- * Retourne le libellé français du filtre de type
+ * Retourne le libellé traduit du filtre de type.
  *
  * @param string $type 'toutes', 'recette' ou 'depense'
  * @return string Libellé en français
@@ -309,12 +309,12 @@ function filtre_analyse_compta_activites_normaliser_type($type) {
 function analyse_compta_activites_libelle_type($type) {
     switch ($type) {
         case 'recette':
-            return 'Recettes uniquement';
+            return _T('association_compta:filtre_recettes_uniquement');
         case 'depense':
-            return 'Dépenses uniquement';
+            return _T('association_compta:filtre_depenses_uniquement');
         case 'toutes':
         default:
-            return 'Toutes les opérations';
+            return _T('association_compta:filtre_toutes_operations');
     }
 }
 

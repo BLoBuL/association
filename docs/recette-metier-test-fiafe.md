@@ -1950,3 +1950,14 @@ des événements, Suivi des inscriptions et la fiche de l'activité 231 sont
 servis sans erreur ni clé de langue brute ; les filtres traduits et le fil
 d'Ariane natif sont visibles sur les pages concernées. Aucune action métier
 n'a été déclenchée.
+
+## Lot 163 - intégration comptable et lightbox VIP Événements
+
+Les bascules d'inclusion des écritures non validées et les libellés du filtre
+recettes/dépenses/toutes les opérations sont désormais traduits par le domaine
+`association_compta`. La lightbox du lien VIP utilise le domaine Événements,
+un bouton explicite et un écouteur JavaScript local, sans gestionnaire inline,
+fonction globale ni alerte bloquante.
+
+Un test protège les frontières de traduction et les anti-patterns retirés. La
+suite locale atteint 121 tests, tous valides.

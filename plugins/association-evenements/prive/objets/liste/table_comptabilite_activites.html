@@ -15,8 +15,8 @@
 
     <!-- statistics table (cards, no inline styles) -->
     <div style="text-align:right;margin-bottom:8px;">
-        [(#GET{inclure_non_validees}|=={1}|?{<a class="spip_button on inclure-toggle ajax" data-value="0" href="[(#SELF|parametre_url{inclure_non_validees,0})]">Inclure non validées : ON</a>,})]
-        [(#GET{inclure_non_validees}|=={0}|?{<a class="spip_button inclure-toggle ajax" data-value="1" href="[(#SELF|parametre_url{inclure_non_validees,1})]">Inclure non validées : OFF</a>,})]
+        [(#GET{inclure_non_validees}|=={1}|?{<a class="spip_button on inclure-toggle ajax" data-value="0" href="[(#SELF|parametre_url{inclure_non_validees,0})]"><:association_compta:inclure_non_validees_oui:></a>,})]
+        [(#GET{inclure_non_validees}|=={0}|?{<a class="spip_button inclure-toggle ajax" data-value="1" href="[(#SELF|parametre_url{inclure_non_validees,1})]"><:association_compta:inclure_non_validees_non:></a>,})]
     </div>
 
     <div class="boite_stats_compact boite_stats_expanded" aria-label="<:association_compta:label_stats_comptabilite:>">
