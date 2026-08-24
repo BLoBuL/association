@@ -1345,3 +1345,21 @@ transaction ou à montant nul, mais le parcours est protégé pour les nouvelles
 catégories gratuites. Après déploiement ciblé et vidage du cache, l'empreinte
 des dix cotisations migrées reste inchangée et les 221 squelettes privés,
 douze pages publiques et 64 composants front compilent toujours.
+
+## Lot 119 — suppression cohérente d'une cotisation séparée
+
+Le CVT de suppression ne retire plus uniquement l'ancienne écriture comptable.
+Il vérifie l'autorisation SPIP et l'identifiant, supprime la ligne métier dans
+`spip_asso_cotisations`, détache les documents sans détruire les fichiers, puis
+délègue à l'API Compta la suppression de l'écriture et de ses ventilations.
+
+La transaction Bank est conservée et marquée abandonnée par défaut. Sa
+suppression explicite reste disponible dans le formulaire, mais n'est plus le
+choix précoché. Le contrôle CVT qui utilisait une variable indéfinie est
+remplacé par une validation stricte `oui`/`non` et l'autorisation est répétée au
+traitement.
+
+La recette reste volontairement non destructive : aucune des dix cotisations
+DEV n'a été supprimée. Après déploiement et vidage du cache, leur empreinte est
+inchangée et les 221 squelettes privés, douze pages publiques et 64 composants
+front compilent sous SPIP 4.4.21.

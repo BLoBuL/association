@@ -54,3 +54,14 @@ function association_compta_ecriture_modifier($id_compte, array $donnees) {
 	}
 	return $id_compte;
 }
+
+function association_compta_ecriture_supprimer($id_compte) {
+	$id_compte = (int) $id_compte;
+	if ($id_compte <= 0) {
+		return false;
+	}
+	// Les ventilations appartiennent à l'écriture comptable et ne doivent pas
+	// survivre à sa suppression.
+	sql_delete('spip_asso_destination_op', 'id_compte=' . $id_compte);
+	return (bool) sql_delete('spip_asso_comptes', 'id_compte=' . $id_compte);
+}

@@ -23,12 +23,12 @@
                     <p class="explication"><:association_adhesions:formulaire_supprimer_cotisation_explication:></p>
                   
                     <div class="choix">
-                        <input type="radio" name="supprimer_transaction" class="checkbox" id="oui" value="oui" checked>
-                    <label for="oui"><:association_adhesions:oui:></label>
+                        <input type="radio" name="supprimer_transaction" class="radio" id="supprimer_transaction_oui" value="oui"[(#ENV{supprimer_transaction}|=={oui}|oui) checked="checked"]>
+                    <label for="supprimer_transaction_oui"><:association_adhesions:oui:></label>
                     </div>
                     <div class="choix">
-                        <input type="radio" name="supprimer_transaction" class="checkbox" id="non" value="non">
-                        <label for="non"><:association_adhesions:non:></label>
+                        <input type="radio" name="supprimer_transaction" class="radio" id="supprimer_transaction_non" value="non"[(#ENV{supprimer_transaction}|=={non}|oui) checked="checked"]>
+                        <label for="supprimer_transaction_non"><:association_adhesions:non:></label>
                     </div>  
 				</li>
 		</ul>

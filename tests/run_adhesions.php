@@ -12,6 +12,7 @@ $tests = array(
     $racine_bo . '/tests/test_adhesions_notifications_audit.php',
     $racine_bo . '/tests/test_adhesions_justificatifs_bo.php',
     $racine_bo . '/tests/test_adhesions_formulaire_cotisation_bo.php',
+    $racine_bo . '/tests/test_adhesions_suppression_cotisation.php',
     $racine_bo . '/tests/test_validite_reinscription_scolaire.php',
     $racine_bo . '/tests/test_architecture_spip4.php',
 );
