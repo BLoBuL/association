@@ -1981,3 +1981,10 @@ le message « aucune notification » ne soit plus affiché à tort.
 
 Un test couvre les clés, l'absence des libellés historiques et le témoin des
 quatre listes. La suite locale atteint 122 tests, tous valides.
+
+Le commit `0c0e4e8a` est déployé sur test-fiafe avec les cinq empreintes de
+l'artefact Git conformes. Événements reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, l'onglet Notifications/Activité affiche
+ses libellés traduits, ses notifications existantes et n'affiche plus le faux
+état vide ; l'export des événements est servi sans erreur ni clé brute.
+Aucune notification n'a été envoyée et aucune donnée n'a été modifiée.
