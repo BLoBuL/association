@@ -119,15 +119,7 @@
 
 <div class="asso-filtres">
     <div class="filtre-groupe">
-        <label><:association_adhesions:label_filtre_periodes_cotisations:></label>
-
-<!--
-        &lt;!&ndash; Toggle contexte periode: adherent / entreprise &ndash;&gt;
-        <div class="options options-contexte" style="margin-bottom:6px;">
-            <a href="[(#GET{url_self_saine}|parametre_url{periode_contexte,adherent})]" class="ajax option [(#GET{periode_contexte}|=={adherent}|?{'selected',''})]">Adhérents</a>
-            <a href="[(#GET{url_self_saine}|parametre_url{periode_contexte,entreprise})]" class="ajax option [(#GET{periode_contexte}|=={entreprise}|?{'selected',''})]">Entreprises</a>
-        </div>
--->
+        <span class="label"><:association_adhesions:label_filtre_periodes_cotisations:></span>
 
         <div class="options">
             <a href="[(#GET{url_self_saine}|parametre_url{periode,'tout'})]" class="ajax option[(#GET{filtres_effectifs}|table_valeur{periode}|non) selected]">
@@ -136,7 +128,7 @@
             <BOUCLE_periodes(DATA){source table, #VAL{6}|liste_periodes_adherents}>
             <a href="[(#GET{url_self_saine}|parametre_url{periode,#LIBELLE})]"
                class="ajax option[(#GET{filtres_effectifs}|table_valeur{periode}|=={#LIBELLE}|oui) selected][ (#ENCOURS|oui)encours]"
-               title="Du [(#DATE_DEBUT|affdate_jourcourt)] au [(#DATE_FIN|affdate_jourcourt)]">
+               title="<:association_adhesions:periode_du:> [(#DATE_DEBUT|affdate_jourcourt)] <:association_adhesions:periode_au:> [(#DATE_FIN|affdate_jourcourt)]">
                 <span class="periode-libelle">#LIBELLE</span>
                 [(#ENCOURS|oui)
                 <span class="badge-encours"><i class="fa fa-circle"></i></span>
@@ -147,7 +139,7 @@
     </div>
 
     <div class="filtre-groupe">
-        <label><:association_adhesions:label_filtre_statut:></label>
+        <span class="label"><:association_adhesions:label_filtre_statut:></span>
         <div class="options">
             <a href="[(#GET{url_self_saine}|parametre_url{statut_interne,'tout'})]" class="ajax option[(#GET{filtres_effectifs}|table_valeur{statut_interne}|non) selected]">
                 <:association_adhesions:label_tous_statut_statut:>
@@ -167,7 +159,7 @@
     [(#SET{filtre_nom,#CLE})]
     [(#SET{filtre_valeur,#GET{filtres_effectifs}|table_valeur{#GET{filtre_nom}}})]
     <div class="filtre-groupe filtre-champ-extra filtre-#CLE">
-        <label>[(#VALEUR{label}|typo)]</label>
+        <span class="label">[(#VALEUR{label}|typo)]</span>
         <div class="options">
             <a href="[(#GET{url_self_saine}|parametre_url{#GET{filtre_nom},'tout'})]"
                class="ajax option[(#GET{filtre_valeur}|non) selected]">
@@ -188,7 +180,7 @@
 
     <B_type_cotisations>
     <div class="filtre-groupe filtre-type-cotisation">
-        <label><:association_adhesions:label_filtre_type_cotisation:></label>
+        <span class="label"><:association_adhesions:label_filtre_type_cotisation:></span>
         <div class="options">
             <a href="[(#GET{url_self_saine}|parametre_url{type_cotisation,'tout'})]" class="ajax option[(#GET{filtres_effectifs}|table_valeur{type_cotisation}|non) selected]">
                 <:association_adhesions:label_tous_statut_statut:>
@@ -205,7 +197,7 @@
     </B_type_cotisations>
     <B_type_comptes>
         <div class="filtre-groupe filtre-type-compte">
-            <label><:association_adhesions:label_filtre_type_compte:></label>
+            <span class="label"><:association_adhesions:label_filtre_type_compte:></span>
             <div class="options">
                 <BOUCLE_type_comptes(DATA){si #VAL|a_type_compte}{source table, #VAL|liste_type_compte}>
                     <a href="[(#GET{url_self_saine}|parametre_url{type_compte,#CLE})]"

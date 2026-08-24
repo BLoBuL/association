@@ -2,19 +2,19 @@
 <h1 class="grostitre"><:association_adhesions:titre_listes_cotisations:></h1>
 <div class="asso-filtres-container filtre-card">
     <div class="filtre-card-header">
-        <h2 class="filtre-card-title">Filtres</h2>
-        <p class="filtre-card-sub">Affinez la liste des cotisations — période, statut, type et 1ère inscription / réinscription</p>
+        <h2 class="filtre-card-title"><:association_adhesions:filtres_titre:></h2>
+        <p class="filtre-card-sub"><:association_adhesions:filtres_cotisations_explication:></p>
     </div>
 
     [(#SET{f_cot,#VAL|filtres_effectifs_cotisations})]
     <div class="asso-filtres">
         <div class="filtre-groupe">
-            <label><:association_adhesions:label_filtre_periodes_cotisations:></label>
+            <span class="label"><:association_adhesions:label_filtre_periodes_cotisations:></span>
 
             <!-- Toggle contexte periode: adherent / entreprise -->
             <div class="options options-contexte" style="margin-bottom:6px;">
-                <a href="[(#SELF|parametre_url{periode_contexte,adherent})]" class="ajax option [(#GET{periode_contexte}|association_adhesions_valeur_scalaire{ }|=={adherent}|?{'selected',''})]">Adhérents</a>
-                <a href="[(#SELF|parametre_url{periode_contexte,entreprise})]" class="ajax option [(#GET{periode_contexte}|association_adhesions_valeur_scalaire{ }|=={entreprise}|?{'selected',''})]">Entreprises</a>
+                <a href="[(#SELF|parametre_url{periode_contexte,adherent})]" class="ajax option [(#GET{periode_contexte}|association_adhesions_valeur_scalaire{ }|=={adherent}|?{'selected',''})]"><:association_adhesions:contexte_adherents:></a>
+                <a href="[(#SELF|parametre_url{periode_contexte,entreprise})]" class="ajax option [(#GET{periode_contexte}|association_adhesions_valeur_scalaire{ }|=={entreprise}|?{'selected',''})]"><:association_adhesions:contexte_entreprises:></a>
             </div>
 
             <div class="options">
@@ -24,7 +24,7 @@
                 <BOUCLE_periodes(DATA){source table, #VAL|liste_periodes_cotisations}>
                 <a href="[(#SELF|parametre_url{periode,#LIBELLE})]"
                    class="ajax option[(#GET{f_cot}|table_valeur{periode}|=={#LIBELLE}|oui) selected][ (#ENCOURS|oui)encours]"
-                   title="Du [(#DATE_DEBUT|affdate_jourcourt)] au [(#DATE_FIN|affdate_jourcourt)]">
+                   title="<:association_adhesions:periode_du:> [(#DATE_DEBUT|affdate_jourcourt)] <:association_adhesions:periode_au:> [(#DATE_FIN|affdate_jourcourt)]">
                     <span class="periode-libelle">#LIBELLE</span>
                     [(#ENCOURS|oui)<span class="badge-encours"><i class="fa fa-circle"></i></span>]
                 </a>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="filtre-groupe">
-            <label><:association_adhesions:label_filtre_cotisation_statut_cotisation:></label>
+            <span class="label"><:association_adhesions:label_filtre_cotisation_statut_cotisation:></span>
             <div class="options">
                 <a href="[(#SELF|parametre_url{statut_cotisation,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{statut_cotisation}|?{'',selected})]">
                     <:association_adhesions:label_tous_statut_cotisation:>
@@ -44,8 +44,8 @@
         </div>
 
         <!-- Groupe important: 1ère inscription / réinscription -->
-        <div class="filtre-groupe filtre-important" role="radiogroup" aria-label="Filtre type d'inscription">
-             <label><:association_adhesions:label_filtre_cotisation_reinscription:></label>
+        <div class="filtre-groupe filtre-important" role="radiogroup" aria-label="<:association_adhesions:filtre_type_inscription_aria:>">
+             <span class="label"><:association_adhesions:label_filtre_cotisation_reinscription:></span>
              <div class="options">
                  <a href="[(#SELF|parametre_url{reinscription,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{reinscription}|?{'',selected})]">
                      <:association_adhesions:label_tous_statut_cotisation:>
@@ -60,7 +60,7 @@
      <div class="asso-filtres">
         <B_type_cotisations>
             <div class="filtre-groupe">
-                <label><:association_adhesions:label_filtre_type_cotisation:></label>
+                <span class="label"><:association_adhesions:label_filtre_type_cotisation:></span>
                 <div class="options">
                     <a href="[(#SELF|parametre_url{type_cotisation,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{type_cotisation}|?{'',selected})]">
                         <:association_adhesions:label_tous_statut_cotisation:>
@@ -73,7 +73,7 @@
         </B_type_cotisations>
 
         <div class="filtre-groupe">
-            <label><:association_adhesions:label_filtre_categorie_cotisation:></label>
+            <span class="label"><:association_adhesions:label_filtre_categorie_cotisation:></span>
             <div class="options">
                 <a href="[(#SELF|parametre_url{id_categorie,'tout'})]" class="ajax option [(#GET{f_cot}|table_valeur{id_categorie}|?{'',selected})]">
                     <:association_adhesions:label_tous_statut_cotisation:>

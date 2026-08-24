@@ -43,8 +43,8 @@ body.cotisations .filtre-groupe {
 	min-width: 200px;
 }
 
-body.adherents .filtre-groupe label,
-body.cotisations .filtre-groupe label {
+body.adherents .filtre-groupe > .label,
+body.cotisations .filtre-groupe > .label {
 	display: block;
 	margin-bottom: 6px;
 	color: #374151;

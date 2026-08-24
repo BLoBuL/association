@@ -1911,3 +1911,16 @@ l'artefact Git conformes. Paiements reste actif en 4.0.0, SPIP est sain et les
 l'annulation de la transaction 1120 et la suppression autorisee de la
 transaction abandonnee 783 affichent leurs titres et actions traduits sans
 erreur. Aucune action n'a ete declenchee.
+
+## Lot 161 - filtres Adhesions semantiques et traduisibles
+
+Les listes Adherents et Cotisations ne contiennent plus de libelles de filtres
+codes en dur. Le titre, l'explication, les contextes adherents/entreprises,
+l'intervalle de dates et le groupe premiere inscription/reinscription utilisent
+le domaine `association_adhesions`.
+
+Les intitules visuels qui ne designent aucun controle de formulaire ne sont
+plus rendus avec `<label>` mais avec `<span class="label">` ; la feuille privee
+conserve exactement leur presentation. Un ancien bloc commente et inactif de
+selection du contexte a ete retire. La suite locale atteint 119 tests, tous
+valides.
