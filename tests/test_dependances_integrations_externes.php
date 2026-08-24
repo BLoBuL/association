@@ -1,6 +1,11 @@
 <?php
 
-$racine = dirname(__DIR__) . '/plugins';
+$racine_monorepo = dirname(__DIR__);
+if (is_dir($racine_monorepo . '/plugins/association-adhesions')) {
+	$racine = $racine_monorepo . '/plugins';
+} else {
+	$racine = dirname($racine_monorepo);
+}
 $attendus = array(
 	'association-adhesions/paquet.xml' => array('<necessite nom="medias"'),
 	'association-compta/paquet.xml' => array('<utilise nom="commandes"'),
