@@ -39,7 +39,7 @@ foreach (array("objet='cotisation'", "objet='evenement'", 'statut_cotisation', '
 	}
 }
 if (str_contains($edition, 'spip_evenements')
-	|| !str_contains($edition, "pipeline('association_compta_objets_lister'")) {
+	|| !str_contains($edition, "pipeline('association_compta_objets_declarer'")) {
 	$erreurs[] = "Le formulaire Comptabilité charge encore directement les événements.";
 }
 foreach (array('association_evenements_compte_inscription_creer', 'association_evenements_compte_inscription_actualiser', 'association_evenements_compte_remboursement_creer') as $fonction) {

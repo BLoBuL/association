@@ -14,3 +14,18 @@ function association_dons_association_rgpd_anonymiser_auteur($flux) {
 	)), 'id_adherent=' . $id);
 	return $flux;
 }
+
+function association_dons_association_compta_objets_declarer($flux) {
+	$data = array();
+	$res = sql_select('id_don,date_don,bienfaiteur,valeur', 'spip_asso_dons', '', '', 'date_don DESC');
+	while ($don = sql_fetch($res)) {
+		$id = (int) $don['id_don'];
+		$data[$id] = '#' . $id . ' - ' . $don['date_don'] . ' - ' . $don['bienfaiteur'] . ' - ' . $don['valeur'];
+	}
+	$flux['data']['asso_don'] = array(
+		'label' => 'association_compta:choix_don', 'objet' => 'asso_don', 'champ' => 'id_don',
+		'label_selection' => 'association_compta:choix_don', 'data' => $data,
+		'imputation_recette' => $GLOBALS['association_metas']['pc_dons'] ?? '',
+	);
+	return $flux;
+}

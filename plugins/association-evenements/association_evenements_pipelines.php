@@ -90,13 +90,29 @@ function association_evenements_association_compta_migration_metiers($flux) {
 	return $flux;
 }
 
-function association_evenements_association_compta_objets_lister($flux) {
-	if (($flux['args']['objet'] ?? '') !== 'evenement') {
-		return $flux;
-	}
+function association_evenements_association_compta_objets_declarer($flux) {
+	$data = array();
 	$evenements = sql_select('id_evenement,titre,date_debut', 'spip_evenements', '', '', 'date_debut DESC');
 	while ($evenement = sql_fetch($evenements)) {
-		$flux['data'][(int) $evenement['id_evenement']] = affdate_court($evenement['date_debut']) . ' - ' . $evenement['titre'];
+		$data[(int) $evenement['id_evenement']] = affdate_court($evenement['date_debut']) . ' - ' . $evenement['titre'];
+	}
+	$flux['data']['evenement'] = array(
+		'label' => 'association_compta:choix_evenement',
+		'objet' => 'evenement',
+		'champ' => 'id_evenement',
+		'label_selection' => 'association_compta:form_operation_evenement_label',
+		'explication' => 'association_compta:form_operation_evenement_explication',
+		'data' => $data,
+		'imputation_recette' => $GLOBALS['association_metas']['pc_activites_paiement'] ?? '',
+		'imputation_depense' => $GLOBALS['association_metas']['pc_activites_frais'] ?? '',
+		'verrouiller' => (int) _request('id_evenement') > 0,
+	);
+	return $flux;
+}
+
+function association_evenements_association_compta_redirection_ecriture($flux) {
+	if (($flux['args']['objet'] ?? '') === 'evenement' && (int) ($flux['args']['id_objet'] ?? 0) > 0) {
+		$flux['data'] = generer_url_ecrire('voir_activites', 'id=' . (int) $flux['args']['id_objet'] . '&affichage=comptabilite');
 	}
 	return $flux;
 }

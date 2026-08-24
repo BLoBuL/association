@@ -1057,3 +1057,18 @@ Comptabilité ne résout plus un événement et n'appelle plus directement son
 autorisation. Elle publie `association_compta_autoriser_ecriture` avec le lien
 objet de l'écriture. Événements reconnaît son contexte, résout éventuellement
 une inscription et délègue à l'autorisation native de l'événement.
+
+## Lot 93 : objets du formulaire comptable distribués
+
+Le formulaire générique d'écriture ne contient plus de liste, table, valeur par
+défaut, validation ni redirection propre à un domaine. Il publie
+`association_compta_objets_declarer` et transforme chaque déclaration en saisie
+SPIP. Adhésions, Événements, Dons, Ventes et Prêts fournissent leurs sélecteurs,
+leurs liens canoniques et leurs imputations. La redirection vers la fiche d'un
+événement est également rendue à Événements par
+`association_compta_redirection_ecriture`. Le pseudo-objet historique
+`activite` et le type non canonique `don` disparaissent du formulaire.
+
+La création d'une écriture distingue désormais explicitement un identifiant
+positif de la sentinelle textuelle `new`, afin de ne plus appeler par erreur la
+branche de modification avec l'identifiant zéro.

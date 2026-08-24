@@ -5,6 +5,7 @@
 	<pipeline nom="autoriser" inclure="association_prets_autoriser.php" />
 	<pipeline nom="association_rgpd_export_auteur" inclure="association_prets_pipelines.php" />
 	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_prets_pipelines.php" />
+	<pipeline nom="association_compta_objets_declarer" inclure="association_prets_pipelines.php" />
 	<pipeline nom="association_installation_inventaire" inclure="inc/association_prets_installation.php" />
 	<pipeline nom="association_migrations_historiques" inclure="inc/association_prets_migrations_socle.php" />
 	<pipeline nom="association_menu_entrees" inclure="inc/association_prets_menu.php" />

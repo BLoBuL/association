@@ -5,6 +5,64 @@ include_spip('inc/editer');
 include_spip('inc/autoriser');
 include_spip('inc/comptes');
 include_spip('formulaires/inc/destinations');
+
+function association_compta_objets_definitions() {
+	return (array) pipeline('association_compta_objets_declarer', array(
+		'args' => array(),
+		'data' => array(
+			'autre' => array('label' => 'association_compta:choix_autres', 'objet' => 'autre'),
+		),
+	));
+}
+
+function association_compta_objets_labels(array $definitions) {
+	$labels = array();
+	foreach ($definitions as $type => $definition) {
+		$labels[$type] = _T($definition['label']);
+	}
+	return $labels;
+}
+
+function association_compta_objets_saisies(array $definitions, array $defauts = array()) {
+	$saisies = array();
+	foreach ($definitions as $type => $definition) {
+		if (empty($definition['champ'])) {
+			continue;
+		}
+		$champ = $definition['champ'];
+		$saisies[] = array(
+			'saisie' => 'selection',
+			'options' => array(
+				'nom' => $champ,
+				'label' => _T($definition['label_selection'] ?? $definition['label']),
+				'explication' => !empty($definition['explication']) ? _T($definition['explication']) : '',
+				'data' => (array) ($definition['data'] ?? array()),
+				'defaut' => $defauts[$champ] ?? '',
+				'obligatoire' => 'oui',
+				'afficher_si' => '@objet@ == "' . $type . '"',
+				'disable_avec_post' => !empty($definition['verrouiller']) ? 'oui' : '',
+			),
+		);
+	}
+	return $saisies;
+}
+
+function association_compta_objet_contexte(array $definitions, array $compte = array()) {
+	$contexte = array('type' => _request('objet') ?: 'autre', 'defauts' => array(), 'verrouiller' => false);
+	foreach ($definitions as $type => $definition) {
+		$champ = $definition['champ'] ?? '';
+		$id_demande = $champ ? (int) _request($champ) : 0;
+		if ($id_demande > 0 || ($compte && ($compte['objet'] ?? '') === ($definition['objet'] ?? ''))) {
+			$contexte['type'] = $type;
+			$contexte['verrouiller'] = $id_demande > 0;
+			if ($champ) {
+				$contexte['defauts'][$champ] = $id_demande ?: (int) ($compte['id_objet'] ?? 0);
+			}
+			break;
+		}
+	}
+	return $contexte;
+}
 function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
     $id_compte = _request('id_compte') ?? 'new';
 
@@ -45,17 +103,12 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
             $disable_montant = 'oui';
         }
     }
-    if(_request('id_evenement') OR !empty($query_compte) AND ($query_compte['objet'] == 'evenement')) {
-        $objet_defaut = 'evenement';
-        $id_evenement = intval(_request('id_evenement'));
-        $imputation_evenement = $GLOBALS['association_metas']['pc_activites_frais'] ?? '';
-        $disable_evenement = 'oui';
-    }else{
-        $objet_defaut = _request('objet') ?: 'autre';
-    }
-    // Récupération des options de configuration
-    $config = $GLOBALS['association_metas'];
-
+	$definitions_objets = association_compta_objets_definitions();
+	$contexte_objet = association_compta_objet_contexte($definitions_objets, (array) $query_compte);
+	$objet_defaut = $contexte_objet['type'];
+	$definition_defaut = $definitions_objets[$objet_defaut] ?? array();
+	$type_operation_defaut = _request('type_operation') ?: (!empty($query_compte['depense']) ? 'depense' : 'recette');
+	$imputation_defaut = $query_compte['imputation'] ?? ($definition_defaut['imputation_' . $type_operation_defaut] ?? '');
     $saisies = [
         [
             'saisie' => 'selection',
@@ -63,37 +116,17 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
                 'nom' => 'objet',
                 'label' => _T('association_compta:form_operation_objet_label'),
                 'explication' => _T('association_compta:form_operation_objet_explication'),
-                'data' => [
-                    'autre' => _T('association_compta:choix_autres'),
-                    'cotisation' => _T('association_compta:choix_cotisation'),
-                    'activite' => _T('association_compta:choix_activite'),
-                    'evenement' => _T('association_compta:choix_evenement'),
-                    'don' => _T('association_compta:choix_don')
-                ],
+				'data' => association_compta_objets_labels($definitions_objets),
                 'defaut' => $objet_defaut,
                 'obligatoire' => 'oui',
-                'disable_avec_post' => $disable_evenement,
+                'disable_avec_post' => $contexte_objet['verrouiller'] ? 'oui' : '',
             ],
             'verifier' => [
                 'type' => 'in_array',
                 'options' => [
-                    'array' => ['cotisation', 'activite', 'evenement', 'don', 'autre']
+					'array' => array_keys($definitions_objets)
                 ]
             ]
-        ],
-        // Si objet est "evenement", ajouter un sélecteur d'événements
-        $saisies[] = [
-            'saisie' => 'selection',
-            'options' => [
-                'nom' => 'id_evenement',
-                'label' => _T('association_compta:form_operation_evenement_label'),
-                'explication' => _T('association_compta:form_operation_evenement_explication'),
-                'data' => preparer_liste_evenements(),
-                'defaut' => $id_evenement ?? '',
-                'obligatoire' => 'oui',
-                'afficher_si' => '@objet@ == "evenement"',
-                'disable_avec_post' => $disable_evenement,
-            ],
         ],
         [
             'saisie' => 'selection',
@@ -102,7 +135,7 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
                 'label' => _T('association_compta:form_operation_imputation_label'),
                 'explication' => _T('association_compta:form_operation_imputation_explication'),
                 'data' => preparer_liste_asso_plan_compte('data_saisies'),
-                'defaut' => $imputation_evenement ?? '',
+                'defaut' => $imputation_defaut,
                 'obligatoire' => 'oui',
                 'disable_avec_post' => $disable_complet,
                 //'afficher_si' => '@objet@ == "autre"', // Afficher seulement si "autre" est sélectionné
@@ -171,8 +204,13 @@ function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
             ],
         ]
     ];
-
-
+	$defauts_objets = $contexte_objet['defauts'];
+	foreach ($definitions_objets as $definition) {
+		if (!empty($definition['champ'])) {
+			$defauts_objets[$definition['champ']] = $defauts_objets[$definition['champ']] ?? _request($definition['champ']);
+		}
+	}
+	$saisies = array_merge($saisies, association_compta_objets_saisies($definitions_objets, $defauts_objets));
 
     return $saisies;
 }
@@ -204,9 +242,12 @@ function formulaires_editer_asso_comptes_charger_dist($id_compte = 'new') {
             $valeurs = $query_compte;
         }
 
-        if ($query_compte['objet'] == 'evenement') {
-            $valeurs['id_evenement'] = intval($query_compte['id_objet']);
-
+		foreach (association_compta_objets_definitions() as $type => $definition) {
+			if (($definition['objet'] ?? '') === ($query_compte['objet'] ?? '') && !empty($definition['champ'])) {
+				$valeurs['objet'] = $type;
+				$valeurs[$definition['champ']] = (int) $query_compte['id_objet'];
+				break;
+			}
         }
         if ($query_compte['depense'] > 0) {
             $valeurs['type_operation'] = 'depense';
@@ -226,17 +267,6 @@ function formulaires_editer_asso_comptes_charger_dist($id_compte = 'new') {
 
 
 
-}
-/**
- * Prépare une liste des événements pour le sélecteur
- *
- * @return array Liste formatée des événements
- */
-function preparer_liste_evenements() {
-	return (array) pipeline('association_compta_objets_lister', array(
-		'args' => array('objet' => 'evenement'),
-		'data' => array(),
-	));
 }
 /**
  * Vérifie les données soumises dans le formulaire d'édition des comptes associatifs.
@@ -265,12 +295,27 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
         $erreurs['montant'] = _T('association_compta:erreur_recette_depense');
     }
 
-    // Récupération de l'objet de l'opération
-    $objet = _request('objet');
-
-    // Vérification spécifique selon l'objet de l'opération
-    switch ($objet) {
-        case 'autre':
+	$type_objet = _request('objet');
+	$definitions = association_compta_objets_definitions();
+	if (!isset($definitions[$type_objet])) {
+		$erreurs['objet'] = _T('association_compta:erreur_obligatoire');
+	} else {
+		$definition = $definitions[$type_objet];
+		set_request('objet', $definition['objet']);
+		if (!empty($definition['champ'])) {
+			$id_objet = (int) _request($definition['champ']);
+			if ($id_objet <= 0) {
+				$erreurs[$definition['champ']] = _T('association_compta:erreur_obligatoire');
+			} else {
+				set_request('id_objet', $id_objet);
+			}
+		}
+		$type_operation = _request('type_operation');
+		$imputation_metier = $definition['imputation_' . $type_operation] ?? '';
+		if ($imputation_metier !== '') {
+			set_request('imputation', $imputation_metier);
+		}
+		if ($type_objet === 'autre') {
             // Vérification de l'imputation pour les opérations "autre"
             $code = _request('imputation');
             if (empty($code)) {
@@ -287,43 +332,7 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
                     }
                 }
             }
-            break;
-
-        case 'evenement':
-            // Vérification qu'un événement est sélectionné
-            if (empty(_request('id_evenement'))) {
-                $erreurs['id_evenement'] = _T('association_compta:erreur_evenement_obligatoire');
-            }
-            // Définition de l'imputation pour les événements
-/*            if ($depense = _request('depense') > 0) {
-                set_request('imputation', $GLOBALS['association_metas']['pc_activites_paiement'] ?? '');
-            } else {
-                set_request('imputation', $GLOBALS['association_metas']['pc_activites_creance'] ?? '');
-            }*/
-            set_request('objet', 'evenement');
-            set_request('id_objet', _request('id_evenement'));
-            break;
-
-        case 'cotisation':
-            // Définition de l'imputation pour les cotisations
-            set_request('imputation', $GLOBALS['association_metas']['pc_cotisations_creance'] ?? '');
-            set_request('objet', 'cotisation');
-            set_request('id_objet', _request('id_cotisation'));
-            break;
-
-        case 'activite':
-            // Définition de l'imputation pour les activités
-            set_request('imputation', $GLOBALS['association_metas']['pc_activites_creance'] ?? '');
-            set_request('objet', 'activite');
-            set_request('id_objet', _request('id_activite'));
-            break;
-
-        case 'don':
-            // Définition de l'imputation pour les dons
-            set_request('imputation', $GLOBALS['association_metas']['pc_dons'] ?? '');
-            set_request('objet', 'don');
-            set_request('id_objet', _request('id_don'));
-            break;
+		}
     }
 
     // Vérification et définition des montants pour les recettes et dépenses
@@ -377,7 +386,7 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
     // Récupérer les valeurs postées
     $date = affdate(_request('date'), 'Y-m-d');
     $objet = _request('objet');
-    $id_objet = _request('id_evenement') ?? 0;
+    $id_objet = (int) _request('id_objet');
     $imputation = _request('imputation');
     $type_operation = _request('type_operation');
     $montant = _request('montant');
@@ -385,9 +394,10 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
     $justification = _request('justification');
     $recette = $type_operation == 'recette' ? $montant : 0;
     $depense = $type_operation == 'depense' ? $montant : 0;
-    if(_request('id_compte')){
+	$id_compte_demande = (int) _request('id_compte');
+	if ($id_compte_demande > 0) {
 
-        $id_compte = intval(_request('id_compte'));
+		$id_compte = $id_compte_demande;
 		include_spip('inc/association_compta_ecritures');
 		association_compta_ecriture_modifier($id_compte, array(
 			'date' => $date, 'recette' => $recette, 'depense' => $depense,
@@ -416,10 +426,11 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
     // Redirection si demandée
     if ($retour) {
         $res['redirect'] = $retour;
-    }elseif($objet == 'evenement' AND $id_objet > 0) {
-        $res['redirect'] = generer_url_ecrire('voir_activites','id=' . intval($id_objet) . '&affichage=comptabilite');
     } else {
-        $res['redirect'] = generer_url_ecrire('comptes');
+		$res['redirect'] = pipeline('association_compta_redirection_ecriture', array(
+			'args' => array('objet' => $objet, 'id_objet' => $id_objet, 'id_compte' => $id_compte),
+			'data' => generer_url_ecrire('comptes'),
+		));
     }
 
     return $res;

@@ -95,6 +95,22 @@ function association_adhesions_association_compta_migration_metiers($flux) {
 	return $flux;
 }
 
+function association_adhesions_association_compta_objets_declarer($flux) {
+	$data = array();
+	$res = sql_select('id_cotisation,id_auteur,date_creation,montant', 'spip_asso_cotisations', '', '', 'date_creation DESC');
+	while ($cotisation = sql_fetch($res)) {
+		$id = (int) $cotisation['id_cotisation'];
+		$data[$id] = '#' . $id . ' - auteur ' . (int) $cotisation['id_auteur'] . ' - ' . affdate_court($cotisation['date_creation']) . ' - ' . (float) $cotisation['montant'];
+	}
+	$flux['data']['cotisation'] = array(
+		'label' => 'association_compta:choix_cotisation', 'objet' => 'cotisation', 'champ' => 'id_cotisation',
+		'label_selection' => 'association_compta:choix_cotisation', 'data' => $data,
+		'imputation_recette' => $GLOBALS['association_metas']['pc_cotisations_paiement'] ?? '',
+		'imputation_depense' => $GLOBALS['association_metas']['pc_cotisations_creance'] ?? '',
+	);
+	return $flux;
+}
+
 function association_adhesions_association_maintenance_bdd_preparer($flux) {
 	include_spip('inc/association_adhesions_maintenance');
 	$options = (array) ($flux['args']['options'] ?? array());
