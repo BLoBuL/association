@@ -1694,3 +1694,16 @@ La recette Chrome authentifiee affiche dix cotisations sans erreur. La fiche
 du compte 957 charge le veritable formulaire BO, le bloc « Controle des
 justificatifs » et son etat vide, sans erreur d'execution. Aucun formulaire n'a
 ete soumis et aucun document, paiement ou email n'a ete cree.
+
+## Lot 148 - squelettes comptables Evenements rapatries
+
+Le bandeau de la page d'analyse comptable et le composant de ligne comptable
+specialise pour les activites ont quitte Comptabilite. Ils appartiennent
+maintenant a Evenements, qui etait deja l'unique consommateur de la ligne et le
+proprietaire du contenu, de la navigation et de la hierarchie de cette page.
+
+Les anciennes copies distantes ont ete retirees uniquement de Comptabilite et
+restent recuperables dans Git. SPIP compile toujours 221 squelettes prives,
+douze pages publiques et 64 composants front. La recette Chrome authentifiee
+sert la page « Analyse comptable des activites », son tableau, ses totaux et ses
+deux liens d'export sans erreur visible.
