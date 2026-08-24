@@ -2321,3 +2321,46 @@ et 64 composants front recompilent sous SPIP 4.4.21. Les journaux récents ne
 contiennent ni fatal, ni erreur SQL, ni dépréciation Association ; seuls des
 avertissements SPIP signalent le stockage fichier de contextes AJAX dépassant
 2 000 caractères.
+
+## Lot 184 - backend d'inscription et diagnostics maîtrisés
+
+Les diagnostics des formulaires d'inscription passent désormais par la
+catégorie métier `inscriptions`, désactivée par défaut. Les anciennes traces
+directes ne publient plus la structure complète des saisies, les erreurs CVT,
+les catégories, les transactions, l'adresse IP ou l'identité ayant déclenché
+un contrôle antispam. Les erreurs opérationnelles restent journalisées. Un
+test dédié interdit le retour de ces motifs sensibles et porte la suite à 141
+tests, tous valides.
+
+Le générateur actif des étapes FO multi porte maintenant le nom
+`ie_multi_public_saisies()` ; les wrappers FO et BO résolvent leur contexte et
+délèguent toujours charger, vérifier et traiter au backend commun. Le faux
+feature flag documentaire `meta_cfg_use_inscription_backend`, absent du code,
+est retiré du plan de déploiement. Le commit `3281c559` a été déployé avec
+sauvegarde ciblée et concordance des quatre fichiers. Le serveur conserve ses
+dix plugins, quatorze tables, douze objets et sept schémas, puis recompile les
+297 fonds. Chrome valide le formulaire public de l'événement 231 et le
+formulaire privé d'ajout, sans fatal ni débordement ; aucun formulaire n'a été
+soumis et les journaux ne contiennent aucune trace sensible.
+
+## Lot 185 - recette bornée des modules optionnels
+
+Les quatre options `comptabilite.dons`, `comptabilite.prets`,
+`comptabilite.ventes` et `comptabilite.destinations`, initialement à `off`, ont
+été activées temporairement sur test-fiafe. Un script de restauration autonome
+a été installé avant la recette. Aucune donnée métier, écriture comptable,
+destination, ressource, réservation, vente ou don n'a été créée ou modifiée.
+
+Chrome authentifié a contrôlé les listes et formulaires Dons, Ressources,
+Prêts, Ventes et Destinations : titres, champs métier, boutons, éditeur de
+ventilation et absence de fatal ou de débordement. La matrice a isolé un cas
+vide dans Prêts : `edit_pret` sans ressource rendait une boîte sans explication.
+Le commit `807560de` affiche désormais « La ressource demandée est introuvable »
+et ne rend pas les champs ; le raccourci de création n'apparaît que pour une
+ressource existante. Après déploiement, compilation des 297 fonds et contrôle
+Chrome, le message est visible, aucun champ métier n'est rendu et la page
+Prêts renvoie vers Ressources.
+
+La restauration a ensuite remis et relu les quatre options à `off`, leur état
+initial exact. Les modules sont donc de nouveau désactivés sur test-fiafe après
+une recette fonctionnelle sans écriture.
