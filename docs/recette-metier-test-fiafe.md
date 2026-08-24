@@ -2012,3 +2012,11 @@ ainsi que les actions d'édition utilisent le domaine
 sont isolés avec `noopener noreferrer`. Le maintien de la méta historique
 `inscription3` est volontaire : Inscription 4 la fournit comme contrat de
 compatibilité. La suite locale atteint 124 tests, tous valides.
+
+Le commit `32fb9e88` est déployé sur test-fiafe avec les trois empreintes de
+l'artefact Git conformes. Communication reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, les onglets Validation et Autres rendent
+leurs titres traduits sans erreur ni clé brute. GIS n'est pas actif sur ce jeu
+de test et aucun article éditable correspondant n'est présent : ces deux états
+conditionnels sont prouvés par compilation et test structurel, mais pas par un
+rendu visuel actif. Aucun message n'a été envoyé.
