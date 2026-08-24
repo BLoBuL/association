@@ -2223,3 +2223,42 @@ versionné, ne contient aucun gestionnaire inline et reste sans erreur ni
 débordement. Le contrôle visible « tout sélectionner » coche les deux écritures
 affichées, puis les décoche correctement ; aucun formulaire ni lien d'action
 n'a été soumis et la console reste vide d'avertissement ou d'erreur.
+
+## Lot 180 - éditeur de destinations autonome
+
+L'éditeur partagé par Comptabilité, Dons et Ventes n'injecte plus de balise
+`script`, de gestionnaire `onClick` ou de fonctions jQuery globales. Son script
+privé est déclaré par le plugin Comptabilité et utilise la délégation
+d'événements pour ajouter ou retirer une ligne après les remplacements AJAX.
+Le filtre du plan comptable réutilise le même mécanisme de soumission que la
+liste des écritures. Les scripts morts commentés des deux formulaires d'import
+sont supprimés et les titres HTML passent par le domaine de langue. La suite
+locale atteint 138 tests, tous valides.
+
+Le commit `fbe11a69` est déployé sur test-fiafe avec les six empreintes de
+l'artefact Git conformes. Comptabilité reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, le filtre du plan comptable charge le
+script privé, passe des comptes actifs aux comptes désactivés, puis revient aux
+actifs, sans gestionnaire inline, erreur de console ni débordement. Le script
+Destinations est également chargé par le formulaire d'écriture ; son éditeur
+n'est pas visible car la configuration `destinations` du site est vide.
+
+## Lot 181 - cycle CVT des destinations comptables restauré
+
+Le formulaire générique des écritures rebranche les destinations dans ses
+trois phases : contexte et ventilation existante dans `charger`, contrôle du
+montant et des doublons dans `verifier`, puis enregistrement dans `traiter`.
+Chaque plugin métier déclare uniquement le suffixe de sa destination par
+défaut : cotisations, activités, dons ou ventes. Le tableau d'erreurs est
+désormais passé par référence et les indices historiques commençant à `1` sont
+normalisés avant validation et insertion. Les requêtes absentes ne provoquent
+plus de `count(null)` sous PHP 8. La suite locale atteint 139 tests, tous
+valides.
+
+Le commit `357b8e40` est déployé sur test-fiafe avec les sept empreintes de
+l'artefact Git conformes. Les cinq plugins concernés restent actifs en 4.0.0
+et les 297 fonds recompilent. Un contrôle serveur sans écriture a temporairement
+surchargé la configuration uniquement en mémoire du processus : les neuf
+destinations existantes produisent bien le sélecteur et le bouton d'ajout sans
+script inline. La configuration persistante est restée vide ; aucun réglage,
+aucune écriture et aucune ventilation de la base de recette n'ont été modifiés.
