@@ -63,6 +63,12 @@ function affdate($date, $format = null) { return '01/08/2026 18:30'; }
 function generer_url_public($page, $args = '') { return '/spip.php?page=' . $page . '&' . $args; }
 function url_absolue($url) { return 'https://example.test' . $url; }
 function include_spip($fichier) {}
+function pipeline($nom, $flux) {
+	if ($nom === 'association_communication_email_collectif_evenement') {
+		return association_evenements_association_communication_email_collectif_evenement($flux);
+	}
+	return $flux;
+}
 function _request($cle) { return $GLOBALS['test_email_request'][$cle] ?? null; }
 function set_request($cle, $valeur) { $GLOBALS['test_email_request'][$cle] = $valeur; }
 function adherents_recherche_avancee_saisies() { return array(); }
@@ -106,6 +112,7 @@ function sql_insertq() {
 	throw new RuntimeException('Le test ne doit effectuer aucune ecriture.');
 }
 
+require dirname(__DIR__) . '/plugins/association-evenements/inc/association_evenements_communication.php';
 require dirname(__DIR__) . '/plugins/association-communication/inc/email_collectif.php';
 require dirname(__DIR__) . '/plugins/association-communication/formulaires/inc/email_collectif.php';
 require dirname(__DIR__) . '/plugins/association-adhesions/formulaires/email_collectif_adherent.php';
@@ -242,6 +249,16 @@ if ($nombre_etapes_evenement !== 5 || $nombre_etapes_association !== 6) {
 }
 
 $racine = dirname(__DIR__);
+$moteur_communication = file_get_contents($racine . '/plugins/association-communication/inc/email_collectif.php');
+$contrat_evenements = file_get_contents($racine . '/plugins/association-evenements/inc/association_evenements_communication.php');
+if (str_contains($moteur_communication, 'spip_asso_activites')
+	|| str_contains($moteur_communication, 'spip_evenements')
+	|| !str_contains($moteur_communication, "pipeline('association_communication_email_collectif_evenement'")
+	|| !str_contains($contrat_evenements, 'spip_asso_activites')
+	|| !str_contains($contrat_evenements, 'spip_evenements')) {
+	fwrite(STDERR, 'Communication lit encore directement les tables du module Evenements.' . PHP_EOL);
+	exit(1);
+}
 $contenu_prive = file_get_contents($racine . '/plugins/association-evenements/prive/squelettes/contenu/edit_email_collectif_activite.html');
 $liste_inscriptions = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc-email-collectif-inscriptions-evenement.html');
 if (!str_contains($liste_inscriptions, 'tableau_inscriptions_activite')

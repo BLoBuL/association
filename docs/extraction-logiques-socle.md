@@ -1211,3 +1211,15 @@ hors documentation, tests et sous-plugins. Toute référence à une table métie
 de la suite y est interdite ; seule `spip_association_metas`, propriété du
 socle, reste autorisée. Les migrations, nettoyages et lecteurs de données
 demeurent ainsi confinés aux plugins propriétaires.
+
+## Lot 113 : audience événementielle fournie par Événements
+
+Le moteur d'email collectif de Communication ne lit plus les participations ni
+la table Agenda. Il demande par pipeline la liste des inscriptions, les emails
+des inscriptions sélectionnées et le contexte éditorial de l'événement.
+
+Événements implémente ce contrat depuis ses propres tables et conserve les
+contrôles d'appartenance à l'événement et d'exclusion des désinscriptions.
+Communication reste propriétaire du moteur mutualisé, de la normalisation et
+de la déduplication des adresses, ainsi que des gabarits d'envoi. Le test du
+parcours collectif verrouille désormais cette séparation SQL.

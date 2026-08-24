@@ -13,13 +13,14 @@ function association_email_collectif_inscriptions_evenement($id_evenement) {
 		return array();
 	}
 
-	$inscriptions = array();
-	$res = sql_select(
-		'id_activite,id_auteur,nom_inscrit,prenom_inscrit,statut,nombre_inscrits',
-		'spip_asso_activites',
-		'id_evenement=' . $id_evenement . " AND statut!='desinscrit'"
-	);
-	while ($row = sql_fetch($res)) {
+	$flux = pipeline('association_communication_email_collectif_evenement', array(
+		'args' => array('operation' => 'inscriptions', 'id_evenement' => $id_evenement),
+		'data' => array(),
+	));
+	$inscriptions = is_array($flux) && array_key_exists('args', $flux)
+		? (array) ($flux['data'] ?? array())
+		: (array) $flux;
+	foreach ($inscriptions as $row) {
 		$id_activite = intval($row['id_activite'] ?? 0);
 		if ($id_activite) {
 			$nom = trim((string) ($row['nom_inscrit'] ?? ''));
@@ -67,13 +68,18 @@ function association_email_collectif_resoudre_destinataires(array $id_auteurs, a
 	}
 
 	if ($id_activites && intval($id_evenement)) {
-		$where = sql_in('id_activite', $id_activites)
-			. ' AND id_evenement=' . intval($id_evenement)
-			. " AND statut!='desinscrit'";
-		$res = sql_select('email_inscrit', 'spip_asso_activites', $where);
-		while ($row = sql_fetch($res)) {
-			$emails[] = $row['email_inscrit'] ?? '';
-		}
+		$flux = pipeline('association_communication_email_collectif_evenement', array(
+			'args' => array(
+				'operation' => 'emails',
+				'id_evenement' => intval($id_evenement),
+				'id_activites' => $id_activites,
+			),
+			'data' => array(),
+		));
+		$emails_evenement = is_array($flux) && array_key_exists('args', $flux)
+			? (array) ($flux['data'] ?? array())
+			: (array) $flux;
+		$emails = array_merge($emails, $emails_evenement);
 	}
 
 	$destinataires = array();
@@ -130,9 +136,13 @@ function association_email_collectif_gabarit_evenement($id_evenement, $type = 'l
 	$id_evenement = intval($id_evenement);
 	$types = array('libre', 'rappel', 'annulation', 'report', 'modification');
 	$type = in_array($type, $types, true) ? $type : 'libre';
-	$evenement = $id_evenement
-		? sql_fetsel('id_evenement,titre,date_debut,lieu,adresse', 'spip_evenements', 'id_evenement=' . $id_evenement)
-		: false;
+	$flux = $id_evenement ? pipeline('association_communication_email_collectif_evenement', array(
+		'args' => array('operation' => 'evenement', 'id_evenement' => $id_evenement),
+		'data' => array(),
+	)) : array();
+	$evenement = is_array($flux) && array_key_exists('args', $flux)
+		? (array) ($flux['data'] ?? array())
+		: (array) $flux;
 	if (!$evenement) {
 		return array();
 	}
