@@ -2156,3 +2156,14 @@ la préférence avec `session_set()` sous la clé métier
 Un test fonctionnel couvre la valeur par défaut, l'activation, la persistance
 et la désactivation ; il interdit aussi le retour des deux accès PHP natifs
 dans le module Comptabilité. La suite locale atteint 132 tests, tous valides.
+
+## Lot 176 - sessions SPIP des formulaires et filtres Adhésions
+
+Les formulaires de recherche rapide et avancée des adhérents mémorisent
+désormais leurs critères avec `session_set()` et effacent une recherche vide
+sans démarrer de session PHP. Le filtre de la liste des cotisations charge son
+tableau avec `session_get()`, applique la priorité requête puis session et le
+réécrit une seule fois avec l'API SPIP. Le test fonctionnel couvre la
+persistance, l'effacement, l'exclusion des paramètres CVT et la restauration
+des filtres ; il interdit aussi les accès natifs dans ces trois fichiers. La
+suite locale atteint 133 tests, tous valides.
