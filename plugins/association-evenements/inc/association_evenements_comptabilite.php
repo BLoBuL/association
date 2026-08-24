@@ -102,7 +102,7 @@ function association_evenements_compte_inscription_creer($id_activite, $contexte
 	}
 	$id_evenement = (int) $activite['id_evenement'];
 	$evenement = sql_fetsel('payant', 'spip_evenements', 'id_evenement=' . $id_evenement);
-	if ($evenement && (int) $evenement['payant'] === 0) {
+	if (array_key_exists('payant', (array) $evenement) && (int) $evenement['payant'] === 0) {
 		return 0;
 	}
 	$transaction = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . (int) $activite['id_transaction']);
