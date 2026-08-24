@@ -1497,3 +1497,20 @@ ne trouve aucune transaction supprimable et aucune donnée n'a été modifiée. 
 sept fichiers déployés ont des empreintes SHA-256 identiques à leur source ; le
 cache a été vidé et les 221 squelettes privés, douze pages publiques et 64
 composants front compilent sous SPIP 4.4.21.
+
+## Lot 129 — journal Événements confiné à Comptabilité
+
+La couche comptable d'Événements ne lit et ne supprime plus directement le
+journal `spip_asso_comptes` ni ses ventilations. La recherche, la validation,
+l'actualisation et la suppression passent par l'API Comptabilité avec un filtre
+de transaction. Le lien canonique `objet=evenement` est prioritaire et le lien
+historique `objet=activite` reste reconnu. Le contrôle du champ Agenda `payant`
+tolère aussi explicitement une installation où cette extension de schéma serait
+absente, sans produire d'avertissement PHP 8.
+
+Le vérificateur en lecture seule compare les deux chemins sur les 41
+inscriptions présentes dans la copie DEV. Il retrouve sans écart seize liens
+comptables canoniques et aucun ancien lien `activite`. Aucun compte ni aucune
+ventilation n'a été modifié ou supprimé. Les deux fichiers déployés ont les
+mêmes empreintes SHA-256 que leur source, le cache a été vidé et SPIP 4.4.21
+compile 221 squelettes privés, douze pages publiques et 64 composants front.
