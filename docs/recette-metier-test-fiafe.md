@@ -893,3 +893,26 @@ Chrome authentifié confirme les six parcours servis, sans fatal :
 La colonne gauche de chacune de ces pages contient le retour vers sa section
 métier. La suppression a seulement été affichée sur une cotisation existante :
 aucune action destructive n'a été soumise pendant la recette.
+
+## Lot 65 — navigation métier complète
+
+Le commit `70fedfa` a été déployé dans Communication, Comptabilité, Dons,
+Paiements, Prêts et Ventes depuis l'artefact SHA-256
+`4f48b1803c62c301f2aa71d2f58df2f96acc9b8361aa22589a397479b0ab9999`.
+Les 74 tests autonomes passent et le vérificateur réel conserve les dix plugins
+et leurs schémas à jour.
+
+Chrome authentifié valide sans fatal les quinze parcours du lot : comptes,
+édition d'une opération, destination et plan comptable, édition d'un don,
+d'une ressource et d'une vente, import des destinations et du plan, migration
+comptable, fiche transaction, abandon, remboursement, suppression et
+notifications. Les actions Bank et suppressions ont uniquement été affichées ;
+aucun bouton d'action n'a été soumis.
+
+La recette a détecté puis fait corriger trois titres : Dons et Ventes
+affichaient une clé générique inexistante, et la migration reprenait le titre de
+l'import des destinations. Le correctif `4271834` a été redéployé depuis
+l'artefact SHA-256
+`1888fb6e4fcce0292d94c50f9351eb14d14bc8752c9a8d9a9cb4ab417f74c11e`.
+Les fils d'Ariane servis affichent désormais « Mettre à jour le don »,
+« Mettre à jour la vente » et « Migration des données comptables ».
