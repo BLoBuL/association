@@ -2536,6 +2536,14 @@ le tarif de 12,50 euros dans `tarifs_selectionnes`. Le scénario automatique
 correspondant porte la suite Événements à 16 cas réussis ; les 142 points
 d'entrée `tests/test_*.php` restent tous verts.
 
+La lecture horodatée des journaux de cette première réussite a révélé un second
+couplage : Événements planifiait encore la notification et l'abonnement à la
+liste alors que Communication était absent. Le commit `9738dc5a` protège ces
+deux effets facultatifs par la capacité Communication. Une troisième
+soumission complète, toujours avec seulement le socle et Événements, confirme
+l'activité `preinscrit`, `id_transaction=0`, le tarif sérialisé, la redirection
+publique et l'absence de nouvelle erreur entre 00:32 et 00:33.
+
 L'activité, l'abonnement éventuel et la catégorie temporaires ont ensuite été
 supprimés. Les huit modules désactivés ont été réactivés, le cache vidé et
 l'état final retrouve les dix plugins de la suite actifs. Les erreurs SQL
