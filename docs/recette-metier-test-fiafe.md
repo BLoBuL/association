@@ -872,3 +872,24 @@ formulaires présents et sans fatal. Les autres modules (Comptabilité, Dons,
 Groupes, Paiements et Ventes) conservent leurs écrans BO ou leurs modèles
 embarquables : les sources historiques BANK/CORE/FO n'y définissent pas de page
 publique autonome supplémentaire à recopier.
+
+## Lot 64 — hiérarchies et retours privés prioritaires
+
+Le commit `f9f4ffc` a été déployé atomiquement dans Adhésions, Comptabilité,
+Événements et Groupes depuis l'artefact SHA-256
+`cb884bf94276775d4585b75cf31b0eea93a937e50ab4e3ef2a2b2d816c2f79b3`.
+Le vérificateur conserve 10 plugins, 14 tables, 12 objets SQL et 7 schémas à
+jour.
+
+Chrome authentifié confirme les six parcours servis, sans fatal :
+
+- `Suivi des inscriptions` : Accueil > Activités > Suivi ;
+- `Export des événements` : Accueil > Activités > Export ;
+- `Analyse comptable des activités` : Accueil > Comptabilité > Analyse ;
+- `Bénévoles` : Accueil > Adhérents > Bénévoles ;
+- `Recherche avancée` : Accueil > Adhérents > Recherche avancée ;
+- `Suppression de cotisation` : Accueil > Cotisations > Supprimer.
+
+La colonne gauche de chacune de ces pages contient le retour vers sa section
+métier. La suppression a seulement été affichée sur une cotisation existante :
+aucune action destructive n'a été soumise pendant la recette.
