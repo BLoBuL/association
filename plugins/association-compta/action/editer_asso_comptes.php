@@ -12,7 +12,7 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
-include_spip('inc/comptes');
+include_spip('inc/association_compta_ecritures');
 
 function action_editer_asso_comptes() {
 
@@ -34,22 +34,21 @@ function action_editer_asso_comptes() {
 	$justification= _request('justification');
 	$journal= _request('journal');
 
-	$inscription = $id_category = $status_cotisation = $id_transaction = '';
-
-	if (!is_int($id_compte)) {
+	if ($id_compte <= 0) {
 		// pas d'id_compte, c'est un ajout
 		$id_auteur = $GLOBALS['auteur_session']['id_auteur'];
 
-		$id_compte = inserer_compte(
-			$date, $recette, $depense, $justification, $imputation, $journal,
-			$id_auteur, $inscription, $id_category, $status_cotisation, $id_transaction
-		);
+		$id_compte = association_compta_ecriture_creer(array(
+			'date' => $date, 'recette' => $recette, 'depense' => $depense,
+			'justification' => $justification, 'imputation' => $imputation, 'journal' => $journal,
+			'id_auteur' => (int) $id_auteur,
+		));
 	} else {
 		// c'est une modif, le paramétre id_journal de la fonction modifier operation comptable est mis a '' afin de ne pas le modifier dans la base
-		modifier_compte(
-			$id_compte, $date, $recette, $depense, $justification, $imputation, $journal,
-			$inscription, $id_category, $status_cotisation, $id_transaction
-		);
+		association_compta_ecriture_modifier($id_compte, array(
+			'date' => $date, 'recette' => $recette, 'depense' => $depense,
+			'justification' => $justification, 'imputation' => $imputation, 'journal' => $journal,
+		));
 	}
 
 	return array($id_compte, '');

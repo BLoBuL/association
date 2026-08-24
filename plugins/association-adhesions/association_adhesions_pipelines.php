@@ -262,19 +262,6 @@ function association_adhesions_formulaire_verifier($flux) {
     return $flux;
 }
 
-function association_adhesions_association_compta_cotisation_synchroniser($flux) {
-    $id_compte = intval($flux['args']['id_compte'] ?? 0);
-    if (!$id_compte) {
-        return $flux;
-    }
-    include_spip('inc/cotisations_stockage');
-    $flux['data'] = association_cotisation_synchroniser_depuis_compte(
-        $id_compte,
-        is_array($flux['args']['donnees'] ?? null) ? $flux['args']['donnees'] : array()
-    );
-    return $flux;
-}
-
 function association_adhesions_association_paiements_reglement_traiter($flux) {
 	if (!empty($flux['data']['traite'])) {
 		return $flux;

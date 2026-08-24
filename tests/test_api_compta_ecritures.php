@@ -16,6 +16,11 @@ foreach (array('association_compta_ecriture_creer', 'association_compta_ecriture
 		exit(1);
 	}
 }
+$ancien = file_get_contents($racine . '/plugins/association-compta/inc/comptes.php');
+if (str_contains($ancien, 'function inserer_compte(') || str_contains($ancien, 'function modifier_compte(')) {
+	fwrite(STDERR, "Les anciennes primitives positionnelles subsistent.\n");
+	exit(1);
+}
 foreach (array('reinscription', 'id_categorie', 'statut_cotisation') as $champ_metier) {
 	$debut = strpos($api, 'function association_compta_ecriture_champs_autorises(');
 	$fin = strpos($api, 'function association_compta_ecriture_normaliser(', $debut);

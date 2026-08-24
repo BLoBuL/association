@@ -401,35 +401,20 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
     if(_request('id_compte')){
 
         $id_compte = intval(_request('id_compte'));
-        modifier_compte(
-            $id_compte,
-            $date,
-            $recette,
-            $depense,
-            $justification,
-            $imputation,
-            $journal,
-            0, // id_objet
-            $objet,
-        );
+		include_spip('inc/association_compta_ecritures');
+		association_compta_ecriture_modifier($id_compte, array(
+			'date' => $date, 'recette' => $recette, 'depense' => $depense,
+			'justification' => $justification, 'imputation' => $imputation, 'journal' => $journal,
+			'id_objet' => $id_objet, 'objet' => $objet,
+		));
     } else {
 
-        inserer_compte(
-            $date,
-            $recette,
-            $depense,
-            $justification,
-            $imputation,
-            $journal,
-            0,
-            $id_objet,
-            $objet,
-            NULL, // reinscription
-            NULL,  //id_categorie
-            NULL, // statut_cotisation
-            NULL, // id_transaction
-            1 // vu
-        );
+		include_spip('inc/association_compta_ecritures');
+		$id_compte = association_compta_ecriture_creer(array(
+			'date' => $date, 'recette' => $recette, 'depense' => $depense,
+			'justification' => $justification, 'imputation' => $imputation, 'journal' => $journal,
+			'id_objet' => $id_objet, 'objet' => $objet, 'vu' => 1,
+		));
     }
     // Mettre à jour directement sans passer par objet_modifier
 

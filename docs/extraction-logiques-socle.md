@@ -1036,3 +1036,11 @@ synchronise explicitement sa propre table de cotisations.
 modifications mettent maintenant à jour en une seule opération la justification,
 le journal et le lien canonique à l'objet, au lieu de compléter l'ancien helper
 positionnel par un second `sql_updateq()`.
+
+## Lot 90 : retrait des primitives positionnelles
+
+Les derniers appelants internes de Comptabilité passent à l'API structurée.
+Les fonctions globales `inserer_compte()` et `modifier_compte()`, leur pont de
+synchronisation des cotisations et l'ancien fichier `association_comptabilite`
+sans appelant sont supprimés. L'action historique d'édition corrige au passage
+son test de création, qui était rendu impossible par un `intval()` préalable.

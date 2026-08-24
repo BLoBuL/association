@@ -163,6 +163,7 @@ function sql_updateq($table, $set, $where) {
     return true;
 }
 
+include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_ecritures.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/inc/comptes.php';
 
 function association_test_assert($condition, $message) {
