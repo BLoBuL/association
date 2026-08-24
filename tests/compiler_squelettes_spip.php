@@ -45,6 +45,13 @@ foreach ($racines as $module => $racine_module) {
 		);
 	}
 }
+if (isset($racines['evenements'])) {
+	$repertoires['exports_evenements'] = array(
+		'racine_fond' => $racines['evenements'],
+		'chemin' => $racines['evenements'],
+		'fichiers' => array('export_activites.csv.html', 'inscriptions_evenement.csv.html'),
+	);
+}
 
 foreach ($racines as $racine_plugin) {
 	_chemin(array($racine_plugin . '/'));
@@ -93,6 +100,12 @@ foreach ($repertoires as $type => $description) {
 	foreach ($iterateur as $fichier) {
 		if (!$fichier->isFile() || $fichier->getExtension() !== 'html') continue;
 		$chemin = str_replace('\\', '/', $fichier->getPathname());
+		if (!empty($description['fichiers'])) {
+			$relatif = substr($chemin, strlen(str_replace('\\', '/', $racine_fond)) + 1);
+			if (!in_array($relatif, $description['fichiers'], true)) {
+				continue;
+			}
+		}
 		$fond = substr($chemin, strlen(str_replace('\\', '/', $racine_fond)) + 1, -5);
 		if ($fond === 'prive/objets/liste/inc-gis-auteur' && !defined('_DIR_PLUGIN_GIS')) {
 			continue;
@@ -133,7 +146,7 @@ $prives = array_sum(array_filter($compiles, fn($nombre, $type) => str_starts_wit
 $publics = array_sum(array_filter($compiles, fn($nombre, $type) => str_starts_with($type, 'publics_'), ARRAY_FILTER_USE_BOTH));
 $composants = array_sum(array_filter(
 	$compiles,
-	fn($nombre, $type) => preg_match('/^(?:modeles|emails|notifications)_/', $type),
+	fn($nombre, $type) => preg_match('/^(?:modeles|emails|notifications|exports)_/', $type),
 	ARRAY_FILTER_USE_BOTH
 ));
 echo "OK: {$prives} squelettes prives, {$publics} pages publiques et {$composants} composants front compiles sous SPIP " . $GLOBALS['spip_version_branche'] . ".\n";

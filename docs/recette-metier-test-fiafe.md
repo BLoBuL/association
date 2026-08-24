@@ -928,3 +928,38 @@ cotisation, édition d'une catégorie d'activité, édition d'une catégorie de
 cotisation et analyse comptable des activités. Les fils d'Ariane affichent les
 sections intermédiaires attendues et les colonnes gauches proposent le retour
 vers Cotisations, Catégories ou Activités. Aucun formulaire n'a été soumis.
+
+## Lot 67 — compilation des actifs front autonomes
+
+Le compilateur SPIP contrôle désormais les dossiers standards `modeles/`,
+`emails/` et `notifications/` de chacun des dix plugins, en plus des pages
+publiques et privées. Cette extension a nécessité le chargement explicite de
+`public/assembler` dans le contexte SPIP CLI afin de rendre disponible
+`styliser_modele()` comme dans une requête web normale.
+
+Sur test-fiafe, SPIP 4.4.21 compile sans erreur 221 squelettes privés, 12 pages
+publiques et 62 composants front. Le manifeste déployé correspondait au commit
+`8b334497`; l'installation conservait 10 plugins actifs, 14 tables, 12 objets
+SQL et 7 schémas à jour.
+
+## Lot 68 — API unique des responsables d'événement
+
+Les fonctions historiques `liste_responsables_evenement()` et
+`responsables_evenement()` ont été supprimées au profit d'une API métier typée.
+Les notifications, l'email collectif, les deux exports CSV et les affichages
+privés consomment une liste plate d'identifiants. Le champ extra Agenda reçoit
+séparément ses choix et ses valeurs par défaut. Les formats historiques CSV et
+sérialisés restent lisibles et seuls les auteurs internes actifs sont retenus.
+
+Le premier contrôle navigateur a révélé qu'un responsable sélectionné pouvait
+ne plus être auteur de l'article parent : le groupe était alors vide dans le
+formulaire, avec un risque de perte silencieuse à l'édition. L'API réinjecte
+désormais les responsables sélectionnés et encore actifs dans les choix, sans
+leur accorder de droit éditorial supplémentaire.
+
+La sonde SPIP sur les données servies audite 16 événements ouverts, dont 14 avec
+responsables et 15 sélections actives. L'empreinte de la répartition est
+`3e2fcb00a7425fced66cd6a76020e8b53c0d5e8091b41b70ab47ecc6b964b1f3`.
+Chrome authentifié confirme ensuite sur l'événement de recette que le champ
+Responsables contient une case sélectionnée, et que la fiche Activités affiche
+sa section Responsables sans fatal. Aucun formulaire ni email n'a été soumis.
