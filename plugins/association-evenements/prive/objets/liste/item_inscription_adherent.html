@@ -38,12 +38,12 @@
                        [<div class="tooltip"><i class="fa fa-check-circle" aria-hidden="true"></i>(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
                             <span class="tooltiptext"><p>
                                 #INSCRIPTION
-                               Transaction : N°#ID_TRANSACTION
-                                Mode : <small>#MODE</small></p></span>
+                               <:association_evenements:activite_entete_transaction:> : N°#ID_TRANSACTION
+                                <:association_evenements:export_evenements_mode_paiement:> : <small>#MODE</small></p></span>
                         </div>]
                   </BOUCLE_transaction_ok_periode>
                  <BOUCLE_transaction_pas_ok_periode(TRANSACTIONS){id_transaction}{statut IN attente,commande}>
-                    [<a href="(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION&transaction_hash=#TRANSACTION_HASH})" title="En attente de paiement">
+                    [<a href="(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION&transaction_hash=#TRANSACTION_HASH})" title="<:association_evenements:paiement_en_attente|attribut_html:>">
                        [<div class="tooltip"><i class="fa-regular fa-clock" aria-hidden="true"></i> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
                             <span class="tooltiptext"><p>
                                 #INSCRIPTION

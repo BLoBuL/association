@@ -1988,3 +1988,10 @@ recompilent. Dans Chrome authentifié, l'onglet Notifications/Activité affiche
 ses libellés traduits, ses notifications existantes et n'affiche plus le faux
 état vide ; l'export des événements est servi sans erreur ni clé brute.
 Aucune notification n'a été envoyée et aucune donnée n'a été modifiée.
+
+## Lot 165 - suivi privé et repères de paiement Événements
+
+Les colonnes Informations et Message du suivi, ainsi que les libellés de
+transaction, mode et paiement en attente des lignes d'adhérents, utilisent
+désormais le domaine `association_evenements`. Un test protège ces trois vues.
+La suite locale atteint 123 tests, tous valides.
