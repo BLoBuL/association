@@ -2090,3 +2090,8 @@ Le groupe résiduel des administrateurs et rédacteurs utilise le domaine
 `association_groupes`, avec une terminologie complète plutôt que l'abréviation
 historique. Un ancien bloc SPIP commenté est retiré. La suite locale atteint
 129 tests, tous valides.
+
+Le commit `ce3bf7a7` est déployé sur test-fiafe avec les deux empreintes de
+l'artefact Git conformes. Groupes reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, Bénévoles affiche « Autres
+administrateurs et rédacteurs » sans erreur, clé brute ni ancien intitulé.
