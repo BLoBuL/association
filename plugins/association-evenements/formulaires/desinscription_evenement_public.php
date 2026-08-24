@@ -2,6 +2,7 @@
 if (!defined("_ECRIRE_INC_VERSION")) return;
 include_spip('inc/actions');
 include_spip('inc/editer');
+include_spip('inc/association_evenements_comptabilite');
 function formulaires_desinscription_evenement_public_charger_dist($id_evenement){      
     $affichage_dans_activites =affichage_dans_activites($id_evenement);
     $gestions_places = gestions_places($id_evenement);    
@@ -77,7 +78,7 @@ function formulaires_desinscription_evenement_public_traiter_dist($id_evenement)
     }
     // Suppression ENREGISTREMENT COMPTABLE SI LA COMPTABILITE EST ACTIVE
     if(!empty($GLOBALS['association_metas']['comptes']) && !empty($affichage_dans_activites['payant'])){
-        supprimer_compte_activite($id_activite);
+        association_evenements_comptes_supprimer_inscription($id_activite);
     }
 
     include_spip('inc/cookie');

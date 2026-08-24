@@ -11,6 +11,7 @@
 
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
+include_spip('inc/association_evenements_comptabilite');
 function action_gerer_activites_dist() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
 	$securiser_action();
@@ -158,7 +159,7 @@ function action_gerer_activites_dist() {
             sql_delete('spip_transactions','id_transaction=' .$query_asso_activites['id_transaction']);
             // Suppression ENREGISTREMENT COMPTABLE SI LA COMPTABILITE EST ACTIVE
             if($GLOBALS['association_metas']['comptes']){
-                supprimer_compte_activite($id_activite);
+                association_evenements_comptes_supprimer_inscription($id_activite);
             }
         }
 

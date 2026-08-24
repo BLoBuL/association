@@ -928,3 +928,14 @@ préfixée d'Adhésions, appelée uniquement par `api_cotisations.php`.
 Comptabilité conserve ses primitives génériques et son pipeline de
 synchronisation ; Adhésions crée ou actualise ensuite `spip_asso_cotisations`
 et rattache l'écriture au véritable `id_cotisation`.
+
+## Lot 78 : suppression comptable d'une inscription
+
+L'ancien helper cherchait une écriture `objet='activite'` avec l'identifiant de
+l'inscription, alors que le cycle réel stocke `objet='evenement'`,
+`id_objet=id_evenement` et `id_transaction`. Événements résout maintenant ces
+clés depuis `spip_asso_activites`, supprime les destinations puis les écritures,
+et accepte encore l'ancien lien `activite` lors d'une reprise historique.
+
+Les parcours de désinscription public et privé utilisent cette API métier. Le
+helper erroné est retiré de Comptabilité.

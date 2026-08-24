@@ -781,19 +781,3 @@ function valider_compte_activite($id_transaction) {
 
     sql_updateq('spip_asso_comptes', $args, "id_compte=$id_compte");
 }
-
-/**
- * Supprime une opération comptable liée à une activité dans la table `spip_asso_comptes`.
- *
- * Cette fonction supprime une entrée de la table `spip_asso_comptes` en fonction
- * de l'identifiant de l'activité spécifié. Elle est utilisée pour retirer les
- * opérations comptables associées à une activité donnée.
- *
- * @param int $id_activite L'identifiant de l'activité à supprimer.
- *
- * @return void
- */
-function supprimer_compte_activite($id_activite) {
-    // Supprime l'activité de la table `spip_asso_comptes` en fonction de l'ID de l'activité.
-    sql_delete('spip_asso_comptes', "id_objet=$id_activite AND objet='activite'");
-}
