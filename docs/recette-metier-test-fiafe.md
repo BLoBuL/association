@@ -2262,3 +2262,22 @@ surchargé la configuration uniquement en mémoire du processus : les neuf
 destinations existantes produisent bien le sélecteur et le bouton d'ajout sans
 script inline. La configuration persistante est restée vide ; aucun réglage,
 aucune écriture et aucune ventilation de la base de recette n'ont été modifiés.
+
+## Lot 182 - destinations des cycles Dons et Ventes
+
+Les actions Dons enregistrent désormais la ventilation après création comme
+après modification de leur écriture comptable. Le formulaire Ventes contrôle
+le total ventilé et son action l'enregistre sur l'écriture principale. Lorsque
+vente et frais d'envoi partagent la même imputation, leur somme est ventilée ;
+lorsque les imputations diffèrent, seule la recette de vente est rattachée à
+la ventilation affichée par le formulaire. Les actions chargent explicitement
+le helper Comptabilité et conservent la frontière métier. La suite locale
+atteint 140 tests, tous valides.
+
+Le commit `ec3dc055` est déployé sur test-fiafe avec les trois empreintes de
+l'artefact Git conformes. Dons et Ventes restent actifs en 4.0.0 et les 297
+fonds recompilent. Les pages privées Dons et Ventes répondent sans erreur ni
+débordement, mais affichent logiquement « Accès interdit » car ces deux modules
+sont désactivés dans la configuration persistante du site. Le cycle complet
+est donc prouvé par les tests fonctionnels des helpers et les contrôles
+structurels des actions, sans créer de don, vente ou écriture de recette.
