@@ -24,9 +24,8 @@ function action_valider_justificatifs_cotisation_dist() {
         $compte = association_cotisation_lire_par_compte($id_compte);
         if ($compte) {
             $categorie = sql_fetsel('*', 'spip_asso_categories_adherents', 'id_categorie=' . intval($compte['id_categorie'] ?? 0));
-            $transaction = !empty($compte['id_transaction'])
-                ? sql_fetsel('*', 'spip_transactions', 'id_transaction=' . intval($compte['id_transaction']))
-                : array();
+            include_spip('inc/association_paiements_transactions');
+            $transaction = association_paiements_transaction_lire((int) ($compte['id_transaction'] ?? 0));
             notifier_cotisation_adherent($compte, $categorie ?: array(), $transaction ?: array(), 'justificatifs-a-revoir');
         }
     }

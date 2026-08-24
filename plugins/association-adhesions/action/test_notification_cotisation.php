@@ -80,7 +80,8 @@ function action_test_notification_cotisation_dist() {
         $query_cot = association_cotisation_lire_par_compte($id_compte);
         if ($query_cot) {
             $query_cat = sql_fetsel('*', 'spip_asso_categories_adherents', 'id_categorie=' . intval($query_cot['id_categorie'] ?? 0));
-            $query_tx = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . intval($query_cot['id_transaction'] ?? 0));
+            include_spip('inc/association_paiements_transactions');
+            $query_tx = association_paiements_transaction_lire((int) ($query_cot['id_transaction'] ?? 0));
             if (function_exists('notifier_cotisation_preparer_contexte')) {
                 $contexte = notifier_cotisation_preparer_contexte($query_cot, $query_cat ?: array(), $query_tx ?: array());
             } else {
@@ -104,7 +105,8 @@ function action_test_notification_cotisation_dist() {
             $query_cot = association_cotisation_lire_par_compte($last_id_compte);
             if ($query_cot) {
                 $query_cat = sql_fetsel('*', 'spip_asso_categories_adherents', 'id_categorie=' . intval($query_cot['id_categorie'] ?? 0));
-                $query_tx = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . intval($query_cot['id_transaction'] ?? 0));
+                include_spip('inc/association_paiements_transactions');
+                $query_tx = association_paiements_transaction_lire((int) ($query_cot['id_transaction'] ?? 0));
                 if (function_exists('notifier_cotisation_preparer_contexte')) {
                     $contexte = notifier_cotisation_preparer_contexte($query_cot, $query_cat ?: array(), $query_tx ?: array());
                 } else {

@@ -214,6 +214,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array (
   'cotisation_supprimee' => 'La cotisation a bien été supprimée.',
   'erreur_cotisation_introuvable' => 'Cette cotisation est introuvable ou inaccessible.',
   'transaction_cotisation_supprimee' => 'Cotisation supprimée',
+  'erreur_transaction_encaissee_protegee' => 'La transaction encaissée est protégée et ne peut pas être supprimée.',
   'id_transaction' => 'Transaction n°',
   'info_notification_test_envoyee' => 'La notification @notification@ a été envoyée à @email@.',
   'information_a_inclure' => 'Sélectionner les informations à inclure au document&nbsp;:',

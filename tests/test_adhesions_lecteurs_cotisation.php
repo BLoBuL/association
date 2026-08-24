@@ -12,6 +12,7 @@ $erreurs = array();
 foreach (array(
 	'action/test_notification_cotisation.php' => $notification,
 	'inc/fonctions/facteur_envoyer_recu_adhesion.php' => $recu,
+	'action/valider_justificatifs_cotisation.php' => $justificatifs,
 ) as $fichier => $contenu) {
 	if (strpos($contenu, "sql_fetsel('*', 'spip_asso_comptes'") !== false
 		|| strpos($contenu, "sql_getfetsel('id_compte', 'spip_asso_comptes'") !== false) {
@@ -19,6 +20,10 @@ foreach (array(
 	}
 	if (strpos($contenu, 'association_cotisation_lire_par_compte(') === false) {
 		$erreurs[] = "$fichier ne passe pas par l’adaptateur métier Adhésions.";
+	}
+	if (strpos($contenu, 'spip_transactions') !== false
+		|| strpos($contenu, 'association_paiements_transaction_lire(') === false) {
+		$erreurs[] = "$fichier contourne encore la facade Paiements.";
 	}
 }
 

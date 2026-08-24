@@ -50,14 +50,16 @@ function formulaires_supprimer_asso_cotisation_traiter_dist() {
 	}
 
 	$id_transaction = (int) ($cotisation['id_transaction'] ?? 0);
+	include_spip('inc/association_paiements_transactions');
 	if ($id_transaction && $choix === 'oui') {
-		sql_delete('spip_transactions', 'id_transaction=' . $id_transaction);
+		if (!association_paiements_transaction_supprimer_non_encaissee($id_transaction)) {
+			return array('message_erreur' => _T('association_adhesions:erreur_transaction_encaissee_protegee'));
+		}
 	} elseif ($id_transaction) {
-		sql_updateq(
-			'spip_transactions',
-			array('statut' => 'abandon', 'message' => _T('association_adhesions:transaction_cotisation_supprimee')),
-			'id_transaction=' . $id_transaction
-		);
+		association_paiements_transaction_modifier($id_transaction, array(
+			'statut' => 'abandon',
+			'message' => _T('association_adhesions:transaction_cotisation_supprimee'),
+		));
 	}
 
 	$id_cotisation = (int) ($cotisation['id_cotisation'] ?? 0);

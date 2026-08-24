@@ -13,7 +13,7 @@ function association_paiements_transactions_lire(array $ids_transactions) {
 		return array();
 	}
 	$rows = sql_allfetsel(
-		'id_transaction,statut,mode,montant_ht,montant,devise,montant_regle,reglee,finie,date_transaction,date_paiement,transaction_hash',
+		'id_transaction,id_auteur,statut,mode,montant_ht,montant,devise,montant_regle,reglee,finie,date_transaction,date_paiement,transaction_hash',
 		'spip_transactions',
 		sql_in('id_transaction', $ids_transactions)
 	);
@@ -22,6 +22,16 @@ function association_paiements_transactions_lire(array $ids_transactions) {
 		$index[(int) $row['id_transaction']] = $row;
 	}
 	return $index;
+}
+
+function association_paiements_transactions_auteur_lire($id_auteur, array $statuts = array()) {
+	$id_auteur = (int) $id_auteur;
+	if ($id_auteur <= 0) return array();
+	$where = array('id_auteur=' . $id_auteur);
+	$statuts = array_values(array_unique(array_filter(array_map('strval', $statuts), 'strlen')));
+	if ($statuts) $where[] = sql_in('statut', $statuts);
+	$ids = array_column(sql_allfetsel('id_transaction', 'spip_transactions', $where) ?: array(), 'id_transaction');
+	return association_paiements_transactions_lire($ids);
 }
 
 function association_paiements_transaction_lire($id_transaction) {

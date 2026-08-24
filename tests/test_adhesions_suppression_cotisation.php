@@ -28,6 +28,11 @@ if (strpos($formulaire, "'supprimer_transaction' => 'non'") === false
 if (strpos($formulaire, 'if ($supprimer_transaction)') !== false) {
 	$erreurs[] = 'L’ancien contrôle de variable indéfinie est encore présent.';
 }
+if (strpos($formulaire, 'spip_transactions') !== false
+	|| strpos($formulaire, 'association_paiements_transaction_supprimer_non_encaissee(') === false
+	|| strpos($formulaire, 'association_paiements_transaction_modifier(') === false) {
+	$erreurs[] = 'La suppression de cotisation contourne encore la facade Paiements.';
+}
 
 if ($erreurs) {
 	fwrite(STDERR, implode("\n", $erreurs) . "\n");
