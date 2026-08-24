@@ -5,18 +5,31 @@
     [(#SET{token,#ID_EVENEMENT|affichage_dans_activites|table_valeur{token}})]
     [<textarea id="copy_url" rows="4" cols="50" style="display:block;width:100%" readonly>(#URL_EVENEMENT|parametre_url{token,#GET{token}}|url_absolue)</textarea>]
     <button type="button" class="js-copier-lien-vip"><i class="fa-solid fa-copy" aria-hidden="true"></i> <:association_evenements:copier_lien_inscription:></button>
+    <span class="js-copier-lien-vip-statut" role="status" aria-live="polite" hidden><:association_evenements:lien_inscription_copie:></span>
 </div>
 <script>
 (function () {
   const button = document.querySelector('.js-copier-lien-vip');
   const field = document.getElementById('copy_url');
-  if (!button || !field) return;
+  const status = document.querySelector('.js-copier-lien-vip-statut');
+  if (!button || !field || !status) return;
+  const copied = function () {
+    status.hidden = false;
+  };
+  const fallback = function () {
+    field.focus();
+    field.select();
+    document.execCommand('copy');
+    copied();
+  };
   button.addEventListener('click', function () {
     field.select();
     field.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(field.value).then(function () {
-      button.textContent = '<:association_evenements:lien_inscription_copie|attribut_html|texte_script:>';
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(field.value).then(copied).catch(fallback);
+    } else {
+      fallback();
+    }
   });
 }());
 </script>

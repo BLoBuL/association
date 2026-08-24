@@ -35,6 +35,12 @@ foreach (['onclick=', 'myFunction', 'alert('] as $antiPattern) {
         exit(1);
     }
 }
+foreach (['role="status"', "document.execCommand('copy')", '.catch(fallback)'] as $garantie) {
+    if (!str_contains($lightbox, $garantie)) {
+        fwrite(STDERR, "Garantie de copie $garantie absente\n");
+        exit(1);
+    }
+}
 foreach (['copier_lien_inscription', 'lien_inscription_copie'] as $cle) {
     if (!str_contains($lightbox, "association_evenements:$cle")) {
         fwrite(STDERR, "Clé $cle absente de la lightbox\n");
