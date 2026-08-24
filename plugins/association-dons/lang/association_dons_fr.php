@@ -5,6 +5,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 $GLOBALS[$GLOBALS['idx_lang']] = array(
+	'recu_fiscal_aucun_don' => 'Aucun don validé ne permet de produire un reçu fiscal pour l’année @annee@.',
 	'action' => 'Action',
 	'ajouter_un_don' => 'Ajouter un don',
 	'annee' => 'Année',

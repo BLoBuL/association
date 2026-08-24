@@ -3,6 +3,7 @@
 $racine = dirname(__DIR__);
 $formulaire = file_get_contents($racine . '/plugins/association-compta/formulaires/editer_asso_comptes.php');
 $paquet_compta = file_get_contents($racine . '/plugins/association-compta/paquet.xml');
+$api_compta = file_get_contents($racine . '/plugins/association-compta/inc/association_compta_ecritures.php');
 $erreurs = array();
 
 foreach (array('spip_evenements', 'spip_asso_cotisations', 'spip_asso_dons', 'spip_asso_ventes', 'spip_asso_prets') as $table) {
@@ -18,6 +19,11 @@ foreach (array("case 'evenement'", "case 'cotisation'", "case 'activite'", "case
 foreach (array('association_compta_objets_declarer', 'association_compta_redirection_ecriture') as $pipeline) {
 	if (!str_contains($paquet_compta, 'pipeline nom="' . $pipeline . '"')) {
 		$erreurs[] = "Le contrat Comptabilité $pipeline est absent.";
+	}
+}
+foreach (array('association_compta_ecritures_objet_lister', 'association_compta_ecritures_objet_supprimer', 'association_compta_ecritures_objets_total') as $fonction) {
+	if (!str_contains($api_compta, 'function ' . $fonction . '(')) {
+		$erreurs[] = "L API Comptabilité $fonction est absente.";
 	}
 }
 

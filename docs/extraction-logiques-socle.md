@@ -1237,3 +1237,21 @@ participation correspondant au statut, au nombre d'inscrits et au caractère
 payant demandés. Communication conserve seulement la composition de la page et
 des gabarits ; un test interdit désormais toute lecture de ces tables dans ses
 fonctions de squelette.
+
+## Lot 115 : cycle comptable Dons et Ventes par API
+
+Comptabilité expose maintenant la lecture et la suppression des écritures liées
+à un objet métier, y compris la reprise contrôlée des anciens liens
+`id_journal` et le filtrage par imputation. La suppression passe toujours par
+la primitive qui retire également les ventilations.
+
+Dons et Ventes conservent leurs adaptateurs métier, leurs imputations et leurs
+liens canoniques, mais ne lisent ni ne suppriment plus directement
+`spip_asso_comptes` ou `spip_asso_destination_op`. Les tests de cycle
+comptable interdisent la réintroduction de ces accès croisés.
+
+Le reçu fiscal Dons utilisait encore directement le journal avec l'imputation
+des cotisations et une variable d'email indéfinie. Il sélectionne maintenant
+les dons de l'adhérent pour l'année demandée, puis Comptabilité agrège leurs
+écritures validées avec l'imputation `pc_dons`. L'absence de montant produit un
+message SPIP explicite sans exposer de donnée personnelle.

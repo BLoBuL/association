@@ -65,3 +65,62 @@ function association_compta_ecriture_supprimer($id_compte) {
 	sql_delete('spip_asso_destination_op', 'id_compte=' . $id_compte);
 	return (bool) sql_delete('spip_asso_comptes', 'id_compte=' . $id_compte);
 }
+
+/**
+ * Liste les écritures liées à un objet métier, avec reprise facultative des
+ * anciens liens portés par id_journal.
+ */
+function association_compta_ecritures_objet_lister($objet, $id_objet, array $options = array()) {
+	$objet = trim((string) $objet);
+	$id_objet = (int) $id_objet;
+	if ($objet === '' || $id_objet <= 0) {
+		return array();
+	}
+	$where = "(objet=" . sql_quote($objet) . ' AND id_objet=' . $id_objet . ')';
+	if (!empty($options['legacy_id_journal'])) {
+		$where = '(' . $where . ' OR id_journal=' . $id_objet . ')';
+	}
+	$imputations = array_values(array_unique(array_filter(array_map('strval', (array) ($options['imputations'] ?? array())), 'strlen')));
+	if ($imputations) {
+		$where .= ' AND ' . sql_in('imputation', $imputations);
+	}
+	$champs = (string) ($options['champs'] ?? '*');
+	$ordre = (string) ($options['ordre'] ?? "(objet=" . sql_quote($objet) . ') DESC, id_compte DESC');
+	return sql_allfetsel($champs, 'spip_asso_comptes', $where, '', $ordre) ?: array();
+}
+
+/**
+ * Supprime les écritures et ventilations rattachées à un objet métier.
+ */
+function association_compta_ecritures_objet_supprimer($objet, $id_objet, array $options = array()) {
+	$ecritures = association_compta_ecritures_objet_lister($objet, $id_objet, $options + array('champs' => 'id_compte'));
+	$ok = true;
+	foreach ($ecritures as $ecriture) {
+		$ok = association_compta_ecriture_supprimer((int) ($ecriture['id_compte'] ?? 0)) && $ok;
+	}
+	return $ok;
+}
+
+/**
+ * Calcule le total des recettes liées à une liste d'objets métier.
+ */
+function association_compta_ecritures_objets_total($objet, array $ids_objets, array $options = array()) {
+	$objet = trim((string) $objet);
+	$ids_objets = array_values(array_filter(array_unique(array_map('intval', $ids_objets))));
+	if ($objet === '' || !$ids_objets) {
+		return 0.0;
+	}
+	$where_objet = '(objet=' . sql_quote($objet) . ' AND ' . sql_in('id_objet', $ids_objets) . ')';
+	if (!empty($options['legacy_id_journal'])) {
+		$where_objet = '(' . $where_objet . ' OR ' . sql_in('id_journal', $ids_objets) . ')';
+	}
+	$where = array($where_objet);
+	$imputations = array_values(array_unique(array_filter(array_map('strval', (array) ($options['imputations'] ?? array())), 'strlen')));
+	if ($imputations) {
+		$where[] = sql_in('imputation', $imputations);
+	}
+	if (!empty($options['validees'])) {
+		$where[] = 'vu=1';
+	}
+	return (float) sql_getfetsel('SUM(recette)', 'spip_asso_comptes', implode(' AND ', $where));
+}

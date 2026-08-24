@@ -23,14 +23,7 @@ function action_supprimer_dons_dist() {
 		exit;
 	}
 
-	// on recupere l'id_compte correspondant au don
-	$compte = association_dons_compte_lire($id_don);
-	$id_compte = (int) ($compte['id_compte'] ?? 0);
-
-	if ($id_compte) {
-		sql_delete('spip_asso_destination_op', 'id_compte=' . $id_compte);
-		sql_delete('spip_asso_comptes', 'id_compte=' . $id_compte);
-	}
+	association_dons_compte_supprimer($id_don);
 	sql_delete('spip_asso_dons', 'id_don=' . $id_don);
 }
 

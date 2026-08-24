@@ -29,17 +29,8 @@ function action_supprimer_ventes_dist() {
 	$where_ventes = sql_in('id_vente', $ids);
 	sql_delete('spip_asso_ventes', $where_ventes);
 
-	$where_lien = '(' . sql_in('id_objet', $ids) . " AND objet='asso_vente') OR " . sql_in('id_journal', $ids);
-	$imputations = array_values(array_unique(array_filter(array(
-		$GLOBALS['association_metas']['pc_ventes'] ?? '',
-		$GLOBALS['association_metas']['pc_frais_envoi'] ?? '',
-	), 'strlen')));
-	$where_comptes = '(' . $where_lien . ') AND ' . sql_in('imputation', $imputations);
-	$ids_comptes = sql_allfetsel('id_compte', 'spip_asso_comptes', $where_comptes);
-	$ids_comptes = array_map('intval', array_column($ids_comptes, 'id_compte'));
-	if ($ids_comptes) {
-		sql_delete('spip_asso_destination_op', sql_in('id_compte', $ids_comptes));
+	foreach ($ids as $id_vente) {
+		association_ventes_comptes_supprimer($id_vente);
 	}
-	sql_delete('spip_asso_comptes', $where_comptes);
 }
 

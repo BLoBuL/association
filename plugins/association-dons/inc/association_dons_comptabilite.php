@@ -7,25 +7,47 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 /**
  * Construire la sélection canonique et historique de l'écriture d'un don.
  */
-function association_dons_compte_where($id_don) {
-	$id_don = (int) $id_don;
-	$imputation = sql_quote((string) ($GLOBALS['association_metas']['pc_dons'] ?? ''));
+function association_dons_compte_lire($id_don) {
+	include_spip('inc/association_compta_ecritures');
+	$ecritures = association_compta_ecritures_objet_lister('asso_don', $id_don, array(
+		'legacy_id_journal' => true,
+		'imputations' => array($GLOBALS['association_metas']['pc_dons'] ?? ''),
+		'champs' => 'id_compte,journal,id_auteur,id_objet,objet',
+	));
+	return $ecritures[0] ?? array();
+}
 
-	return "(objet='asso_don' AND id_objet={$id_don})"
-		. " OR (id_journal={$id_don} AND imputation={$imputation})";
+function association_dons_compte_supprimer($id_don) {
+	include_spip('inc/association_compta_ecritures');
+	return association_compta_ecritures_objet_supprimer('asso_don', $id_don, array(
+		'legacy_id_journal' => true,
+		'imputations' => array($GLOBALS['association_metas']['pc_dons'] ?? ''),
+	));
 }
 
 /**
- * Retrouver l'écriture comptable liée à un don.
+ * Calcule les dons validés d'un adhérent pour une année fiscale.
  */
-function association_dons_compte_lire($id_don) {
-	return sql_fetsel(
-		'id_compte,journal,id_auteur,id_objet,objet',
-		'spip_asso_comptes',
-		association_dons_compte_where($id_don),
-		'',
-		"(objet='asso_don') DESC, id_compte DESC"
-	) ?: array();
+function association_dons_montant_fiscal($id_auteur, $annee) {
+	$id_auteur = (int) $id_auteur;
+	$annee = (int) $annee;
+	if ($id_auteur <= 0 || $annee < 2000 || $annee > 9999) {
+		return 0.0;
+	}
+	$ids_dons = sql_allfetsel(
+		'id_don',
+		'spip_asso_dons',
+		'id_adherent=' . $id_auteur
+			. ' AND date_don>=' . sql_quote(sprintf('%04d-01-01', $annee))
+			. ' AND date_don<' . sql_quote(sprintf('%04d-01-01', $annee + 1))
+	);
+	$ids_dons = array_map('intval', array_column($ids_dons ?: array(), 'id_don'));
+	include_spip('inc/association_compta_ecritures');
+	return association_compta_ecritures_objets_total('asso_don', $ids_dons, array(
+		'legacy_id_journal' => true,
+		'imputations' => array($GLOBALS['association_metas']['pc_dons'] ?? ''),
+		'validees' => true,
+	));
 }
 
 /**

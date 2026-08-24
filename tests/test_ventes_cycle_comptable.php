@@ -11,10 +11,11 @@ $options = file_get_contents($racine . '/plugins/association-ventes/association_
 $assertions = array(
 	array(str_contains($api, "'objet' => 'asso_vente'"), "les écritures doivent identifier l'objet vente"),
 	array(str_contains($api, "'id_auteur' => (int) \$id_auteur"), "les écritures doivent conserver le véritable acheteur"),
-	array(str_contains($api, 'OR id_journal={$id_vente}'), "la lecture doit accepter les liens historiques"),
+	array(str_contains($api, "association_compta_ecritures_objet_lister('asso_vente'") && str_contains($api, "'legacy_id_journal' => true"), "la lecture doit accepter les liens historiques via Comptabilité"),
 	array(substr_count($action, 'association_ventes_compte_creer(') === 3, "l'action doit couvrir vente simple et frais séparés"),
 	array(str_contains($formulaire, 'association_ventes_compte_lire('), "le formulaire doit utiliser la résolution métier"),
-	array(str_contains($suppression, "objet='asso_vente'"), "la suppression doit cibler les liens canoniques"),
+	array(str_contains($suppression, 'association_ventes_comptes_supprimer('), "la suppression doit déléguer les liens canoniques à Comptabilité"),
+	array(!preg_match('/spip_asso_(?:comptes|destination_op)/', $api . $suppression), "Ventes ne doit pas accéder directement aux tables comptables"),
 	array(!preg_match('/function (?:compte_vente|compte_vente_frais_envoi|modifier_compte_vente|modifier_activite_vente_frais_envoi)\s*\(/', $comptes), "Comptabilité ne doit plus posséder la logique Ventes"),
 	array(!str_contains($options, 'function generer_url_vente('), "le pseudo-objet vente ne doit plus avoir d'alias URL"),
 );

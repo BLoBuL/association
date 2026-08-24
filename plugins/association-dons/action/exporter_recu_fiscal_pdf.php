@@ -27,6 +27,7 @@ include_spip('pdf/fpdf');
 include_spip('pdf/fpdf_tpl');
 include_spip('pdf/fpdi');
 include_spip('pdf/chiffreEnLettre');
+include_spip('inc/association_dons_comptabilite');
 
 function action_exporter_recu_fiscal_pdf_dist()
 {
@@ -43,9 +44,10 @@ function action_exporter_recu_fiscal_pdf_dist()
 		echo minipres(_T('public:aucun_auteur'));
   } else {
 		if (!preg_match('/^\d{4}$/', $annee)) $annee = date('Y') - 1;
-		$montants = sql_getfetsel('SUM(recette) AS montant', "spip_asso_comptes", "id_journal=$id_auteur AND vu AND date_format( date, '%Y' ) = $annee AND imputation=" . sql_quote($GLOBALS['association_metas']['pc_cotisations']));
-		if (!$montants)
-		  {echo "Versement en $annee pour l'adherent de mail $mail: $montants";}
+		$montants = association_dons_montant_fiscal($id_auteur, $annee);
+		if (!$montants) {
+			echo minipres(_T('association_dons:recu_fiscal_aucun_don', array('annee' => $annee)));
+		}
 		else {
 		  $nom=$data['prenom'].' '.$data['nom_famille']; 
 		  $adresse=$data['adresse'];
