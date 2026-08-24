@@ -1011,3 +1011,22 @@ nombreux avertissements PHP 8.4 imprimés avant et au milieu du HTML par
 `accesrestreint` 6.3.1 (`inc/accesrestreint.php`). Cette anomalie appartient à
 une dépendance externe à la suite Association ; elle n'est pas masquée ni
 attribuée aux squelettes autonomes du monorepo.
+
+## Lot 93 — objets du formulaire comptable distribués
+
+Le commit `43516bf1` est déployé depuis l'artefact SHA-256
+`7c886b06ddca7fe472b99edba3a23a1ee6ad73073cf199ea3a02c5f12037561e`.
+Les 87 tests autonomes passent. Le serveur confirme dix plugins actifs,
+quatorze tables, douze objets SQL SPIP et sept schémas à jour ; il compile 221
+squelettes privés, douze pages publiques et 64 composants front sous SPIP
+4.4.21. `spip test:spip` conserve son code 1 connu malgré des contrôles SPIP,
+PDO et webmestres tous positifs.
+
+Après régénération du cache des pipelines, Chrome authentifié affiche dans le
+formulaire générique les six choix attendus : Autres, Don, Prêt, Vente,
+Cotisation et Événement. Avec `id_evenement=183`, l'objet et le sélecteur sont
+verrouillés sur « Balade urbaine du samedi » et l'imputation de recette est
+présélectionnée. Aucun formulaire n'a été soumis et aucune donnée métier n'a
+été modifiée. Le premier chargement, réalisé avant la régénération effective du
+cache des pipelines, avait seulement affiché « Autres » et journalisé le
+pipeline désactivé ; le recalcul suivant a confirmé les six contributions.
