@@ -1751,3 +1751,20 @@ et 64 composants front compilent. Dans Chrome authentifie, la configuration
 Adhesions affiche « Zone adherent » cochee sans erreur. La page d'accueil et la
 fiche d'adhesion publiques sont rendues sans erreur visible et repondent en
 HTTP 200. Aucun formulaire n'a ete soumis et aucune donnee n'a ete modifiee.
+
+## Lot 152 - suppression securisee des transactions
+
+L'action historique de suppression ne supprime plus directement dans
+`spip_transactions`. Elle exige maintenant une autorisation SPIP propre a
+l'objet transaction, limitee au statut `abandon` et aux operateurs deja
+habilites par Bank, puis appelle l'API Paiements qui protege aussi les
+encaissements. La page de confirmation et la liste appliquent exactement la
+meme autorisation.
+
+Le commit `25190d72` est deploye sur test-fiafe avec des empreintes identiques a
+l'artefact Git. Les 45 transactions restent inchangees : 20 `ok`, 22
+`commande`, 2 `abandon` et 1 `attente`. Dans Chrome authentifie, la transaction
+abandonnee 783 affiche sa confirmation et son action signee ; la transaction
+en attente 1120 est refusee et n'affiche aucune suppression. Aucun lien de
+suppression n'a ete active. Paiements reste actif en 4.0.0 et tous les
+squelettes compilent sans erreur.
