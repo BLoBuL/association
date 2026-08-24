@@ -7,8 +7,8 @@
         })]        
         <span class="logo_evenement">                
             [(#SESSION{statut}|!={6forum}|oui)
-                        [(#EVENEMENT_A_NE_PAS_MANQUER|=={oui}|oui)<i class="fa-solid fa-star" title="Evénement important"></i>]
-                        [(#ID_EVENEMENT_SOURCE|>{0}|oui)<i class="fas fa-sync-alt"  title="Evénements répétés"></i>]
+                        [(#EVENEMENT_A_NE_PAS_MANQUER|=={oui}|oui)<i class="fa-solid fa-star" title="<:association_evenements:evenement_important|attribut_html:>"></i>]
+                        [(#ID_EVENEMENT_SOURCE|>{0}|oui)<i class="fas fa-sync-alt" title="<:association_evenements:evenement_repete|attribut_html:>"></i>]
             ]
     [(#SET{titre,#TITRE})]
     [(#SET{titre_date,[(#TITRE)] - [(#DATE_DEBUT|Agenda_affdate_debut_fin{#DATE_FIN,#HORAIRE})]})]

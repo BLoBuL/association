@@ -4,7 +4,7 @@
 <B_filtre>
     <div class="filtre statut_interne">
         <div class=""><span><:association_evenements:filtre_statut_cotisation:></span></div>
-        <div class="[(#ENV{statut}|non)selected]"><a href="[(#SELF|parametre_url{statut,''})]" class="ajax">Tous statuts</a></div>
+        <div class="[(#ENV{statut}|non)selected]"><a href="[(#SELF|parametre_url{statut,''})]" class="ajax"><:association_evenements:tous_statuts:></a></div>
         <BOUCLE_filtre(ASSO_ACTIVITES){tout} {id_activite IN  #GET{selection_id_activites}}{fusion statut}>
             <div class="[(#ENV{statut}=={#STATUT}|oui)selected]">
                 <a href="[(#SELF|parametre_url{statut,#STATUT})]" class="ajax">

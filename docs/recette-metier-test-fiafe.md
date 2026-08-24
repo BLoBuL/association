@@ -1969,3 +1969,15 @@ l'analyse comptable confirme la bascule traduite. La recette directe de la
 lightbox 231 a révélé un refus de l'API presse-papiers ; le repli ajouté a été
 rejoué par un clic réel et affiche désormais « Lien copié », sans erreur ni clé
 de langue brute. Aucune donnée métier n'a été modifiée.
+
+## Lot 164 - repères et notifications privées Événements
+
+Les titres des pictogrammes d'événement, le compteur d'inscrits de l'export,
+le filtre des destinataires et l'ensemble du tableau des notifications passent
+par le domaine `association_evenements`. Les anciens pseudo-libellés commençant
+par `#` disparaissent. Le témoin interne de présence, auparavant jamais posé,
+est désormais initialisé puis alimenté par chacune des quatre listes afin que
+le message « aucune notification » ne soit plus affiché à tort.
+
+Un test couvre les clés, l'absence des libellés historiques et le témoin des
+quatre listes. La suite locale atteint 122 tests, tous valides.

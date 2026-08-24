@@ -21,7 +21,7 @@
     <td class="date">[(#DATE_DEBUT|affdate{'d/m/y'})][<br><small>(#DATE_DEBUT|affdate{"H:i"})</small>]</td>
     <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement,date_evenement=non,cat_evenement=oui}/>
     <td class="quota">
-        <div class="tooltip inscrit">[(#GET{nb_inscrit}|array_sum)]/[(#PLACES|=={0}|?{∞,#PLACES})]<span class="tooltiptext">Nombre de membres inscrit</span></div>
+        <div class="tooltip inscrit">[(#GET{nb_inscrit}|array_sum)]/[(#PLACES|=={0}|?{∞,#PLACES})]<span class="tooltiptext"><:association_evenements:activite_nombre_inscrits:></span></div>
 
     </td>
     [(#GET{payant}|=={1}|?{
