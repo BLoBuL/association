@@ -184,7 +184,7 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine . 
 	}
 }
 $verifier(
-	strpos($paiements_sources, 'association:') === false
+	!preg_match('/(?:<:|[\'\"]|\{)association:/', $paiements_sources)
 		&& strpos($paiements_sources, 'association_paiements:') !== false
 		&& strpos($paiements_lang, "'label_remboursement_notifier_inscrit'") !== false,
 	'Le plugin Paiements doit utiliser son propre domaine de langue.'

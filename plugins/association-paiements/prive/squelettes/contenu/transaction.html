@@ -16,13 +16,13 @@
 				<div class='valeur'>#AUTEUR</div>
 				<BOUCLE_auteuralt(AUTEURS){email=#AUTEUR}{si #ID_AUTEUR|non|et{#AUTEUR|email_valide}|et{#STATUT|=={ok}}|et{#AUTORISER{webmestre}}}{tout}{0,10}{!par id_auteur}>
 				<div class="msg-alert notice">
-					<p>Cet email correspond à l'auteur <a href='[(#ID_AUTEUR|generer_objet_url{auteur})]'>##ID_AUTEUR[ (#NOM)]</a></p>
-					#BOUTON_ACTION{Associer la transaction à cet auteur,#URL_ACTION_AUTEUR{attribuer_transaction,#ID_TRANSACTION-#ID_AUTEUR,#SELF}}
+					<p><:association_paiements:email_correspond_auteur:> <a href='[(#ID_AUTEUR|generer_objet_url{auteur})]'>##ID_AUTEUR[ (#NOM)]</a></p>
+					#BOUTON_ACTION{<:association_paiements:bouton_associer_transaction_auteur:>,#URL_ACTION_AUTEUR{attribuer_transaction,#ID_TRANSACTION-#ID_AUTEUR,#SELF}}
 				</div>
 				</BOUCLE_auteuralt>
 			</div>
 			</B_auteuralt>
-			[<div class="qui">Liée à (#AUTEUR)</div>]
+			[<div class="qui"><:association_paiements:transaction_liee_a:> (#AUTEUR)</div>]
 			<//B_auteuralt>
 		<//B_auteur>
 		<div class="formulaire_spip formulaire_dater">

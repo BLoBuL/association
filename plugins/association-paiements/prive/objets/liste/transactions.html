@@ -23,7 +23,7 @@
 				<th class='montant' >[(#TRI{montant,<:bank:label_tri_montant_ttc:>,ajax})]</th>
 				<th class='regle' >[(#TRI{montant_regle,<:bank:label_tri_montant_paye:>,ajax})]</th>
 				<th class='statut' >[(#TRI{statut,<:bank:label_tri_statut:>,ajax})]</th>
-                <th class='action'>Actions</th>
+                <th class='action'><:association_paiements:colonne_actions:></th>
 				<!--<th class='parrain' >[(#TRI{parrain,<:bank:label_tri_parrain:>,ajax})]</th>
 				<th class="id_commande"><abbr title="Commande">C</abbr></th>
 				<th class="id_facture"><abbr title="Facture">F</abbr></th>-->
@@ -68,7 +68,7 @@
                         <BOUCLE_condition(CONDITION){si #AUTEUR|>{0}}>
                             <td class="nom"> #AUTEUR </td>
                         </BOUCLE_condition>
-                            <td class="nom">L'adhérent lié à cette transaction (##ID_AUTEUR) n'existe plus dans la base de données.</td>
+                            <td class="nom"><:association_paiements:adherent_transaction_absent{numero=#ID_AUTEUR}:></td>
                        <//B_condition>
 
                  <//B_info_adherent_formidable>
@@ -80,7 +80,7 @@
                 <BOUCLE_info_evenement(EVENEMENTS){id_evenement = #ID_EVENEMENT}>
                     <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement}>
                 </BOUCLE_info_evenement>
-                    <td class="description">Information indisponible</td>
+                    <td class="description"><:association_paiements:information_indisponible:></td>
                 <//B_info_evenement>
             </BOUCLE_info_activite>
 
@@ -88,7 +88,7 @@
             <BOUCLE_info_cotisation(ASSO_COTISATIONS){id_transaction}{0,1}>
                 <td class="description">
                     <B_info_categories_adherents>
-                            [<b>(#INSCRIPTION|=={reinscription}|?{Réinscription à l'association,Inscription à l'association})</b><br>]
+                            [<b>(#INSCRIPTION|=={reinscription}|?{<:association_paiements:reinscription_association:>,<:association_paiements:inscription_association:>})</b><br>]
                             <BOUCLE_info_categories_adherents(ASSO_CATEGORIES_ADHERENTS){id_categorie = #ID_CATEGORIE}>[(#VALEUR|propre|textebrut)]
                             </BOUCLE_info_categories_adherents>
                     <B_info_categories_adherents>
@@ -101,7 +101,7 @@
             </BOUCLE_info_formulaire>
 
 
-            <td class="description">Information indisponible</td>
+            <td class="description"><:association_paiements:information_indisponible:></td>
         <//B_info_formulaire>
     <//B_info_cotisation>
 <//B_info_activite>

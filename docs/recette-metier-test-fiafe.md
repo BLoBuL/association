@@ -1891,3 +1891,16 @@ les 297 fonds recompilent. Dans Chrome authentifie, le H1, les quatre onglets,
 le catalogue, son caption et ses cinq en-têtes sont rendus sans texte BETA ni
 erreur d'execution. L'audit affiche 11 scenarios conformes, sans envoi ; aucun
 bouton de test n'a ete actionne.
+
+## Lot 160 - langue privée du parcours Paiements
+
+Les confirmations signées d'annulation et de suppression, la fiche d'une
+transaction, la liste et les miniatures ne portent plus leurs libellés métier
+en français dans les squelettes. Titres, actions, rattachement auteur,
+inscription, information absente et diagnostic de transaction manquante sont
+maintenant fournis par `association_paiements`.
+
+Les autorisations et les URLs d'action restent inchangées. Le contrôle
+d'architecture utilise désormais une détection exacte du domaine historique,
+afin qu'une clé comme `reinscription_association` ne soit pas prise à tort pour
+le domaine `association`. La suite locale atteint 118 tests, tous valides.

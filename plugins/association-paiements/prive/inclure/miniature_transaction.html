@@ -64,8 +64,8 @@
                         [(#GET{url_action}|oui)<a href="[(#GET{url_action})]" title="[(#GET{titre_action}|attribut_html)]">#GET{montant_affiche}</a>]
                         [(#GET{url_action}|non)#GET{montant_affiche}]
                         </span><span class="tooltiptext">
-                        <p> Transaction : ##ID_TRANSACTION<br>
-                            [(#STATUT|in_array{#LISTE{echec,abandon,ok,rembourse}}|oui)[Autorisation : (#AUTORISATION_ID)]]
+                        <p><:association_paiements:transaction_numero{numero=#ID_TRANSACTION}:><br>
+                            [(#STATUT|in_array{#LISTE{echec,abandon,ok,rembourse}}|oui)[<:association_paiements:autorisation_paiement:> (#AUTORISATION_ID)]]
                             </p></span>
                 </div>
 
@@ -79,7 +79,7 @@
     <BOUCLE_activite_sans_transaction(ASSO_ACTIVITES){id_activite}{tout}>
         <div class="tooltip no_transaction"><span> <a href="[(#URL_ECRIRE{editer_asso_activite,id_activite=#ID_ACTIVITE})]" title="<:association_paiements:activite_bouton_modifier_inscription:>"><i class="fa fa-exclamation-triangle"></i></a></span>
             <span class="tooltiptext">
-                <p>Transaction manquante&nbsp;!<br>Vous devez modifier cette inscription pour générer une transaction.</p>
+                <p><:association_paiements:transaction_manquante:><br><:association_paiements:transaction_manquante_explication:></p>
            </span>
         </div>
     </BOUCLE_activite_sans_transaction>
