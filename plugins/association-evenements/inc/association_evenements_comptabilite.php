@@ -15,25 +15,31 @@ function association_evenements_comptes_supprimer_inscription($id_activite) {
 
 	$id_evenement = (int) $activite['id_evenement'];
 	$id_transaction = (int) $activite['id_transaction'];
-	$where = "((objet='evenement' AND id_objet={$id_evenement} AND id_transaction={$id_transaction})"
-		. " OR (objet='activite' AND id_objet={$id_activite}))";
-	$comptes = sql_allfetsel('id_compte', 'spip_asso_comptes', $where);
-	$ids_comptes = array_map('intval', array_column($comptes, 'id_compte'));
-	if ($ids_comptes) {
-		sql_delete('spip_asso_destination_op', sql_in('id_compte', $ids_comptes));
+	include_spip('inc/association_compta_ecritures');
+	$comptes = array_merge(
+		association_compta_ecritures_objet_lister('evenement', $id_evenement, array(
+			'id_transaction' => $id_transaction,
+			'champs' => 'id_compte',
+		)),
+		association_compta_ecritures_objet_lister('activite', $id_activite, array('champs' => 'id_compte'))
+	);
+	$ids_comptes = array_values(array_unique(array_map('intval', array_column($comptes, 'id_compte'))));
+	$nombre = 0;
+	foreach ($ids_comptes as $id_compte) {
+		$nombre += association_compta_ecriture_supprimer($id_compte) ? 1 : 0;
 	}
-
-	return (int) sql_delete('spip_asso_comptes', $where);
+	return $nombre;
 }
 
 function association_evenements_compte_valider_transaction($id_transaction) {
 	$id_transaction = (int) $id_transaction;
-	$compte = sql_fetsel(
-		'id_compte',
-		'spip_asso_comptes',
-		'id_transaction=' . $id_transaction . " AND objet='evenement'"
-	);
-	$activite = sql_fetsel('date', 'spip_asso_activites', 'id_transaction=' . $id_transaction);
+	$activite = sql_fetsel('id_evenement,date', 'spip_asso_activites', 'id_transaction=' . $id_transaction);
+	include_spip('inc/association_compta_ecritures');
+	$comptes = $activite ? association_compta_ecritures_objet_lister('evenement', (int) $activite['id_evenement'], array(
+		'id_transaction' => $id_transaction,
+		'champs' => 'id_compte',
+	)) : array();
+	$compte = $comptes[0] ?? array();
 	$id_compte = (int) ($compte['id_compte'] ?? 0);
 	if ($id_compte <= 0) {
 		association_log(
@@ -44,11 +50,11 @@ function association_evenements_compte_valider_transaction($id_transaction) {
 		return 0;
 	}
 
-	sql_updateq('spip_asso_comptes', array(
+	association_compta_ecriture_modifier($id_compte, array(
 		'date' => !empty($activite['date']) ? $activite['date'] : date('Y-m-d H:i:s'),
 		'imputation' => $GLOBALS['association_metas']['pc_activites_paiement'] ?? '',
 		'vu' => 1,
-	), 'id_compte=' . $id_compte);
+	));
 
 	return $id_compte;
 }
@@ -72,18 +78,23 @@ function association_evenements_compte_remboursement_creer($id_transaction, $id_
 	}
 
 	$id_evenement = (int) $activite['id_evenement'];
-	$existant = (int) sql_getfetsel(
-		'id_compte',
-		'spip_asso_comptes',
-		'id_transaction=' . $id_transaction . " AND objet='evenement' AND id_objet=" . $id_evenement . ' AND depense>0'
-	);
+	include_spip('inc/association_compta_ecritures');
+	$ecritures = association_compta_ecritures_objet_lister('evenement', $id_evenement, array(
+		'id_transaction' => $id_transaction,
+	));
+	$existant = 0;
+	foreach ($ecritures as $ecriture) {
+		if ((float) ($ecriture['depense'] ?? 0) > 0) {
+			$existant = (int) ($ecriture['id_compte'] ?? 0);
+			break;
+		}
+	}
 	if ($existant > 0) {
 		return $existant;
 	}
 	if (!$contexte_evenement) {
 		$contexte_evenement = gestions_places($id_evenement);
 	}
-	include_spip('inc/association_compta_ecritures');
 	$titre = $contexte_evenement['evenement_titre'] ?? ('#' . $id_evenement);
 	return association_compta_ecriture_creer(array(
 		'date' => date('Y-m-d H:i:s'), 'recette' => 0, 'depense' => (float) $transaction['montant'],
@@ -136,19 +147,19 @@ function association_evenements_compte_inscription_actualiser($id_activite, $id_
 		return 0;
 	}
 	$id_evenement = (int) $activite['id_evenement'];
-	$compte = sql_fetsel(
-		'id_compte',
-		'spip_asso_comptes',
-		'id_transaction=' . $id_transaction . " AND objet='evenement' AND id_objet=" . $id_evenement
-	);
-	if (!$compte) {
-		$compte = sql_fetsel('id_compte', 'spip_asso_comptes', "objet='activite' AND id_objet=" . $id_activite);
+	include_spip('inc/association_compta_ecritures');
+	$comptes = association_compta_ecritures_objet_lister('evenement', $id_evenement, array(
+		'id_transaction' => $id_transaction,
+		'champs' => 'id_compte',
+	));
+	if (!$comptes) {
+		$comptes = association_compta_ecritures_objet_lister('activite', $id_activite, array('champs' => 'id_compte'));
 	}
+	$compte = $comptes[0] ?? array();
 	$id_compte = (int) ($compte['id_compte'] ?? 0);
 	if ($id_compte <= 0) {
 		return association_evenements_compte_inscription_creer($id_activite);
 	}
-	include_spip('inc/association_compta_ecritures');
 	association_compta_ecriture_modifier($id_compte, array(
 		'date' => $activite['date'] ?: date('Y-m-d H:i:s'), 'recette' => (float) $transaction['montant'], 'depense' => 0,
 		'imputation' => $GLOBALS['association_metas']['pc_activites_creance'] ?? '101',

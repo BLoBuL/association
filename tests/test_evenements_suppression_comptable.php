@@ -7,8 +7,11 @@ $action = file_get_contents($racine . '/plugins/association-evenements/action/ge
 $comptes = file_get_contents($racine . '/plugins/association-compta/inc/comptes.php');
 
 if (!str_contains($api, 'function association_evenements_comptes_supprimer_inscription(')
-	|| !str_contains($api, "objet='evenement'")
-	|| !str_contains($api, 'spip_asso_destination_op')
+	|| !str_contains($api, "association_compta_ecritures_objet_lister('evenement'")
+	|| !str_contains($api, "association_compta_ecritures_objet_lister('activite'")
+	|| !str_contains($api, 'association_compta_ecriture_supprimer(')
+	|| str_contains($api, 'spip_asso_destination_op')
+	|| str_contains($api, 'spip_asso_comptes')
 	|| !str_contains($api, 'function association_evenements_compte_valider_transaction(')
 	|| !str_contains($formulaire, 'association_evenements_comptes_supprimer_inscription(')
 	|| !str_contains($action, 'association_evenements_comptes_supprimer_inscription(')

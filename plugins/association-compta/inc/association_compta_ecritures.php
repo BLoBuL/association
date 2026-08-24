@@ -88,6 +88,9 @@ function association_compta_ecritures_objet_lister($objet, $id_objet, array $opt
 	if ($imputations) {
 		$where .= ' AND ' . sql_in('imputation', $imputations);
 	}
+	if (array_key_exists('id_transaction', $options)) {
+		$where .= ' AND id_transaction=' . (int) $options['id_transaction'];
+	}
 	$champs = (string) ($options['champs'] ?? '*');
 	$ordre = (string) ($options['ordre'] ?? "(objet=" . sql_quote($objet) . ') DESC, id_compte DESC');
 	return sql_allfetsel($champs, 'spip_asso_comptes', $where, '', $ordre) ?: array();
