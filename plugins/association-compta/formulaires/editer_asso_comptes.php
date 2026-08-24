@@ -421,7 +421,7 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
     suivre_invalideur("id='asso_compte/$id_compte'");
 
     // Message de succès
-    $res['message_ok'] = _T('asso_compte:message_ok');
+    $res['message_ok'] = _T('association_compta:operation_enregistree');
 
     // Redirection si demandée
     if ($retour) {

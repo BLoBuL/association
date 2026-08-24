@@ -3,7 +3,7 @@
 [(#SET{redirect,#ENV{redirect}|sinon{#ID_COMPTE|?{#ID_COMPTE|generer_objet_url{asso_compte},#URL_ECRIRE{comptes}}}})]
 
 <div class="cadre-formulaire-editer">
-    <h1 class="grostitre"><:association_compta:form_operation_ajout_title:></h1>
+    <h1 class="grostitre">[(#ENV{id_compte}|intval|>{0}|?{<:association_compta:form_operation_modification_title:>,<:association_compta:form_operation_ajout_title:>})]</h1>
 
     <div class="ajax">
       [(#FORMULAIRE_EDITER_ASSO_COMPTES{#ENV{id_compte,new}, #GET{redirect}, #ENV{associer_objet}})]
