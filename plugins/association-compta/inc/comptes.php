@@ -260,17 +260,25 @@ function association_commande_comptable_synchroniser($id_commande, $options = ar
     $journal = 'commande|' . $id_commande;
     $id_auteur = intval($commande['id_auteur'] ?? ($transaction['id_auteur'] ?? 0));
 
-    $where = "objet='commande' AND id_objet=" . $id_commande;
-    $compte = sql_fetsel('id_compte', 'spip_asso_comptes', $where);
+	include_spip('inc/association_compta_ecritures');
+	$comptes = association_compta_ecritures_lister(
+		array('objet' => 'commande', 'id_objet' => $id_commande),
+		array('champs' => 'id_compte', 'ordre' => 'id_compte DESC', 'limite' => 1)
+	);
+	$compte = $comptes ? reset($comptes) : array();
     if (!$compte && $id_transaction > 0) {
-        $compte = sql_fetsel('id_compte', 'spip_asso_comptes', 'id_transaction=' . $id_transaction . " AND objet='commande'");
+		$comptes = association_compta_ecritures_lister(
+			array('objet' => 'commande', 'id_transaction' => $id_transaction),
+			array('champs' => 'id_compte', 'ordre' => 'id_compte DESC', 'limite' => 1)
+		);
+		$compte = $comptes ? reset($comptes) : array();
     }
 
     if ($compte && !empty($compte['id_compte'])) {
         $id_compte = intval($compte['id_compte']);
-        sql_updateq(
-            'spip_asso_comptes',
-            array(
+		association_compta_ecriture_modifier(
+			$id_compte,
+			array(
                 'date' => $date_compte,
                 'recette' => $montant,
                 'depense' => 0,
@@ -282,13 +290,11 @@ function association_commande_comptable_synchroniser($id_commande, $options = ar
                 'objet' => 'commande',
                 'id_transaction' => $id_transaction,
                 'vu' => $vu,
-            ),
-            'id_compte=' . $id_compte
+			)
         );
         return $id_compte;
     }
 
-	include_spip('inc/association_compta_ecritures');
 	return association_compta_ecriture_creer(array(
 		'date' => $date_compte, 'recette' => $montant, 'depense' => 0,
 		'justification' => $justification, 'imputation' => $imputation, 'journal' => $journal,

@@ -9,6 +9,14 @@ function include_spip($path) {
     return true;
 }
 
+function sql_in($champ, $valeurs) {
+	$valeurs = array_values((array) $valeurs);
+	if (count($valeurs) === 1) {
+		return $champ . "='" . addslashes((string) $valeurs[0]) . "'";
+	}
+	return $champ . " IN ('" . implode("','", array_map('addslashes', $valeurs)) . "')";
+}
+
 function association_log($journal, $message, $niveau = 'info') {
     $GLOBALS['association_test_logs'][] = array($journal, $message, $niveau);
 }
@@ -112,6 +120,9 @@ function sql_showtable($table, $serveur = true) {
 }
 
 function association_test_match_where($row, $where) {
+	if (is_array($where)) {
+		$where = implode(' AND ', $where);
+	}
     $where = trim((string)$where);
     if ($where === '') {
         return true;
@@ -206,5 +217,10 @@ $compte = $GLOBALS['association_test_tables']['spip_asso_comptes']['rows'][1];
 association_test_assert($compte['vu'] === 1, 'ecriture validee au paiement');
 association_test_assert($compte['imputation'] === '701', 'imputation de paiement utilisee apres encaissement');
 association_test_assert($compte['date'] === '2026-02-15', 'date comptable alignee sur la date de paiement');
+$source_commandes = file_get_contents(PLUGIN_ROOT . '/plugins/association-compta/inc/comptes.php');
+association_test_assert(
+	!preg_match('/sql_updateq\s*\(\s*[\'\"]spip_asso_comptes/', $source_commandes),
+	'la synchronisation des commandes ne contourne pas l API comptable'
+);
 
 echo "Tous les tests commandes/comptabilite ont reussi.\n";

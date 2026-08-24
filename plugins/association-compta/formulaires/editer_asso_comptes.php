@@ -66,9 +66,8 @@ function association_compta_objet_contexte(array $definitions, array $compte = a
 function formulaires_editer_asso_comptes_saisies_dist($id_compte = 'new') {
     $id_compte = _request('id_compte') ?? 'new';
 
-
-
-    $query_compte = sql_fetsel('*', 'spip_asso_comptes', "id_compte =" . intval($id_compte));
+	include_spip('inc/association_compta_ecritures');
+	$query_compte = association_compta_ecriture_lire((int) $id_compte);
 
     // Defaults
     $disable_complet = false;
@@ -236,7 +235,8 @@ function formulaires_editer_asso_comptes_charger_dist($id_compte = 'new') {
 
     // Si c'est une modification, charger les données du compte
     if ($id_compte !== 'new') {
-        $query_compte = sql_fetsel('*', 'spip_asso_comptes', "id_compte =" . intval($id_compte));
+		include_spip('inc/association_compta_ecritures');
+		$query_compte = association_compta_ecriture_lire((int) $id_compte);
 
         if ($query_compte) {
             $valeurs = $query_compte;
