@@ -7,7 +7,7 @@
     [<div class="logo_evenement">
         (#INCLURE{fond=prive/inclure/asso_logo_evenement,id_evenement,largeur=200,hauteur=100,mediabox=oui,env})
     </div>]
-[(#SET{ids_responsable,#ID_EVENEMENT|liste_responsables_evenement|table_valeur{auteur_array}})]
+[(#SET{ids_responsable,#ID_EVENEMENT|association_evenements_responsables_ids})]
 <B_responsable><div class="bloc_responsables_separator"></div>
 <h4><:association_evenements:activite_liste_responsable:></h4>
 <table class="table_responsables_activite">

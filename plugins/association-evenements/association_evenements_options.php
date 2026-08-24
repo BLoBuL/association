@@ -7,13 +7,14 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 foreach (array(
 	'affichage_dans_activites', 'eligibilite_inscription_evenement',
 	'eligibilite_desinscription_evenement', 'eligibilite_modification_evenement',
-	'alerte_inscription_evenement', 'gestion_places', 'liste_responsables_evenement',
+	'alerte_inscription_evenement', 'gestion_places',
 	'ouverture_inscription_evenement', 'validation_attente_automatique',
 	'facteur_envoyer_mail_activites', 'facteur_envoyer_recu_participation',
 ) as $bibliotheque) {
 	include_spip('inc/fonctions/' . $bibliotheque);
 }
 include_spip('formulaires/inc/inscription_evenement');
+include_spip('inc/association_evenements_responsables');
 
 $GLOBALS['association_activites_statuts'] = ['', 'ok', 'preinscrit', 'liste_attente', 'desinscrit'];
 
@@ -112,55 +113,4 @@ function droit_auteur_evenements($id_auteur, $id_evenement=''){
 
     // Retourne les droits sous forme de tableau
     return array($activites_array, $type_auteur, $id_result);
-}
-
-function responsables_evenement($id_evenement='new',$id_article=''){
-    $id_result = array();
-    $id_result['auteur_array_defaut'] = '';
-    $id_evenement = !empty($id_evenement) ? $id_evenement : _request('id_evenement');
-    /* Si un événement existant est spécifié */
-    if(!empty($id_evenement) AND ($id_evenement != 'new')) {
-
-        /* Recherche des auteurs liés à l'article de l'événement */
-        $query_liste_responsables_evenement_article = sql_select("*", "(spip_auteurs_liens as lien RIGHT JOIN spip_evenements AS a ON (a.id_article = lien.id_objet AND a.id_evenement='$id_evenement')) RIGHT JOIN spip_auteurs as c ON (c.id_auteur=lien.id_auteur AND c.statut_interne='ok')", "lien.objet='article'");
-
-        /* Recherche des responsables dans la base de données pour l'événement */
-        $query_evenement = sql_fetsel('responsables','spip_evenements',"id_evenement=$id_evenement");
-
-        /* Formatage des résultats pour les fonctions dépendantes */
-        if (sql_count($query_liste_responsables_evenement_article) > 0){
-            $auteur_array = array();
-            while ($data = sql_fetch($query_liste_responsables_evenement_article)) {
-                $auteur_array[] = $data["id_auteur"];
-            }
-            $id_result['auteur_array'] = $auteur_array;
-            $id_result['auteur_array_defaut'] = $query_evenement['responsables'];
-            $implode =  'id_auteur IN (' . implode(',', $auteur_array) . ')';
-            $id_result['condition'] = sql_select( '*', 'spip_auteurs', "$implode");
-            return $id_result;
-        } else{
-            return false;
-        }
-
-    /* Si un nouvel événement est spécifié avec un article */
-    }elseif($id_evenement == 'new' AND !empty($id_article)) {
-
-        /* Recherche des auteurs liés à l'article */
-        $query_liste_responsables_evenement_article = sql_select("*", "spip_auteurs AS auteurs, spip_auteurs_liens AS lien","lien.objet= 'article' AND lien.id_objet=". $id_article ." AND auteurs.id_auteur=lien.id_auteur  AND  auteurs.statut_interne='ok' ");
-
-        if (sql_count($query_liste_responsables_evenement_article) > 0){
-            $auteur_array = array();
-            while ($data = sql_fetch($query_liste_responsables_evenement_article)) {
-                $auteur_array[] = $data["id_auteur"];
-            }
-            $id_result['auteur_array'] = $auteur_array;
-            $id_result['auteur_array_defaut'] = $auteur_array;
-            $implode =  'id_auteur IN (' . implode(',', $auteur_array) . ')';
-            $id_result['condition'] = sql_select( '*', 'spip_auteurs', "$implode");
-            return $id_result;
-        }else{
-            return false;
-        }
-    }
-    return false;
 }

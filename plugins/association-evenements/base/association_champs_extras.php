@@ -85,9 +85,7 @@ include_spip('base/abstract_sql');
 $donnees = [];
 $metas = isset($GLOBALS['association_metas']) && is_array($GLOBALS['association_metas']) ? $GLOBALS['association_metas'] : array();
 
-if (!function_exists('responsables_evenement')) {
-	include_spip('association_evenements_options');
-}
+include_spip('inc/association_evenements_responsables');
 
 // Préparation des responsables
 if (intval(_request('id_evenement')) >= 1 OR intval(_request('id_article')) >= 1) {
@@ -95,24 +93,13 @@ if (intval(_request('id_evenement')) >= 1 OR intval(_request('id_article')) >= 1
     $id_article = _request('id_article');
 
 
-    // Récupération des responsables associés à l'événement ou à l'article
-    if ($liste_responsable = responsables_evenement($id_evenement, $id_article)) {
-
-        $data_input_choix_responsable = array();
-        while ($responsable = sql_fetch($liste_responsable['condition'])) {
-            $data_input_choix_responsable += array(
-                $responsable['id_auteur'] => '' . $responsable['nom_famille'] . ' ' . $responsable['prenom'] . ''
-            );
-        }
-        $disable = false;
-    } else {
-        // Si aucun responsable n'est trouvé
-        $data_input_choix_responsable = [];
-        $liste_responsable = [];
-        $liste_responsable['auteur_array'] = [];
-        $liste_responsable['auteur_array_defaut'] = [];
-        $disable = true;
-    }
+    $responsables = association_evenements_responsables_choix($id_evenement, $id_article);
+    $data_input_choix_responsable = $responsables['choix'];
+    $liste_responsable = array(
+        'auteur_array' => $responsables['ids'],
+        'auteur_array_defaut' => $responsables['defaut'],
+    );
+    $disable = $responsables['disable'];
 } else {
     // Si aucun événement ou article n'est spécifié
     $data_input_choix_responsable = [];

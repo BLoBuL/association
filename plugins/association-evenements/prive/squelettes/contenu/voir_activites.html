@@ -7,10 +7,9 @@
 [(#ID_EVENEMENT|validation_attente_automatique{page_prive_voir_activites})]
 ]
 #SET{tri_tableau_incrits, #ENV{tri_tableau_incrits}}
-#SET{activite_responsable, #ID_EVENEMENT|liste_responsables_evenement}
+#SET{id_responsables, #ID_EVENEMENT|association_evenements_responsables_ids}
 #SET{affichage_dans_activites, #ID_EVENEMENT|affichage_dans_activites}
 #SET{gestions_places, #ID_EVENEMENT|gestions_places}
-#SET{id_responsables, #GET{activite_responsable}|table_valeur{auteur_array}|sinon{#ARRAY}}
 
 <div class="onglets_simple onglets_voir_activites">
     <ul class="">

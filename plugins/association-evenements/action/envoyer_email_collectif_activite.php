@@ -57,18 +57,8 @@ function action_envoyer_email_collectif_activite() {
     }
 
     // Ajouter les emails des responsables de l'événement
-    $respo_ids = array();
-    if (function_exists('liste_responsables_evenement')) {
-        $respo = liste_responsables_evenement($id_evenement);
-        $respo_ids = $respo['auteur_array'] ?? array();
-    } else {
-        // tenter d'inclure la fonction si présente dans le plugin
-        include_spip('inc/fonctions/liste_responsables_evenement');
-        if (function_exists('liste_responsables_evenement')) {
-            $respo = liste_responsables_evenement($id_evenement);
-            $respo_ids = $respo['auteur_array'] ?? array();
-        }
-    }
+    include_spip('inc/association_evenements_responsables');
+    $respo_ids = association_evenements_responsables_ids($id_evenement);
 
     if (!empty($respo_ids)) {
         $res_respo = sql_select('email', 'spip_auteurs', sql_in('id_auteur', $respo_ids));

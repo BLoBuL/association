@@ -43,9 +43,8 @@ function facteur_envoyer_mail_activites($id_evenement = '', $type = '', $id_acti
         }
 
         // Récupération des responsables
-        include_spip('inc/liste_responsables_evenement');
-        $activite_responsable = liste_responsables_evenement($id_evenement, '');
-        $activite_responsable_array = !empty($activite_responsable) ? $activite_responsable['auteur_array'] : false;
+        include_spip('inc/association_evenements_responsables');
+        $activite_responsable_array = association_evenements_responsables_ids($id_evenement);
 
         // Traitement pour chaque activité
         $infos_activites = array();

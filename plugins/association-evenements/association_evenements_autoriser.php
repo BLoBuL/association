@@ -143,12 +143,6 @@ function autoriser_voir_activites_dist($faire, $type, $id, $qui, $opt) {
 	// Admin restreint ou rédacteur responsable : accès si responsable de l'événement
 	if (in_array($qui['statut'], array('0minirezo', '1comite')) && intval($id) > 0) {
 		if (association_est_responsable_evenement($qui, $id)) return true;
-
-		// Fallback legacy pour les rédacteurs (liste_responsables_evenement)
-		if ($qui['statut'] === '1comite' && function_exists('liste_responsables_evenement')) {
-			$resp = liste_responsables_evenement(intval($id));
-			if (is_array($resp) && in_array(intval($qui['id_auteur']), $resp)) return true;
-		}
 	}
 
 	return false;

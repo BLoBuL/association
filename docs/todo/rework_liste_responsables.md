@@ -1,4 +1,24 @@
-# TODO : réfactoring / suppression de `liste_responsables_evenement`
+# Réfactoring terminé : responsables d’événement
+
+> État au 24 août 2026 : réalisé dans le lot 68. Ce document conserve le
+> diagnostic historique qui a motivé la suppression.
+
+Les deux API ambiguës `liste_responsables_evenement()` et
+`responsables_evenement()` ont été supprimées. Elles sont remplacées par :
+
+- `association_evenements_responsables_ids()` pour les notifications, exports
+  et affichages, avec un retour toujours plat `int[]` ;
+- `association_evenements_responsables_choix()` pour préparer les choix et les
+  valeurs par défaut du champ extra Agenda ;
+- `association_evenements_normaliser_responsables()` pour relire sans perte les
+  anciens formats CSV et sérialisés.
+
+Les autorisations ne dépendent plus de cette liste de diffusion : elles passent
+uniquement par le contrat SPIP des auteurs de l’article parent. Les requêtes
+concaténées et les ressources SQL exposées aux appelants ont disparu. Le test
+`tests/test_responsables_evenements.php` couvre les formats historiques, les
+retours typés, l’initialisation d’un nouvel événement et l’absence de l’API
+legacy dans le module.
 
 But : lister les raisons pour lesquelles la fonction `liste_responsables_evenement` est à considérer comme legacy, proposer un plan d'assainissement et de suppression, et donner un correctif provisoire et des consignes de migration pour les appels existants.
 
