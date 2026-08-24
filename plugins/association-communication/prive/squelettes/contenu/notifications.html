@@ -1,5 +1,5 @@
 [(#AUTORISER{notifications_menu}|sinon_interdire_acces)]
-<h1>Visualisation des notifications - Version BETA</h1>
+<h1 class="grostitre"><:association_communication:titre_notifications:></h1>
 
 
 [(#ENV{message_ok}|oui)
@@ -9,11 +9,8 @@
     <div class="erreur">[(#ENV{message_erreur})]</div>
 ]
 
-<p>Cette page est en travaux, merci de votre indulgence. Chaque notification nécessitant un contexte particulier et varie en conséquence de celui-ci, des améliorations seront prochainement apportées de manière à visualiser les différents cas de figure.</p>
-
-<br>
-<b>Pour info : </b><br>
-L'étoile <strong>*</strong> permets d'identifier les notifications personnalisées pour votre association.
+<p class="explication"><:association_communication:notifications_intro:></p>
+<p class="notice"><strong aria-hidden="true">*</strong> <:association_communication:notifications_personnalisee_legende:></p>
 
 <hr class="spip"/>
 
@@ -25,34 +22,34 @@ L'étoile <strong>*</strong> permets d'identifier les notifications personnalis�
     <ul class="notif-tabs">
         <li class="tab-validation [(#ENV{tab,adhesion}|=={validation}|?{active,})]">
             [(#ENV{tab,adhesion}|=={validation}|oui)
-                <strong class="on" aria-current="page">Création / Validation de compte</strong>
+                <strong class="on" aria-current="page"><:association_communication:notifications_onglet_validation:></strong>
             ]
             [(#ENV{tab,adhesion}|=={validation}|non)
-                <a href="[(#SELF|parametre_url{tab,validation})]" class="ajax">Création / Validation de compte</a>
+                <a href="[(#SELF|parametre_url{tab,validation})]" class="ajax"><:association_communication:notifications_onglet_validation:></a>
             ]
         </li>
         <li class="tab-adhesion_echeances [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|?{active,})]">
             [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|oui)
-                <strong class="on" aria-current="page">Adhésions / Échéances</strong>
+                <strong class="on" aria-current="page"><:association_communication:notifications_onglet_adhesions:></strong>
             ]
             [(#ENV{tab,adhesion}|in_array{#LISTE{adhesion,echeances}}|non)
-                <a href="[(#SELF|parametre_url{tab,adhesion})]" class="ajax">Adhésions / Échéances</a>
+                <a href="[(#SELF|parametre_url{tab,adhesion})]" class="ajax"><:association_communication:notifications_onglet_adhesions:></a>
             ]
         </li>
         <li class="tab-activite [(#ENV{tab,adhesion}|in_array{#LISTE{activite,activites}}|?{active,})]">
             [(#ENV{tab,adhesion}|in_array{#LISTE{activite,activites}}|oui)
-                <strong class="on" aria-current="page">Activités</strong>
+                <strong class="on" aria-current="page"><:association_communication:notifications_onglet_activites:></strong>
             ]
             [(#ENV{tab,adhesion}|in_array{#LISTE{activite,activites}}|non)
-                <a href="[(#SELF|parametre_url{tab,activites})]" class="ajax">Activités</a>
+                <a href="[(#SELF|parametre_url{tab,activites})]" class="ajax"><:association_communication:notifications_onglet_activites:></a>
             ]
         </li>
         <li class="tab-autres [(#ENV{tab,adhesion}|=={autres}|?{active,})]">
             [(#ENV{tab,adhesion}|=={autres}|oui)
-                <strong class="on" aria-current="page">Autres / Personnalisées</strong>
+                <strong class="on" aria-current="page"><:association_communication:notifications_onglet_autres:></strong>
             ]
             [(#ENV{tab,adhesion}|=={autres}|non)
-                <a href="[(#SELF|parametre_url{tab,autres})]" class="ajax">Autres / Personnalisées</a>
+                <a href="[(#SELF|parametre_url{tab,autres})]" class="ajax"><:association_communication:notifications_onglet_autres:></a>
             ]
         </li>
         <BOUCLE_onglet_metiers(CONDITION){si #VAL|association_notifications_metiers|count|>{0}}>
@@ -70,10 +67,10 @@ L'étoile <strong>*</strong> permets d'identifier les notifications personnalis�
 <!-- Filtres : sortis du tableau et affichés au dessus des onglets -->
 <B_filtre_radio_type_adherent>
     <div class="notifications-filters">
-        <h2>Filtres</h2>
+        <h2><:association_communication:notifications_filtres_titre:></h2>
         <div class="filters-row">
             <div class="filter-item">
-                <label>Type de destinataire :</label>
+                <span class="label"><:association_communication:notifications_filtre_destinataire:></span>
                 <ul class="onglets_simple inline-filters">
                     <BOUCLE_filtre_radio_type_adherent(DATA){si #ENV{tab,adhesion}|in_array{#LISTE{validation,adhesion}}}{source table,#VAL|radio_type_adherent}{si #VAL|radio_type_adherent|count|>{1}}{' | '}>
                     [(#ENV{radio_type_adherent}|=={#CLE}|oui)
@@ -95,14 +92,15 @@ L'étoile <strong>*</strong> permets d'identifier les notifications personnalis�
     ]
     <!-- Lien debug pour forcer l'affichage des notifications Activités -->
 
-    <table class="">
+    <table class="spip liste">
+        <caption class="offscreen"><:association_communication:notifications_tableau_titre:></caption>
         <thead>
             <tr>
-                <th style="width:8%"></th>
-                <th style="width:28%">Notification</th>
-                <th style="width:34%">Description</th>
-                <th style="width:18%">Sujet</th>
-                <th style="width:6%">Action</th>
+                <th scope="col" style="width:8%"><span class="offscreen"><:association_communication:notifications_colonne_personnalisee:></span></th>
+                <th scope="col" style="width:28%"><:association_communication:notifications_colonne_notification:></th>
+                <th scope="col" style="width:34%"><:association_communication:notifications_colonne_description:></th>
+                <th scope="col" style="width:18%"><:association_communication:notifications_colonne_sujet:></th>
+                <th scope="col" style="width:6%"><:association_communication:notifications_colonne_action:></th>
             </tr>
         </thead>
         <tbody>

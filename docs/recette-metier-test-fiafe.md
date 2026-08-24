@@ -1872,3 +1872,15 @@ le contexte SPIP accepte le webmestre et refuse un visiteur synthetique pour
 `administrer/activites` et `notifications_menu`. Dans Chrome authentifie, les
 huit routes affichent leur titre et leur H1 sans refus ni erreur d'execution.
 Aucune action ni aucun formulaire n'a ete soumis.
+
+## Lot 159 - page Notifications native SPIP 4
+
+La page de Communication n'est plus présentée comme une version BETA. Son
+titre utilise `h1.grostitre`, son introduction décrit le catalogue réellement
+composé par les modules et tous les libellés visibles appartiennent au domaine
+`association_communication`.
+
+Les onglets, filtres et colonnes ne contiennent plus de français codé en dur.
+Le tableau adopte les classes privées SPIP `spip liste`, un `caption` hors
+écran, des en-têtes `scope="col"` et un intitulé accessible pour la colonne des
+personnalisations. La suite locale atteint 117 tests, tous valides.
