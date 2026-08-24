@@ -7,6 +7,8 @@ $evenements = file_get_contents($racine . '/plugins/association-evenements/assoc
 $adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $compta = file_get_contents($racine . '/plugins/association-compta/association_compta_pipelines.php');
 $remboursement = file_get_contents($racine . '/plugins/association-paiements/formulaires/rembourser_transaction.php');
+$backend_evenement = file_get_contents($racine . '/plugins/association-evenements/formulaires/inc/inscription_evenement_backend.php');
+$compta_evenement = file_get_contents($racine . '/plugins/association-evenements/inc/association_evenements_comptabilite.php');
 $debut_callback = strpos($paiements, 'function association_trig_bank_notifier_reglement(');
 $fin_callback = strpos($paiements, 'function is_successful_reglement(', $debut_callback);
 $callback = substr($paiements, $debut_callback, $fin_callback - $debut_callback);
@@ -27,6 +29,10 @@ if (!str_contains($paquet, 'nom="association_paiements_reglement_traiter"')
 	|| preg_match('/spip_asso_(?:activites|cotisations)/', $remboursement)
 	|| str_contains($remboursement, 'inserer_compte_remboursement_activite(')
 	|| !str_contains($evenements, 'function association_evenements_association_paiements_remboursement_traiter(')
+	|| str_contains($backend_evenement, 'inserer_compte_activite(')
+	|| str_contains($backend_evenement, 'modifier_compte_activite(')
+	|| !str_contains($compta_evenement, 'function association_evenements_compte_inscription_creer(')
+	|| !str_contains($compta_evenement, 'function association_evenements_compte_inscription_actualiser(')
 ) {
 	fwrite(STDERR, "Le callback Bank n'est pas distribué entre ses propriétaires métier.\n");
 	exit(1);

@@ -147,7 +147,8 @@ function synchroniser_comptabilite_evenement($id_evenement) {
 
         if (!$compte_paiement) {
             $gestions_places = gestions_places($id_evenement);
-            $id_paiement = inserer_compte_activite($id_activite, $gestions_places);
+			include_spip('inc/association_evenements_comptabilite');
+			$id_paiement = association_evenements_compte_inscription_creer($id_activite, $gestions_places);
             if ($id_paiement) {
                 $compte_paiement = sql_fetsel('id_compte, vu, `date`', 'spip_asso_comptes', 'id_compte=' . intval($id_paiement));
                 $ajoutes++;
@@ -167,7 +168,8 @@ function synchroniser_comptabilite_evenement($id_evenement) {
 
         if ($est_rembourse) {
             if (empty($ids_remboursement)) {
-                $id_remboursement = inserer_compte_remboursement_activite($id_transaction, $id_activite);
+				include_spip('inc/association_evenements_comptabilite');
+				$id_remboursement = association_evenements_compte_remboursement_creer($id_transaction, $id_activite);
                 if ($id_remboursement) {
                     $ajoutes++;
                 }

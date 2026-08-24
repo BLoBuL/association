@@ -102,3 +102,85 @@ function association_evenements_compte_remboursement_creer($id_transaction, $id_
 		1
 	);
 }
+
+function association_evenements_compte_inscription_creer($id_activite, $contexte_evenement = array()) {
+	$id_activite = (int) $id_activite;
+	$activite = $id_activite ? sql_fetsel('*', 'spip_asso_activites', 'id_activite=' . $id_activite) : array();
+	if (!$activite) {
+		return 0;
+	}
+	$id_evenement = (int) $activite['id_evenement'];
+	$evenement = sql_fetsel('payant', 'spip_evenements', 'id_evenement=' . $id_evenement);
+	if ($evenement && (int) $evenement['payant'] === 0) {
+		return 0;
+	}
+	$transaction = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . (int) $activite['id_transaction']);
+	if (!$transaction) {
+		association_log('comptabilite', 'Compte evenement ignore: transaction introuvable id_activite=' . $id_activite, 'erreur');
+		return 0;
+	}
+	if (!$contexte_evenement) {
+		$contexte_evenement = gestions_places($id_evenement);
+	}
+	include_spip('inc/comptes');
+	$titre = $contexte_evenement['evenement_titre'] ?? ('#' . $id_evenement);
+	$imputation = $transaction['statut'] === 'ok'
+		? ($GLOBALS['association_metas']['pc_activites_paiement'] ?? '101')
+		: ($GLOBALS['association_metas']['pc_activites_creance'] ?? '101');
+	return inserer_compte(
+		$activite['date'] ?: date('Y-m-d H:i:s'),
+		(float) $transaction['montant'],
+		0,
+		'Participation de ' . $activite['nom_inscrit'] . ' ' . $activite['prenom_inscrit'] . ' à l\'activité "' . $titre . '"',
+		$imputation,
+		'activite|' . $id_activite,
+		(int) $activite['id_auteur'],
+		$id_evenement,
+		'evenement',
+		'',
+		'',
+		'',
+		(int) $activite['id_transaction']
+	);
+}
+
+function association_evenements_compte_inscription_actualiser($id_activite, $id_transaction) {
+	$id_activite = (int) $id_activite;
+	$id_transaction = (int) $id_transaction;
+	$activite = $id_activite ? sql_fetsel('*', 'spip_asso_activites', 'id_activite=' . $id_activite) : array();
+	$transaction = $id_transaction ? sql_fetsel('montant', 'spip_transactions', 'id_transaction=' . $id_transaction) : array();
+	if (!$activite || !$transaction) {
+		return 0;
+	}
+	$id_evenement = (int) $activite['id_evenement'];
+	$compte = sql_fetsel(
+		'id_compte',
+		'spip_asso_comptes',
+		'id_transaction=' . $id_transaction . " AND objet='evenement' AND id_objet=" . $id_evenement
+	);
+	if (!$compte) {
+		$compte = sql_fetsel('id_compte', 'spip_asso_comptes', "objet='activite' AND id_objet=" . $id_activite);
+	}
+	$id_compte = (int) ($compte['id_compte'] ?? 0);
+	if ($id_compte <= 0) {
+		return association_evenements_compte_inscription_creer($id_activite);
+	}
+	include_spip('inc/comptes');
+	modifier_compte(
+		$id_compte,
+		$activite['date'] ?: date('Y-m-d H:i:s'),
+		(float) $transaction['montant'],
+		0,
+		'',
+		$GLOBALS['association_metas']['pc_activites_creance'] ?? '101',
+		$activite['journal'] ?? '',
+		$id_evenement,
+		'evenement',
+		null,
+		null,
+		null,
+		$id_transaction,
+		0
+	);
+	return $id_compte;
+}

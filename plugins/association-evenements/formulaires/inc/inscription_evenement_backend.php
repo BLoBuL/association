@@ -2147,10 +2147,11 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
 
         // comptes (comptabilite)
         if (!empty($GLOBALS['association_metas']['comptes']) && $is_payant) {
+			include_spip('inc/association_evenements_comptabilite');
             if (empty($id_activite)) {
-                inserer_compte_activite($id_activite_result, gestions_places($id_evenement));
+				association_evenements_compte_inscription_creer($id_activite_result, gestions_places($id_evenement));
             } else {
-                modifier_compte_activite($id_activite_result, $id_transaction);
+				association_evenements_compte_inscription_actualiser($id_activite_result, $id_transaction);
             }
         }
     }

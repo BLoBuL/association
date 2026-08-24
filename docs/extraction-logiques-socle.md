@@ -979,3 +979,10 @@ demande éventuelle de notification.
 Événements reconnaît sa transaction, crée sans doublon la dépense comptable
 dans son API métier et programme le reçu de remboursement. Le plugin Paiements
 reste ainsi exploitable indépendamment des événements et de leurs tables.
+
+## Lot 83 : cycle comptable des inscriptions
+
+La création et l'actualisation des écritures d'inscription rejoignent l'API
+comptable d'Événements. Le formulaire d'inscription et la synchronisation
+historique appellent désormais les fonctions préfixées du propriétaire métier ;
+ils ne dépendent plus des anciens helpers globaux de Comptabilité.
