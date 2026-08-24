@@ -47,4 +47,11 @@ if (!str_contains($voir_activites, '<h1 class="grostitre">#TITRE</h1>')) {
 	exit(1);
 }
 
+$recherche_avancee = file_get_contents($racine_depot . '/plugins/association-adhesions/prive/squelettes/contenu/recherche_avancee.html');
+if (!str_contains($recherche_avancee, '<h1 class="grostitre"><:association_adhesions:recherche_avancee_titre:></h1>')
+	|| !str_contains($recherche_avancee, '#AUTORISER{adherents_menu}')) {
+	fwrite(STDERR, "La recherche avancee ne possede pas son titre et son autorisation prives.\n");
+	exit(1);
+}
+
 echo "Titres des pages privées conformes\n";

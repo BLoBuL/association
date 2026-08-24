@@ -314,6 +314,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array (
   'recherche_active_avancee_nb' => '@nb@ critère(s) de recherche avancée',
   'recherche_avancee_info_filtres_intro' => 'Les filtres suivants seront combinés avec votre recherche :',
   'recherche_avancee_info_filtres_titre' => 'Filtres actifs',
+  'recherche_avancee_titre' => 'Recherche avancée des adhérents',
   'recherche_bouton_rechercher' => 'Rechercher',
   'recherche_effectuee' => 'Recherche effectuée',
   'recherche_fieldset_date_explication' => 'Utiliser les champs ci-dessous pour faire une cherche sur une période donnée',
