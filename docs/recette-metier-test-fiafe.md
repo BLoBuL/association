@@ -1721,3 +1721,16 @@ l'API. La maintenance simule vingt suppressions pour les auteurs rattaches et
 l'empreinte du journal et des ventilations reste stable. Aucun compte n'a ete
 valide, invalide ou supprime. La page Chrome « Informations comptables » sert
 son tableau et ses actions sans erreur visible; tous les squelettes compilent.
+
+## Lot 150 - commandes et CVT branches sur l'API comptable
+
+La recherche puis la mise a jour de l'ecriture d'une commande utilisent
+desormais les criteres structures et la fonction de modification de l'API
+Comptabilite. Le chargement des valeurs du formulaire CVT relit lui aussi
+l'ecriture par cette API, sans requete directe au journal.
+
+La suite locale confirme la creation de creance, sa validation sans doublon et
+la reprise de la date et du montant du paiement. Sur test-fiafe, les quatre
+commandes et les statistiques 2024 a 2026 restent identiques aux lectures
+historiques. Le formulaire du compte 955 est servi dans Chrome sans erreur et
+n'a pas ete soumis. Le lint PHP et tous les squelettes sont valides.
