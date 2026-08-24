@@ -25,3 +25,30 @@ function association_evenements_comptes_supprimer_inscription($id_activite) {
 
 	return (int) sql_delete('spip_asso_comptes', $where);
 }
+
+function association_evenements_compte_valider_transaction($id_transaction) {
+	$id_transaction = (int) $id_transaction;
+	$compte = sql_fetsel(
+		'id_compte',
+		'spip_asso_comptes',
+		'id_transaction=' . $id_transaction . " AND objet='evenement'"
+	);
+	$activite = sql_fetsel('date', 'spip_asso_activites', 'id_transaction=' . $id_transaction);
+	$id_compte = (int) ($compte['id_compte'] ?? 0);
+	if ($id_compte <= 0) {
+		association_log(
+			'comptabilite',
+			'association_evenements_compte_valider_transaction: aucun compte pour id_transaction=' . $id_transaction,
+			'info'
+		);
+		return 0;
+	}
+
+	sql_updateq('spip_asso_comptes', array(
+		'date' => !empty($activite['date']) ? $activite['date'] : date('Y-m-d H:i:s'),
+		'imputation' => $GLOBALS['association_metas']['pc_activites_paiement'] ?? '',
+		'vu' => 1,
+	), 'id_compte=' . $id_compte);
+
+	return $id_compte;
+}

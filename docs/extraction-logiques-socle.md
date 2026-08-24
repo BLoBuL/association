@@ -939,3 +939,11 @@ et accepte encore l'ancien lien `activite` lors d'une reprise historique.
 
 Les parcours de désinscription public et privé utilisent cette API métier. Le
 helper erroné est retiré de Comptabilité.
+
+## Lot 79 : validation comptable d'un règlement événement
+
+La validation d'une écriture après règlement Bank rejoint la même API
+Événements. Elle sélectionne uniquement une écriture `objet='evenement'`,
+reprend la date de l'inscription, applique l'imputation de participation et
+marque l'écriture vue. Paiements déclenche ce service dans son parcours actuel ;
+Comptabilité ne lit plus l'inscription pour cette transition.

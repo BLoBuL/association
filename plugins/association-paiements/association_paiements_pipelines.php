@@ -99,7 +99,8 @@ function mise_a_jour_participation($query_activite, $query_transaction)
 
     // Valide les comptes associés à l'activité si la gestion des comptes est activée
     if ($GLOBALS['association_metas']['comptes']) {
-        valider_compte_activite($id_transaction);
+        include_spip('inc/association_evenements_comptabilite');
+        association_evenements_compte_valider_transaction($id_transaction);
     }
 
 

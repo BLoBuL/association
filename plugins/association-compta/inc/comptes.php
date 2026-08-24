@@ -81,7 +81,6 @@ function preparer_liste_asso_plan_compte($format = 'data_saisies', $classe = '')
         return $asso_plans_array;
     }
 }
-
 /**
  * Insère un compte dans la table `spip_asso_comptes`.
  *
@@ -741,43 +740,3 @@ function modifier_compte_activite($id_activite, $id_transaction) {
     }
 }
 
-/**
- * Valide une opération comptable liée à une activité dans la table `spip_asso_comptes`.
- *
- * Cette fonction met à jour une entrée existante dans la table `spip_asso_comptes`
- * en fonction des informations de la transaction associée. Elle marque également
- * l'activité comme vue.
- *
- * @param int $id_transaction L'identifiant de la transaction associée.
- *
- * @return void
- */
-function valider_compte_activite($id_transaction) {
-    // Récupère les informations de l'opération comptable associée à la transaction.
-    $query_asso_comptes = sql_fetsel('*', 'spip_asso_comptes', "id_transaction=$id_transaction");
-
-    // Récupère les informations de la transaction.
-    $query_transaction = sql_fetsel('*', 'spip_transactions', "id_transaction=$id_transaction");
-
-    // Récupérer la date d'inscription via l'activité liée à la transaction
-    $row_activite = sql_fetsel('date', 'spip_asso_activites', 'id_transaction=' . intval($id_transaction));
-    $date_inscription = (!empty($row_activite['date'])) ? $row_activite['date'] : date('Y-m-d H:i:s');
-
-    $id_compte = 0;
-    if (is_array($query_asso_comptes) && isset($query_asso_comptes['id_compte'])) {
-        $id_compte = intval($query_asso_comptes['id_compte']);
-    }
-    if ($id_compte <= 0) {
-        association_log('comptabilite', "valider_compte_activite: aucun compte trouvé pour id_transaction=" . intval($id_transaction), 'info');
-        return;
-    }
-
-    $args = [
-        'date' => $date_inscription,
-        //'recette' => $query_transaction['montant_total'],
-        'imputation' => $GLOBALS['association_metas']['pc_activites_paiement'],
-        'vu'  => 1,
-    ];
-
-    sql_updateq('spip_asso_comptes', $args, "id_compte=$id_compte");
-}
