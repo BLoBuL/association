@@ -91,7 +91,7 @@ function sql_fetch($resultat) { return array_shift($GLOBALS['test_select_rows'])
 function bank_devise_defaut() { return array('code' => 'EUR', 'symbole' => '€'); }
 function intl_devise_defaut() { return $GLOBALS['test_config']['intl/devise_defaut'] ?? 'EUR'; }
 function intl_lister_devises() { return array('CNY' => array('symbole' => '¥'), 'EUR' => array('symbole' => '€')); }
-function compte_cotisation($date, $montant, $justification, $imputation, $journal, $id_auteur, $reinscription, $id_categorie, $statut, $id_transaction) {
+function association_adhesions_compte_cotisation_creer($date, $montant, $justification, $imputation, $journal, $id_auteur, $reinscription, $id_categorie, $statut, $id_transaction) {
     $id = count($GLOBALS['test_comptes']) + 1;
     $GLOBALS['test_comptes'][$id] = compact('id_auteur', 'id_categorie', 'id_transaction') + array(
         'id_compte' => $id,
@@ -102,7 +102,7 @@ function compte_cotisation($date, $montant, $justification, $imputation, $journa
     );
     return $id;
 }
-function modifier_compte_cotisation($date, $montant, $justification, $imputation, $journal, $reinscription, $id_categorie, $id_compte, $statut, $id_transaction) {
+function association_adhesions_compte_cotisation_modifier($date, $montant, $justification, $imputation, $journal, $reinscription, $id_categorie, $id_compte, $statut, $id_transaction) {
     $GLOBALS['test_comptes'][$id_compte] = array_merge($GLOBALS['test_comptes'][$id_compte], array(
         'montant' => $montant,
         'id_categorie' => $id_categorie,

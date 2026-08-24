@@ -919,3 +919,12 @@ aucun objet SQL et renvoyaient un tableau au lieu d'une URL SPIP. Ils sont
 supprimés. Les seuls callbacks conservés suivent les objets déclarés,
 `asso_don` et `asso_vente`, également utilisés dans les raccourcis des
 justifications comptables.
+
+## Lot 77 : adaptateur comptable des cotisations
+
+Les deux wrappers spécialisés `compte_cotisation()` et
+`modifier_compte_cotisation()` quittent Comptabilité. Ils deviennent une API
+préfixée d'Adhésions, appelée uniquement par `api_cotisations.php`.
+Comptabilité conserve ses primitives génériques et son pipeline de
+synchronisation ; Adhésions crée ou actualise ensuite `spip_asso_cotisations`
+et rattache l'écriture au véritable `id_cotisation`.

@@ -275,7 +275,8 @@ function api_traiter_cotisation($params) {
             }
 
             // Création de la cotisation dans les comptes
-            $id_compte = compte_cotisation(
+            include_spip('inc/association_adhesions_comptabilite');
+            $id_compte = association_adhesions_compte_cotisation_creer(
                 $date,
                 $montant_final,
                 $justification,
@@ -329,7 +330,8 @@ function api_traiter_cotisation($params) {
             ], "id_transaction=$id_transaction");
 
             // Modification de la cotisation dans les comptes
-            modifier_compte_cotisation(
+            include_spip('inc/association_adhesions_comptabilite');
+            association_adhesions_compte_cotisation_modifier(
                 $date,
                 $montant_final,
                 $justification,
