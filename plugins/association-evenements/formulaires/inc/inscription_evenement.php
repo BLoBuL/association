@@ -3,6 +3,7 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 
 
 include_spip('inc/fonctions/activite_enregistrement_calculator');
+include_spip('inc/association_paiements_transactions');
 
 /**
  * Prépare les informations d'un auteur pour un événement.
@@ -173,7 +174,7 @@ function generer_array_categories_participation($tableau_categories, $format = '
 
      // Récupère les données de l'auteur et de la transaction associée
      $query_auteur = sql_fetsel('id_auteur,statut_interne','spip_auteurs','id_auteur ='. $query_activite['id_auteur']);
-     $query_transaction = sql_fetsel('statut','spip_transactions','id_transaction ='. $query_activite['id_transaction']);
+	 $query_transaction = association_paiements_transaction_lire((int) $query_activite['id_transaction']);
      $affichage_dans_activites = affichage_dans_activites($query_activite['id_evenement']);
      $config_accompagnants = isset($GLOBALS['association_metas']['meta_cfg_event_config_accompagnants']) ? $GLOBALS['association_metas']['meta_cfg_event_config_accompagnants'] : 'tout';
 
@@ -272,7 +273,7 @@ function preparer_chargement_modification_inscription_multi($id_activite, $publi
     }
 
     // Récupère le statut de la transaction liée à l'activité
-    $query_transaction = sql_fetsel('statut', 'spip_transactions', 'id_transaction =' . $query_activite['id_transaction']);
+	$query_transaction = association_paiements_transaction_lire((int) $query_activite['id_transaction']);
 
     // Obtient les paramètres d'affichage pour l'activité
     $affichage_dans_activites = affichage_dans_activites($query_activite['id_evenement']);
@@ -1696,9 +1697,7 @@ function modifier_transaction_activites($montant_total, $id_transaction) {
     );
 
     // Met à jour la transaction dans la base de données
-    sql_updateq('spip_transactions', $data, 'id_transaction =' . $id_transaction);
-
-    return true;
+	return association_paiements_transaction_modifier($id_transaction, $data);
 }
 
 /**

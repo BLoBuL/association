@@ -285,6 +285,8 @@ function include_spip($path) {
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-compta/' . $path,
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-adhesions/' . $path . '.php',
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-adhesions/' . $path,
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-paiements/' . $path . '.php',
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-paiements/' . $path,
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/' . $path . '.php',
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/' . $path,
     );
@@ -417,7 +419,14 @@ function sql_in($field, $values) {
 }
 
 function sql_allfetsel($select, $table, $where = '', $group = '', $order = '') {
-    $rows = array_values(association_test_charger_fixture($table, array()));
+	$fixture = $table === 'spip_transactions' ? 'transactions' : $table;
+    $rows = array_values(association_test_charger_fixture($fixture, array()));
+	if ($table === 'spip_transactions' && preg_match('/\[\[IN:id_transaction:([^\]]+)\]\]/', (string) $where, $matches)) {
+		$ids = array_map('intval', explode('|', $matches[1]));
+		$rows = array_values(array_filter($rows, function ($row) use ($ids) {
+			return in_array((int) ($row['id_transaction'] ?? 0), $ids, true);
+		}));
+	}
     if ($table === 'spip_articles' && strpos((string) $where, 'statut') !== false) {
         $rows = array_values(array_filter($rows, function ($row) {
             return ($row['statut'] ?? '') === 'publie';

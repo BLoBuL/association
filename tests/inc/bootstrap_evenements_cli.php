@@ -382,6 +382,8 @@ function include_spip($path) {
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-compta/' . $path,
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-adhesions/' . $path . '.php',
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-adhesions/' . $path,
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-paiements/' . $path . '.php',
+		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-paiements/' . $path,
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/' . $path . '.php',
 		ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/' . $path,
     );

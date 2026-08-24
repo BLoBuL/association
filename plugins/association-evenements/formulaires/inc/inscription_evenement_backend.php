@@ -2077,9 +2077,7 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         )), 'association' . _LOG_DEBUG);
         $handle = ie_handle_transaction($montant_total, $data_form['id_auteur'] ?? 0, $id_transaction);
         $id_transaction = $handle['id_transaction'];
-        $transaction_persistante = $id_transaction > 0
-            ? sql_fetsel('id_transaction,montant', 'spip_transactions', 'id_transaction=' . intval($id_transaction))
-            : array();
+		$transaction_persistante = $id_transaction > 0 ? association_paiements_transaction_lire($id_transaction) : array();
         if (empty($transaction_persistante['id_transaction'])
             || abs(floatval($transaction_persistante['montant'] ?? 0) - floatval($montant_total)) > 0.0001
         ) {
@@ -2234,7 +2232,7 @@ function ie_resoudre_redirection_inscription($mode, $id_evenement, $id_activite_
     );
 
     if ($rediriger_vers_paiement && !empty($id_transaction)) {
-        $querie_transaction = sql_fetsel('transaction_hash', 'spip_transactions', 'id_transaction = ' . intval($id_transaction));
+		$querie_transaction = association_paiements_transaction_lire($id_transaction);
         $transaction_hash = $querie_transaction['transaction_hash'] ?? '';
         $args = 'id_transaction=' . intval($id_transaction) . '&transaction_hash=' . $transaction_hash;
         $res['redirect'] = generer_url_public('paiement', $args);
