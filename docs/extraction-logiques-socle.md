@@ -1199,3 +1199,15 @@ absente quittent le CSS du socle et restent disponibles aux modules consommateur
 La recherche rapide, le statut de diffusion et le bouton de cotisation
 rejoignent Adhésions. Prêts déclare sa première feuille privée pour son
 formulaire. Ces derniers sélecteurs explicitement métier quittent le socle.
+
+## Lot 112 : frontière SQL du socle verrouillée
+
+Le génie de maintenance ne documente plus les anciennes suppressions métier
+comme si le socle les exécutait lui-même : il décrit son rôle réel
+d'orchestrateur de pipelines, de simulation et de rapport consolidé.
+
+Un contrôle récursif parcourt désormais tout le PHP et les squelettes du socle,
+hors documentation, tests et sous-plugins. Toute référence à une table métier
+de la suite y est interdite ; seule `spip_association_metas`, propriété du
+socle, reste autorisée. Les migrations, nettoyages et lecteurs de données
+demeurent ainsi confinés aux plugins propriétaires.

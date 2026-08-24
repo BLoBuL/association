@@ -786,6 +786,23 @@ $verifier(!is_file($racine . '/inc/navigation_modules.php'), 'L ancienne navigat
 $verifier(!is_file($racine . '/balise/autoriser_page.php'), 'La balise d autorisation des anciens exec doit etre supprimee.');
 $verifier(!is_file($racine . '/squelettes/profil.html'), 'La page profil doit appartenir au module Adhesions.');
 $verifier(!is_file($racine . '/squelettes/evenement.html'), 'La page evenement doit appartenir au module Evenements.');
+
+$iterateur_socle = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine));
+foreach ($iterateur_socle as $fichier_socle) {
+	if (!$fichier_socle->isFile() || !in_array($fichier_socle->getExtension(), array('php', 'html'), true)) {
+		continue;
+	}
+	$chemin_socle = str_replace('\\', '/', substr($fichier_socle->getPathname(), strlen($racine) + 1));
+	if (preg_match('#^(?:plugins|tests|docs|\.git)/#', $chemin_socle)) {
+		continue;
+	}
+	$source_socle = file_get_contents($fichier_socle->getPathname());
+	$verifier(
+		!preg_match('/[\'\"](?:spip_asso_[a-z0-9_]+|spip_transactions|spip_evenements)[\'\"]/', $source_socle),
+		'Le socle nomme encore une table appartenant a un plugin metier dans ' . $chemin_socle . '.'
+	);
+}
+
 $cotisations_prive = file_get_contents($racine . '/plugins/association-adhesions/prive/squelettes/contenu/cotisations.html');
 $verifier(
 	strpos($cotisations_prive, '#AUTORISER{cotisations_menu}') !== false,

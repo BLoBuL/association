@@ -14,27 +14,10 @@ include_spip('base/abstract_sql');
 /**
  * Exécute les tâches de maintenance planifiées pour l'association.
  *
- * Cette fonction est appelée via une tâche CRON et effectue les actions suivantes :
- * - Analyse les comptes des auteurs non-actifs :
- *     - Supprime les comptes auteur inactifs qui n'ont jamais eut de cotisation encaissée
- *     - Supprime les cotisations (spip_asso_comptes) de ces auteurs
- *     - Supprime les transactions (spip_transactions) de ces auteurs
- *     - Supprime les mailsubscriptions (spip_mailsubscriber & mailsubscriptions) de ces auteurs *
- *     - Anonymise les comptes auteur inactifs qui ont eut des cotisations encaissées
- *
- * - Analyse les inscriptions aux activités :
- *   - Supprime les inscriptions anciennes jamais validées
- *   - Supprime les transactions liées à ces inscriptions
- *   - Anonymise les inscriptions aux activités des auteurs inactifs *
- *
- * - Nettoyage de items orphelins ou obsoletes:
- *    - Supprime les cotisations orphelines
- *    - Supprime les transactions orphelines
- *    - Supprime les cotisations non-encaissées plus anciennees que 6 mois
- *    - Supprime les participations aux evenements orphelines
- * - Nettoyage des urls de redirection orphelines (spip_urls)
- *    - On supprime les urls de redirection type = mailsubscriber
- *    - On supprime les urls de redirection obsolete qu'elle que soit leur type
+ * Cette fonction orchestre les contributions de maintenance déclarées par les
+ * plugins métier. Le socle ne connaît ni leurs tables ni leurs suppressions :
+ * il normalise les options communes, impose le mode simulation quand demandé,
+ * agrège les résultats et écrit le rapport.
  *
  * @param string $tache Nom de la tâche exécutée (non utilisé ici).
  * @return bool Retourne `true` une fois la tâche terminée.
