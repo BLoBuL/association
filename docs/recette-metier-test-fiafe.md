@@ -2060,3 +2060,11 @@ Le formulaire d'écriture ne référence plus le domaine de langue inexistant
 la page distingue désormais l'ajout de la modification dans son titre. Un test
 couvre le domaine, la clé et les deux états de page. La suite locale atteint
 127 tests, tous valides.
+
+Le commit `843bcdbf` est déployé sur test-fiafe avec les trois empreintes de
+l'artefact Git conformes. Comptabilité reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, la création affiche « Formulaire d'ajout
+d'opération comptable » et l'écriture 260721229988 affiche « Modification d’une
+opération comptable », sans erreur ni clé brute. Aucun formulaire n'a été
+soumis ; le message de succès est couvert par le test du CVT sans créer
+d'écriture de recette.
