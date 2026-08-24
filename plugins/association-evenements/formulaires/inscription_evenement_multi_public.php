@@ -108,7 +108,7 @@ function ie_multi_public_contexte_cvt_precedent() {
  * Reprend la structure historique des étapes FO multi (pré-refactoring).
  * Ce helper n'est utilisé que pour le formulaire multi FO.
  */
-function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
+function ie_multi_public_saisies($id_evenement, $id_activite = null) {
     $saisies = array();
 
     $affichage_dans_activites = affichage_dans_activites($id_evenement);
@@ -322,12 +322,12 @@ function ie_multi_public_saisies_legacy($id_evenement, $id_activite = null) {
  */
 function formulaires_inscription_evenement_multi_public_saisies($id_evenement, $id_activite) {
     list($id_evenement, $id_activite) = ie_inscription_multi_public_ids($id_evenement, $id_activite);
-    return ie_multi_public_saisies_legacy($id_evenement, $id_activite);
+    return ie_multi_public_saisies($id_evenement, $id_activite);
 }
 
 function ie_multi_public_charger_legacy($id_evenement, $id_activite) {
     $contexte = ie_charger_commons('multi_public', $id_evenement, $id_activite);
-    $saisies = ie_multi_public_saisies_legacy($id_evenement, $id_activite);
+    $saisies = ie_multi_public_saisies($id_evenement, $id_activite);
     $contexte['_saisies'] = $saisies;
     $contexte['_saisies_par_etapes'] = ie_generer_saisies_par_etapes($saisies);
     return $contexte;

@@ -6,6 +6,31 @@ include_spip('inc/fonctions/activite_enregistrement_calculator');
 include_spip('inc/association_paiements_transactions');
 
 /**
+ * Journal de diagnostic des inscriptions, désactivé par défaut.
+ *
+ * Le contexte doit rester strictement technique : identifiants, compteurs et
+ * indicateurs, jamais les valeurs saisies ni les coordonnées des participants.
+ */
+function association_evenements_inscription_debug($code, $contexte = array()) {
+    if (!function_exists('association_log')) {
+        include_spip('inc/association_log');
+    }
+    // Les tests CLI unitaires chargent volontairement un SPIP minimal sans
+    // l'API de configuration. Un diagnostic ne doit jamais rendre le métier
+    // dépendant de cette API facultative dans ce contexte.
+    if (function_exists('association_log') && function_exists('lire_config')) {
+        association_log('inscriptions', (string) $code, 'debug', (array) $contexte, false);
+    }
+}
+
+/**
+ * Pont temporaire pour les anciens messages de diagnostic déjà anonymisés.
+ */
+function association_evenements_inscription_debug_message($message, $canal = '') {
+    association_evenements_inscription_debug('diagnostic', array('message' => (string) $message));
+}
+
+/**
  * Prépare les informations d'un auteur pour un événement.
  *
  * Cette fonction récupère et formate les informations d'un auteur en fonction de son ID
@@ -680,15 +705,16 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
             }
         }
 
-        spip_log('[IE_FORMATER_INPUT][' . $trace_id . '] ' . json_encode(array(
+        association_evenements_inscription_debug('formater_input', array(
+            'trace' => $trace_id,
             'id_evenement' => intval($id_evenement),
             'public_or_prive' => $public_or_prive,
             'payant' => !empty($affichage_dans_activites['payant']) ? 'oui' : 'non',
             'accompagnants' => !empty($affichage_dans_activites['accompagnants']) ? 'oui' : 'non',
             'categorie_brut_type' => isset($data_form['categorie']) ? gettype($data_form['categorie']) : 'absent',
-            'categorie_brut' => $data_form['categorie'] ?? null,
+            'categorie_brut_count' => is_array($data_form['categorie'] ?? null) ? count($data_form['categorie']) : 0,
             'nom_participants_longueur' => strlen(trim((string)($data_form['nom_participants'] ?? ''))),
-        )), 'association' . _LOG_DEBUG);
+        ));
 
         if (isset($data_form['association']) && $data_form['association'] == 'autre_association') {
             $data_form['association'] = $data_form['autre_association'];
@@ -783,10 +809,11 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
                 $categorie_result = false;
             }
 
-            spip_log('[IE_FORMATER_CATEGORIE_NORMALISEE][' . $trace_id . '] ' . json_encode(array(
+            association_evenements_inscription_debug('formater_categorie_normalisee', array(
+                'trace' => $trace_id,
                 'categorie_result_type' => gettype($categorie_result),
-                'categorie_result' => $categorie_result,
-            )), 'association' . _LOG_DEBUG);
+                'categorie_result_count' => is_array($categorie_result) ? count($categorie_result) : 0,
+            ));
 
             if (is_array($categorie_result) && !empty($categorie_result)) {
                 $querie_categorie_activite = sql_select("*", "spip_asso_categories_activites AS b JOIN spip_asso_categories_activites_liens as a ON(a.id_categorie=b.id_categorie)", "a.id_evenement=$id_evenement AND b.statut='ok' AND a.montant!=''", '', "montant DESC");
@@ -827,7 +854,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
                             $montant_total += $montant_prepa * $nombre_inscrits;
                         }
 
-                        spip_log('[IE_FORMATER_CATEGORIE_CALCUL][' . $trace_id . '] ' . json_encode(array(
+                        association_evenements_inscription_debug_message('[IE_FORMATER_CATEGORIE_CALCUL][' . $trace_id . '] ' . json_encode(array(
                             'id_categorie' => intval($id_categorie),
                             'quantite_tarif' => intval($categories_activite['quantite'] ?? 0),
                             'nombre_inscrits_categorie' => intval($nombre_inscrits),
@@ -860,7 +887,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
                                 'montant' => 0,
                                 'id_participants' => $vals,
                             );
-                            spip_log('[IE_FORMATER_CATEGORIE_CALCUL_FALLBACK][' . $trace_id . '] ' . json_encode(array(
+                            association_evenements_inscription_debug_message('[IE_FORMATER_CATEGORIE_CALCUL_FALLBACK][' . $trace_id . '] ' . json_encode(array(
                                 'id_categorie' => intval($id_categorie),
                                 'nombre_inscrits_categorie' => intval($nb),
                                 'nombre_participants_cumule' => intval($nombre_participants),
@@ -876,7 +903,7 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
                 // Pas de categorie sélectionnée: cas par défaut
                 $nombre_participants = 1;
                 $transaction = array();
-                spip_log('[IE_FORMATER_CATEGORIE_VIDE][' . $trace_id . '] ' . json_encode(array(
+                association_evenements_inscription_debug_message('[IE_FORMATER_CATEGORIE_VIDE][' . $trace_id . '] ' . json_encode(array(
                     'id_evenement' => intval($id_evenement),
                     'categorie_result' => $categorie_result,
                 )), 'association' . _LOG_DEBUG);
@@ -910,13 +937,14 @@ function formater_post_form($id_evenement, $valeurs_post, $affichage_dans_activi
             'transaction' => $transaction,
             'montant_total' => $montant_total
         ];
-        spip_log('[IE_FORMATER_OUTPUT][' . $trace_id . '] ' . json_encode(array(
+        association_evenements_inscription_debug('formater_output', array(
+            'trace' => $trace_id,
             'id_auteur' => intval($id_auteur),
             'nombre_participants' => intval($nombre_participants),
-            'categorie_result' => $categorie_result,
+            'categorie_count' => is_array($categorie_result) ? count($categorie_result) : 0,
             'montant_total' => floatval($montant_total),
-            'transaction' => $transaction,
-        )), 'association' . _LOG_DEBUG);
+            'transaction_count' => is_array($transaction) ? count($transaction) : 0,
+        ));
         return $data_form;
     }
 /**
@@ -1739,7 +1767,7 @@ function verifier_spam_formulaire_inscription($post_data, $email_field = 'email_
     foreach ($keys as $k) {
         if (!empty($post_data[$k])) {
             $erreurs['message_erreur'] = _T('pass_rien_a_faire_ici');
-            spip_log("spam champs nobot key:$k - IP: $ip_client", 'spam_form_inscription_evenement' . _LOG_INFO);
+            association_evenements_inscription_debug('spam_nobot', array('champ_present' => 'oui'));
             break;
         }
     }
@@ -1776,7 +1804,7 @@ function verifier_spam_formulaire_inscription($post_data, $email_field = 'email_
         foreach ($blacklist as $blocked) {
             if ($blocked && $email_domain == strtolower($blocked)) {
                 $erreurs['message_erreur'] = _T('pass_rien_a_faire_ici');
-                spip_log('spam email blacklist domain ' . $blocked, 'spam_form_inscription_evenement' . _LOG_INFO);
+                association_evenements_inscription_debug('spam_domaine_email', array('domaine_bloque' => 'oui'));
                 break;
             }
         }
@@ -1785,7 +1813,7 @@ function verifier_spam_formulaire_inscription($post_data, $email_field = 'email_
     // Vérification SPAM - nom et prénom identique
     if ($check_identical_names && !$id_auteur && isset($post_data[$prenom_field]) && isset($post_data[$nom_field]) && $post_data[$prenom_field] == $post_data[$nom_field]) {
         $erreurs['message_erreur'] = _T('pass_rien_a_faire_ici');
-        spip_log('spam prenom et nom identique : ' . $post_data[$prenom_field] . '&' . $post_data[$nom_field], 'spam_form_inscription_evenement' . _LOG_INFO);
+        association_evenements_inscription_debug('spam_identite_identique', array('identite_presente' => 'oui'));
     }
     return !empty($erreurs) ? $erreurs : false;
 }

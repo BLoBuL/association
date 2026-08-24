@@ -1,7 +1,8 @@
 {
-  "plan_version": "1.2",
-  "generated_at": "2026-03-30T00:00:00Z",
-  "feature_flag_meta": "meta_cfg_use_inscription_backend",
+  "plan_version": "4.0",
+  "generated_at": "2026-08-24T00:00:00Z",
+  "backend": "active",
+  "feature_flag_meta": null,
   "steps": [
     { "id": 1, "title": "Creer backend stub", "file": "formulaires/inc/inscription_evenement_backend.php", "status": "done" },
     { "id": 2, "title": "Wrappers format/spam", "status": "done" },
@@ -41,25 +42,26 @@
     },
     {
       "id": 10,
-      "title": "Feature flag + docs + mise en prod",
-      "status": "in_progress",
+      "title": "Backend actif + docs + recette",
+      "status": "done",
       "scope": [
         "documentation technique consolidee et recentree sur le domaine inscriptions",
-        "strategie d'activation backend",
+        "backend commun actif sans feature flag",
         "plan de recette finale"
       ]
     },
     {
       "id": 11,
-      "title": "Mutualiser FO/BO et supprimer les formulaires publics legacy",
-      "status": "future",
+      "title": "Conserver des adaptateurs FO/BO minces autour du backend commun",
+      "status": "done",
       "scope": [
         "formulaires/inscription_evenement_public.php",
         "formulaires/inscription_evenement_multi_public.php",
         "formulaires/inscription_evenement_public.html",
         "formulaires/inscription_evenement_multi_public.html"
-      ]
+      ],
+      "decision": "Les wrappers publics portent les étapes et redirections propres au FO ; charger, verifier et traiter restent mutualisés."
     }
   ],
-  "notes": "Step 9 termine (2026-03-27) : bug critique cookie public corrige (variables manquantes), notices PHP saisies corrigees, logs debug abaisses a _LOG_DEBUG, id_auteur FO/BO confirme conforme. Step 10 reste en cours au 2026-03-30 : documentation consolidee sous docs/inscriptions et docs/README.md, mais recette manuelle FO/BO et strategie de rollout restent a finaliser (voir tests-plan.md)."
+  "notes": "Lot 184 : backend commun actif, adaptateurs FO/BO bornés, aucun feature flag fantôme, diagnostics pilotés par la catégorie inscriptions et sans contenu personnel."
 }

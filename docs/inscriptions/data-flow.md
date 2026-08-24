@@ -31,7 +31,7 @@ sont reconstruits dans la selection `famille`.
 Dans le cas `multi_public`, le chargement final reste compose ainsi :
 
 1. chargement commun via `ie_charger_commons('multi_public', ...)` ;
-2. remplacement des saisies par `ie_multi_public_saisies_legacy()` ;
+2. adaptation des saisies publiques par `ie_multi_public_saisies()` ;
 3. recalcul de `_saisies_par_etapes`.
 
 ## 3. Normalisation de la requete

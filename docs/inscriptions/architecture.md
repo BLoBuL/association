@@ -42,7 +42,7 @@ verification PHP et dans les tests sans environnement SPIP complet.
   - wrapper FO multi ;
   - mode `multi_public` ;
   - verification et traitement relies au backend commun ;
-  - generation de saisies encore specifique via `ie_multi_public_saisies_legacy()`.
+  - adaptation des saisies publiques via `ie_multi_public_saisies()`.
 
 ## Backend commun
 
@@ -143,7 +143,7 @@ Sinon, redirection vers `voir_activites`.
 
 ## Dette technique restante
 
-- `formulaires_inscription_evenement_multi_public_saisies()` conserve un chemin de generation legacy.
+- `formulaires_inscription_evenement_multi_public_saisies()` conserve l'adaptateur FO nécessaire aux étapes dynamiques, puis délègue au backend commun.
 - Les squelettes publics restent separes des equivalents BO.
 - `formulaires/inscription_evenement_public.php` conserve des logs critiques de diagnostic qui ne relevent plus de la doc courante.
 - La suppression complete des wrappers publics legacy est differee apres validation fonctionnelle complete.

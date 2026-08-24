@@ -50,7 +50,7 @@ Le principal residu legacy concerne la generation de saisies du formulaire FO mu
 
 - Backend commun actif pour `charger`, `verifier` et `traiter`.
 - Wrappers simples et multi relies au backend commun en FO et BO.
-- `formulaires/inscription_evenement_multi_public.php` conserve une generation de saisies specifique via `ie_multi_public_saisies_legacy()`.
+- `formulaires/inscription_evenement_multi_public.php` adapte les saisies FO multi via `ie_multi_public_saisies()` avant de déléguer le cycle CVT au backend commun.
 - La verification multi public passe desormais par `ie_verifier_commons('multi_public', ...)`.
 - Le payload famille en multi public est normalise via `ie_aplatir_liste_valeurs()` ; le champ principal est `famille`.
 

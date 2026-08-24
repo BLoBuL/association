@@ -34,11 +34,12 @@ function ie_inscription_multi_mode() {
 function formulaires_inscription_evenement_multi_saisies($id_evenement = '', $id_activite = '') {
     list($id_evenement, $id_activite) = ie_inscription_multi_ids($id_evenement, $id_activite);
     $contexte = ie_charger_commons(ie_inscription_multi_mode(), $id_evenement, $id_activite);
-    // Diagnostic: log the structure of the generated saisies to the SPIP log
-    // Log only if the generated structure is invalid for multi-step CVT
     $s = isset($contexte['_saisies']) ? $contexte['_saisies'] : null;
     if (!is_array($s) || !isset($s['options']) || count(array_filter(array_keys($s), 'is_int')) == 0) {
-        spip_log('[IE_SAISIES][ERROR][' . date('YmdHis') . '] invalid _saisies structure: ' . var_export($s, true), 'association' . _LOG_ERREUR);
+        association_evenements_inscription_debug('saisies_multi_invalides', array(
+            'type' => gettype($s),
+            'nombre' => is_array($s) ? count($s) : 0,
+        ));
     }
     return isset($contexte['_saisies']) && is_array($contexte['_saisies']) ? $contexte['_saisies'] : array();
 }

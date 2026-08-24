@@ -14,31 +14,30 @@ Stabiliser durablement les formulaires d'inscription evenement autour d'un backe
 - normalisation du payload multi active ;
 - verification multi public branchee sur `ie_verifier_commons('multi_public', ...)`.
 
-### Encore specifique / legacy
+### Encore spécifique
 
-- generation des saisies du FO multi public ;
+- adaptation des saisies dynamiques du FO multi public ;
 - squelettes publics historiques ;
 - certains logs de diagnostic encore presents dans les wrappers FO.
 
 ## Dette restante a court terme
 
-### 1. Finaliser la convergence des saisies
+### 1. Maintenir la convergence des saisies
 
-- reduire la logique propre a `ie_multi_public_saisies_legacy()` ;
-- documenter une cible de convergence vers le backend commun ;
+- limiter `ie_multi_public_saisies()` à l'adaptation des étapes dynamiques ;
+- conserver la délégation charger/verifier/traiter vers le backend commun ;
 - verifier les impacts sur les squelettes multi-etapes.
 
-### 2. Stabiliser le rollout backend
+### 2. Backend commun
 
-- clarifier l'usage reel de `meta_cfg_use_inscription_backend` ;
-- documenter la strategie d'activation et de rollback si ce meta doit devenir operant ;
-- verifier si ce feature flag reste pertinent ou doit etre retire de la doc.
+- le backend commun est actif sans feature flag ;
+- `meta_cfg_use_inscription_backend` n'existe pas dans le code et ne doit pas être réintroduit ;
+- le rollback relève de Git et du déploiement atomique, pas d'une branche métier divergente.
 
 ### 3. Nettoyer les wrappers publics
 
-- supprimer les logs critiques temporaires ;
-- limiter les wrappers a leur role de resolution des identifiants et delegation ;
-- preparer la suppression des branches legacy quand les saisies seront unifiees.
+- les diagnostics sont configurables par la catégorie `inscriptions` et ne journalisent aucun contenu personnel ;
+- limiter les wrappers à la résolution des identifiants et à la délégation.
 
 ## Dette a moyen terme
 
