@@ -1122,19 +1122,6 @@ Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
 
-## Lot 105 — listes d'activités autonomes
-
-Les commits `63c81ee3` et `c472c636` sont déployés depuis l'artefact SHA-256
-`9fa21b2fecf305be03b73d9dfd50351f0f2405c88405f49035ae7ef14f635c7f`.
-La session navigateur authentifiée affiche la période future et le tableau des
-activités avec dates, intitulés, états d'inscription, paiements, types de
-public, quotas et actions. Les vignettes, icônes et couleurs de quota restent
-rendus après le chargement de la feuille privée propre à Événements.
-
-Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
-douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
-pages publiques et 64 composants front.
-
 ## Lot 104 — tableau autonome des cotisations
 
 Les commits `ec4bbef7` et `1079e1cf` sont déployés depuis l'artefact SHA-256
@@ -1143,6 +1130,19 @@ La session navigateur authentifiée affiche les dix cotisations, les huit
 colonnes, la légende, les états de paiement, les types d'inscription et les
 actions. Les filtres de période, statut, inscription et catégorie restent
 présents et mis en forme sans erreur de squelette.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
+
+## Lot 105 — listes d'activités autonomes
+
+Les commits `63c81ee3` et `c472c636` sont déployés depuis l'artefact SHA-256
+`9fa21b2fecf305be03b73d9dfd50351f0f2405c88405f49035ae7ef14f635c7f`.
+La session navigateur authentifiée affiche la période future et le tableau des
+activités avec dates, intitulés, états d'inscription, paiements, types de
+public, quotas et actions. Les vignettes, icônes et couleurs de quota restent
+rendus après le chargement de la feuille privée propre à Événements.
 
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
