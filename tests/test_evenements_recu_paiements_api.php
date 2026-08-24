@@ -2,7 +2,7 @@
 
 $source = file_get_contents(dirname(__DIR__) . '/plugins/association-evenements/inc/fonctions/facteur_envoyer_recu_participation.php');
 if (strpos($source, 'spip_transactions') !== false
-	|| strpos($source, 'association_paiements_transaction_lire(') === false) {
+	|| strpos($source, 'association_evenements_transaction_lire(') === false) {
 	fwrite(STDERR, "Le reçu de participation contourne la façade Paiements.\n");
 	exit(1);
 }

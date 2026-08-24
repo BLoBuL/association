@@ -4,6 +4,68 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function association_evenements_paiements_actifs() {
+	return function_exists('association_evenements_integration_active')
+		? association_evenements_integration_active('association_paiements')
+		: (function_exists('association_plugin_actif') ? association_plugin_actif('association_paiements') : true);
+}
+
+function association_evenements_transaction_lire($id_transaction) {
+	if (!association_evenements_paiements_actifs() || !(int) $id_transaction) {
+		return array();
+	}
+	include_spip('inc/association_paiements_transactions');
+	return association_paiements_transaction_lire((int) $id_transaction);
+}
+
+function association_evenements_transactions_lire($ids_transactions) {
+	if (!association_evenements_paiements_actifs()) {
+		return array();
+	}
+	include_spip('inc/association_paiements_transactions');
+	return association_paiements_transactions_lire((array) $ids_transactions);
+}
+
+function association_evenements_transaction_creer($montant, array $options = array()) {
+	if (!association_evenements_paiements_actifs()) {
+		return 0;
+	}
+	$inserer_transaction = charger_fonction('inserer_transaction', 'bank');
+	return $inserer_transaction((float) $montant, $options);
+}
+
+function association_evenements_transaction_modifier($id_transaction, array $donnees) {
+	if (!association_evenements_paiements_actifs() || !(int) $id_transaction) {
+		return true;
+	}
+	include_spip('inc/association_paiements_transactions');
+	return association_paiements_transaction_modifier((int) $id_transaction, $donnees);
+}
+
+function association_evenements_transaction_supprimer_non_encaissee($id_transaction) {
+	if (!association_evenements_paiements_actifs() || !(int) $id_transaction) {
+		return true;
+	}
+	include_spip('inc/association_paiements_transactions');
+	return association_paiements_transaction_supprimer_non_encaissee((int) $id_transaction);
+}
+
+function association_evenements_transactions_supprimer_non_encaissees($ids_transactions, $dry_run = false) {
+	if (!association_evenements_paiements_actifs()) {
+		return array('supprimes' => 0, 'protegees' => array(), 'ids' => array());
+	}
+	include_spip('inc/association_paiements_transactions');
+	return association_paiements_transactions_supprimer_non_encaissees((array) $ids_transactions, $dry_run);
+}
+
+function association_evenements_transaction_rgpd($id_transaction) {
+	if (!association_evenements_paiements_actifs() || !(int) $id_transaction) {
+		return array();
+	}
+	include_spip('inc/association_paiements_rgpd');
+	return association_paiements_rgpd_export_transaction((int) $id_transaction);
+}
+
 function association_evenements_reglement_traiter($activite, $transaction) {
 	$id_transaction = (int) $activite['id_transaction'];
 	$id_evenement = (int) $activite['id_evenement'];
@@ -25,7 +87,7 @@ function association_evenements_reglement_traiter($activite, $transaction) {
 		sql_updateq('spip_asso_activites', array('journal' => $journal), 'id_activite=' . $id_activite);
 	}
 
-	if (!empty($GLOBALS['association_metas']['comptes'])) {
+	if (association_evenements_integration_active('association_compta')) {
 		include_spip('inc/association_evenements_comptabilite');
 		association_evenements_compte_valider_transaction($id_transaction);
 	}

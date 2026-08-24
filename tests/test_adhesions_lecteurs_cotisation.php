@@ -23,7 +23,8 @@ foreach (array(
 		$erreurs[] = "$fichier ne passe pas par l’adaptateur métier Adhésions.";
 	}
 	if (strpos($contenu, 'spip_transactions') !== false
-		|| strpos($contenu, 'association_paiements_transaction_lire(') === false) {
+		|| strpos($contenu, 'association_adhesions_transaction_lire(') === false
+		|| strpos($contenu, 'association_paiements_transaction_lire(') !== false) {
 		$erreurs[] = "$fichier contourne encore la facade Paiements.";
 	}
 }

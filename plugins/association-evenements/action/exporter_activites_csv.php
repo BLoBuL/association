@@ -133,8 +133,8 @@ function action_exporter_activites_csv_dist()
 				$ids_transactions[] = (int) $adherent_array['id_transaction'];
 			}
 		}
-		include_spip('inc/association_paiements_transactions');
-		$transactions = association_paiements_transactions_lire($ids_transactions);
+		include_spip('inc/association_evenements_paiements');
+		$transactions = association_evenements_transactions_lire($ids_transactions);
 		foreach ($lignes as $adherent_array) {
 			$result = array();
 			foreach (array_diff($preas_clean, $colonnes_paiement) as $key) {

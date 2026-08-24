@@ -18,7 +18,7 @@ if (strpos($administration, 'association_migrations_construire()') === false
 
 foreach (array(
 	"association_cotisation_devise_historique(\$compte)",
-	"association_paiements_transaction_lire(\$id_transaction)",
+	"association_adhesions_transaction_lire(\$id_transaction)",
 	"sql_getfetsel('devise', 'spip_asso_categories_adherents'",
 	"array('id_objet' => (int) \$id_cotisation)",
 ) as $attendu) {

@@ -2,7 +2,9 @@
 	<nom>Association - Ventes</nom>
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
+	<necessite nom="association" compatibilite="[4.0.0;4.*]" />
 	<pipeline nom="autoriser" inclure="association_ventes_autoriser.php" />
+	<pipeline nom="association_capacites" inclure="association_ventes_pipelines.php" />
 	<pipeline nom="association_rgpd_export_auteur" inclure="association_ventes_pipelines.php" />
 	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_ventes_pipelines.php" />
 	<pipeline nom="association_compta_objets_declarer" inclure="association_ventes_pipelines.php" />
@@ -10,5 +12,7 @@
 	<pipeline nom="association_migrations_historiques" inclure="inc/association_ventes_migrations_socle.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_ventes.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_ventes.php" />
-	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
+	<utilise nom="association_compta" compatibilite="[4.0.0;4.*]" />
+	<utilise nom="association_paiements" compatibilite="[4.0.0;4.*]" />
+	<utilise nom="association_adhesions" compatibilite="[4.0.0;4.*]" />
 </paquet>

@@ -102,8 +102,8 @@ function analyse_compta_activites_transactions(array $ecritures) {
 	if (!$ids) {
 		return array();
 	}
-	include_spip('inc/association_paiements_transactions');
-	return association_paiements_transactions_lire($ids);
+	include_spip('inc/association_evenements_paiements');
+	return association_evenements_transactions_lire($ids);
 }
 
 /**

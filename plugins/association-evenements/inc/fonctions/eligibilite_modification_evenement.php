@@ -17,8 +17,8 @@ function eligibilite_modification_evenement($id_activite){
     $id_auteur = $query_activite['id_auteur'];
     if(intval($query_activite['id_transaction'])){
         $id_transaction = $query_activite['id_transaction'];
-		include_spip('inc/association_paiements_transactions');
-		$query_transaction = association_paiements_transaction_lire($id_transaction);
+		include_spip('inc/association_evenements_paiements');
+		$query_transaction = association_evenements_transaction_lire($id_transaction);
     }else{
         $query_transaction = '';
     }

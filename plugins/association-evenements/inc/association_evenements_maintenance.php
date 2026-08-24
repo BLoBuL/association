@@ -51,8 +51,8 @@ function asso_supprimer_inscriptions_par_ids(array $ids_activite, $dry_run = tru
 function asso_supprimer_transactions_inscriptions(array $inscriptions, $dry_run = true) {
     $ids_tx = array_values(array_unique(array_filter(array_map('intval', array_column($inscriptions, 'id_transaction')))));
     if (!$ids_tx) return ['supprimes' => 0, 'ids_activite_supprimables' => array_column($inscriptions, 'id_activite')];
-    include_spip('inc/association_paiements_transactions');
-    $resultat = association_paiements_transactions_supprimer_non_encaissees($ids_tx, $dry_run);
+    include_spip('inc/association_evenements_paiements');
+    $resultat = association_evenements_transactions_supprimer_non_encaissees($ids_tx, $dry_run);
     $protegees = array_flip($resultat['protegees'] ?? array());
     $resultat['ids_activite_supprimables'] = array_values(array_map('intval', array_column(array_filter(
         $inscriptions,
@@ -135,8 +135,8 @@ function asso_supprimer_participations_evenements_orphelines($dry_run = true, $l
         $candidats[] = $row;
         if (!empty($row['id_transaction'])) $tx_ids[] = intval($row['id_transaction']);
     }
-    include_spip('inc/association_paiements_transactions');
-    $transactions = association_paiements_transactions_lire($tx_ids);
+    include_spip('inc/association_evenements_paiements');
+    $transactions = association_evenements_transactions_lire($tx_ids);
     foreach ($candidats as $row) {
         $id_transaction = (int) ($row['id_transaction'] ?? 0);
         if ($id_transaction && (($transactions[$id_transaction]['statut'] ?? '') === 'ok')) continue;
@@ -171,7 +171,7 @@ function asso_supprimer_participations_evenements_orphelines($dry_run = true, $l
         },
         $candidats
     ))));
-    $suppression_transactions = association_paiements_transactions_supprimer_non_encaissees($tx_ids_final, $dry_run);
+    $suppression_transactions = association_evenements_transactions_supprimer_non_encaissees($tx_ids_final, $dry_run);
     if (!empty($suppression_transactions['erreur'])) {
         return [
             'supprimees' => intval($nb),
@@ -241,8 +241,8 @@ function asso_supprimer_participations_evenements_obsoletes($dry_run = true, $lo
         $candidats[] = $row;
         if (!empty($row['id_transaction'])) $tx_ids[] = (int) $row['id_transaction'];
     }
-    include_spip('inc/association_paiements_transactions');
-    $transactions = association_paiements_transactions_lire($tx_ids);
+    include_spip('inc/association_evenements_paiements');
+    $transactions = association_evenements_transactions_lire($tx_ids);
     foreach ($candidats as $row) {
         $id_act = intval($row['id_activite']);
         $ids[] = $id_act;
@@ -306,7 +306,7 @@ function asso_supprimer_participations_evenements_obsoletes($dry_run = true, $lo
         },
         $candidats
     ))));
-    $suppression_transactions = association_paiements_transactions_supprimer_non_encaissees($tx_candidats, $dry_run);
+    $suppression_transactions = association_evenements_transactions_supprimer_non_encaissees($tx_candidats, $dry_run);
     if (!empty($suppression_transactions['erreur'])) {
         return [
             'supprimees' => intval($nb_suppr),

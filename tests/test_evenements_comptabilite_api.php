@@ -8,7 +8,7 @@ foreach (array('spip_asso_comptes', 'spip_asso_destination_op', 'spip_transactio
 		exit(1);
 	}
 }
-if (strpos($source, 'association_paiements_transaction_lire(') === false) {
+if (strpos($source, 'association_evenements_transaction_lire(') === false) {
 	fwrite(STDERR, "La couche comptable Événements contourne la façade Paiements.\n");
 	exit(1);
 }

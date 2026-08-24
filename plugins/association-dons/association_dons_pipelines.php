@@ -7,6 +7,12 @@ function association_dons_association_rgpd_export_auteur($flux) {
 	return $flux;
 }
 
+function association_dons_association_capacites($capacites) {
+	$capacites['dons'] = array('plugin' => 'association_dons');
+
+	return $capacites;
+}
+
 function association_dons_association_rgpd_anonymiser_auteur($flux) {
 	$id = intval($flux['args']['id_auteur'] ?? 0);
 	$flux['data']['dons_anonymises'] = association_rgpd_updateq('spip_asso_dons', association_rgpd_filtrer_champs('spip_asso_dons', array(

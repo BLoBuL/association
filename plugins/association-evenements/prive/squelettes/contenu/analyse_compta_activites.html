@@ -117,9 +117,9 @@
             <td class="date">[(#DATE_DEBUT|affdate{'d/m/y'})][<br><small>(#DATE_DEBUT|affdate{"H:i"})</small>]</td>
             <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement,date_evenement=non,cat_evenement=oui}/>
             </BOUCLE_evenement>
-          <td class="right montant_recette">[(#VALEUR|table_valeur{recettes}|bank_affiche_montant{'EUR',symbol})]</td>
-          <td class="right montant_depense">[(#VALEUR|table_valeur{depenses}|bank_affiche_montant{'EUR',symbol})]</td>
-          <td class="right [(#GET{solde_evt}|>{0}|?{rentabilite-positive,rentabilite-negative})]">[(#VALEUR|table_valeur{solde}|bank_affiche_montant{'EUR',symbol})]</td>
+          <td class="right montant_recette">[(#VALEUR|table_valeur{recettes}|association_evenements_afficher_montant{'EUR',symbol})]</td>
+          <td class="right montant_depense">[(#VALEUR|table_valeur{depenses}|association_evenements_afficher_montant{'EUR',symbol})]</td>
+          <td class="right [(#GET{solde_evt}|>{0}|?{rentabilite-positive,rentabilite-negative})]">[(#VALEUR|table_valeur{solde}|association_evenements_afficher_montant{'EUR',symbol})]</td>
           <td class="right [(#GET{rent}|>{0}|?{rentabilite-positive,[(#GET{rent}|<{0}|?{rentabilite-negative,rentabilite-neutre})]})]">[(#GET{rent}|?{[(#GET{rent}|round{1})]%, '-'})]</td>
           <td class="center">[(#VALEUR|table_valeur{operations})]</td>
         </tr>

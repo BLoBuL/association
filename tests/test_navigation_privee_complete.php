@@ -18,7 +18,7 @@ $pages = array(
 		'migration_donnees_comptables' => 'comptes',
 	),
 	'plugins/association-groupes' => array(
-		'benevoles' => 'adherents',
+		'benevoles' => null,
 	),
 	'plugins/association-adhesions' => array(
 		'editer_asso_cotisation' => 'cotisations',
@@ -61,14 +61,20 @@ foreach ($pages as $plugin => $definitions) {
 		}
 		$contenu_hierarchie = file_get_contents($hierarchie);
 		$contenu_navigation = file_get_contents($navigation);
+		$lien_parent_hierarchie = $parent === null
+			? str_contains($contenu_hierarchie, 'association_groupes_url_auteurs')
+			: str_contains($contenu_hierarchie, "#URL_ECRIRE{{$parent}}");
+		$lien_parent_navigation = $parent === null
+			? str_contains($contenu_navigation, 'association_groupes_url_auteurs')
+			: str_contains($contenu_navigation, "#URL_ECRIRE{{$parent}}");
 		if (!str_contains($contenu_hierarchie, '#URL_ECRIRE{accueil}')
-			|| !str_contains($contenu_hierarchie, "#URL_ECRIRE{{$parent}}")
+			|| !$lien_parent_hierarchie
 			|| !str_contains($contenu_hierarchie, '<strong class="on">')) {
 			$erreurs[] = "Fil d’Ariane SPIP incomplet : $page";
 		}
 		if (!str_contains($contenu_navigation, '<INCLURE{fond=prive/squelettes/navigation/dist,env}>')
 			|| !str_contains($contenu_navigation, '#BOITE_OUVRIR')
-			|| !str_contains($contenu_navigation, "#URL_ECRIRE{{$parent}}")) {
+			|| !$lien_parent_navigation) {
 			$erreurs[] = "Retour de navigation incomplet : $page";
 		}
 	}

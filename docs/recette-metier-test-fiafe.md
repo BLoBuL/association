@@ -2446,3 +2446,34 @@ erreur d'exécution et aucun débordement horizontal. La stratégie de version
 est désormais documentée en série 4.x, avec des tags qualifiés par module et
 un éventuel tag de suite. Aucun tag ni release n'est créé avant l'arbitrage
 explicite du canal `test` ou `stable`.
+
+## Lot 190 - inversion des dépendances et contrats facultatifs
+
+Le commit `77b6973def340d245458da0a51f77b5484dc8b5d` rend le socle
+Association activable sans module métier. Chacun des neuf modules exige le
+socle, mais aucun module métier n'en exige un autre. Les profils de participant,
+la comptabilisation, les demandes de règlement et les notifications passent
+par des capacités ou des pipelines facultatifs. Les cotisations restent dans
+Adhésions et leur lien comptable `id_compte` est nullable.
+
+Les 142 tests automatisés passent, dont le contrôle statique qui interdit les
+nécessités entre modules métier, les inclusions internes entre plugins et les
+nouveaux appels directs non gardés. Après remplacement atomique des dix
+répertoires sur test-fiafe, la mise à jour de schéma est idempotente. Le
+vérificateur retrouve 10 contributeurs actifs, 14 tables, 12 objets SQL et
+7 schémas à jour. SPIP 4.4.21 compile les 283 squelettes, modèles, emails et
+notifications détectés dans la suite.
+
+Chrome authentifié a relu sans erreur les pages privées Adhérents, Cotisations,
+Activités, Comptabilité, Bénévoles, Notifications et Paramètres, ainsi que le
+formulaire complet d'ajout de cotisation. La recette publique couvre Accueil,
+Inscription, Profil, Fiche adhérent, Newsletter, Événement et Ressources. Les
+pages Événement, Profil et Ressources ne présentent aucun débordement
+horizontal à 390, 768 et 1440 pixels. Aucun fatal récent n'est présent dans les
+journaux après ces parcours.
+
+La suite complète et les comportements facultatifs sont donc validés par les
+tests unitaires, statiques et la recette servie. La matrice d'activation réelle
+de chaque module isolé reste à exécuter dans une installation SPIP jetable
+distincte : elle n'a pas été simulée en désactivant les modules du site de
+recette, afin de ne pas perturber ses données et son état partagé.

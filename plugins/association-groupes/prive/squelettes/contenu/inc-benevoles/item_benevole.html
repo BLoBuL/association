@@ -1,12 +1,13 @@
 <BOUCLE_activites(AUTEURS){id_auteur}{tout}>
-    <tr class="#STATUT_INTERNE #STATUT">
+	[(#SET{resume,#ID_AUTEUR|association_groupes_auteur_resume})]
+    <tr class="#STATUT">
         <td class="id">##ID_AUTEUR</td>
         <td class="nom">
-            <a class="bouton_editer" href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]">
+            <a class="bouton_editer" href="[(#GET{resume}|table_valeur{url_gestion})]">
             <span class="logo_auteur"><INCLURE{fond=modeles/asso_logo_adherent,id_auteur,hauteur=50,largeur=50}/></span>
-                <span class="nom_prenom">#PRENOM </br><b style="text-transform: uppercase">#NOM_FAMILLE</b>
+                <span class="nom_prenom"><b>[(#GET{resume}|table_valeur{nom_affiche}|sinon{#NOM})]</b>
                 <br>
-                <small>[(#INSCRIPTION|!={0000-00-00 00:00:00}|oui)[(#INSCRIPTION|affdate{d/m/y})]] <-> [(#VALIDITE|!={0000-00-00 00:00:00}|oui)[(#VALIDITE|affdate{d/m/y})]]</small>
+                [<small>(#GET{resume}|table_valeur{inscription}|affdate{d/m/y})</small>]
                 </span>
             </a>
          </td>  
@@ -32,9 +33,8 @@
         </td>
         <td class="contact left">
             [<a href="#EMAIL">(#EMAIL)</a><br>]
-            [<a href="#INPUT_EMAIL_MEMBRES_ASSO">(#INPUT_EMAIL_MEMBRES_ASSO)</a><br>]
-            [(#TELEPHONE)<br>]
-            [(#MOBILE)]
+            [<br>(#GET{resume}|table_valeur{telephone}|association_groupes_telephone)]
+            [<br>(#GET{resume}|table_valeur{mobile}|association_groupes_telephone)]
         </td>
         <td class="activites left">
             <B_articles>
@@ -50,7 +50,7 @@
        </td>   
         <td class="actions">
             <div class="actions_wrap">
-            <a href="[(#URL_ECRIRE{voir_adherent,id_auteur=#ID_AUTEUR})]" title="<:association_groupes:adherent_label_gerer_membre:>" class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
+            <a href="[(#GET{resume}|table_valeur{url_gestion})]" title="<:association_groupes:adherent_label_gerer_membre:>" class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
             <a href="[(#URL_ECRIRE{auteur,id_auteur=#ID_AUTEUR})]" title="<:association_groupes:adherent_label_voir_membre:>" class="lien_fa"><i class="fa-solid fa-user" aria-hidden="true"></i></a>
             </div>
         </td>

@@ -8,6 +8,37 @@ function association_adhesions_association_config_cli_registre($flux) {
 	return $flux;
 }
 
+function association_adhesions_association_capacites($capacites) {
+	$capacites['adhesions'] = array('plugin' => 'association_adhesions');
+	$capacites['cotisations'] = array('plugin' => 'association_adhesions');
+	$capacites['profil_membre'] = array('plugin' => 'association_adhesions');
+
+	return $capacites;
+}
+
+function association_adhesions_association_profil_participant($participant) {
+	$id_auteur = (int) ($participant['id_auteur'] ?? 0);
+	if (!$id_auteur) {
+		return $participant;
+	}
+
+	include_spip('inc/cotisations');
+	$contexte = association_contexte_adhesion($id_auteur);
+	$est_membre = ($contexte['statut_interne'] ?? '') === 'ok';
+	$participant['profil'] = $est_membre ? 'membre' : 'public';
+	$participant['est_membre'] = $est_membre;
+	$participant['cotisation'] = $contexte;
+	$participant['tarifs'] = $est_membre
+		? array('adherent', 'indifferent')
+		: array('non_adherent', 'indifferent');
+
+	if (function_exists('generer_famille_adherent')) {
+		$participant['famille'] = (array) generer_famille_adherent($id_auteur);
+	}
+
+	return $participant;
+}
+
 function association_adhesions_association_configuration_saisies($flux) {
 	include_spip('formulaires/inc/configurer_association_adhesions');
 	$flux['data'][] = array('ordre' => 20, 'saisies' => association_adhesions_configurer_saisies(

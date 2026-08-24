@@ -132,9 +132,12 @@ function affichage_dans_activites($id_evenement){
 
     $condition_accompagnant = ($result['accompagnants'])? '' : ' AND quantite=1';
     if( ($result['payant'])){
-         include_spip('inc/bank');
-        $devise_defaut = bank_devise_defaut();
-        $devise = $devise_defaut['code'];
+		$paiements_actifs = association_evenements_integration_active('association_paiements');
+		if ($paiements_actifs) {
+			include_spip('inc/bank');
+		}
+		$devise_defaut = $paiements_actifs ? bank_devise_defaut() : array('code' => 'EUR', 'symbole' => '€');
+		$devise = $devise_defaut['code'];
         $query_categorie = sql_select('*', 'spip_asso_categories_activites', "statut='ok'". $condition_accompagnant); // Permet de ne séléctionner que ceux en cours (en cas de supression)
         while ($categorie = sql_fetch($query_categorie)) {
             $id_categorie = intval($categorie['id_categorie']);
@@ -148,7 +151,9 @@ function affichage_dans_activites($id_evenement){
             // N'afficher la catégorie que si un montant est renseigné (y compris 0)
             if (is_numeric($montant_val)) {
                 // Afficher le symbole (bank_affiche_montant attend une valeur numérique)
-                $montant_symbole = bank_affiche_montant($montant_val, $devise, 'symbol');
+				$montant_symbole = $paiements_actifs
+					? bank_affiche_montant($montant_val, $devise, 'symbol')
+					: number_format((float) $montant_val, 2, ',', ' ') . ' ' . $devise_defaut['symbole'];
                 $result['montant']['categorie_prix_' . $id_categorie] = array(
                     'id_categorie' => $id_categorie,
                     'type_inscrit' => $categorie['type_inscrit'],

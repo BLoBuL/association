@@ -12,7 +12,7 @@
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
 include_spip('inc/fonctions/activite_enregistrement_calculator');
-include_spip('inc/association_paiements_transactions');
+include_spip('inc/association_evenements_paiements');
 function action_ajouter_activites() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
     $id_activite      = $securiser_action();
@@ -33,7 +33,9 @@ function action_ajouter_activites() {
 function activites_insert($categorie_result, $date, $id_evenement, $id_auteur, $nom_participants, $commentaire, $valider, $gratuit_single, $total_inscrits, $id_activite,$notify_the_members)
 {
 	$nombre_inscrits            = $montant_total = 0;
-	$inserer_transaction        = charger_fonction('inserer_transaction','bank');
+	$inserer_transaction = function ($montant, $options) {
+		return association_evenements_transaction_creer($montant, $options);
+	};
 	$gestions_places            = gestions_places($id_evenement);
 	$query_evenement            = sql_fetsel('*', "spip_evenements", "id_evenement=$id_evenement" );
     $query_auteur = sql_fetsel("prenom,nom_famille,email","spip_auteurs","id_auteur=$id_auteur");
@@ -105,7 +107,7 @@ function activites_insert($categorie_result, $date, $id_evenement, $id_auteur, $
 		$id_transaction = $inserer_transaction('0',$options);
 		if(!$cal_result['gestion']['validation'] OR $valider){
 			// Si la validation n'est pas obligatoire ou si c'est validé, on valide en plus l'inscrition
-			association_paiements_transaction_modifier($id_transaction, array(
+			association_evenements_transaction_modifier($id_transaction, array(
 				'reglee'         => 'oui',
 				'statut'         => 'ok',
 				'finie'          => 1,

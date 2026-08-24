@@ -67,11 +67,11 @@ function formulaires_desinscription_evenement_public_traiter_dist($id_evenement)
             'journal' => $message_journal
         ),"id_activite=$id_activite");
     $id_transaction = intval($query_activite['id_transaction'] ?? 0);
-	include_spip('inc/association_paiements_transactions');
-	$query_transaction = $id_transaction > 0 ? association_paiements_transaction_lire($id_transaction) : array();
+	include_spip('inc/association_evenements_paiements');
+	$query_transaction = $id_transaction > 0 ? association_evenements_transaction_lire($id_transaction) : array();
 
     if($id_transaction > 0 && ($query_transaction['statut'] ?? '') != 'ok'){
-		association_paiements_transaction_modifier($id_transaction, array('statut' => 'abandon'));
+		association_evenements_transaction_modifier($id_transaction, array('statut' => 'abandon'));
     }
     // Suppression ENREGISTREMENT COMPTABLE SI LA COMPTABILITE EST ACTIVE
     if(!empty($GLOBALS['association_metas']['comptes']) && !empty($affichage_dans_activites['payant'])){

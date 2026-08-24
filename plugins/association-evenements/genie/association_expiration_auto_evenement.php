@@ -18,7 +18,7 @@
  * @return bool Retourne `true` une fois la tâche terminée.
  */
 function genie_association_expiration_auto_evenement_dist($flux){
-	include_spip('inc/association_paiements_transactions');
+	include_spip('inc/association_evenements_paiements');
 
     // Vérifie si un délai d'expiration est configuré
     if($GLOBALS['association_metas']['meta_cfg_event_delai_expiration'] >= 1){
@@ -61,7 +61,7 @@ function genie_association_expiration_auto_evenement_dist($flux){
                     if($date_actuel >= $date_expiration_inscription){
                         $id_activite_array[] = $asso_activites['id_activite'];
                         $id_evenements_concernes_array[] = $asso_activites['id_evenement'];
-						$query_transaction = association_paiements_transaction_lire($id_transaction);
+						$query_transaction = association_evenements_transaction_lire($id_transaction);
                         $type = 'expiration_automatique';
 
                         // Ajoute une tâche pour envoyer une notification
@@ -72,7 +72,7 @@ function genie_association_expiration_auto_evenement_dist($flux){
                         $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association_evenements:journal_expiration_automatique') . '<br>' . $journal;
                         sql_updateq('spip_asso_activites', array("statut" => 'desinscrit', "journal" => $entree_journal),"id_activite=$id_activite");
                         if($query_transaction['statut'] != 'ok'){
-							association_paiements_transaction_modifier($id_transaction, array('statut' => 'abandon'));
+							association_evenements_transaction_modifier($id_transaction, array('statut' => 'abandon'));
                         }
 
                     }

@@ -119,6 +119,7 @@ function changer_statut_cotisation($id_compte, $origine = '', $notifier = true) 
 }
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations_devises.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/cotisations_stockage.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_integrations.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/api_cotisations.php';
 
 function test_assert($condition, $message) {
@@ -360,7 +361,10 @@ foreach (array('auto' => 'ok', 'post-paiement' => 'demande') as $validation => $
         'origine' => 'encaissement_paiement',
         'montant_don' => 5,
     ));
-    test_assert($resultat['statut_cotisation'] === $statut_attendu, "un encaissement $validation produit le statut $statut_attendu");
+    test_assert(
+        ($resultat['statut_cotisation'] ?? '') === $statut_attendu,
+        "un encaissement $validation produit le statut $statut_attendu (" . ($resultat['message'] ?? 'résultat incomplet') . ')'
+    );
     test_assert($resultat['id_transaction'] === 205, "un encaissement $validation conserve la transaction existante");
     test_assert($GLOBALS['test_transactions'][205]['montant'] === 80.0, "un encaissement $validation synchronise le montant sans doublon");
     test_assert($GLOBALS['test_transactions'][205]['devise'] === 'EUR', "un encaissement $validation synchronise la devise sans doublon");

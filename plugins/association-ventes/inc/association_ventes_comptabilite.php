@@ -4,7 +4,14 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function association_ventes_comptabilite_disponible() {
+	return association_plugin_actif('association_compta');
+}
+
 function association_ventes_compte_lire($id_vente, $imputation) {
+	if (!association_ventes_comptabilite_disponible()) {
+		return array();
+	}
 	include_spip('inc/association_compta_ecritures');
 	$ecritures = association_compta_ecritures_objet_lister('asso_vente', $id_vente, array(
 		'legacy_id_journal' => true,
@@ -15,6 +22,9 @@ function association_ventes_compte_lire($id_vente, $imputation) {
 }
 
 function association_ventes_comptes_supprimer($id_vente) {
+	if (!association_ventes_comptabilite_disponible()) {
+		return true;
+	}
 	include_spip('inc/association_compta_ecritures');
 	return association_compta_ecritures_objet_supprimer('asso_vente', $id_vente, array(
 		'legacy_id_journal' => true,
@@ -26,6 +36,9 @@ function association_ventes_comptes_supprimer($id_vente) {
 }
 
 function association_ventes_compte_creer($date, $montant, $justification, $journal, $id_vente, $id_auteur, $imputation) {
+	if (!association_ventes_comptabilite_disponible()) {
+		return 0;
+	}
 	include_spip('inc/association_compta_ecritures');
 	return association_compta_ecriture_creer(array(
 		'date' => $date, 'recette' => $montant, 'depense' => 0,
@@ -35,6 +48,9 @@ function association_ventes_compte_creer($date, $montant, $justification, $journ
 }
 
 function association_ventes_compte_modifier($id_compte, $date, $montant, $justification, $journal, $id_vente, $id_auteur, $imputation) {
+	if (!association_ventes_comptabilite_disponible()) {
+		return true;
+	}
 	include_spip('inc/association_compta_ecritures');
 	return association_compta_ecriture_modifier($id_compte, array(
 		'date' => $date, 'recette' => $montant, 'depense' => 0,

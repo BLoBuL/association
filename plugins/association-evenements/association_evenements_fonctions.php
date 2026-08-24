@@ -4,6 +4,67 @@ require_once __DIR__ . '/inc/association_evenements_responsables.php';
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+function association_evenements_integration_active($prefixe) {
+	if (function_exists('association_plugin_actif')) {
+		return association_plugin_actif($prefixe);
+	}
+	if (function_exists('test_plugin_actif')) {
+		$scenario = $GLOBALS['association_test_scenario']['plugins'] ?? null;
+		if (is_array($scenario) && array_key_exists($prefixe, $scenario)) {
+			return test_plugin_actif($prefixe);
+		}
+	}
+
+	return true;
+}
+
+function association_evenements_profil_participant(array $participant) {
+	if (function_exists('association_profil_participant')) {
+		return association_profil_participant($participant);
+	}
+
+	$id_auteur = (int) ($participant['id_auteur'] ?? 0);
+	$auteur = $id_auteur ? (sql_fetsel('*', 'spip_auteurs', 'id_auteur=' . $id_auteur) ?: array()) : array();
+	$est_membre = ($auteur['statut_interne'] ?? '') === 'ok';
+
+	return $participant + array(
+		'profil' => $est_membre ? 'membre' : 'public',
+		'est_membre' => $est_membre,
+		'famille' => array(),
+	);
+}
+
+function association_evenements_afficher_montant($montant, $devise = 'EUR', $type = 'symbol') {
+	$devise = strtoupper(trim((string) $devise)) ?: 'EUR';
+	if (association_evenements_integration_active('association_paiements') && function_exists('bank_affiche_montant')) {
+		return bank_affiche_montant((float) $montant, $devise, $type);
+	}
+	if (class_exists('NumberFormatter')) {
+		$format = new NumberFormatter($GLOBALS['spip_lang'] ?? 'fr_FR', NumberFormatter::CURRENCY);
+		$valeur = $format->formatCurrency((float) $montant, $devise);
+		if ($valeur !== false) {
+			return $valeur;
+		}
+	}
+
+	return number_format((float) $montant, 2, ',', ' ') . ' ' . $devise;
+}
+
+function association_evenements_paiements_configs($contexte = 'acte') {
+	if (!association_evenements_integration_active('association_paiements') || !function_exists('bank_lister_configs')) {
+		return array();
+	}
+	return bank_lister_configs($contexte);
+}
+
+function association_evenements_paiement_id($config) {
+	return function_exists('bank_config_id') ? bank_config_id($config) : '';
+}
+
+function association_evenements_paiement_titre($prestation) {
+	return function_exists('bank_titre_type_paiement') ? bank_titre_type_paiement($prestation) : '';
+}
+
 // Ces surcharges du formulaire Agenda sont chargées depuis les squelettes,
 // avant que le fichier CVT d'origine ait nécessairement inclus ses API.
 if (function_exists('include_spip')) {

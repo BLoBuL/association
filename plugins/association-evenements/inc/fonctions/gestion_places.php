@@ -14,14 +14,17 @@ function gestions_places($id_evenement){
     $result = array();
     $query_evenement = sql_fetsel("*", "spip_evenements", "id_evenement=" . intval($id_evenement));
 
-    include_spip('inc/association_paiements_transactions');
+    $paiements_actifs = association_evenements_integration_active('association_paiements');
+    if ($paiements_actifs) {
+		include_spip('inc/association_evenements_paiements');
+	}
     $activites_paiements = sql_allfetsel(
         'id_transaction,statut,nombre_inscrits',
         'spip_asso_activites',
         'id_evenement=' . intval($id_evenement) . ' AND id_transaction>0'
     );
     $ids_transactions = array_column($activites_paiements ?: array(), 'id_transaction');
-    $transactions = association_paiements_transactions_lire($ids_transactions);
+    $transactions = $paiements_actifs ? association_evenements_transactions_lire($ids_transactions) : array();
 
     /*SUIVI DES PAIEMENT*/
     
@@ -34,10 +37,10 @@ function gestions_places($id_evenement){
                 if (($activite_paiement['statut'] ?? '') !== 'ok') {
                     continue;
                 }
-                if ($affichage_dans_activites['validation_sur_paiement'] === 'oui' && ($transaction['statut'] ?? '') !== 'ok') {
+                if ($paiements_actifs && $affichage_dans_activites['validation_sur_paiement'] === 'oui' && ($transaction['statut'] ?? '') !== 'ok') {
                     continue;
                 }
-                if ($transaction) {
+				if ($transaction || !$paiements_actifs) {
                     $result['nombre_total_inscrits'] += (int) $activite_paiement['nombre_inscrits'];
                 }
             }

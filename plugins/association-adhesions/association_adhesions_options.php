@@ -4,6 +4,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function association_adhesions_module_actif($prefixe) {
+	return function_exists('association_plugin_actif') ? association_plugin_actif($prefixe) : true;
+}
+
 include_spip('inc/fonctions/priviliges_adherent');
 include_spip('inc/fonctions/association_job_notifier_echeance');
 include_spip('inc/fonctions/facteur_envoyer_recu_adhesion');

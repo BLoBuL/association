@@ -26,8 +26,8 @@ function formulaires_editer_asso_dons_charger_dist($id_don='') {
 		$journal = '';
 	} else { /* sinon on recupere l'id_compte correspondant et le journal dans la table des comptes */
 		$comptes = association_dons_compte_lire($id_don);
-		$id_compte = $comptes['id_compte'];
-		$journal = $comptes['journal'];
+		$id_compte = $comptes['id_compte'] ?? '';
+		$journal = $comptes['journal'] ?? '';
 	}
 
 	/* ajout du journal qui ne se trouve pas dans la table asso_dons mais asso_comptes et n'est donc pas charge par editer_objet_charger */
@@ -50,9 +50,15 @@ function formulaires_editer_asso_dons_charger_dist($id_don='') {
 	}
 
 	// on ajoute les metas de classe_banques et destinations
-	$contexte['classe_banques'] = $GLOBALS['association_metas']['classe_banques'];
+	$contexte['classe_banques'] = association_plugin_actif('association_compta')
+		? ($GLOBALS['association_metas']['classe_banques'] ?? '')
+		: '';
 
-	update_destination_contexte_from_compte($contexte, $id_compte, 'dons');
+	if (function_exists('update_destination_contexte_from_compte')) {
+		update_destination_contexte_from_compte($contexte, $id_compte, 'dons');
+	} else {
+		$contexte['destinations_on'] = false;
+	}
 	
 	return $contexte;
 }
@@ -76,7 +82,9 @@ function formulaires_editer_asso_dons_verifier_dist($id_don) {
 		
 	}
 
-	verifier_destination_comptable($argent, 'argent', $erreurs);
+	if (function_exists('verifier_destination_comptable')) {
+		verifier_destination_comptable($argent, 'argent', $erreurs);
+	}
 
 	/* verifier la date */
 	if ($erreur_date = association_verifier_date(_request('date_don'))) {

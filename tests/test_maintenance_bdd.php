@@ -42,7 +42,9 @@ function pipeline($nom, $flux) {
 function association_log($journal, $message, $niveau = 'info') {
     $GLOBALS['association_test_logs'][] = array($journal, $message, $niveau);
 }
-function test_plugin_actif($plugin) { return false; }
+function test_plugin_actif($plugin) {
+	return !empty($GLOBALS['association_test_plugins_actifs'][$plugin]);
+}
 function sql_quote($value) { return "'" . str_replace("'", "\\'", (string)$value) . "'"; }
 function sql_in($field, $values) {
     $values = array_values($values);
@@ -330,6 +332,7 @@ function association_test_reset_tables() {
 include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_transactions.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_maintenance.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_integrations.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_maintenance_cotisations.php';
 include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_communication_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_maintenance.php';
@@ -377,6 +380,7 @@ $GLOBALS['association_test_tables']['spip_asso_comptes'][2] = array('id_compte' 
 $GLOBALS['association_test_tables']['spip_asso_cotisations'][2] = array('id_cotisation' => 2, 'id_compte' => 2, 'id_auteur' => 999, 'montant' => 0, 'id_transaction' => 303, 'statut' => 'attente');
 $GLOBALS['association_test_tables']['spip_transactions'][303] = array('id_transaction' => 303, 'id_auteur' => 999, 'statut' => 'attente');
 $GLOBALS['association_test_fail_delete_tables'] = array('spip_transactions');
+$GLOBALS['association_test_plugins_actifs']['association_paiements'] = true;
 $resultat = association_adhesions_supprimer_cotisations_orphelines(false, 1000);
 association_test_assert(($resultat['erreur'] ?? '') === 'suppression_transactions_cotisations_orphelines_echouee', 'une erreur explicite remonte si la suppression des transactions liées échoue');
 association_test_assert(isset($GLOBALS['association_test_tables']['spip_asso_cotisations'][2]), 'un échec transaction restaure la cotisation métier');

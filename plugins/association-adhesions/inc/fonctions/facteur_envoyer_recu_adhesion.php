@@ -24,8 +24,8 @@ function facteur_envoyer_recu_adhesion($id_auteur, $id_transaction, $type_recu, 
     $id_auteur = intval($id_auteur);
 
     // Récupération des données de la transaction
-    include_spip('inc/association_paiements_transactions');
-    $query_transaction = association_paiements_transaction_lire($id_transaction);
+	include_spip('inc/association_adhesions_integrations');
+	$query_transaction = association_adhesions_transaction_lire($id_transaction);
     if (empty($query_transaction)) {
         association_log('notifications', "Transaction introuvable : $id_transaction", 'critique');
         return array('success' => false, 'message' => "Transaction introuvable : $id_transaction");

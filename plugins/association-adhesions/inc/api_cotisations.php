@@ -219,8 +219,9 @@ function api_traiter_cotisation($params) {
         if ($montant_choisi < 0 || $montant_don < 0) {
             return ['statut' => 'erreur', 'message' => 'Montant de cotisation invalide'];
         }
-        $montant_final = $montant_choisi + $montant_don;
-        $cotisation_gratuite = ($montant_final === 0.0);
+		$montant_final = $montant_choisi + $montant_don;
+		$cotisation_gratuite = ($montant_final === 0.0);
+		$paiements_actifs = association_adhesions_module_actif('association_paiements');
 
         // Calcul du montant HT si une taxe est configurée
         $pourcentage_taxe = lire_config('/association_metas/meta_cfg_taxe') ?: false;
@@ -259,7 +260,7 @@ function api_traiter_cotisation($params) {
                 }
             }
             $id_transaction = 0;
-            if (!$cotisation_gratuite) {
+			if (!$cotisation_gratuite && $paiements_actifs) {
                 // Une transaction Bank n’existe que lorsqu’un montant doit être encaissé.
                 $inserer_transaction = charger_fonction('inserer_transaction', 'bank');
                 $id_transaction = $inserer_transaction($montant_final, [
@@ -279,10 +280,13 @@ function api_traiter_cotisation($params) {
                     }
                     return ['statut' => 'erreur', 'message' => 'Erreur création transaction (détails: ' . substr(var_export($id_transaction, true), 0, 200) . ')'];
                 }
-                if (!is_numeric($id_transaction) || intval($id_transaction) <= 0) {
-                    return ['statut' => 'erreur', 'message' => 'Erreur création transaction'];
-                }
-            }
+				if (!is_numeric($id_transaction) || intval($id_transaction) <= 0) {
+					return ['statut' => 'erreur', 'message' => 'Erreur création transaction'];
+				}
+			} elseif (!$cotisation_gratuite && !$paiements_actifs && $statut_cotisation === 'attente') {
+				// Sans Paiements, une cotisation payante suit le circuit manuel.
+				$statut_cotisation = 'demande';
+			}
 
             // Création de la cotisation dans les comptes
             include_spip('inc/association_adhesions_comptabilite');
@@ -329,16 +333,16 @@ function api_traiter_cotisation($params) {
             // Récupération de l'ID de transaction associée à ce compte
             $id_transaction = intval($query_cotisation['id_transaction'] ?? 0);
 
-            if (!$id_transaction && !$cotisation_gratuite) {
+			if (!$id_transaction && !$cotisation_gratuite && $paiements_actifs) {
                 return ['statut' => 'erreur', 'message' => 'Transaction inexistante'];
             }
 
             // Une cotisation gratuite ne fabrique jamais de transaction Bank.
             // Si une transaction existe déjà, elle reste synchronisée (y compris
             // lors d'une correction du montant à zéro).
-            if ($id_transaction) {
-                include_spip('inc/association_paiements_transactions');
-                association_paiements_transaction_modifier($id_transaction, [
+			if ($id_transaction && $paiements_actifs) {
+				include_spip('inc/association_adhesions_integrations');
+				association_adhesions_transaction_modifier($id_transaction, [
                     'montant'     => $montant_final,
                     'montant_ht'  => $montant_ht,
                     'devise'      => $devise,
@@ -378,9 +382,11 @@ function api_traiter_cotisation($params) {
         // Gestion de la notification et de l'activation des privilèges
         changer_statut_cotisation($id_compte, $origine, $notifier);
 
-        return [
-            'statut_cotisation' => $statut_cotisation,
-            'id_compte' => $id_compte,
+		$cotisation_finale = association_cotisation_lire_par_compte((int) $id_compte);
+		return [
+			'statut_cotisation' => $statut_cotisation,
+			'id_compte' => $id_compte,
+			'id_cotisation' => (int) ($cotisation_finale['id_cotisation'] ?? 0),
             'id_transaction' => $id_transaction,
             'id_auteur' => $id_auteur,
             'montant' => $montant_final,

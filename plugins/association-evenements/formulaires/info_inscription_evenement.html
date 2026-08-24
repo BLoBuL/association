@@ -81,7 +81,7 @@
                           [(#SET{montant,Gratuit})]
                           ]                          
                           [(#MONTANT|>={1}|oui) 
-                          [(#SET{montant,#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''}})]
+                          [(#SET{montant,#MONTANT|association_evenements_afficher_montant{#DEVISE,symbol}|replace{',00',''}})]
                           ] 
                           <BOUCLE_categorie_activite(ASSO_CATEGORIES_ACTIVITES){id_categorie}{statut=ok}{si #GET{montant}}>
                              [<li><span class="prix_categorie"><b>[(#VALEUR) :] (#GET{montant})</b></span>[<span class="commentaires"><i> - (#COMMENTAIRES)</i></span>]</li>]

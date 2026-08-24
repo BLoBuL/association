@@ -28,7 +28,7 @@
         [(#SET{fonction_cle, #CLE})]
         [(#SET{fonction_data, #GET{roles}|table_valeur{#GET{nom_role}}|table_valeur{valeurs}|table_valeur{#GET{fonction_cle}}})]
         [(#SET{auteurs_ids, #GET{fonction_data}|table_valeur{id_auteurs}})]
-        <BOUCLE_auteurs(AUTEURS){id_auteur IN #GET{auteurs_ids}}{par nom_famille}{doublons #GET{nom_role}}{tout}{doublons autres_auteurs}>
+        <BOUCLE_auteurs(AUTEURS){id_auteur IN #GET{auteurs_ids}}{par nom}{doublons #GET{nom_role}}{tout}{doublons autres_auteurs}>
           <INCLURE{fond=prive/squelettes/contenu/inc-benevoles/item_benevole, id_auteur,role=#GET{nom_role}, fonction=#GET{fonction_data}|table_valeur{libelle}, env} />
         </BOUCLE_auteurs>
       </BOUCLE_fonctions>
@@ -54,8 +54,7 @@
   </thead>
   <tbody>
     <BOUCLE_autres_auteurs(AUTEURS){tout}
-          {statut_interne=ok}
-          {par nom_famille}
+          {par nom}
           {statut IN 0minirezo,1comite}
           {id_auteur!=1}
             {doublons autres_auteurs}>

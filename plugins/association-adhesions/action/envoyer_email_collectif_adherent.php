@@ -17,7 +17,8 @@ function action_envoyer_email_collectif_adherent() {
 	include_spip('inc/email_collectif');
 	$destinataires = association_email_collectif_resoudre_destinataires($ids_auteurs, array());
 	$date = date('Y-m-d H:i:s');
-	association_communication_mailshot_creer(
+	include_spip('inc/association_adhesions_integrations');
+	association_adhesions_mailshot_creer(
 		(string) _request('sujet'),
 		(string) _request('html'),
 		$destinataires,

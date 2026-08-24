@@ -68,8 +68,8 @@ class AssociationInstallationVerifier extends Command
 
 		$output->writeln('<info>Installation Association valide.</info>');
 		$output->writeln(sprintf(
-			'%d plugins actifs, %d tables présentes, %d objets SQL SPIP et %d schémas à jour.',
-			count($plugins), count($tablesAttendues), count($objetsAttendus), count($schemas)
+			'%d plugins contributeurs actifs (%d obligatoire), %d tables présentes, %d objets SQL SPIP et %d schémas à jour.',
+			count($inventairesFournis), count($plugins), count($tablesAttendues), count($objetsAttendus), count($schemas)
 		));
 		return self::SUCCESS;
 	}

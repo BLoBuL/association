@@ -27,8 +27,8 @@ function association_evenements_stats_compta_exercice($exercice) {
 		'date_debut' => $bornes['debut'],
 		'date_fin' => $bornes['prochain_debut'],
 	));
-	include_spip('inc/association_paiements_transactions');
-	$transactions = association_paiements_transactions_lire(array_column($ecritures, 'id_transaction'));
+	include_spip('inc/association_evenements_paiements');
+	$transactions = association_evenements_transactions_lire(array_column($ecritures, 'id_transaction'));
 	foreach ($ecritures as $ecriture) {
 		$recette = (float) ($ecriture['recette'] ?? 0);
 		$depense = (float) ($ecriture['depense'] ?? 0);

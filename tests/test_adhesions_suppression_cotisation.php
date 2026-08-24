@@ -8,10 +8,10 @@ $erreurs = array();
 
 foreach (array(
 	"(int) _request('id_compte')",
-	"autoriser('modifier', 'asso_compte', \$id_compte)",
+	'association_adhesions_autoriser_cotisation_reference($id_compte)',
 	"sql_delete('spip_asso_cotisations'",
 	"sql_delete('spip_documents_liens'",
-	'association_compta_ecriture_supprimer($id_compte)',
+	'association_compta_ecriture_supprimer((int) $cotisation[\'id_compte\'])',
 ) as $attendu) {
 	if (strpos($formulaire, $attendu) === false) {
 		$erreurs[] = 'Suppression incomplète ou non protégée : ' . $attendu;
@@ -29,8 +29,8 @@ if (strpos($formulaire, 'if ($supprimer_transaction)') !== false) {
 	$erreurs[] = 'L’ancien contrôle de variable indéfinie est encore présent.';
 }
 if (strpos($formulaire, 'spip_transactions') !== false
-	|| strpos($formulaire, 'association_paiements_transaction_supprimer_non_encaissee(') === false
-	|| strpos($formulaire, 'association_paiements_transaction_modifier(') === false) {
+	|| strpos($formulaire, 'association_adhesions_transaction_supprimer_non_encaissee(') === false
+	|| strpos($formulaire, 'association_adhesions_transaction_modifier(') === false) {
 	$erreurs[] = 'La suppression de cotisation contourne encore la facade Paiements.';
 }
 

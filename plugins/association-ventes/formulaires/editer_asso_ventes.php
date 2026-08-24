@@ -26,8 +26,8 @@ function formulaires_editer_asso_ventes_charger_dist($id_vente='') {
 		$journal = '';
 	} else { /* sinon on recupere l'id_compte correspondant et le journal dans la table des comptes */
 		$comptes = association_ventes_compte_lire($id_vente, $GLOBALS['association_metas']['pc_ventes']);
-		$id_compte = $comptes['id_compte'];
-		$journal = $comptes['journal'];
+		$id_compte = $comptes['id_compte'] ?? '';
+		$journal = $comptes['journal'] ?? '';
 	}
 
 	/* ajout du journal qui ne se trouve pas dans la table asso_dons mais asso_comptes et n'est donc pas charge par editer_objet_charger */
@@ -51,9 +51,15 @@ function formulaires_editer_asso_ventes_charger_dist($id_vente='') {
 
 
 	// on ajoute les metas de classe_banques et destinations
-	$contexte['classe_banques'] = $GLOBALS['association_metas']['classe_banques'];
+	$contexte['classe_banques'] = association_plugin_actif('association_compta')
+		? ($GLOBALS['association_metas']['classe_banques'] ?? '')
+		: '';
 
-	update_destination_contexte_from_compte($contexte, $id_compte, 'ventes');
+	if (function_exists('update_destination_contexte_from_compte')) {
+		update_destination_contexte_from_compte($contexte, $id_compte, 'ventes');
+	} else {
+		$contexte['destinations_on'] = false;
+	}
 	
 	return $contexte;
 }
@@ -72,7 +78,9 @@ function formulaires_editer_asso_ventes_verifier_dist($id_vente) {
 	$recette = $quantite * $prix_vente;
 	$montant_destination = $recette
 		+ ($GLOBALS['association_metas']['pc_ventes'] == $GLOBALS['association_metas']['pc_frais_envoi'] ? $frais_envoi : 0);
-	verifier_destination_comptable($montant_destination, 'prix_vente', $erreurs);
+	if (function_exists('verifier_destination_comptable')) {
+		verifier_destination_comptable($montant_destination, 'prix_vente', $erreurs);
+	}
 
 	/* verifier si on a un numero d'adherent qu'il existe dans la base */
 	$id_acheteur = _request('id_acheteur');

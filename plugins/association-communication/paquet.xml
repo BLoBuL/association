@@ -2,10 +2,13 @@
 	<nom>Association - Communication</nom>
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
+	<necessite nom="association" compatibilite="[4.0.0;4.*]" />
 	<necessite nom="mailsubscribers" compatibilite="[3.7.0;[" />
 	<necessite nom="notifications" compatibilite="[3.7.0;[" />
 	<necessite nom="mailshot" compatibilite="[2.0.0;[" />
 	<pipeline nom="notifications_destinataires" inclure="association_communication_pipelines.php" />
+	<pipeline nom="association_capacites" inclure="association_communication_pipelines.php" />
+	<pipeline nom="association_notifier_metier" inclure="association_communication_pipelines.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_notifications_metiers" action="" />
 	<pipeline nom="association_notification_exemple" action="" />

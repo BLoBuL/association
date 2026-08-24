@@ -4,7 +4,18 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function association_evenements_comptabilite_disponible() {
+	return association_evenements_integration_active('association_compta');
+}
+
+function association_evenements_paiements_disponibles() {
+	return association_evenements_integration_active('association_paiements');
+}
+
 function association_evenements_comptes_supprimer_inscription($id_activite) {
+	if (!association_evenements_comptabilite_disponible()) {
+		return 0;
+	}
 	$id_activite = (int) $id_activite;
 	$activite = $id_activite
 		? sql_fetsel('id_evenement,id_transaction', 'spip_asso_activites', 'id_activite=' . $id_activite)
@@ -32,6 +43,9 @@ function association_evenements_comptes_supprimer_inscription($id_activite) {
 }
 
 function association_evenements_compte_valider_transaction($id_transaction) {
+	if (!association_evenements_comptabilite_disponible()) {
+		return 0;
+	}
 	$id_transaction = (int) $id_transaction;
 	$activite = sql_fetsel('id_evenement,date', 'spip_asso_activites', 'id_transaction=' . $id_transaction);
 	include_spip('inc/association_compta_ecritures');
@@ -60,6 +74,9 @@ function association_evenements_compte_valider_transaction($id_transaction) {
 }
 
 function association_evenements_compte_remboursement_creer($id_transaction, $id_activite = 0, $contexte_evenement = array()) {
+	if (!association_evenements_comptabilite_disponible() || !association_evenements_paiements_disponibles()) {
+		return 0;
+	}
 	$id_transaction = (int) $id_transaction;
 	$id_activite = (int) $id_activite;
 	if ($id_transaction <= 0) {
@@ -71,8 +88,8 @@ function association_evenements_compte_remboursement_creer($id_transaction, $id_
 	$activite = $id_activite
 		? sql_fetsel('*', 'spip_asso_activites', 'id_activite=' . $id_activite)
 		: array();
-	include_spip('inc/association_paiements_transactions');
-	$transaction = association_paiements_transaction_lire($id_transaction);
+	include_spip('inc/association_evenements_paiements');
+	$transaction = association_evenements_transaction_lire($id_transaction);
 	if (!$activite || !$transaction) {
 		association_log('comptabilite', 'Remboursement evenement ignore: inscription ou transaction introuvable', 'erreur');
 		return 0;
@@ -107,6 +124,9 @@ function association_evenements_compte_remboursement_creer($id_transaction, $id_
 }
 
 function association_evenements_compte_inscription_creer($id_activite, $contexte_evenement = array()) {
+	if (!association_evenements_comptabilite_disponible() || !association_evenements_paiements_disponibles()) {
+		return 0;
+	}
 	$id_activite = (int) $id_activite;
 	$activite = $id_activite ? sql_fetsel('*', 'spip_asso_activites', 'id_activite=' . $id_activite) : array();
 	if (!$activite) {
@@ -117,8 +137,8 @@ function association_evenements_compte_inscription_creer($id_activite, $contexte
 	if (array_key_exists('payant', (array) $evenement) && (int) $evenement['payant'] === 0) {
 		return 0;
 	}
-	include_spip('inc/association_paiements_transactions');
-	$transaction = association_paiements_transaction_lire((int) $activite['id_transaction']);
+	include_spip('inc/association_evenements_paiements');
+	$transaction = association_evenements_transaction_lire((int) $activite['id_transaction']);
 	if (!$transaction) {
 		association_log('comptabilite', 'Compte evenement ignore: transaction introuvable id_activite=' . $id_activite, 'erreur');
 		return 0;
@@ -141,11 +161,14 @@ function association_evenements_compte_inscription_creer($id_activite, $contexte
 }
 
 function association_evenements_compte_inscription_actualiser($id_activite, $id_transaction) {
+	if (!association_evenements_comptabilite_disponible() || !association_evenements_paiements_disponibles()) {
+		return 0;
+	}
 	$id_activite = (int) $id_activite;
 	$id_transaction = (int) $id_transaction;
 	$activite = $id_activite ? sql_fetsel('*', 'spip_asso_activites', 'id_activite=' . $id_activite) : array();
-	include_spip('inc/association_paiements_transactions');
-	$transaction = $id_transaction ? association_paiements_transaction_lire($id_transaction) : array();
+	include_spip('inc/association_evenements_paiements');
+	$transaction = $id_transaction ? association_evenements_transaction_lire($id_transaction) : array();
 	if (!$activite || !$transaction) {
 		return 0;
 	}

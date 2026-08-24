@@ -18,6 +18,9 @@ function association_prets_compte_options() {
 }
 
 function association_prets_compte_lire($id_pret) {
+	if (!association_plugin_actif('association_compta')) {
+		return array();
+	}
 	include_spip('inc/association_compta_ecritures');
 	$ecritures = association_compta_ecritures_objet_lister('pret', $id_pret, association_prets_compte_options() + array(
 		'champs' => 'id_compte,journal,recette,id_auteur,id_objet,objet',
@@ -26,6 +29,9 @@ function association_prets_compte_lire($id_pret) {
 }
 
 function association_prets_compte_enregistrer($id_pret, array $donnees) {
+	if (!association_plugin_actif('association_compta')) {
+		return true;
+	}
 	$id_pret = (int) $id_pret;
 	$montant = (float) ($donnees['recette'] ?? 0);
 	$existant = association_prets_compte_lire($id_pret);
@@ -41,6 +47,9 @@ function association_prets_compte_enregistrer($id_pret, array $donnees) {
 }
 
 function association_prets_compte_supprimer($id_pret) {
+	if (!association_plugin_actif('association_compta')) {
+		return true;
+	}
 	include_spip('inc/association_compta_ecritures');
 	return association_compta_ecritures_objet_supprimer('pret', $id_pret, association_prets_compte_options());
 }

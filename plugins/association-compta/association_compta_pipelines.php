@@ -3,6 +3,38 @@
 if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
+
+function association_compta_association_capacites($capacites) {
+	$capacites['comptabilite'] = array('plugin' => 'association_compta');
+	$capacites['ecritures_comptables'] = array('plugin' => 'association_compta');
+
+	return $capacites;
+}
+
+function association_compta_association_comptabiliser_operation($operation) {
+	include_spip('inc/association_compta_ecritures');
+	$action = (string) ($operation['action'] ?? 'synchroniser');
+	$id_compte = (int) ($operation['id_compte'] ?? 0);
+	$donnees = (array) ($operation['donnees'] ?? array());
+
+	if ($action === 'supprimer') {
+		$operation['comptabilisee'] = $id_compte > 0
+			? association_compta_ecriture_supprimer($id_compte)
+			: true;
+		$operation['id_compte'] = 0;
+		return $operation;
+	}
+
+	if ($id_compte > 0) {
+		$operation['comptabilisee'] = association_compta_ecriture_modifier($id_compte, $donnees);
+	} else {
+		$id_compte = (int) association_compta_ecriture_creer($donnees);
+		$operation['id_compte'] = $id_compte;
+		$operation['comptabilisee'] = $id_compte > 0;
+	}
+
+	return $operation;
+}
 function association_compta_association_paiements_reglement_traiter($flux) {
 	if (!empty($flux['data']['traite'])) {
 		return $flux;

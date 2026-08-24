@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * Contrats d'intégration facultative entre les plugins Association.
+ *
+ * @plugin Association
+ * @licence GPL-3.0-or-later
+ */
+
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
+
+/**
+ * Indique si un plugin est actif sans créer de dépendance vers son code.
+ */
+function association_plugin_actif(string $prefixe): bool {
+	if (!function_exists('test_plugin_actif')) {
+		include_spip('inc/plugin');
+	}
+
+	return function_exists('test_plugin_actif') && test_plugin_actif($prefixe);
+}
+
+/**
+ * Retourne les capacités publiées par les modules actifs.
+ *
+ * Une capacité est indexée par un identifiant stable et contient au minimum
+ * le préfixe du plugin fournisseur.
+ */
+function association_capacites_lister(): array {
+	$capacites = pipeline('association_capacites', array());
+
+	return is_array($capacites) ? $capacites : array();
+}
+
+function association_capacite_disponible(string $capacite): bool {
+	$capacites = association_capacites_lister();
+
+	return !empty($capacites[$capacite]);
+}
+
+/**
+ * Enrichit un participant. Sans Adhésions, le profil reste universel.
+ */
+function association_profil_participant(array $participant): array {
+	$participant += array(
+		'id_auteur' => 0,
+		'profil' => 'public',
+		'est_membre' => false,
+		'famille' => array(),
+		'tarifs' => array('indifferent', 'non_adherent'),
+	);
+	$resultat = pipeline('association_profil_participant', $participant);
+
+	return is_array($resultat) ? $resultat : $participant;
+}
+
+/**
+ * Demande facultativement la comptabilisation d'une opération métier.
+ *
+ * L'objet métier est toujours enregistré avant cet appel. En l'absence de
+ * Comptabilité, le résultat est valide avec id_compte=0.
+ */
+function association_comptabiliser_operation(array $operation): array {
+	$operation += array(
+		'action' => 'synchroniser',
+		'objet' => '',
+		'id_objet' => 0,
+		'id_compte' => 0,
+		'comptabilisee' => false,
+		'erreur' => '',
+	);
+	$resultat = pipeline('association_comptabiliser_operation', $operation);
+
+	return is_array($resultat) ? $resultat : $operation;
+}
+
+/**
+ * Publie une notification métier sans imposer Communication.
+ */
+function association_notifier_metier(array $notification): array {
+	$notification += array('envoyee' => false, 'erreur' => '');
+	$resultat = pipeline('association_notifier_metier', $notification);
+
+	return is_array($resultat) ? $resultat : $notification;
+}

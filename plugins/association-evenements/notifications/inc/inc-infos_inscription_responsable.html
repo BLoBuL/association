@@ -23,10 +23,10 @@
           </BOUCLE_accompagnants_active>
             <BOUCLE_evenement_payant(CONDITION){si  #GET{evenement_payant}|=={1}}>
                    <BOUCLE_transaction_paye(TRANSACTIONS){id_transaction}{statut = ok}>                       
-                        [<li><b><:notifications:montant_recu:></b> (#MONTANT_REGLE|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})</li>]
+                        [<li><b><:notifications:montant_recu:></b> (#MONTANT_REGLE|association_evenements_afficher_montant{#DEVISE,symbol}|replace{',00',''})</li>]
                    </BOUCLE_transaction_paye>
                     <BOUCLE_transaction_a_payer(TRANSACTIONS){id_transaction}{!statut = ok}>
-                        [<li><b><:notifications:montant_adherent_a_regler:></b> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})</li>]
+                        [<li><b><:notifications:montant_adherent_a_regler:></b> (#MONTANT|association_evenements_afficher_montant{#DEVISE,symbol}|replace{',00',''})</li>]
                             <B_mode_paiement_participation>
                             <li><b><:notifications:mode_paiement_possible:></b><BOUCLE_mode_paiement_participation(DATA){source tableau, #CONFIG{association_metas/mode_paiement_participation}|unserialize}{', '}>[
                                                     (#VALEUR|=={simu}|oui)<:bank:label_presta_simulation:>][

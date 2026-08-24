@@ -8,7 +8,7 @@
 		[<p><strong><:notifications:noms_accompagnants:></strong> (#NOM_PARTICIPANTS)</p>]
 	]
 	<BOUCLE_transaction(TRANSACTIONS){id_transaction}{0,1}>
-	[<p><strong><:notifications:montant_recu:></strong> (#MONTANT_REGLE|sinon{#MONTANT}|bank_affiche_montant{#DEVISE,symbol})</p>]
+	[<p><strong><:notifications:montant_recu:></strong> (#MONTANT_REGLE|sinon{#MONTANT}|association_evenements_afficher_montant{#DEVISE,symbol})</p>]
 	</BOUCLE_transaction>
 </div>
 </BOUCLE_activite>

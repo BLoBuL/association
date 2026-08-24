@@ -4,15 +4,27 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+if (!function_exists('association_adhesions_module_actif')) {
+	function association_adhesions_module_actif($prefixe) {
+		return function_exists('association_plugin_actif') ? association_plugin_actif($prefixe) : true;
+	}
+}
+
 /**
  * Retourne une cotisation métier avec son écriture comptable optionnelle.
  */
 function association_cotisation_lire_par_compte($id_compte) {
 	$id_compte = (int) $id_compte;
 	$cotisation = sql_fetsel('*', 'spip_asso_cotisations', 'id_compte=' . $id_compte);
+	if (!$cotisation) {
+		$cotisation = sql_fetsel('*', 'spip_asso_cotisations', 'id_cotisation=' . $id_compte);
+	}
 	if (!$cotisation) return array();
-	include_spip('inc/association_compta_ecritures');
-	$compte = association_compta_ecriture_lire($id_compte);
+	$compte = array();
+	if (!empty($cotisation['id_compte']) && association_adhesions_module_actif('association_compta')) {
+		include_spip('inc/association_compta_ecritures');
+		$compte = association_compta_ecriture_lire((int) $cotisation['id_compte']);
+	}
 	return array_merge((array) $compte, $cotisation, array(
 		'reinscription' => $cotisation['inscription'],
 		'statut_cotisation' => $cotisation['statut'],
@@ -92,6 +104,9 @@ function association_cotisation_statut_modifier($id_compte, $statut) {
 	$id_cotisation = $id_compte
 		? (int) sql_getfetsel('id_cotisation', 'spip_asso_cotisations', 'id_compte=' . $id_compte)
 		: 0;
+	if (!$id_cotisation && $id_compte) {
+		$id_cotisation = (int) sql_getfetsel('id_cotisation', 'spip_asso_cotisations', 'id_cotisation=' . $id_compte);
+	}
 	if (!$id_cotisation) {
 		return false;
 	}
@@ -101,7 +116,7 @@ function association_cotisation_statut_modifier($id_compte, $statut) {
 
 	// Compatibilité 4.0 : cette colonne sera retirée après validation de tous les
 	// sites historiques. Aucun lecteur métier de la suite ne l'utilise plus.
-	$table_compte = sql_showtable('spip_asso_comptes', true);
+	$table_compte = association_adhesions_module_actif('association_compta') ? sql_showtable('spip_asso_comptes', true) : array();
 	if (!empty($table_compte['field']['statut_cotisation'])) {
 		// Colonne transitoire hors du contrat normalisé de Comptabilité.
 		sql_updateq('spip_asso_comptes', array('statut_cotisation' => $statut), 'id_compte=' . $id_compte);

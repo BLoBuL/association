@@ -4,12 +4,20 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function association_adhesions_autoriser_cotisation_reference($reference) {
+	if (association_adhesions_module_actif('association_compta')) {
+		return autoriser('modifier', 'asso_compte', (int) $reference);
+	}
+
+	return association_est_admin_complet($GLOBALS['visiteur_session'] ?? array());
+}
+
 function formulaires_supprimer_asso_cotisation_charger_dist() {
 	$id_compte = (int) _request('id_compte');
 	include_spip('inc/autoriser');
 	include_spip('inc/cotisations_stockage');
 	$cotisation = $id_compte ? association_cotisation_lire_par_compte($id_compte) : array();
-	$editable = $cotisation && autoriser('modifier', 'asso_compte', $id_compte);
+	$editable = $cotisation && association_adhesions_autoriser_cotisation_reference($id_compte);
 
 	return array(
 		'id_compte' => $id_compte,
@@ -25,7 +33,7 @@ function formulaires_supprimer_asso_cotisation_verifier_dist() {
 	$choix = (string) _request('supprimer_transaction');
 	include_spip('inc/autoriser');
 
-	if (!$id_compte || !autoriser('modifier', 'asso_compte', $id_compte)) {
+	if (!$id_compte || !association_adhesions_autoriser_cotisation_reference($id_compte)) {
 		$erreurs['message_erreur'] = _T('info_interdit');
 		return $erreurs;
 	}
@@ -39,7 +47,7 @@ function formulaires_supprimer_asso_cotisation_traiter_dist() {
 	$id_compte = (int) _request('id_compte');
 	$choix = (string) _request('supprimer_transaction');
 	include_spip('inc/autoriser');
-	if (!$id_compte || !autoriser('modifier', 'asso_compte', $id_compte)) {
+	if (!$id_compte || !association_adhesions_autoriser_cotisation_reference($id_compte)) {
 		return array('message_erreur' => _T('info_interdit'));
 	}
 
@@ -50,13 +58,14 @@ function formulaires_supprimer_asso_cotisation_traiter_dist() {
 	}
 
 	$id_transaction = (int) ($cotisation['id_transaction'] ?? 0);
-	include_spip('inc/association_paiements_transactions');
-	if ($id_transaction && $choix === 'oui') {
-		if (!association_paiements_transaction_supprimer_non_encaissee($id_transaction)) {
+	$paiements_actifs = association_adhesions_module_actif('association_paiements');
+	include_spip('inc/association_adhesions_integrations');
+	if ($id_transaction && $choix === 'oui' && $paiements_actifs) {
+		if (!association_adhesions_transaction_supprimer_non_encaissee($id_transaction)) {
 			return array('message_erreur' => _T('association_adhesions:erreur_transaction_encaissee_protegee'));
 		}
-	} elseif ($id_transaction) {
-		association_paiements_transaction_modifier($id_transaction, array(
+	} elseif ($id_transaction && $paiements_actifs) {
+		association_adhesions_transaction_modifier($id_transaction, array(
 			'statut' => 'abandon',
 			'message' => _T('association_adhesions:transaction_cotisation_supprimee'),
 		));
@@ -73,8 +82,10 @@ function formulaires_supprimer_asso_cotisation_traiter_dist() {
 		sql_delete('spip_documents_liens', "objet='cotisation' AND id_objet=" . $id_cotisation);
 	}
 
-	include_spip('inc/association_compta_ecritures');
-	association_compta_ecriture_supprimer($id_compte);
+	if (!empty($cotisation['id_compte']) && association_adhesions_module_actif('association_compta')) {
+		include_spip('inc/association_compta_ecritures');
+		association_compta_ecriture_supprimer((int) $cotisation['id_compte']);
+	}
 
 	return array(
 		'message_ok' => _T('association_adhesions:cotisation_supprimee'),

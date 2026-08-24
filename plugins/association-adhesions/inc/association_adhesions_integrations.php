@@ -15,6 +15,86 @@ function association_adhesions_integration_active($prefixe) {
 	return function_exists('test_plugin_actif') && test_plugin_actif($prefixe);
 }
 
+function association_adhesions_integration_module_actif($prefixe) {
+	if (function_exists('association_adhesions_module_actif')) {
+		return association_adhesions_module_actif($prefixe);
+	}
+	if (function_exists('association_plugin_actif')) {
+		return association_plugin_actif($prefixe);
+	}
+	if (function_exists('test_plugin_actif')) {
+		return test_plugin_actif($prefixe);
+	}
+
+	// Les tests unitaires historiques chargent les fichiers sans initialiser le
+	// chargeur de plugins SPIP. Dans ce seul contexte, conserver le comportement
+	// de la suite complète et laisser l'appel de façade déjà simulé décider.
+	return true;
+}
+
+function association_adhesions_transaction_lire($id_transaction) {
+	if (!association_adhesions_integration_module_actif('association_paiements')) {
+		return array();
+	}
+	include_spip('inc/association_paiements_transactions');
+
+	return association_paiements_transaction_lire((int) $id_transaction);
+}
+
+function association_adhesions_transactions_lire($ids_transactions) {
+	if (!association_adhesions_integration_module_actif('association_paiements')) {
+		return array();
+	}
+	include_spip('inc/association_paiements_transactions');
+
+	return association_paiements_transactions_lire((array) $ids_transactions);
+}
+
+function association_adhesions_transactions_auteur_lire($id_auteur, $statuts = array()) {
+	if (!association_adhesions_integration_module_actif('association_paiements')) {
+		return array();
+	}
+	include_spip('inc/association_paiements_transactions');
+
+	return association_paiements_transactions_auteur_lire((int) $id_auteur, $statuts);
+}
+
+function association_adhesions_transaction_modifier($id_transaction, array $donnees) {
+	if (!association_adhesions_integration_module_actif('association_paiements')) {
+		return true;
+	}
+	include_spip('inc/association_paiements_transactions');
+
+	return association_paiements_transaction_modifier((int) $id_transaction, $donnees);
+}
+
+function association_adhesions_transaction_supprimer_non_encaissee($id_transaction) {
+	if (!association_adhesions_integration_module_actif('association_paiements')) {
+		return true;
+	}
+	include_spip('inc/association_paiements_transactions');
+
+	return association_paiements_transaction_supprimer_non_encaissee((int) $id_transaction);
+}
+
+function association_adhesions_transactions_supprimer_non_encaissees($ids_transactions, $dry_run = false) {
+	if (!association_adhesions_integration_module_actif('association_paiements')) {
+		return array('supprimes' => 0, 'protegees' => array(), 'ids' => array());
+	}
+	include_spip('inc/association_paiements_transactions');
+
+	return association_paiements_transactions_supprimer_non_encaissees((array) $ids_transactions, $dry_run);
+}
+
+function association_adhesions_mailshot_creer($sujet, $html, array $destinataires, array $options = array()) {
+	if (!association_adhesions_integration_module_actif('association_communication')) {
+		return 0;
+	}
+	include_spip('inc/association_communication_mailshot');
+
+	return association_communication_mailshot_creer($sujet, $html, $destinataires, $options);
+}
+
 /**
  * Retourne les zones d'Acces restreint utilisables dans la configuration.
  */

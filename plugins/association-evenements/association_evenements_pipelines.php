@@ -4,6 +4,13 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function association_evenements_association_capacites($capacites) {
+	$capacites['evenements'] = array('plugin' => 'association_evenements');
+	$capacites['inscriptions_evenements'] = array('plugin' => 'association_evenements');
+
+	return $capacites;
+}
+
 function association_evenements_association_paiements_reglement_traiter($flux) {
 	if (!empty($flux['data']['traite'])) {
 		return $flux;

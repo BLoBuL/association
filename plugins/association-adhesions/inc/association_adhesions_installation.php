@@ -5,6 +5,6 @@ function association_adhesions_association_installation_inventaire($flux) {
 		'plugins' => array('association_adhesions'),
 		'tables' => array('spip_asso_categories_adherents', 'spip_asso_cotisations'),
 		'objets' => array('spip_asso_categories_adherents', 'spip_asso_cotisations'),
-		'schemas' => array('association_adhesions_base_version' => '1.3.0'),
+		'schemas' => array('association_adhesions_base_version' => '1.4.0'),
 	));
 }

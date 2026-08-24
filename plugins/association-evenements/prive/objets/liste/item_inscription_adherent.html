@@ -35,7 +35,7 @@
         <BOUCLE_cotisation_periode(ASSO_COTISATIONS){id_auteur}{id_compte IN #ENV{id_compte}}{0,1}{!par date_creation}>
             <td class="cotisation #STATUT">
                  <BOUCLE_transaction_ok_periode(TRANSACTIONS){id_transaction}{statut =ok}>
-                       [<div class="tooltip"><i class="fa fa-check-circle" aria-hidden="true"></i>(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
+                       [<div class="tooltip"><i class="fa fa-check-circle" aria-hidden="true"></i>(#MONTANT|association_evenements_afficher_montant{#DEVISE,symbol}|replace{',00',''})
                             <span class="tooltiptext"><p>
                                 #INSCRIPTION
                                <:association_evenements:activite_entete_transaction:> : N°#ID_TRANSACTION
@@ -44,7 +44,7 @@
                   </BOUCLE_transaction_ok_periode>
                  <BOUCLE_transaction_pas_ok_periode(TRANSACTIONS){id_transaction}{statut IN attente,commande}>
                     [<a href="(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION&transaction_hash=#TRANSACTION_HASH})" title="<:association_evenements:paiement_en_attente|attribut_html:>">
-                       [<div class="tooltip"><i class="fa-regular fa-clock" aria-hidden="true"></i> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
+                       [<div class="tooltip"><i class="fa-regular fa-clock" aria-hidden="true"></i> (#MONTANT|association_evenements_afficher_montant{#DEVISE,symbol}|replace{',00',''})
                             <span class="tooltiptext"><p>
                                 #INSCRIPTION
                                 N°#ID_TRANSACTION

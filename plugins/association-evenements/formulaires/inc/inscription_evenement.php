@@ -3,7 +3,7 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 
 
 include_spip('inc/fonctions/activite_enregistrement_calculator');
-include_spip('inc/association_paiements_transactions');
+include_spip('inc/association_evenements_paiements');
 
 /**
  * Journal de diagnostic des inscriptions, désactivé par défaut.
@@ -60,19 +60,24 @@ function preparer_info_auteur($id_auteur, $id_evenement) {
     $query_auteur = sql_fetsel('*', 'spip_auteurs', 'id_auteur =' . $id_auteur);
     $res['id_auteur'] = ($query_auteur['id_auteur']);
     $res['statut_auteur'] = $query_auteur['statut'];
-    $res['statut_interne_auteur'] = $query_auteur['statut_interne'];
+    $profil = association_evenements_profil_participant(array('id_auteur' => (int) $id_auteur));
+    $res['statut_interne_auteur'] = !empty($profil['est_membre']) ? 'ok' : '';
     $res['radio_type_adherent'] = isset($query_auteur['radio_type_adherent']) ? $query_auteur['radio_type_adherent'] : false;
 
     // Vérifie si l'auteur est à jour de sa cotisation à la date de l'événement
-    $date_validite_auteur_connecte = affdate($query_auteur['validite'], 'Y-m-d 23:59:59');
-    if ($date_validite_auteur_connecte >= $affichage_dans_activites['date_fermeture_inscription']) {
+    $date_validite_auteur_connecte = !empty($query_auteur['validite'])
+		? affdate($query_auteur['validite'], 'Y-m-d 23:59:59')
+		: '';
+    if (!empty($profil['est_membre']) && $date_validite_auteur_connecte >= $affichage_dans_activites['date_fermeture_inscription']) {
         $res['statut_interne_auteur_connecte'] = 'ok';
     } else {
         $res['statut_interne_auteur_connecte'] = false;
     }
 
     // Génère les informations de la famille de l'auteur
-    $res['data_famille'] = generer_famille_adherent($res['id_auteur']);
+    $res['data_famille'] = association_evenements_integration_active('association_adhesions')
+		? generer_famille_adherent($res['id_auteur'])
+		: array();
 
     // Détermine si la saisie des informations de la famille est active
     if ($config_accompagnants == 'membre_famille') {
@@ -199,7 +204,9 @@ function generer_array_categories_participation($tableau_categories, $format = '
 
      // Récupère les données de l'auteur et de la transaction associée
      $query_auteur = sql_fetsel('id_auteur,statut_interne','spip_auteurs','id_auteur ='. $query_activite['id_auteur']);
-	 $query_transaction = association_paiements_transaction_lire((int) $query_activite['id_transaction']);
+	 $query_transaction = association_evenements_integration_active('association_paiements')
+		? association_evenements_transaction_lire((int) $query_activite['id_transaction'])
+		: array();
      $affichage_dans_activites = affichage_dans_activites($query_activite['id_evenement']);
      $config_accompagnants = isset($GLOBALS['association_metas']['meta_cfg_event_config_accompagnants']) ? $GLOBALS['association_metas']['meta_cfg_event_config_accompagnants'] : 'tout';
 
@@ -298,7 +305,9 @@ function preparer_chargement_modification_inscription_multi($id_activite, $publi
     }
 
     // Récupère le statut de la transaction liée à l'activité
-	$query_transaction = association_paiements_transaction_lire((int) $query_activite['id_transaction']);
+	$query_transaction = association_evenements_integration_active('association_paiements')
+		? association_evenements_transaction_lire((int) $query_activite['id_transaction'])
+		: array();
 
     // Obtient les paramètres d'affichage pour l'activité
     $affichage_dans_activites = affichage_dans_activites($query_activite['id_evenement']);
@@ -1451,8 +1460,13 @@ function generer_recapitulatif_multi($valeur_post, $id_evenement, $public_or_pri
     // Pour un événement payant, le récapitulatif expose toujours le tarif et
     // le montant recalculés côté serveur.
     if (!empty($affichage['payant'])) {
-        include_spip('inc/bank'); // Inclusion des fonctions bancaires
-        $devise_defaut = bank_devise_defaut(); // Récupération de la devise par défaut
+		$paiements_actifs = association_evenements_integration_active('association_paiements');
+		if ($paiements_actifs) {
+			include_spip('inc/bank');
+		}
+		$devise_defaut = $paiements_actifs
+			? bank_devise_defaut()
+			: array('code' => 'EUR', 'symbole' => '€');
         $calculer_montant_total = analyser_selection_tarifs_evenement(
             $id_evenement,
             $data_form['categorie_result'] ?? array()
@@ -1680,8 +1694,10 @@ function notifier_inscription_activite($id_activite,$id_evenement,$cal_result_st
  */
 function inserer_transaction_activites($montant_total, $id_auteur)
 {
+	if (!association_evenements_integration_active('association_paiements')) {
+		return 0;
+	}
     $pourcentage_taxe = isset($GLOBALS['association_metas']['meta_cfg_taxe_evenement']) ? $GLOBALS['association_metas']['meta_cfg_taxe_evenement'] : false;
-    $inserer_transaction = charger_fonction('inserer_transaction', 'bank');
     if ($pourcentage_taxe) {
         $montant_ht = $montant_total * (1 - $pourcentage_taxe / 100);
     } else {
@@ -1693,7 +1709,8 @@ function inserer_transaction_activites($montant_total, $id_auteur)
         'montant' => $montant_total,
         'force' => true
     );
-    $id_transaction = $inserer_transaction($montant_total, $options);
+    include_spip('inc/association_evenements_paiements');
+    $id_transaction = association_evenements_transaction_creer($montant_total, $options);
 
     return $id_transaction;
 }
@@ -1709,6 +1726,9 @@ function inserer_transaction_activites($montant_total, $id_auteur)
  * @return bool Retourne true après la mise à jour de la transaction.
  */
 function modifier_transaction_activites($montant_total, $id_transaction) {
+	if (!association_evenements_integration_active('association_paiements')) {
+		return true;
+	}
     // Récupère le pourcentage de taxe configuré, s'il existe
     $pourcentage_taxe = isset($GLOBALS['association_metas']['meta_cfg_taxe_evenement']) ? $GLOBALS['association_metas']['meta_cfg_taxe_evenement'] : false;
 
@@ -1725,7 +1745,7 @@ function modifier_transaction_activites($montant_total, $id_transaction) {
     );
 
     // Met à jour la transaction dans la base de données
-	return association_paiements_transaction_modifier($id_transaction, $data);
+	return association_evenements_transaction_modifier($id_transaction, $data);
 }
 
 /**

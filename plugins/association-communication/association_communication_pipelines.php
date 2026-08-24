@@ -8,6 +8,24 @@ function association_communication_association_config_cli_registre($flux) {
 	return $flux;
 }
 
+function association_communication_association_capacites($capacites) {
+	$capacites['communication'] = array('plugin' => 'association_communication');
+	$capacites['notifications_metier'] = array('plugin' => 'association_communication');
+	$capacites['campagnes_email'] = array('plugin' => 'association_communication');
+
+	return $capacites;
+}
+
+function association_communication_association_notifier_metier($notification) {
+	$fonction = $notification['fonction'] ?? '';
+	if ($fonction && is_callable($fonction)) {
+		$arguments = (array) ($notification['arguments'] ?? array());
+		$notification['envoyee'] = (bool) call_user_func_array($fonction, $arguments);
+	}
+
+	return $notification;
+}
+
 function association_communication_association_configuration_saisies($flux) {
 	include_spip('formulaires/inc/configurer_association_communication');
 	$flux['data'][] = array('ordre' => 10, 'saisies' => association_communication_configurer_saisies($flux['args']['config'] ?? ''));

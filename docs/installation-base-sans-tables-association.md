@@ -124,7 +124,7 @@ de précontrôle, avec les valeurs suivantes :
 
 ```text
 association_base_version=1.6.1
-association_adhesions_base_version=1.3.0
+association_adhesions_base_version=1.4.0
 association_compta_base_version=1.0.0
 association_dons_base_version=1.0.0
 association_evenements_base_version=1.2.0

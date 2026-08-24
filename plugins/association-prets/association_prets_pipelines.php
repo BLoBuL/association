@@ -7,6 +7,13 @@ function association_prets_association_rgpd_export_auteur($flux) {
 	return $flux;
 }
 
+function association_prets_association_capacites($capacites) {
+	$capacites['prets'] = array('plugin' => 'association_prets');
+	$capacites['ressources'] = array('plugin' => 'association_prets');
+
+	return $capacites;
+}
+
 function association_prets_association_rgpd_anonymiser_auteur($flux) {
 	$id = intval($flux['args']['id_auteur'] ?? 0);
 	$flux['data']['prets_anonymises'] = association_rgpd_updateq('spip_asso_prets', association_rgpd_filtrer_champs('spip_asso_prets', array(

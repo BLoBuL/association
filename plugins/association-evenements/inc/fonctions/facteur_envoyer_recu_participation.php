@@ -6,8 +6,8 @@ function facteur_envoyer_recu_participation($email_inscrit,$id_transaction,$id_a
     include_spip('inc/filtres');
     include_spip('inc/notifications_emails');
     $query_activite = sql_fetsel('id_evenement,date', 'spip_asso_activites', "id_activite=$id_activite");
-	include_spip('inc/association_paiements_transactions');
-	$query_transaction = association_paiements_transaction_lire($id_transaction);
+	include_spip('inc/association_evenements_paiements');
+	$query_transaction = association_evenements_transaction_lire($id_transaction);
 	if (!$query_activite || !$query_transaction) {
 		association_log('notifications', 'Reçu participation ignoré : inscription ou transaction introuvable', 'erreur');
 		return false;

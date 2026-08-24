@@ -7,6 +7,12 @@ function association_ventes_association_rgpd_export_auteur($flux) {
 	return $flux;
 }
 
+function association_ventes_association_capacites($capacites) {
+	$capacites['ventes'] = array('plugin' => 'association_ventes');
+
+	return $capacites;
+}
+
 function association_ventes_association_rgpd_anonymiser_auteur($flux) {
 	$id = intval($flux['args']['id_auteur'] ?? 0);
 	$flux['data']['ventes_anonymisees'] = association_rgpd_updateq('spip_asso_ventes', association_rgpd_filtrer_champs('spip_asso_ventes', array(

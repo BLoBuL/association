@@ -49,9 +49,9 @@
       <td><BOUCLE_ev(EVENEMENTS){id_evenement=#ID_EVENEMENT}>[(#TITRE|supprimer_numero)]</BOUCLE_ev></td>
       <td>#NOM_INSCRIT #PRENOM_INSCRIT</td>
       <td>#IMPUTATION</td>
-      <td>[(#RECETTE|bank_affiche_montant{'EUR',symbol})]</td>
+      <td>[(#RECETTE|association_evenements_afficher_montant{'EUR',symbol})]</td>
       <td><BOUCLE_trans(TRANSACTIONS){id_transaction=#ID_TRANSACTION}>#STATUT</BOUCLE_trans></td>
-      <td><BOUCLE_mp(TRANSACTIONS){id_transaction=#ID_TRANSACTION}>[(#MODE|bank_titre_type_paiement)]</BOUCLE_mp></td>
+      <td><BOUCLE_mp(TRANSACTIONS){id_transaction=#ID_TRANSACTION}>[(#MODE|association_evenements_paiement_titre)]</BOUCLE_mp></td>
     </tr>
     </BOUCLE_act_ev>
   </BOUCLE_comptes_activites>

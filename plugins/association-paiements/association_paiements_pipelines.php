@@ -16,6 +16,13 @@ function association_paiements_insert_head_css($flux) {
 		: $flux;
 }
 
+function association_paiements_association_capacites($capacites) {
+	$capacites['paiements'] = array('plugin' => 'association_paiements');
+	$capacites['transactions'] = array('plugin' => 'association_paiements');
+
+	return $capacites;
+}
+
 function association_paiements_association_config_cli_registre($flux) {
 	include_spip('inc/association_paiements_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_paiements_config_cli_definitions());

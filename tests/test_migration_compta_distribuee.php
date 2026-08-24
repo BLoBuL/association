@@ -26,7 +26,7 @@ if (!str_contains($evenements, "c.objet='evenement'") || str_contains($adhesions
 if (str_contains($evenements, 'spip_asso_comptes')
 	|| str_contains($evenements, 'spip_transactions')
 	|| !str_contains($evenements, 'association_compta_ecritures_lister(')
-	|| !str_contains($evenements, 'association_paiements_transactions_lire(')) {
+	|| !str_contains($evenements, 'association_evenements_transactions_lire(')) {
 	$erreurs[] = 'La migration des événements contourne encore les APIs propriétaires.';
 }
 if (!str_contains($paiements, 'function association_paiements_association_compta_migration_metiers(')) {

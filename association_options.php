@@ -19,6 +19,7 @@ if (defined('_DIR_PLUGIN_ASSOCIATION')) {
 }
 
 include_spip('inc/association_log');
+include_spip('inc/association_capacites');
 
 $GLOBALS['association_metas'] = $GLOBALS['association_metas'] ?? [];
 $charger_meta = charger_fonction('meta', 'inc');

@@ -49,7 +49,9 @@ function action_editer_asso_dons($id_don = null) {
 		association_dons_compte_modifier(
 			$id_compte, $date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent
 		);
-		ajouter_destinations((int) $id_compte, (float) $argent, 0);
+		if ((int) $id_compte && function_exists('ajouter_destinations')) {
+			ajouter_destinations((int) $id_compte, (float) $argent, 0);
+		}
 
 		sql_updateq('spip_asso_dons', array(
 				'date_don' => $date_don,
@@ -73,7 +75,9 @@ function action_editer_asso_dons($id_don = null) {
 		 	'commentaire' => $commentaire));
 
 		$id_compte = association_dons_compte_creer($date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent);
-		ajouter_destinations((int) $id_compte, (float) $argent, 0);
+		if ((int) $id_compte && function_exists('ajouter_destinations')) {
+			ajouter_destinations((int) $id_compte, (float) $argent, 0);
+		}
 	}
 
 	return array($id_don, '');

@@ -51,8 +51,8 @@
         [<h3 class="titre_boite_info"><:association_evenements:voir_activites_suivi_paiement:></h3>
         <ul class="liste_configuration">
             (#ID_EVENEMENT|affichage_dans_activites|table_valeur{payant}|oui)
-            <li><span class="label"><:association_evenements:activite_liste_total_participations_encaisse:></span><span class="valeur">[(#GET{gestions_places}|table_valeur{total_encaisse}|bank_affiche_montant{#DEVISE,symbol,false,true}|replace{',00',''})]</span></li>
-            <li><span class="label"><:association_evenements:activite_liste_total_participations_attente:></span><span class="valeur">[(#GET{gestions_places}|table_valeur{total_paiement_attente}|bank_affiche_montant{#DEVISE,symbol,false,true}|replace{',00',''})]</span></li>
+            <li><span class="label"><:association_evenements:activite_liste_total_participations_encaisse:></span><span class="valeur">[(#GET{gestions_places}|table_valeur{total_encaisse}|association_evenements_afficher_montant{#DEVISE,symbol}|replace{',00',''})]</span></li>
+            <li><span class="label"><:association_evenements:activite_liste_total_participations_attente:></span><span class="valeur">[(#GET{gestions_places}|table_valeur{total_paiement_attente}|association_evenements_afficher_montant{#DEVISE,symbol}|replace{',00',''})]</span></li>
         </ul>]
     </div>
 </BOUCLE_voir_activite>

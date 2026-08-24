@@ -8,16 +8,19 @@ $verifier = function ($condition, $message) use (&$erreurs) {
 
 $paquet = file_get_contents($racine . '/paquet.xml');
 $schema = file_get_contents($racine . '/base/association.php');
-$verifier(strpos($paquet, '<necessite nom="inscription4"') !== false, 'Inscription 4 doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_adhesions"') !== false, 'Le module Adhesions doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_evenements"') !== false, 'Le module Evenements doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_compta"') !== false, 'Le module Comptabilite doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_dons"') !== false, 'Le module Dons doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_ventes"') !== false, 'Le module Ventes doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_prets"') !== false, 'Le module Prets doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_paiements"') !== false, 'Le module Paiements doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_groupes"') !== false, 'Le module Groupes doit etre une dependance explicite.');
-$verifier(strpos($paquet, '<necessite nom="association_communication"') !== false, 'Le module Communication doit etre une dependance explicite.');
+$verifier(strpos($paquet, '<necessite nom="inscription4"') === false, 'Le socle ne doit pas dependre d Inscription 4.');
+$verifier(!preg_match('/<necessite nom="association_(?!$)/', $paquet), 'Le socle ne doit necessiter aucun module metier.');
+$verifier(strpos($paquet, '<necessite nom="saisies"') !== false, 'Le socle doit declarer son usage direct de Saisies.');
+$modules_autonomes = array(
+	'association-adhesions', 'association-communication', 'association-compta',
+	'association-dons', 'association-evenements', 'association-groupes',
+	'association-paiements', 'association-prets', 'association-ventes',
+);
+foreach ($modules_autonomes as $module_autonome) {
+	$paquet_module = file_get_contents($racine . '/plugins/' . $module_autonome . '/paquet.xml');
+	$verifier(strpos($paquet_module, '<necessite nom="association"') !== false, "$module_autonome doit necessiter le socle.");
+	$verifier(!preg_match('/<necessite nom="association_(?:adhesions|communication|compta|dons|evenements|groupes|paiements|prets|ventes)"/', $paquet_module), "$module_autonome ne doit necessiter aucun autre module metier.");
+}
 $communication_paquet = file_get_contents($racine . '/plugins/association-communication/paquet.xml');
 $paiements_paquet = file_get_contents($racine . '/plugins/association-paiements/paquet.xml');
 $autorisation_compta = file_get_contents($racine . '/plugins/association-compta/association_compta_autoriser.php');

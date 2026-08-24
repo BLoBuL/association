@@ -57,6 +57,9 @@ function activer_privileges_adherent($id_auteur, $reinscription = null) {
 	}
 	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', array()));
 	association_privileges_zones_lier((int) $id_auteur, $zones);
+	if (!association_adhesions_module_actif('association_communication')) {
+		return true;
+	}
 	include_spip('inc/association_communication_privileges');
 	return association_communication_privileges_activer(
 		$auteur,
@@ -72,8 +75,10 @@ function desactiver_privileges_adherent($id_auteur) {
 	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', array()));
 	$zones_liees = association_auteur_zones_adherent_liees($zones, $id_auteur);
 	association_privileges_zones_delier((int) $id_auteur, $zones_liees);
-	include_spip('inc/association_communication_privileges');
-	association_communication_privileges_desactiver($auteur);
+	if (association_adhesions_module_actif('association_communication')) {
+		include_spip('inc/association_communication_privileges');
+		association_communication_privileges_desactiver($auteur);
+	}
 	include_spip('inc/association_adhesions_integrations');
 	if (association_adhesions_integration_active('gis')) {
 		$point_gis = association_adhesions_gis_point_auteur($id_auteur);
@@ -94,11 +99,13 @@ function verifier_privileges_adherent($id_auteur, $reinscription = null) {
 	}
 	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', array()));
 	$zones_liees = association_auteur_zones_adherent_liees($zones, $id_auteur);
-	include_spip('inc/association_communication_privileges');
-	association_communication_privileges_verifier(
-		$auteur,
-		lire_config('/association_metas/liste_diffusion', array())
-	);
+	if (association_adhesions_module_actif('association_communication')) {
+		include_spip('inc/association_communication_privileges');
+		association_communication_privileges_verifier(
+			$auteur,
+			lire_config('/association_metas/liste_diffusion', array())
+		);
+	}
 
 	$statut_interne = (string) ($auteur['statut_interne'] ?? '');
 	$statut_spip = (string) ($auteur['statut'] ?? '');

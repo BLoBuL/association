@@ -27,8 +27,8 @@ function activite_calculator($id_auteur, $id_evenement, $front_end = false){
         } else {
             $query_activite = sql_fetsel('*', 'spip_asso_activites', "id_evenement = $id_evenement AND id_auteur = $id_auteur AND statut !='desinscrit'");
             if ($query_activite) {
-                include_spip('inc/association_paiements_transactions');
-                $transaction = association_paiements_transaction_lire((int) $query_activite['id_transaction']);
+                include_spip('inc/association_evenements_paiements');
+                $transaction = association_evenements_transaction_lire((int) $query_activite['id_transaction']);
                 // Le SELECT * historique donnait la priorité aux champs homonymes de la transaction.
                 $query_activite = $transaction ? array_merge($query_activite, $transaction) : array();
             }

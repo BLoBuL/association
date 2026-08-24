@@ -16,7 +16,7 @@ if (strpos($historique, 'spip_asso_comptes') !== false
 	exit(1);
 }
 if (strpos($analyse, 'association_compta_ecritures_lister(') === false
-	|| strpos($analyse, 'association_paiements_transactions_lire(') === false
+	|| strpos($analyse, 'association_evenements_transactions_lire(') === false
 	|| strpos($paiements, 'function association_paiements_transactions_lire(') === false) {
 	fwrite(STDERR, "Les contrats Comptabilité/Paiements de l’analyse Événements sont incomplets.\n");
 	exit(1);

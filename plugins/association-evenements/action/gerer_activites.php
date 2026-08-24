@@ -12,7 +12,7 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 include_spip('inc/association_evenements_comptabilite');
-include_spip('inc/association_paiements_transactions');
+include_spip('inc/association_evenements_paiements');
 function action_gerer_activites_dist() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
 	$securiser_action();
@@ -94,7 +94,7 @@ function action_gerer_activites_dist() {
              $id_activite_selection[] = $id_activite;
             $query_asso_activites = sql_fetsel("id_transaction,statut,journal", 'spip_asso_activites', "id_activite = $id_activite");
             $id_transaction = intval($query_asso_activites['id_transaction']);
-			$query_transaction = $id_transaction > 0 ? association_paiements_transaction_lire($id_transaction) : array();
+			$query_transaction = $id_transaction > 0 ? association_evenements_transaction_lire($id_transaction) : array();
 
             if($notify_the_members == 1) {
                  job_queue_add('facteur_envoyer_mail_activites', 'Notification - desinscription_backend', $arguments = array($id_evenement, $type, $id_activite_selection), $file = '', $no_duplicate = FALSE, $time=0, $priority=0) ;
@@ -102,7 +102,7 @@ function action_gerer_activites_dist() {
             $entree_journal = date('d/m/Y H:i') . ' : ' . _T('association_evenements:journal_desinscription_site_prive') . '<br>' . $query_asso_activites['journal'];
             sql_updateq('spip_asso_activites', array("statut" => 'desinscrit', "journal" => $entree_journal),"id_activite=$id_activite");
              if($id_transaction > 0 && isset($query_transaction['statut']) && $query_transaction['statut'] != 'ok'){
-				association_paiements_transaction_modifier($id_transaction, array('statut' => 'abandon'));
+				association_evenements_transaction_modifier($id_transaction, array('statut' => 'abandon'));
             }
 
          };
@@ -115,7 +115,7 @@ function action_gerer_activites_dist() {
          $id_activite_selection[] = $id_activite;
          $query_asso_activites = sql_fetsel("id_transaction,statut,journal", 'spip_asso_activites', "id_activite = $id_activite");
          $id_transaction = intval($query_asso_activites['id_transaction']);
-		 $query_transaction = $id_transaction > 0 ? association_paiements_transaction_lire($id_transaction) : array();
+		 $query_transaction = $id_transaction > 0 ? association_evenements_transaction_lire($id_transaction) : array();
 
          $nouveau_statut = ($type_reactivation === 'liste_attente') ? 'liste_attente' : 'preinscrit';
 
@@ -141,7 +141,7 @@ function action_gerer_activites_dist() {
              && isset($query_transaction['statut'])
              && in_array($query_transaction['statut'], array('abandon', 'echec'))
          ) {
-			 association_paiements_transaction_modifier($id_transaction, array('statut' => 'attente'));
+			 association_evenements_transaction_modifier($id_transaction, array('statut' => 'attente'));
          }
 
          if($notify_the_members == 1) {
@@ -153,7 +153,7 @@ function action_gerer_activites_dist() {
         foreach ( $id_activites as  $id_activite) {
             $query_asso_activites = sql_fetsel('id_transaction', 'spip_asso_activites', "id_activite = $id_activite");
 
-			association_paiements_transaction_supprimer_non_encaissee((int) $query_asso_activites['id_transaction']);
+			association_evenements_transaction_supprimer_non_encaissee((int) $query_asso_activites['id_transaction']);
             // Suppression ENREGISTREMENT COMPTABLE SI LA COMPTABILITE EST ACTIVE
             if($GLOBALS['association_metas']['comptes']){
                 association_evenements_comptes_supprimer_inscription($id_activite);

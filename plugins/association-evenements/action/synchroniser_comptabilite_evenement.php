@@ -10,7 +10,7 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 
 include_spip('inc/comptes');
 include_spip('inc/association_compta_ecritures');
-include_spip('inc/association_paiements_transactions');
+include_spip('inc/association_evenements_paiements');
 
 /**
  * Action de synchronisation de la comptabilité d'un événement
@@ -84,7 +84,7 @@ function synchroniser_comptabilite_evenement($id_evenement) {
 		'spip_asso_activites',
 		'id_evenement=' . (int) $id_evenement . ' AND id_transaction>0'
 	);
-	$transactions = association_paiements_transactions_lire(array_column($activites ?: array(), 'id_transaction'));
+	$transactions = association_evenements_transactions_lire(array_column($activites ?: array(), 'id_transaction'));
 
     // 3. Pour chaque activité avec transaction
     // Cache pour éviter plusieurs corrections du montant pour la même transaction

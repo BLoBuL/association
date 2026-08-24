@@ -36,7 +36,7 @@ function verifier($condition, $message) {
 }
 
 $inventaire = association_installation_inventaire();
-verifier(count($inventaire['plugins_requis']) === 10, 'la topologie exige dix plugins');
+verifier($inventaire['plugins_requis'] === array('association'), 'la topologie exige uniquement le socle');
 verifier(count($inventaire['plugins']) === 10, 'les dix plugins fournissent leur inventaire');
 verifier(count($inventaire['tables']) === 14, 'les modules déclarent quatorze tables');
 verifier(count($inventaire['objets']) === 12, 'les modules déclarent douze objets SQL');
@@ -44,7 +44,7 @@ verifier(count($inventaire['schemas']) === 7, 'les modules déclarent sept sché
 verifier(empty($inventaire['erreurs']), 'aucune contribution ne se contredit');
 
 $attendus = array(
-	'association_adhesions_base_version' => '1.3.0',
+	'association_adhesions_base_version' => '1.4.0',
 	'association_compta_base_version' => '1.0.0',
 	'association_evenements_base_version' => '1.2.0',
 );

@@ -40,7 +40,7 @@ function association_adhesions_declarer_tables_objets_sql($tables) {
 		'titre' => 'CONCAT("Cotisation ", id_cotisation) AS titre, "" AS lang',
 		'field' => array(
 			'id_cotisation' => 'BIGINT NOT NULL',
-			'id_compte' => "BIGINT NOT NULL DEFAULT '0'",
+			'id_compte' => 'BIGINT NULL DEFAULT NULL',
 			'id_auteur' => "BIGINT NOT NULL DEFAULT '0'",
 			'id_categorie' => "INT NOT NULL DEFAULT '0'",
 			'id_transaction' => "BIGINT NOT NULL DEFAULT '0'",
@@ -55,7 +55,7 @@ function association_adhesions_declarer_tables_objets_sql($tables) {
 		),
 		'key' => array(
 			'PRIMARY KEY' => 'id_cotisation',
-			'UNIQUE KEY id_compte' => 'id_compte',
+			'KEY id_compte' => 'id_compte',
 			'KEY id_auteur' => 'id_auteur',
 			'KEY id_transaction' => 'id_transaction',
 		),

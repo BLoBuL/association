@@ -1,7 +1,7 @@
 <paquet
 	prefix="association"
 	categorie="communication"
-	version="4.0.0-dev"
+	version="4.0.0"
 	etat="dev"
 	compatibilite="[4.0.0;4.*]"
 	logo="logo.jpg"
@@ -41,20 +41,12 @@
 	<pipeline nom="association_menu_entrees" action="" />
 	<pipeline nom="association_configuration_saisies" action="" />
 	<pipeline nom="association_configuration_verifier" action="" />
+	<pipeline nom="association_capacites" action="" />
+	<pipeline nom="association_profil_participant" action="" />
+	<pipeline nom="association_comptabiliser_operation" action="" />
+	<pipeline nom="association_notifier_metier" action="" />
 
-	<necessite nom="inscription4" compatibilite="[4.1.14;4.*]" />
-	<necessite nom="association_adhesions" compatibilite="[4.0.0;4.*]" />
-	<necessite nom="association_evenements" compatibilite="[4.0.0;4.*]" />
-	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
-	<necessite nom="association_dons" compatibilite="[4.0.0;4.*]" />
-	<necessite nom="association_ventes" compatibilite="[4.0.0;4.*]" />
-	<necessite nom="association_prets" compatibilite="[4.0.0;4.*]" />
-	<necessite nom="association_paiements" compatibilite="[4.0.0;4.*]" />
-	<necessite nom="association_groupes" compatibilite="[4.0.0;4.*]" />
-	<necessite nom="association_communication" compatibilite="[4.0.0;4.*]" />
-
-	<necessite nom="verifier" compatibilite="[2.1.0;[" />
-	<utilise nom="gis" compatibilite="[4.54.0;[" />
+	<necessite nom="saisies" compatibilite="[4.0.0;[" />
 
 	<!-- Font Awesome Free est embarqué : la suite Association ne dépend pas de blobul-CORE. -->
 	<style source="lib/fontawesome-6.7.2/css/fontawesome.css" />

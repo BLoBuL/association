@@ -89,7 +89,9 @@ function ventes_modifier($date_vente, $article, $code, $acheteur, $id_acheteur, 
     }
 	$montant_destination = $recette
 		+ ($GLOBALS['association_metas']['pc_ventes'] == $GLOBALS['association_metas']['pc_frais_envoi'] ? $frais_envoi : 0);
-	ajouter_destinations((int) $id_compte, (float) $montant_destination, 0);
+	if ((int) $id_compte && function_exists('ajouter_destinations')) {
+		ajouter_destinations((int) $id_compte, (float) $montant_destination, 0);
+	}
 }
 
 function ventes_insert($date_vente, $article, $code, $acheteur, $id_acheteur, $quantite, $date_envoi, $frais_envoi, $prix_vente, $commentaire, $journal, $recette)
@@ -116,6 +118,8 @@ function ventes_insert($date_vente, $article, $code, $acheteur, $id_acheteur, $q
     }
 	$montant_destination = $recette
 		+ ($GLOBALS['association_metas']['pc_ventes'] == $GLOBALS['association_metas']['pc_frais_envoi'] ? $frais_envoi : 0);
-	ajouter_destinations((int) $id_compte, (float) $montant_destination, 0);
+	if ((int) $id_compte && function_exists('ajouter_destinations')) {
+		ajouter_destinations((int) $id_compte, (float) $montant_destination, 0);
+	}
     return $id_vente;
 }

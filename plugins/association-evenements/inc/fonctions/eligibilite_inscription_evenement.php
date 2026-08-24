@@ -60,6 +60,8 @@ function eligibilite_inscription_evenement($id_evenement){
         $statut_interne_auteur_connecte = '';
     }
 
+    $adhesions_actives = association_evenements_integration_active('association_adhesions');
+
     /* Vérification de l'éligibilité de l'internaute */
     if($token_url && $token_url === $token_evenement){
         $eligibilite_auteur_inscription = 'oui'; // Token valide
@@ -72,6 +74,8 @@ function eligibilite_inscription_evenement($id_evenement){
     } elseif(($affichage_dans_activites['type_inscrits_evenement'] ?? '') === 'prive' && empty($id_auteur_connecte)){
         $eligibilite_auteur_inscription = 'non'; // Événement privé et auteur non connecté
         $eligibilite_id_auteur = false;
+    } elseif(($affichage_dans_activites['type_inscrits_evenement'] ?? '') === 'strict' && !$adhesions_actives){
+		$eligibilite_auteur_inscription = 'oui'; // Sans Adhésions, le public universel s'applique.
     } elseif(($affichage_dans_activites['type_inscrits_evenement'] ?? '') === 'strict' && ($statut_interne_auteur_connecte === 'ok' && $test_date_validite === 'oui')){
         $eligibilite_auteur_inscription = 'oui'; // Événement strict et auteur valide
         $eligibilite_id_auteur = $id_auteur_connecte;

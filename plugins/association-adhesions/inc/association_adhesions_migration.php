@@ -58,8 +58,8 @@ function association_cotisation_devise_historique($compte) {
 	$devise = '';
 	$id_transaction = (int) ($compte['id_transaction'] ?? 0);
 	if ($id_transaction) {
-		include_spip('inc/association_paiements_transactions');
-		$transaction = association_paiements_transaction_lire($id_transaction);
+		include_spip('inc/association_adhesions_integrations');
+		$transaction = association_adhesions_transaction_lire($id_transaction);
 		$devise = (string) ($transaction['devise'] ?? '');
 	}
 

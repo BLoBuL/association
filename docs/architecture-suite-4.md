@@ -72,7 +72,9 @@ centralisé dans une API publique du module propriétaire.
 
 - aucune inclusion d'un fichier interne appartenant à un autre module ;
 - aucune écriture directe dans la table d'un autre module ;
-- dépendance obligatoire déclarée dans `paquet.xml` ;
+- `association` est la seule dépendance interne obligatoire de chaque module ;
+- les autres relations entre modules sont déclarées avec `utilise` et passent
+  par une capacité, un pipeline ou une façade locale à comportement neutre ;
 - intégration optionnelle par pipeline public documenté ;
 - fonctions publiques préfixées par le plugin propriétaire ;
 - wrappers historiques minces et temporaires ;
@@ -109,6 +111,11 @@ des tests de caractérisation et une migration idempotente.
 - `spip_asso_comptes` est exclusivement le journal du module Comptabilité ;
 - une cotisation existe dans `spip_asso_cotisations`, avec un lien optionnel
   `id_compte` vers son écriture comptable ;
-- Association 4 nécessite Inscription 4. Le namespace de configuration
-  `inscription3` et les pipelines `i3_*` restent utilisés uniquement parce
-  qu'Inscription 4 les expose comme API de compatibilité documentée.
+- le socle Association ne nécessite pas Inscription 4. Adhésions et Événements
+  la déclarent directement, car ils portent les parcours d'inscription. Le
+  namespace de configuration `inscription3` et les pipelines `i3_*` restent
+  utilisés uniquement parce qu'Inscription 4 les expose comme API de
+  compatibilité documentée.
+
+La matrice complète des activations et comportements dégradés est décrite dans
+[`dependances-modules-autonomes.md`](./dependances-modules-autonomes.md).

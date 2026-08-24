@@ -41,8 +41,8 @@
        <div class="tooltip "><i class="fas fa-coins" ></i><span class="tooltiptext">
             [(#SET{tableau_mode_de_paiement, [(#MODE_PAIEMENT|explode{','})]})]                 
             [(#SET{mode_paiement_disponible_evenement,[(#GET{tableau_mode_de_paiement}|sinon{#CONFIG{association_metas/mode_paiement_participation}|unserialize})]})]
-            <BOUCLE_mode_paiement_participation(POUR){tableau #VAL{acte}|bank_lister_configs}>[(#VALEUR{actif}|oui|et{#VALEUR|bank_config_id|in_any{#GET{mode_paiement_disponible_evenement}}|oui})
-                           [<div>-> (#VALEUR{presta}|bank_titre_type_paiement) [ ((#VALEUR{label}))]</div>]
+            <BOUCLE_mode_paiement_participation(POUR){tableau #VAL{acte}|association_evenements_paiements_configs}>[(#VALEUR{actif}|oui|et{#VALEUR|association_evenements_paiement_id|in_any{#GET{mode_paiement_disponible_evenement}}|oui})
+                           [<div>-> (#VALEUR{presta}|association_evenements_paiement_titre) [ ((#VALEUR{label}))]</div>]
                         ]  
             </BOUCLE_mode_paiement_participation>
            </span></div>

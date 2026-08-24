@@ -7,7 +7,7 @@ foreach (array(
 ) as $fichier) {
 	$source = file_get_contents($racine . '/plugins/association-evenements/' . $fichier);
 	if (strpos($source, 'spip_transactions') !== false
-		|| strpos($source, 'association_paiements_transaction') === false) {
+		|| strpos($source, 'association_evenements_transaction') === false) {
 		fwrite(STDERR, "Le calcul Evenements contourne Paiements dans {$fichier}.\n");
 		exit(1);
 	}

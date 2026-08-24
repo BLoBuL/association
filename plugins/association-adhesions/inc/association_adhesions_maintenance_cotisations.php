@@ -40,8 +40,8 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
     $protegees = [];
     // Protéger celles liées à une transaction encaissée (statut ok)
     $ids_tx = array_values(array_unique(array_filter($orphans)));
-    include_spip('inc/association_paiements_transactions');
-    $transactions = association_paiements_transactions_lire($ids_tx);
+	include_spip('inc/association_adhesions_integrations');
+	$transactions = association_adhesions_transactions_lire($ids_tx);
     foreach ($orphans as $id_compte => $id_tx) {
         if ($id_tx && (($transactions[$id_tx]['statut'] ?? '') === 'ok')) {
             $protegees[] = $id_compte;
@@ -90,7 +90,7 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
     foreach ($a_supprimer as $id_compte) {
         if (!empty($orphans[$id_compte])) $tx_ids[] = (int) $orphans[$id_compte];
     }
-    $suppression_transactions = association_paiements_transactions_supprimer_non_encaissees($tx_ids, $dry_run);
+	$suppression_transactions = association_adhesions_transactions_supprimer_non_encaissees($tx_ids, $dry_run);
     if (!empty($suppression_transactions['erreur'])) {
         if (!$dry_run) sql_query('ROLLBACK');
         return [
@@ -137,8 +137,8 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
     $where = "c.statut<>" . sql_quote('ok')
         . " AND c.date_creation<=" . sql_quote($limite);
     $candidates = sql_allfetsel('id_compte,id_transaction', 'spip_asso_cotisations AS c', $where) ?: array();
-    include_spip('inc/association_paiements_transactions');
-    $transactions = association_paiements_transactions_lire(array_column($candidates, 'id_transaction'));
+	include_spip('inc/association_adhesions_integrations');
+	$transactions = association_adhesions_transactions_lire(array_column($candidates, 'id_transaction'));
     foreach ($candidates as $row) {
         $idt = intval($row['id_transaction'] ?? 0);
         if ($idt && (($transactions[$idt]['statut'] ?? '') === 'ok')) continue;
@@ -179,7 +179,7 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
     }
 
     // Suppression des transactions non encaissées associées
-    $suppression_transactions = association_paiements_transactions_supprimer_non_encaissees($tx_ids_candidates, $dry_run);
+	$suppression_transactions = association_adhesions_transactions_supprimer_non_encaissees($tx_ids_candidates, $dry_run);
     if (!empty($suppression_transactions['erreur'])) {
 		if (!$dry_run) sql_query('ROLLBACK');
         return [
@@ -242,9 +242,11 @@ function association_adhesions_maintenance_supprimer_cotisations(array $ids_comp
 			"objet='cotisation' AND " . sql_in('id_objet', $ids_cotisations)
 		);
 	}
-    include_spip('inc/association_compta_ecritures');
-    foreach ($ids_compte as $id_compte) {
-        association_compta_ecriture_supprimer($id_compte);
-    }
+	if (association_adhesions_integration_module_actif('association_compta')) {
+		include_spip('inc/association_compta_ecritures');
+		foreach ($ids_compte as $id_compte) {
+			association_compta_ecriture_supprimer($id_compte);
+		}
+	}
     return (int) $supprimees;
 }
