@@ -18,8 +18,8 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
     // Cotisations orphelines = sans auteur
     $res = sql_select(
         'c.id_compte,c.id_transaction',
-        'spip_asso_comptes AS c LEFT JOIN spip_auteurs AS a ON a.id_auteur=c.id_auteur',
-		"(c.objet='cotisation' OR c.id_categorie>0) AND a.id_auteur IS NULL",
+        'spip_asso_cotisations AS c LEFT JOIN spip_auteurs AS a ON a.id_auteur=c.id_auteur',
+		'a.id_auteur IS NULL',
         '',
         '',
         intval($lot)
@@ -76,13 +76,17 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
         $a_supprimer = array_slice($a_supprimer, 0, $lot);
     }
 
+    if (!$dry_run) {
+        sql_query('START TRANSACTION');
+    }
+
     // Suppression des cotisations
-    $in = sql_in('id_compte', $a_supprimer);
-    $nb_cotisations = $dry_run
-        ? sql_countsel('spip_asso_comptes', $in)
-        : sql_delete('spip_asso_comptes', $in);
+    $nb_cotisations = association_adhesions_maintenance_supprimer_cotisations($a_supprimer, $dry_run);
 
     if ($nb_cotisations === false) {
+        if (!$dry_run) {
+            sql_query('ROLLBACK');
+        }
         return [
             'supprimees' => 0,
             'ids' => $a_supprimer,
@@ -120,6 +124,9 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
                      ? sql_countsel('spip_transactions', $where_del)
                      : sql_delete('spip_transactions', $where_del);
                  if ($transactions_supprimees === false) {
+                     if (!$dry_run) {
+                         sql_query('ROLLBACK');
+                     }
                      return [
                          'supprimees' => intval($nb_cotisations),
                          'ids' => $a_supprimer,
@@ -131,6 +138,10 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
                  }
              }
          }
+    }
+
+    if (!$dry_run) {
+        sql_query('COMMIT');
     }
 
     return [
@@ -161,13 +172,12 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
     $tx_ids_candidates = [];
 
     // Jointure pour exclure les cotisations liées à une transaction encaissée
-    $where = "(c.objet='cotisation' OR c.id_categorie>0)"
-        . " AND c.statut_cotisation<>" . sql_quote('ok')
-        . " AND c.date<=" . sql_quote($limite)
+    $where = "c.statut<>" . sql_quote('ok')
+        . " AND c.date_creation<=" . sql_quote($limite)
         . " AND (t.id_transaction IS NULL OR t.statut<>" . sql_quote('ok') . ")";
     $res = sql_select(
         'c.id_compte,c.id_transaction',
-        'spip_asso_comptes AS c LEFT JOIN spip_transactions AS t ON t.id_transaction=c.id_transaction',
+        'spip_asso_cotisations AS c LEFT JOIN spip_transactions AS t ON t.id_transaction=c.id_transaction',
         $where,
         '',
         '',
@@ -192,13 +202,17 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
         ];
     }
 
+	if (!$dry_run) {
+		sql_query('START TRANSACTION');
+	}
+
     // Suppression des cotisations
-    $in_cot = sql_in('id_compte', $ids_cot);
-    $nb_cot = $dry_run
-        ? sql_countsel('spip_asso_comptes', $in_cot)
-        : sql_delete('spip_asso_comptes', $in_cot);
+    $nb_cot = association_adhesions_maintenance_supprimer_cotisations($ids_cot, $dry_run);
 
     if ($nb_cot === false) {
+		if (!$dry_run) {
+			sql_query('ROLLBACK');
+		}
         return [
             'supprimees' => 0,
             'ids' => $ids_cot,
@@ -227,6 +241,9 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
                     ? sql_countsel('spip_transactions', $in_tx_final)
                     : sql_delete('spip_transactions', $in_tx_final);
                 if ($transactions_supprimees === false) {
+					if (!$dry_run) {
+						sql_query('ROLLBACK');
+					}
                     return [
                         'supprimees' => intval($nb_cot),
                         'ids' => $ids_cot,
@@ -240,6 +257,10 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
         }
     }
 
+	if (!$dry_run) {
+		sql_query('COMMIT');
+	}
+
     return [
         'supprimees' => intval($nb_cot),
         'ids' => $ids_cot,
@@ -247,4 +268,38 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
         'transactions_supprimees' => intval($transactions_supprimees),
         'transactions_ids' => $transactions_ids
     ];
+}
+
+/**
+ * Supprime les lignes métier puis délègue les écritures à Comptabilité.
+ *
+ * Les identifiants reçus sont des id_compte afin de préserver le contrat des
+ * rapports de maintenance historiques.
+ */
+function association_adhesions_maintenance_supprimer_cotisations(array $ids_compte, $dry_run = true) {
+    $ids_compte = array_values(array_unique(array_filter(array_map('intval', $ids_compte))));
+    if (!$ids_compte) {
+        return 0;
+    }
+
+    $where = sql_in('id_compte', $ids_compte);
+    $nombre = (int) sql_countsel('spip_asso_cotisations', $where);
+    if ($dry_run || !$nombre) {
+        return $nombre;
+    }
+
+    $supprimees = sql_delete('spip_asso_cotisations', $where);
+    if ($supprimees === false) {
+        return false;
+    }
+
+    sql_delete(
+        'spip_documents_liens',
+        "objet='compte' AND " . sql_in('id_objet', $ids_compte)
+    );
+    include_spip('inc/association_compta_ecritures');
+    foreach ($ids_compte as $id_compte) {
+        association_compta_ecriture_supprimer($id_compte);
+    }
+    return (int) $supprimees;
 }

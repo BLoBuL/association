@@ -10,6 +10,7 @@ $GLOBALS['association_test_logs'] = array();
 $GLOBALS['association_test_rgpd_calls'] = array();
 $GLOBALS['association_test_fail_delete_tables'] = array();
 $GLOBALS['association_test_fail_update_tables'] = array();
+$GLOBALS['association_test_transaction_snapshot'] = null;
 
 function include_spip($path) { return true; }
 function pipeline($nom, $flux) {
@@ -48,6 +49,17 @@ function sql_in($field, $values) {
     return $field . ' IN (' . implode(',', array_map('intval', $values)) . ')';
 }
 function ecrire_fichier($path, $content) { return true; }
+function sql_query($query) {
+    if ($query === 'START TRANSACTION') {
+        $GLOBALS['association_test_transaction_snapshot'] = $GLOBALS['association_test_tables'];
+    } elseif ($query === 'ROLLBACK' && is_array($GLOBALS['association_test_transaction_snapshot'])) {
+        $GLOBALS['association_test_tables'] = $GLOBALS['association_test_transaction_snapshot'];
+        $GLOBALS['association_test_transaction_snapshot'] = null;
+    } elseif ($query === 'COMMIT') {
+        $GLOBALS['association_test_transaction_snapshot'] = null;
+    }
+    return true;
+}
 
 function association_rgpd_anonymiser_auteur($id_auteur, $auteur) {
     $GLOBALS['association_test_rgpd_calls'][] = intval($id_auteur);
@@ -81,6 +93,15 @@ function association_test_match_simple_where($row, $where) {
     if (preg_match("/^id_transaction IN \(([^)]*)\)$/", $where, $m)) {
         $ids = array_values(array_filter(array_map('intval', preg_split('/\s*,\s*/', $m[1]))));
         return in_array(intval($row['id_transaction'] ?? 0), $ids, true);
+    }
+    if (preg_match("/^id_(compte|objet)='?([0-9]+)'?$/", $where, $m)) {
+        $champ = 'id_' . $m[1];
+        return intval($row[$champ] ?? 0) === intval($m[2]);
+    }
+    if (preg_match("/^id_(compte|objet) IN \(([^)]*)\)$/", $where, $m)) {
+        $champ = 'id_' . $m[1];
+        $ids = array_values(array_filter(array_map('intval', preg_split('/\s*,\s*/', $m[2]))));
+        return in_array(intval($row[$champ] ?? 0), $ids, true);
     }
     return true;
 }
@@ -151,9 +172,9 @@ function sql_select($select, $from, $where = '', $group = '', $order = '', $limi
         return association_test_make_result($rows);
     }
 
-    if ($from === 'spip_asso_comptes AS c LEFT JOIN spip_auteurs AS a ON a.id_auteur=c.id_auteur') {
+    if ($from === 'spip_asso_cotisations AS c LEFT JOIN spip_auteurs AS a ON a.id_auteur=c.id_auteur') {
         $rows = array();
-        foreach ($GLOBALS['association_test_tables']['spip_asso_comptes'] as $row) {
+        foreach ($GLOBALS['association_test_tables']['spip_asso_cotisations'] as $row) {
             $id_auteur = intval($row['id_auteur'] ?? 0);
             if (!isset($GLOBALS['association_test_tables']['spip_auteurs'][$id_auteur])) {
                 $rows[] = array(
@@ -181,6 +202,12 @@ function sql_select($select, $from, $where = '', $group = '', $order = '', $limi
     }
 
     return association_test_make_result(array());
+}
+
+function association_compta_ecriture_supprimer($id_compte) {
+    $id_compte = intval($id_compte);
+    sql_delete('spip_asso_destination_op', 'id_compte=' . $id_compte);
+    return sql_delete('spip_asso_comptes', 'id_compte=' . $id_compte) !== false;
 }
 
 function sql_fetch(&$result) {
@@ -252,6 +279,11 @@ function association_test_reset_tables() {
         'spip_asso_comptes' => array(
             1 => array('id_compte' => 1, 'id_auteur' => 1, 'recette' => 25, 'id_transaction' => 101),
         ),
+        'spip_asso_cotisations' => array(
+            1 => array('id_cotisation' => 1, 'id_compte' => 1, 'id_auteur' => 1, 'montant' => 25, 'id_transaction' => 101, 'statut' => 'ok'),
+        ),
+        'spip_asso_destination_op' => array(),
+        'spip_documents_liens' => array(),
         'spip_transactions' => array(
             101 => array('id_transaction' => 101, 'id_auteur' => 1, 'statut' => 'ok'),
             202 => array('id_transaction' => 202, 'id_auteur' => 2, 'statut' => 'ok'),
@@ -270,6 +302,7 @@ function association_test_reset_tables() {
     $GLOBALS['association_test_rgpd_calls'] = array();
     $GLOBALS['association_test_fail_delete_tables'] = array();
     $GLOBALS['association_test_fail_update_tables'] = array();
+    $GLOBALS['association_test_transaction_snapshot'] = null;
 }
 
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_maintenance.php';
@@ -318,9 +351,12 @@ association_test_assert(isset($GLOBALS['association_test_tables']['spip_auteurs'
 
 association_test_reset_tables();
 $GLOBALS['association_test_tables']['spip_asso_comptes'][2] = array('id_compte' => 2, 'id_auteur' => 999, 'recette' => 0, 'id_transaction' => 303, 'objet' => 'cotisation');
+$GLOBALS['association_test_tables']['spip_asso_cotisations'][2] = array('id_cotisation' => 2, 'id_compte' => 2, 'id_auteur' => 999, 'montant' => 0, 'id_transaction' => 303, 'statut' => 'attente');
 $GLOBALS['association_test_tables']['spip_transactions'][303] = array('id_transaction' => 303, 'id_auteur' => 999, 'statut' => 'attente');
 $GLOBALS['association_test_fail_delete_tables'] = array('spip_transactions');
 $resultat = association_adhesions_supprimer_cotisations_orphelines(false, 1000);
 association_test_assert(($resultat['erreur'] ?? '') === 'suppression_transactions_cotisations_orphelines_echouee', 'une erreur explicite remonte si la suppression des transactions liées échoue');
+association_test_assert(isset($GLOBALS['association_test_tables']['spip_asso_cotisations'][2]), 'un échec transaction restaure la cotisation métier');
+association_test_assert(isset($GLOBALS['association_test_tables']['spip_asso_comptes'][2]), 'un échec transaction restaure l écriture comptable');
 
 echo "Tous les tests maintenance BDD ont réussi.\n";

@@ -1391,3 +1391,20 @@ transactions en cours et l'empreinte des dates
 `e4d25f28c50d8965a8b37e748719fd641272d3ce57d67180a0328f5df0164fea`.
 L'empreinte canonique de migration des dix cotisations reste elle aussi
 inchangée et tous les squelettes compilent.
+
+## Lot 122 — maintenance des cotisations séparées et atomiques
+
+Les nettoyages des cotisations orphelines et des anciennes cotisations non
+encaissées travaillent maintenant depuis `spip_asso_cotisations`. En exécution
+réelle, ils retirent la ligne métier, les liens documentaires, l'écriture et
+ses ventilations via Compta, puis les seules transactions Bank non encaissées.
+Les transactions au statut `ok` restent protégées.
+
+L'ensemble est exécuté dans une transaction SQL : un échec de suppression Bank
+restaure la cotisation et l'écriture comptable au lieu de laisser une opération
+partielle. Le test automatisé prouve ce rollback.
+
+Sur test-fiafe, seule la simulation a été exécutée. Elle trouve zéro cotisation
+orpheline, zéro cotisation ancienne supprimable et ne modifie pas l'empreinte
+`539e32880edaf51c1ec1f8aae8c4b0b8118a8f8b1a328c2ea82e4b99e6e8b1af`.
+Les dix cotisations historiques et leur empreinte canonique restent intactes.
