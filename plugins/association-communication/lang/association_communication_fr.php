@@ -72,6 +72,7 @@ Suite à la validation de ce formulaire vous serez redirigé vers la page vous p
 	'label_formulaire_choisir_gabarit' => 'Sélection de gabarit',
 	'label_formulaire_envoi_collectif_adherent' => 'Formulaire de création d\'email collectif',
 	'label_formulaire_envoi_collectif_evenement' => 'Envoi collectif lié à un événement',
+	'navigation_parametres' => 'Paramètres',
 	'mailsubscriber_corbeille_tous' => '@nb@ abonnés à supprimer',
 	'mailsubscriber_corbeille_un' => '1 abonné à supprimer',
 	'mailsubscribinglist_corbeille_tous' => '@nb@ listes de diffusion à supprimer',
@@ -86,4 +87,5 @@ Suite à la validation de ce formulaire vous serez redirigé vers la page vous p
 	'log_cat_spam' => 'Détection spam',
 	'maintenance_titre' => 'Maintenance des abonnements et redirections',
 	'titre_newsletter' => 'Inscription à la newsletter',
+	'titre_notifications' => 'Visualisation des notifications',
 );

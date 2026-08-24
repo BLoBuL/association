@@ -805,6 +805,19 @@ native `dist`, ouvre une boîte `raccourcis` et fournit un retour vers la page
 parente. Les fichiers appartiennent au plugin propriétaire de la page, y
 compris l'export comptable dans Comptabilité et les bénévoles dans Groupes.
 
+## Lot 65 : navigation privée métier complétée
+
+La même structure SPIP est appliquée aux parcours comptables, aux éditions de
+dons, ressources et ventes, aux transactions de Paiements et à la page de
+notifications de Communication. Les imports et la migration comptable
+complètent leur navigation existante avec un retour explicite vers les comptes.
+
+La répartition suit les responsabilités métier : les opérations génériques
+restent dans Comptabilité, les actions Bank dans Paiements, et chaque objet
+spécialisé conserve ses squelettes dans son propre plugin. Le test de navigation
+couvre désormais 22 pages privées et vérifie la présence du fil d'Ariane, de
+la navigation native SPIP et du lien parent.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

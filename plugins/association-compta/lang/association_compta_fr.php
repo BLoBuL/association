@@ -174,6 +174,7 @@ $GLOBALS[$GLOBALS["idx_lang"]] = array (
   'modifier_destination' => 'Modifier la destination comptable',
   'modifier_operation' => 'Modifier l’opération',
   'modifier_plan' => 'Modifier le plan comptable',
+  'navigation_migration_donnees' => 'Migration des données comptables',
   'montant' => 'Montant',
   'moy_abbrev' => 'moy.',
   'moyenne_par_operation' => 'Moyenne par opération',

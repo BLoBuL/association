@@ -70,25 +70,25 @@ Racine du site > [Section] > [Sous-section si applicable] > Page courante (sans 
 #### Groupe Comptabilité
 | Page | hierarchie | navigation | Fil d'ariane cible |
 |------|-----------|------------|-------------------|
-| `comptes` | ❌ manquant | ✅ existant | Racine > Comptabilité > Comptes |
-| `editer_asso_comptes` | ❌ manquant | — | Racine > Comptabilité > Comptes > Éditer |
-| `editer_asso_destinations` | ❌ manquant | — | Racine > Comptabilité > Destinations > Éditer |
-| `editer_asso_dons` | ❌ manquant | — | Racine > Comptabilité > Dons > Éditer |
-| `editer_asso_plan` | ❌ manquant | — | Racine > Comptabilité > Plan comptable > Éditer |
-| `editer_asso_ressources` | ❌ manquant | — | Racine > Comptabilité > Ressources > Éditer |
-| `editer_asso_ventes` | ❌ manquant | — | Racine > Comptabilité > Ventes > Éditer |
-| `destination_comptable_import` | ❌ manquant | ✅ existant | Racine > Comptabilité > Import destinations |
-| `plan_comptable_import` | ❌ manquant | ✅ existant | Racine > Comptabilité > Import plan comptable |
-| `migration_donnees_comptables` | ❌ manquant | — | Racine > Comptabilité > Migration données |
-| `transaction` | ❌ manquant | — | Racine > Comptabilité > Transaction |
-| `transaction_abandon` | ❌ manquant | — | Racine > Comptabilité > Transaction > Abandon |
-| `transaction_remboursement` | ❌ manquant | — | Racine > Comptabilité > Transaction > Remboursement |
-| `transaction_suppression` | ❌ manquant | — | Racine > Comptabilité > Transaction > Suppression |
+| `comptes` | ✅ lot 65 | ✅ existant | Racine > Comptabilité |
+| `editer_asso_comptes` | ✅ lot 65 | ✅ lot 65 | Racine > Comptabilité > Comptes > Éditer |
+| `editer_asso_destinations` | ✅ lot 65 | ✅ lot 65 | Racine > Comptabilité > Destinations > Éditer |
+| `editer_asso_dons` | ✅ lot 65 | ✅ lot 65 | Racine > Dons > Éditer |
+| `editer_asso_plan` | ✅ lot 65 | ✅ lot 65 | Racine > Comptabilité > Plan comptable > Éditer |
+| `editer_asso_ressources` | ✅ lot 65 | ✅ lot 65 | Racine > Prêts > Ressources > Éditer |
+| `editer_asso_ventes` | ✅ lot 65 | ✅ lot 65 | Racine > Ventes > Éditer |
+| `destination_comptable_import` | ✅ lot 65 | ✅ complété | Racine > Comptabilité > Import destinations |
+| `plan_comptable_import` | ✅ lot 65 | ✅ complété | Racine > Comptabilité > Import plan comptable |
+| `migration_donnees_comptables` | ✅ lot 65 | ✅ lot 65 | Racine > Comptabilité > Migration données |
+| `transaction` | ✅ lot 65 | ✅ lot 65 | Racine > Comptabilité > Transaction |
+| `transaction_abandon` | ✅ lot 65 | ✅ lot 65 | Racine > Comptabilité > Transaction > Abandon |
+| `transaction_remboursement` | ✅ lot 65 | ✅ lot 65 | Racine > Comptabilité > Transaction > Remboursement |
+| `transaction_suppression` | ✅ lot 65 | ✅ lot 65 | Racine > Comptabilité > Transaction > Suppression |
 
 #### Groupe Configuration
 | Page | hierarchie | navigation | Fil d'ariane cible |
 |------|-----------|------------|-------------------|
-| `notifications` | ❌ manquant | ✅ existant | Racine > Configuration > Notifications |
+| `notifications` | ✅ lot 65 | ✅ lot 65 | Racine > Configuration > Notifications |
 
 #### Hors scope (lightbox / popins — pas de fil d'ariane pertinent)
 - `lightbox_lien_inscription_vip`
@@ -109,14 +109,9 @@ Racine du site > [Section] > [Sous-section si applicable] > Page courante (sans 
 
 ## Navigation gauche — pages sans colonne (à créer)
 
-Les pages suivantes ont un contenu mais aucun fichier `navigation/` :
-
-- `editer_asso_comptes`, `editer_asso_destinations`, `editer_asso_dons`
-- `editer_asso_plan`, `editer_asso_ressources`, `editer_asso_ventes`
-- `migration_donnees_comptables`
-- `transaction`, `transaction_abandon`, `transaction_remboursement`, `transaction_suppression`
-
-Chaque navigation doit a minima inclure un **lien retour** vers la page parente de la section.
+Toutes les pages inventoriées possèdent désormais leur colonne ou réutilisent
+une navigation de section existante. Chaque navigation créée inclut un lien de
+retour vers la page parente.
 
 ---
 

@@ -20,5 +20,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'label_choix_remboursement_notifier_inscrit' => 'Oui, envoyer un reçu',
 	'label_remboursement_notifier_inscrit' => 'Envoyer un reçu de remboursement',
 	'maintenance_titre' => 'Maintenance des paiements',
+	'navigation_transaction' => 'Transaction',
+	'navigation_transaction_abandon' => 'Annuler la transaction',
+	'navigation_transaction_remboursement' => 'Rembourser la transaction',
+	'navigation_transaction_suppression' => 'Supprimer la transaction',
 	'prets_libelle_mode_paiement' => 'Mode de paiement',
 );

@@ -8,6 +8,12 @@ $pages = array(
 	),
 	'plugins/association-compta' => array(
 		'export_activites_compta' => 'comptes',
+		'editer_asso_comptes' => 'comptes',
+		'editer_asso_destinations' => 'destinations',
+		'editer_asso_plan' => 'plan_comptable',
+		'destination_comptable_import' => 'comptes',
+		'plan_comptable_import' => 'comptes',
+		'migration_donnees_comptables' => 'comptes',
 	),
 	'plugins/association-groupes' => array(
 		'benevoles' => 'adherents',
@@ -15,6 +21,24 @@ $pages = array(
 	'plugins/association-adhesions' => array(
 		'recherche_avancee' => 'adherents',
 		'cotisation_suppression' => 'cotisations',
+	),
+	'plugins/association-dons' => array(
+		'editer_asso_dons' => 'dons',
+	),
+	'plugins/association-prets' => array(
+		'editer_asso_ressources' => 'ressources',
+	),
+	'plugins/association-ventes' => array(
+		'editer_asso_ventes' => 'ventes',
+	),
+	'plugins/association-paiements' => array(
+		'transaction' => 'comptes',
+		'transaction_abandon' => 'transaction',
+		'transaction_remboursement' => 'transaction',
+		'transaction_suppression' => 'transaction',
+	),
+	'plugins/association-communication' => array(
+		'notifications' => 'configurer_association',
 	),
 );
 
@@ -44,6 +68,12 @@ foreach ($pages as $plugin => $definitions) {
 			$erreurs[] = "Retour de navigation incomplet : $page";
 		}
 	}
+}
+
+$hierarchie_comptes = "$racine/plugins/association-compta/prive/squelettes/hierarchie/comptes.html";
+if (!is_file($hierarchie_comptes)
+	|| !str_contains(file_get_contents($hierarchie_comptes), '<strong class="on">')) {
+	$erreurs[] = 'Hiérarchie absente : comptes';
 }
 
 if ($erreurs) {
