@@ -1995,3 +1995,11 @@ Les colonnes Informations et Message du suivi, ainsi que les libellés de
 transaction, mode et paiement en attente des lignes d'adhérents, utilisent
 désormais le domaine `association_evenements`. Un test protège ces trois vues.
 La suite locale atteint 123 tests, tous valides.
+
+Le commit `13cdc423` est déployé sur test-fiafe avec les quatre empreintes de
+l'artefact Git conformes. Événements reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, Suivi des inscriptions affiche la colonne
+Informations et la fiche de l'auteur 1 affiche la colonne Message, sans erreur
+ni clé brute. Cette fiche ne contient pas de paiement en attente permettant de
+matérialiser son infobulle ; sa structure et sa traduction restent couvertes
+par le test automatisé. Aucune action n'a été déclenchée.
