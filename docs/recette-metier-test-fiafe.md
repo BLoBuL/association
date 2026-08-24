@@ -846,3 +846,29 @@ parcours Chrome authentifié est bien servi. La tentative de forcer les largeurs
 390/768/1440 dans cette session Chrome est restée à la largeur native de 1920
 pixels ; elle ne constitue donc pas une preuve responsive et devra être rejouée
 sur une surface acceptant réellement l'émulation de viewport.
+
+## Lot 63 — matrice navigateur de la suite autonome
+
+Une passe Chrome authentifiée a ensuite ouvert les huit pages privées fournies
+par la navigation distribuée : Adhérents, Cotisations, Activités, Bénévoles,
+Dons, Comptabilité, Prêts et Paramètres. Chaque page possède son titre et son
+contenu métier, sans fatal ni erreur d'exécution. Les écrans exposent notamment
+les filtres de cotisation, la liste des activités, les actions de dons, les
+totaux comptables, les ressources de prêts et les onglets de configuration
+composés par les modules.
+
+La matrice publique couvre les cinq usages réellement portés par les sources
+historiques FO et les modules autonomes :
+
+- `inscription` : formulaire d'inscription ou message connecté ;
+- `profil` : fiche adhérent et édition du compte ;
+- `newsletter` : abonnement public fourni par Communication ;
+- `ressources` : catalogue public fourni par Prêts ;
+- `evenement&id_evenement=230` : contenu, portfolio conditionnel et formulaire
+  d'inscription fourni par Événements.
+
+Ces cinq pages sont servies dans le squelette standard SPIP 4, avec leurs
+formulaires présents et sans fatal. Les autres modules (Comptabilité, Dons,
+Groupes, Paiements et Ventes) conservent leurs écrans BO ou leurs modèles
+embarquables : les sources historiques BANK/CORE/FO n'y définissent pas de page
+publique autonome supplémentaire à recopier.
