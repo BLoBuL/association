@@ -223,6 +223,14 @@ foreach (array('auto' => 'ok', 'pre-paiement' => 'demande', 'post-paiement' => '
 function association_paiements_transaction_modifier($id_transaction, array $valeurs) {
     return sql_updateq('spip_transactions', $valeurs, 'id_transaction=' . intval($id_transaction));
 }
+function association_compta_ecriture_lire($id_compte) {
+    return $GLOBALS['test_comptes'][intval($id_compte)] ?? array();
+}
+function association_compta_ecriture_modifier($id_compte, array $valeurs) {
+    $id_compte = intval($id_compte);
+    $GLOBALS['test_comptes'][$id_compte] = array_merge($GLOBALS['test_comptes'][$id_compte] ?? array(), $valeurs);
+    return $id_compte;
+}
 
 test_reset('auto', 0);
 $resultat = api_traiter_cotisation(array(

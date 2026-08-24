@@ -43,6 +43,12 @@ function association_compta_ecriture_creer(array $donnees) {
 	return (int) sql_insertq('spip_asso_comptes', association_compta_ecriture_normaliser($donnees));
 }
 
+function association_compta_ecriture_lire($id_compte) {
+	$id_compte = (int) $id_compte;
+	if ($id_compte <= 0) return array();
+	return sql_fetsel('*', 'spip_asso_comptes', 'id_compte=' . $id_compte) ?: array();
+}
+
 function association_compta_ecriture_modifier($id_compte, array $donnees) {
 	$id_compte = (int) $id_compte;
 	if ($id_compte <= 0) {

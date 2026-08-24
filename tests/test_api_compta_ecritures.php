@@ -10,7 +10,7 @@ $domaines = array(
 	'Événements' => file_get_contents($racine . '/plugins/association-evenements/inc/association_evenements_comptabilite.php'),
 );
 
-foreach (array('association_compta_ecriture_creer', 'association_compta_ecriture_modifier') as $fonction) {
+foreach (array('association_compta_ecriture_lire', 'association_compta_ecriture_creer', 'association_compta_ecriture_modifier') as $fonction) {
 	if (!str_contains($api, 'function ' . $fonction . '(')) {
 		fwrite(STDERR, "API comptable absente: $fonction.\n");
 		exit(1);

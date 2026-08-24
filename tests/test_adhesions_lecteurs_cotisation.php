@@ -7,6 +7,7 @@ $recherche = file_get_contents($racine . 'inc/adherents_search_context.php');
 $recherche_avancee = file_get_contents($racine . 'formulaires/inc/adherents_recherche_avancee.php');
 $justificatifs = file_get_contents($racine . 'action/valider_justificatifs_cotisation.php');
 $cotisations = file_get_contents($racine . 'inc/cotisations.php');
+$stockage = file_get_contents($racine . 'inc/cotisations_stockage.php');
 $erreurs = array();
 
 foreach (array(
@@ -47,6 +48,11 @@ foreach (array(
 }
 if (strpos($cotisations, "sql_countsel('spip_asso_comptes', 'id_transaction='") !== false) {
 	$erreurs[] = 'La détection des paiements en cours lit encore les statuts historiques.';
+}
+if (strpos($stockage, 'association_compta_ecriture_lire(') === false
+	|| strpos($stockage, 'association_compta_ecriture_modifier(') === false
+	|| substr_count($stockage, 'spip_asso_comptes') > 2) {
+	$erreurs[] = 'Le stockage Cotisations contourne encore l API Comptabilite hors colonne transitoire.';
 }
 
 $acces_comptables_autorises = array(

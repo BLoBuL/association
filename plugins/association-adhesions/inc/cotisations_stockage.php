@@ -11,7 +11,8 @@ function association_cotisation_lire_par_compte($id_compte) {
 	$id_compte = (int) $id_compte;
 	$cotisation = sql_fetsel('*', 'spip_asso_cotisations', 'id_compte=' . $id_compte);
 	if (!$cotisation) return array();
-	$compte = $id_compte ? sql_fetsel('*', 'spip_asso_comptes', 'id_compte=' . $id_compte) : array();
+	include_spip('inc/association_compta_ecritures');
+	$compte = association_compta_ecriture_lire($id_compte);
 	return array_merge((array) $compte, $cotisation, array(
 		'reinscription' => $cotisation['inscription'],
 		'statut_cotisation' => $cotisation['statut'],
@@ -23,7 +24,8 @@ function association_cotisation_lire_par_compte($id_compte) {
  */
 function association_cotisation_synchroniser_depuis_compte($id_compte, $donnees = array()) {
 	$id_compte = (int) $id_compte;
-	$compte = $id_compte ? sql_fetsel('*', 'spip_asso_comptes', 'id_compte=' . $id_compte) : array();
+	include_spip('inc/association_compta_ecritures');
+	$compte = association_compta_ecriture_lire($id_compte);
 	if (!$compte) {
 		return 0;
 	}
@@ -76,11 +78,8 @@ function association_cotisation_rattacher_compte($id_compte, $id_cotisation) {
 	$id_compte = (int) $id_compte;
 	$id_cotisation = (int) $id_cotisation;
 	if ($id_compte && $id_cotisation) {
-		sql_updateq(
-			'spip_asso_comptes',
-			array('objet' => 'cotisation', 'id_objet' => $id_cotisation),
-			'id_compte=' . $id_compte
-		);
+		include_spip('inc/association_compta_ecritures');
+		association_compta_ecriture_modifier($id_compte, array('objet' => 'cotisation', 'id_objet' => $id_cotisation));
 	}
 }
 
@@ -104,6 +103,7 @@ function association_cotisation_statut_modifier($id_compte, $statut) {
 	// sites historiques. Aucun lecteur métier de la suite ne l'utilise plus.
 	$table_compte = sql_showtable('spip_asso_comptes', true);
 	if (!empty($table_compte['field']['statut_cotisation'])) {
+		// Colonne transitoire hors du contrat normalisé de Comptabilité.
 		sql_updateq('spip_asso_comptes', array('statut_cotisation' => $statut), 'id_compte=' . $id_compte);
 	}
 	return true;
