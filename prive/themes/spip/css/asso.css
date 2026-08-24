@@ -1156,22 +1156,6 @@ ul {
     margin-left: 0;
     margin-right: 0;
 }
-/*STYLE DU FORMULAIRE DE CONFIGURATION D'UN EVENEMENT*/
-.formulaire_editer_evenement .edition li.editer.editer_inscription {
-    padding: 0 20px;
-    background-color: #e2f28e;
-}
-.formulaire_editer_evenement .edition li.editer.editer_inscription .choix {
-    display: block;
-    font-size: 1.2em;
-    padding: 1em 2.5%;
-}
-/*STYLE DU FORMULAIRE D'EDITION D'UN ADHERENT*/
-.formulaire_editer_auteur .editer_pgp,
-.formulaire_editer_auteur .editer_nom_site,
-.formulaire_editer_auteur .editer_url_site {
-    display: none;
-}
 .tooltip {
     position: relative;
     display: inline-block;

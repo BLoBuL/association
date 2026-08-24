@@ -953,3 +953,9 @@ body.cotisations .inline-filters li a.ajax:active {
         grid-column: 1 / -1;
     }
 }
+/* Les champs éditoriaux de site ne font pas partie du profil d'adhésion. */
+.formulaire_editer_auteur .editer_pgp,
+.formulaire_editer_auteur .editer_nom_site,
+.formulaire_editer_auteur .editer_url_site {
+    display: none;
+}

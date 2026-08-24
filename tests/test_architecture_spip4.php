@@ -427,6 +427,13 @@ $verifier(
 		&& strpos($css_socle, 'font-size: 60px') === false,
 	'La feuille privée du socle ne doit plus embarquer un thème public étranger à SPIP.'
 );
+$verifier(
+	strpos($css_socle, '.formulaire_editer_evenement') === false
+		&& strpos($css_socle, '.formulaire_editer_auteur') === false
+		&& strpos($css_evenements, '.formulaire_editer_evenement') !== false
+		&& strpos($css_adhesions, '.formulaire_editer_auteur') !== false,
+	'Les adaptations des formulaires doivent appartenir à leur module métier.'
+);
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
