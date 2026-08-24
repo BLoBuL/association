@@ -42,17 +42,11 @@ function asso_supprimer_transactions_orphelines($dry_run = true, $lot = 1000) {
         $where_formidable = 'NOT (t.tracking_id>0 AND t.parrain LIKE ' . sql_quote('formidable:%') . ')';
     }
 
-    // Conditions liées aux objets de l'application : utiliser NOT EXISTS pour éviter les duplications dues aux JOIN
-    $where_comptes = 'NOT EXISTS (SELECT 1 FROM spip_asso_comptes AS c WHERE c.id_transaction = t.id_transaction)';
-    $where_activites = 'NOT EXISTS (SELECT 1 FROM spip_asso_activites AS a WHERE a.id_transaction = t.id_transaction)';
-
     // Statut de la transaction
     $where_statut = 't.statut<>' . sql_quote('ok');
 
     // Composer la clause WHERE finale depuis les morceaux non vides
     $where_parts = array_filter([
-        $where_comptes,
-        $where_activites,
         $where_statut,
         $where_date,
         $where_commandes,
@@ -74,6 +68,11 @@ function asso_supprimer_transactions_orphelines($dry_run = true, $lot = 1000) {
     while ($row = sql_fetch($res)) {
         $ids[] = intval($row['id_transaction']);
     }
+    $references = pipeline('association_paiements_transactions_references', array(
+        'args' => array('ids_transactions' => $ids),
+        'data' => array(),
+    ));
+    $ids = array_values(array_diff($ids, array_unique(array_map('intval', (array) $references))));
     if (!$ids) return ['supprimees' => 0];
 
     $in = sql_in('id_transaction', $ids);

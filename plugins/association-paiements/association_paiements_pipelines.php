@@ -87,16 +87,24 @@ function association_bank_redirige_apres_retour_transaction($flux)
 function association_paiements_association_maintenance_auteurs_encaisses($flux) {
 	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_auteurs'] ?? array()))));
 	if (!$ids) { return $flux; }
-	$res = sql_select(
-		'DISTINCT t.id_auteur',
-		'spip_transactions AS t',
-		sql_in('id_auteur', $ids) . ' AND t.statut=' . sql_quote('ok')
-		. ' AND ('
-		. 'EXISTS (SELECT 1 FROM spip_asso_comptes AS c WHERE c.id_transaction = t.id_transaction)'
-		. ' OR EXISTS (SELECT 1 FROM spip_asso_activites AS a WHERE a.id_transaction = t.id_transaction)'
-		. ')'
+	$transactions = sql_allfetsel(
+		'id_transaction,id_auteur',
+		'spip_transactions',
+		sql_in('id_auteur', $ids) . ' AND statut=' . sql_quote('ok')
 	);
-	while ($row = sql_fetch($res)) { $flux['data'][] = intval($row['id_auteur']); }
+	$par_id = array();
+	foreach ($transactions ?: array() as $transaction) {
+		$par_id[(int) $transaction['id_transaction']] = (int) $transaction['id_auteur'];
+	}
+	$references = pipeline('association_paiements_transactions_references', array(
+		'args' => array('ids_transactions' => array_keys($par_id)),
+		'data' => array(),
+	));
+	foreach (array_unique(array_map('intval', (array) $references)) as $id_transaction) {
+		if (!empty($par_id[$id_transaction])) {
+			$flux['data'][] = $par_id[$id_transaction];
+		}
+	}
 	$flux['data'] = array_values(array_unique(array_map('intval', (array) $flux['data'])));
 	return $flux;
 }

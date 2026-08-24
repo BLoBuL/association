@@ -22,6 +22,22 @@ function association_compta_association_paiements_reglement_traiter($flux) {
 	return $flux;
 }
 
+/**
+ * Signaler à Paiements les transactions référencées par le journal comptable.
+ */
+function association_compta_association_paiements_transactions_references($flux) {
+	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_transactions'] ?? array()))));
+	if (!$ids) {
+		return $flux;
+	}
+	$res = sql_select('DISTINCT id_transaction', 'spip_asso_comptes', sql_in('id_transaction', $ids));
+	while ($row = sql_fetch($res)) {
+		$flux['data'][] = (int) $row['id_transaction'];
+	}
+	$flux['data'] = array_values(array_unique(array_filter(array_map('intval', (array) $flux['data']))));
+	return $flux;
+}
+
 function association_compta_association_config_cli_registre($flux) {
 	include_spip('inc/association_compta_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_compta_config_cli_definitions());

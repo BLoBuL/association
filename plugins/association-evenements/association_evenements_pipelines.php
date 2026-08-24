@@ -21,6 +21,22 @@ function association_evenements_association_paiements_reglement_traiter($flux) {
 	return $flux;
 }
 
+/**
+ * Signaler à Paiements les transactions référencées par une inscription.
+ */
+function association_evenements_association_paiements_transactions_references($flux) {
+	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_transactions'] ?? array()))));
+	if (!$ids) {
+		return $flux;
+	}
+	$res = sql_select('DISTINCT id_transaction', 'spip_asso_activites', sql_in('id_transaction', $ids));
+	while ($row = sql_fetch($res)) {
+		$flux['data'][] = (int) $row['id_transaction'];
+	}
+	$flux['data'] = array_values(array_unique(array_filter(array_map('intval', (array) $flux['data']))));
+	return $flux;
+}
+
 function association_evenements_association_paiements_redirection_transaction($flux) {
 	if (is_string($flux['data']) && $flux['data'] !== '') {
 		return $flux;

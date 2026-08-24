@@ -53,6 +53,7 @@
 	<pipeline nom="association_paiements_reglement_traiter" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_paiements_redirection_transaction" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_paiements_remboursement_traiter" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="association_paiements_transactions_references" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_compta_migration_metiers" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_compta_autoriser_ecriture" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_compta_objets_declarer" inclure="association_evenements_pipelines.php" />
