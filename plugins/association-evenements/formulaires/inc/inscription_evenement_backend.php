@@ -2130,12 +2130,13 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
         $doit_notifier = ($prive_ou_public !== 'prive')
             || !empty($post['notifier_adherent'])
             || !empty($post['notifier']);
-        if ($doit_notifier) {
+        $communication_active = association_evenements_integration_active('association_communication');
+        if ($doit_notifier && $communication_active) {
             notifier_inscription_activite($id_activite_result, $id_evenement, $type, $prive_ou_public);
         }
 
         // inscription mailing list en asynchrone pour fluidifier la validation
-        if (!empty($data_form['premier_inscrit']['email'])) {
+        if ($communication_active && !empty($data_form['premier_inscrit']['email'])) {
             $job_id = job_queue_add(
                 'inscrire_participant_mailsubscriber',
                 'Newsletter - inscription activite - ' . intval($id_activite_result),

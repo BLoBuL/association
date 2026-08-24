@@ -137,7 +137,10 @@ function association_test_run_traiter_suite() {
         },
         'public_simple_payant_sans_paiements_persiste_sans_transaction' => function () {
             association_test_reset_env(array(
-                'plugins' => array('association_paiements' => false),
+                'plugins' => array(
+                    'association_paiements' => false,
+                    'association_communication' => false,
+                ),
                 'events' => array(
                     1 => array(
                         'payant' => true,
@@ -163,6 +166,7 @@ function association_test_run_traiter_suite() {
             association_test_assert_contains('/public/evenement?id_evenement=1', $res['redirect'], 'Sans Paiements, revenir sur la fiche evenement');
             association_test_assert_same(1, count($activites), 'Le tarif payant doit rester enregistrable sans Paiements');
             association_test_assert_same(0, count(association_test_db_table('spip_transactions')), 'Aucune transaction ne doit etre creee sans Paiements');
+            association_test_assert_same(0, count($GLOBALS['_TEST_SIDE_EFFECTS']['jobs']), 'Aucun message ne doit etre planifie sans Communication');
             $activite = reset($activites);
             association_test_assert_same(0, intval($activite['id_transaction'] ?? 0), 'L identifiant de transaction doit rester nullable');
             association_test_assert_true(!empty($activite['tarifs_selectionnes']), 'Le detail du tarif doit rester porte par l inscription');

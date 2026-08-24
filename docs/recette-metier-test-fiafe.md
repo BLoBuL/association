@@ -2515,3 +2515,35 @@ Cette campagne a révélé un défaut du compilateur de recette : il considérai
 l'absence de constante d'un module désactivé comme une erreur. Il utilise
 désormais les constantes réellement chargées comme autorité et ignore
 normalement les compléments facultatifs inactifs.
+
+## Lot 192 - inscription payante avec Événements seul
+
+La recette publique a ensuite isolé le socle et Événements, en désactivant les
+huit autres modules métier sans supprimer leurs tables. Une catégorie
+temporaire de type `indifferent`, au tarif générique de 12,50 euros, a été liée
+à l'événement 231. À 390 pixels, Chrome affiche ce tarif et le formulaire
+visiteur complet sans erreur ni débordement.
+
+La première soumission a révélé une régression réelle : en l'absence de
+Paiements, le traitement exigeait encore qu'une transaction soit créée puis
+relue. Le correctif conserve tous les contrôles serveur sur le tarif, persiste
+l'inscription et son détail tarifaire, mais laisse `id_transaction` à zéro et
+revient sur la fiche événement lorsque la capacité Paiements est absente.
+
+Après déploiement du commit `256f1b47`, la même soumission navigateur réussit.
+La base confirme une activité `preinscrit`, un inscrit, aucune transaction et
+le tarif de 12,50 euros dans `tarifs_selectionnes`. Le scénario automatique
+correspondant porte la suite Événements à 16 cas réussis ; les 142 points
+d'entrée `tests/test_*.php` restent tous verts.
+
+L'activité, l'abonnement éventuel et la catégorie temporaires ont ensuite été
+supprimés. Les huit modules désactivés ont été réactivés, le cache vidé et
+l'état final retrouve les dix plugins de la suite actifs. Les erreurs SQL
+datées de 00:02 à 00:03 dans les anciens journaux correspondent à la phase de
+réinitialisation des tables ; aucun fatal ou erreur récent n'est présent après
+le parcours corrigé et la restauration.
+
+La recette privée post-réinitialisation reste distincte : le contexte Chrome
+de cette campagne ne possède pas de session SPIP authentifiée. Les preuves BO
+antérieures, les tests CLI et la compilation sont valides, mais aucune nouvelle
+preuve visuelle BO authentifiée n'est revendiquée pour ce lot.
