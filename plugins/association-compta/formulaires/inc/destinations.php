@@ -133,7 +133,6 @@ function association_editeur_destinations($destination, $unique='', $defaut='')
         return $res;
     }
 
-    $res = "<script type='text/javascript' src='".find_in_path("javascript/jquery.destinations_form.js")."'></script>";
     $res .= '<label for="destination"><strong>'
         . _T('association_compta:destination')
         . '&nbsp;:</strong></label>'
@@ -153,11 +152,11 @@ function association_editeur_destinations($destination, $unique='', $defaut='')
                 $res .= '<li class="editer_montant_dest['.$idIndex.']"><input name="montant_dest['.$idIndex.']" value="'
                     . association_nbrefr(association_recupere_montant($destMontant))
                     . '" type="text" id="montant_dest['.$idIndex.']" /></li>'
-                    . "<button class='destButton' type='button' onClick='addFormField(); return false;'>+</button>";
+                    . "<button class='destButton association-compta-destination-ajouter' type='button'>+</button>";
             }
             $res .= '</ul></div>';
             if ($idIndex>0)	{
-                $res .= "<button class='destButton' type='button' onClick='removeFormField(\"#row".$idIndex."\"); return false;'>-</button>";
+                $res .= "<button class='destButton association-compta-destination-retirer' type='button' data-destination-row='row".$idIndex."'>-</button>";
             }
             $idIndex++;
         }
@@ -165,19 +164,18 @@ function association_editeur_destinations($destination, $unique='', $defaut='')
         if ($defaut!='') {
             $liste_destination = preg_replace('/(value=\''.$defaut.'\')/', '$1 selected="selected"', $liste_destination);
         }
-        // TODO: internationalization
         $res .= '<div id="row1" class="formo">'
             . '<ul>'
-            . '<li title="Destination comptable" class="editer_id_dest[1]">'
+            . '<li title="' . attribut_html(_T('association_compta:destination')) . '" class="editer_id_dest[1]">'
             . '<select name="id_dest[1]" id="id_dest[1]">'
             . $liste_destination
             . '</select>'
             . '</li>';
         if (!$unique) {
-            $res .= '<li title="Montant" class="editer_montant_dest[1]">'
+            $res .= '<li title="' . attribut_html(_T('association_compta:montant')) . '" class="editer_montant_dest[1]">'
                 . '<input name="montant_dest[1]" value="0" type="text" id="montant_dest[1]"/>'
                 . '</li>'
-                . "<button class='destButton' type='button' onClick='addFormField(); return false;'>+</button>";
+                . "<button class='destButton association-compta-destination-ajouter' type='button'>+</button>";
         }
         //UPDATE: desactivation de la fermeture de la div qui mettait du boxon dans l'ajout de cotisation..
         $res .= '</ul></div>';

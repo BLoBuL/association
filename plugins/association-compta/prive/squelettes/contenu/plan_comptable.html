@@ -13,7 +13,7 @@
 	<input type="hidden" name="exec" value="plan_comptable" />
 	<input type="hidden" name="classe" value="[(#GET{classe}|attribut_html)]" />
 	<label for="plan-active"><:association_compta:plan_comptable:></label>
-	<select name="active" id="plan-active" onchange="this.form.submit()">
+	<select name="active" id="plan-active" class="association-compta-submit-on-change">
 		<option value="1"[(#GET{active}|=={1}|oui) selected="selected"]><:association_compta:plan_libelle_comptes_actifs:></option>
 		<option value="0"[(#GET{active}|=={0}|oui) selected="selected"]><:association_compta:plan_libelle_comptes_desactives:></option>
 	</select>

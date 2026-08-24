@@ -37,6 +37,7 @@
 	<utilise nom="commandes" />
 	<style source="prive/themes/spip/css/comptabilite.css" type="prive" />
 	<script source="javascript/association_compta.js" type="prive" />
+	<script source="javascript/jquery.destinations_form.js" type="prive" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_compta.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_compta.php" />
 </paquet>
