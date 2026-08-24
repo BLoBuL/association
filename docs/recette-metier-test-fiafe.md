@@ -1211,3 +1211,16 @@ Aucune action financière n'a été déclenchée.
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
+
+## Lot 111 — fin des styles explicites Adhésions et Prêts
+
+Les commits `3d4c5753` et `58ebfa7e` sont déployés depuis l'artefact SHA-256
+`bec560c12d3e33a1adca46198a4d711412e5ff9be5bd31229c9473c76946f16e`.
+La page Adhérents conserve sa recherche, ses filtres, ses treize résultats,
+ses cotisations, ses icônes et ses actions. La page Prêts conserve sa
+navigation, l'ajout d'une réservation, l'accès aux ressources et son état vide
+« Aucune ressource ». La recette est restée strictement en lecture seule.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
