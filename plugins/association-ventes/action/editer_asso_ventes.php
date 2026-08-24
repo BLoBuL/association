@@ -14,7 +14,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
     return;
 }
 
-include_spip('inc/comptes');
+include_spip('inc/association_ventes_comptabilite');
 
 function action_editer_asso_ventes($id_vente = null)
 {
@@ -37,8 +37,8 @@ function action_editer_asso_ventes($id_vente = null)
     $prix_vente =  association_recupere_montant(_request('prix_vente'));
 
     $journal = _request('journal');
-    $justification='[vente n&deg; '.$id_vente.'->vente'.$id_vente.'] - '.$article;
-    $commentaire=$_POST['commentaire'];
+    $justification='[vente n&deg; '.$id_vente.'->asso_vente'.$id_vente.'] - '.$article;
+    $commentaire=_request('commentaire');
     $recette=$quantite*$prix_vente;
 
     /* modification */
@@ -71,15 +71,19 @@ function ventes_modifier($date_vente, $article, $code, $acheteur, $id_acheteur, 
 
     if ($GLOBALS['association_metas']['pc_ventes']==$GLOBALS['association_metas']['pc_frais_envoi']) {
         /* si ventes et frais d'envoi sont associes a la meme reference, on modifie une seule operation */
-        modifier_compte_vente($id_compte, $date_vente, $recette+$frais_envoi, $justification, $journal);
+        association_ventes_compte_modifier($id_compte, $date_vente, $recette+$frais_envoi, $justification, $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_ventes']);
     } else { /* sinon on en modifie deux */
-        modifier_compte_vente($id_compte, $date_vente, $recette, $justification, $journal);
-        modifier_compte_vente_frais_envoi(
-            sql_getfetsel("id_compte", "spip_asso_comptes", "imputation=".$GLOBALS['association_metas']['pc_frais_envoi']." AND id_journal=$id_vente"),
-            $date_vente,
-            $frais_envoi,
-            $justification,
-            $journal
+        association_ventes_compte_modifier($id_compte, $date_vente, $recette, $justification, $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_ventes']);
+        $compte_frais = association_ventes_compte_lire($id_vente, $GLOBALS['association_metas']['pc_frais_envoi']);
+        association_ventes_compte_modifier(
+			$compte_frais['id_compte'] ?? 0,
+			$date_vente,
+			$frais_envoi,
+			$justification . ' - frais d\'envoi',
+			$journal,
+			$id_vente,
+			$id_acheteur,
+			$GLOBALS['association_metas']['pc_frais_envoi']
         );
     }
 }
@@ -98,13 +102,13 @@ function ventes_insert($date_vente, $article, $code, $acheteur, $id_acheteur, $q
         'prix_vente' => $prix_vente,
         'commentaire' => $commentaire));
 
-    $justification='[vente n&deg; '.$id_vente.'->vente'.$id_vente.'] - '.$article;
+    $justification='[vente n&deg; '.$id_vente.'->asso_vente'.$id_vente.'] - '.$article;
     if ($GLOBALS['association_metas']['pc_ventes']==$GLOBALS['association_metas']['pc_frais_envoi']) {
         /* si ventes et frais d'envoi sont associes a la meme reference, on ajoute une seule operation */
-        compte_vente($date_vente, $recette+$frais_envoi, $justification, $journal, $id_vente);
+        association_ventes_compte_creer($date_vente, $recette+$frais_envoi, $justification, $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_ventes']);
     } else { /* sinon on en insere deux */
-        compte_vente($date_vente, $recette, $justification, $journal, $id_vente);
-        compte_vente_frais_envoi($date_vente, $frais_envoi, $justification, $journal, $id_vente);
+        association_ventes_compte_creer($date_vente, $recette, $justification, $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_ventes']);
+        association_ventes_compte_creer($date_vente, $frais_envoi, $justification . ' - frais d\'envoi', $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_frais_envoi']);
     }
     return $id_vente;
 }

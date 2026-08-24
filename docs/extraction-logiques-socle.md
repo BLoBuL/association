@@ -878,3 +878,16 @@ La lecture accepte provisoirement l'ancien lien `id_journal` pour permettre
 l'édition et la suppression des données migrées. Le formulaire, l'action et la
 suppression utilisent tous la même résolution, tandis que Comptabilité ne
 conserve que ses primitives génériques.
+
+## Lot 73 : cycle comptable canonique des ventes
+
+Ventes possède à son tour son adaptateur comptable. Une vente et, lorsque les
+imputations diffèrent, ses frais d'envoi créent une ou deux écritures reliées
+par `objet='asso_vente'` et `id_objet`, avec l'acheteur réel dans `id_auteur`.
+La résolution reste compatible avec l'ancien `id_journal` et distingue les
+deux écritures par leur imputation.
+
+La modification normalise les liens et les justifications. La suppression
+efface toutes les écritures et destinations canoniques ou historiques de la
+sélection. Les quatre helpers Ventes ont quitté `inc/comptes.php`, qui ne
+conserve plus que les primitives et domaines dont Comptabilité est propriétaire.

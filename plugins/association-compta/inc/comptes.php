@@ -803,40 +803,6 @@ function supprimer_compte_activite($id_activite) {
 
 
 
-function compte_vente(
-    $date,
-    $montant,
-    $justification,
-    $journal,
-    $id_vente
-) {
-    return inserer_compte(
-        $date,
-        $montant,
-        0,
-        $justification,
-        $GLOBALS['association_metas']['pc_ventes'],
-        $journal,
-        $id_vente
-    );
-}
-function compte_vente_frais_envoi(
-    $date,
-    $montant,
-    $justification,
-    $journal,
-    $id_vente
-) {
-    return inserer_compte(
-        $date,
-        $montant,
-        0,
-        $justification.' - frais d\'envoi',
-        $GLOBALS['association_metas']['pc_frais_envoi'],
-        $journal,
-        $id_vente
-    );
-}
 
 /**
  * Enregistre une cotisation dans les comptes.
@@ -886,44 +852,6 @@ function compte_cotisation(
 
 
 
-
-
-function modifier_compte_vente(
-    $id_activite,
-    $date,
-    $montant,
-    $justification,
-    $journal
-) {
-    modifier_compte(
-        $id_activite,
-        $date,
-        $montant,
-        0,
-        $justification,
-        $GLOBALS['association_metas']['pc_ventes'],
-        $journal
-    );
-}
-
-
-function modifier_activite_vente_frais_envoi(
-    $id_activite,
-    $date,
-    $montant,
-    $justification,
-    $journal
-) {
-    modifier_compte(
-        $id_activite,
-        $date,
-        $montant,
-        0,
-        $justification.' - frais d\'envoi',
-        $GLOBALS['association_metas']['pc_frais_envoi'],
-        $journal
-    );
-}
 
 
 /**

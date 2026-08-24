@@ -12,6 +12,8 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
+include_spip('inc/association_ventes_comptabilite');
+
 function action_supprimer_ventes_dist() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
 	$securiser_action();
@@ -24,19 +26,20 @@ function action_supprimer_ventes_dist() {
 	if (!$ids) {
 		return;
 	}
-	$w = sql_in('id_vente', $ids);
-	sql_delete('spip_asso_ventes', $w);
+	$where_ventes = sql_in('id_vente', $ids);
+	sql_delete('spip_asso_ventes', $where_ventes);
 
-	// on recupere les id_compte correspondant aux ventes dans la table des comptes
-	$w = sql_in('id_journal', $ids);
-	$where = sql_in_select("id_compte", "id_compte", "spip_asso_comptes", $w . " AND imputation=".sql_quote($GLOBALS['association_metas']['pc_ventes']));
-	sql_delete('spip_asso_destination_op', $where);
-	sql_delete('spip_asso_comptes', $w . " AND imputation=".sql_quote($GLOBALS['association_metas']['pc_ventes']));
-	/* si ventes et frais d'envoi ne sont pas associes a la meme reference, on repete l'operation pour les operation associes aux frais d'envoi */
-	if ($GLOBALS['association_metas']['pc_ventes']!=$GLOBALS['association_metas']['pc_frais_envoi']) {
-		$where = sql_in_select("id_compte", "id_compte", "spip_asso_comptes", $w . " AND imputation=".sql_quote($GLOBALS['association_metas']['pc_frais_envoi']));
-		sql_delete('spip_asso_destination_op', $where);
-		sql_delete('spip_asso_comptes', $w . " AND imputation=".sql_quote($GLOBALS['association_metas']['pc_frais_envoi']));
-	}	
+	$where_lien = '(' . sql_in('id_objet', $ids) . " AND objet='asso_vente') OR " . sql_in('id_journal', $ids);
+	$imputations = array_values(array_unique(array_filter(array(
+		$GLOBALS['association_metas']['pc_ventes'] ?? '',
+		$GLOBALS['association_metas']['pc_frais_envoi'] ?? '',
+	), 'strlen')));
+	$where_comptes = '(' . $where_lien . ') AND ' . sql_in('imputation', $imputations);
+	$ids_comptes = sql_allfetsel('id_compte', 'spip_asso_comptes', $where_comptes);
+	$ids_comptes = array_map('intval', array_column($ids_comptes, 'id_compte'));
+	if ($ids_comptes) {
+		sql_delete('spip_asso_destination_op', sql_in('id_compte', $ids_comptes));
+	}
+	sql_delete('spip_asso_comptes', $where_comptes);
 }
 
