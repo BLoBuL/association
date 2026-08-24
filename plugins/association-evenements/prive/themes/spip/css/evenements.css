@@ -186,3 +186,20 @@
     font-size: 1.2em;
     padding: 1em 2.5%;
 }
+
+/* États des inscriptions et participations aux activités. */
+#tableau_inscriptions_activite tr.ok {
+    background-color: var(--statut-ok);
+}
+#tableau_inscriptions_activite tr.preinscrit,
+.tableau_participation_adherent .preinscrit {
+    background-color: var(--statut-prospect);
+}
+#tableau_inscriptions_activite tr.desinscrit,
+.tableau_participation_adherent .desinscrit {
+    background-color: var(--statut-sorti);
+}
+#tableau_inscriptions_activite tr.liste_attente,
+.tableau_participation_adherent tr.liste_attente {
+    background-color: #a8c3ff;
+}

@@ -1021,3 +1021,27 @@ body.cotisations .inline-filters li a.ajax:active {
     border-right: 1px solid #e1e1e1;
     color: white;
 }
+
+/* États propres aux adhérents, abonnements et cotisations. */
+.tableau_adherents tr.ok {
+    background-color: var(--statut-ok);
+}
+.tableau_adherents .statut_mailsubscriber.prepa,
+.tableau_adherents .statut_mailsubscriber.prop,
+.tableau_adherents tr.prospect,
+.tableau_cotisations_adherent tr.demande {
+    background-color: var(--statut-prospect);
+}
+.tableau_cotisations_adherent tr.attente,
+.tableau_adherents tr.prospect.8aconfirmer {
+    background-color: var(--statut-attente);
+}
+.tableau_adherents tr.echu {
+    background-color: var(--statut-echu);
+}
+.tableau_adherents tr.relance {
+    background-color: var(--statut-relance);
+}
+.tableau_adherents tr.sorti {
+    background-color: var(--statut-sorti);
+}

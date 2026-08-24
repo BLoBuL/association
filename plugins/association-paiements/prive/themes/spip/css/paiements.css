@@ -62,3 +62,15 @@
     color: white;
     display: block;
 }
+
+/* États des lignes de transaction dans les tableaux métier. */
+.tableau_transaction tr.commande,
+.tableau_transaction tr.attente {
+    background-color: var(--statut-prospect);
+}
+.tableau_transaction tr.abandon {
+    background-color: var(--statut-sorti);
+}
+.tableau_transaction tr.rembourse {
+    background-color: #a8c3ff;
+}

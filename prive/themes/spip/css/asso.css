@@ -733,57 +733,34 @@ div.table_page {
 li.ok,
 tr.ok,
 .liste_statuts li.ok,
-.tableau_adherents tr.ok,
-#tableau_inscriptions_activite tr.ok,
 .tooltip.inscrit {
     background-color: var(--statut-ok);
 }
 li.prospect,
 tr.prospect,
 
-.tableau_adherents .statut_mailsubscriber.prepa,
-.tableau_adherents .statut_mailsubscriber.prop,
 .liste_statuts li.prospect,
-.tableau_adherents tr.prospect,
-#tableau_inscriptions_activite tr.preinscrit,
-.tableau_transaction tr.commande,
-.tableau_transaction tr.attente,
-.tableau_participation_adherent .preinscrit,
-.tableau_cotisations_adherent tr.demande,
 .tooltip.preinscrit {
     background-color: var(--statut-prospect);
 }
-.tableau_cotisations_adherent tr.attente {
-    background-color: var(--statut-attente);
-}
 li.prospect.8aconfirmer,
 tr.prospect.8aconfirmer,
-.liste_statuts li.prospect.8aconfirmer,
-.tableau_adherents tr.prospect.8aconfirmer{
+.liste_statuts li.prospect.8aconfirmer {
     background-color: var(--statut-attente);
 }
 li.echu,
 tr.echu,
-.liste_statuts li.echu,
-.tableau_adherents tr.echu {
+.liste_statuts li.echu {
     background-color: var(--statut-echu);
 }
 li.relance,
 tr.relance,
-.liste_statuts li.relance,
-.tableau_adherents tr.relance {
+.liste_statuts li.relance {
     background-color: var(--statut-relance);
 }
-.liste_statuts li.sorti,
-.tableau_adherents tr.sorti,
-#tableau_inscriptions_activite tr.desinscrit,
-.tableau_transaction tr.abandon,
-.tableau_participation_adherent .desinscrit {
+.liste_statuts li.sorti {
     background-color: var(--statut-sorti);
 }
-#tableau_inscriptions_activite tr.liste_attente,
-.tableau_participation_adherent tr.liste_attente,
-.tableau_transaction tr.rembourse,
 .tooltip.attente {
     background-color: #a8c3ff;
 }
