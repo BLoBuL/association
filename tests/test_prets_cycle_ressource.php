@@ -38,6 +38,7 @@ prets_cycle_assert(association_prets_synchroniser_statut_ressource(0) === false,
 
 $racine = dirname(__DIR__) . '/plugins/association-prets';
 $schema = file_get_contents($racine . '/base/association_prets.php');
+$administration = file_get_contents($racine . '/association_prets_administrations.php');
 $ressource = file_get_contents($racine . '/formulaires/editer_asso_ressources.php');
 $pret = file_get_contents($racine . '/formulaires/editer_asso_pret.php');
 $suppression = file_get_contents($racine . '/action/supprimer_prets.php');
@@ -49,6 +50,13 @@ prets_cycle_assert(
 		&& str_contains($schema, "'KEY id_ressource' => 'id_ressource'")
 		&& str_contains($schema, "'KEY id_emprunteur' => 'id_emprunteur'"),
 	'Les identifiants relationnels des prêts ne sont pas typés et indexés.'
+);
+prets_cycle_assert(
+	str_contains($administration, "'1.1.1' => array(array('association_prets_migrer_identifiants_relationnels'))")
+		&& str_contains($administration, 'MODIFY id_ressource BIGINT NOT NULL')
+		&& str_contains($administration, 'MODIFY id_emprunteur BIGINT NOT NULL')
+		&& str_contains($administration, 'Identifiants de prêt invalides'),
+	'La migration ne contrôle ou ne convertit pas explicitement les identifiants historiques.'
 );
 prets_cycle_assert(
 	!str_contains($ressource, '//TODO: bug id ressource')

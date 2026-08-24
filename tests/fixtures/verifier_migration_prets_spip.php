@@ -24,7 +24,7 @@ if (!str_contains($type_ressource, 'bigint') || !str_contains($type_emprunteur, 
 	|| intval($pret['id_ressource']) !== $id_ressource
 	|| intval($pret['id_emprunteur']) <= 0
 	|| $pret['commentaire_sortie'] !== 'Fixture temporaire Association 4') {
-	fwrite(STDERR, "La migration 1.1.0 n'a pas conservé ou typé la fixture.\n");
+	fwrite(STDERR, "La migration 1.1.1 n'a pas conservé ou typé la fixture.\n");
 	exit(1);
 }
 
@@ -42,4 +42,4 @@ if (!$ok) {
 	fwrite(STDERR, "Le cycle ou le nettoyage de la fixture a échoué.\n");
 	exit(1);
 }
-echo "OK: migration Prêts 1.0.0 -> 1.1.0 conservée, cycle reserve/ok validé, fixture supprimée.\n";
+echo "OK: migration Prêts 1.0.0 -> 1.1.1 conservée, cycle reserve/ok validé, fixture supprimée.\n";

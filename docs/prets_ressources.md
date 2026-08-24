@@ -83,7 +83,7 @@ Le pret suit une logique simple:
 
 ## Identifiants et cohérence du cycle
 
-Depuis le schéma 1.1.0, `id_ressource` et `id_emprunteur` sont des identifiants
+Depuis le schéma 1.1.1, `id_ressource` et `id_emprunteur` sont des identifiants
 `BIGINT` indexés. La création et l'édition refusent une ressource inexistante.
 La suppression d'une ressource est refusée tant qu'un prêt historique lui est
 rattaché, afin de ne jamais créer de lien orphelin.
