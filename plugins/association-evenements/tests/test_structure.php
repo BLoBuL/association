@@ -17,10 +17,10 @@ foreach (array('type_inscrit', 'association', 'participants_json', 'visible_in_l
 	if (strpos($base, "'" . $champ . "'") === false) $erreurs[] = 'champ métier absent: ' . $champ;
 }
 if (strpos($admin, 'sql_drop_table') !== false) $erreurs[] = 'désinstallation destructive';
-if (!str_contains($champs_extras, "include_spip('association_evenements_options')")
+if (!str_contains($champs_extras, 'function association_champs_extras_meta')
 	|| str_contains($champs_extras, "include_spip('association_options')")
 	|| str_contains($champs_extras, '_DIR_PLUGIN_ASSOCIATION')) {
-	$erreurs[] = 'les champs extras doivent charger les options de leur propre plugin';
+	$erreurs[] = 'les champs extras doivent lire leur configuration sans charger le socle historique';
 }
 foreach (array('inc/actions', 'inc/editer', 'inc/autoriser') as $api) {
 	if (!str_contains($fonctions, "include_spip('$api')")) {

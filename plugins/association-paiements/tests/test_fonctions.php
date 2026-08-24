@@ -1,6 +1,7 @@
 <?php
 
 define('_ECRIRE_INC_VERSION', true);
+function include_spip($fichier) { return true; }
 function bank_afficher_mode($mode) { return strtoupper($mode); }
 require dirname(__DIR__) . '/association_paiements_fonctions.php';
 
