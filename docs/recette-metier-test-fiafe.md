@@ -1785,3 +1785,16 @@ actifs, Commandes est absent mais ses tables historiques restent lisibles. Le
 test autonome passe dans les dispositions monorepo et deployee, tous les
 squelettes compilent et l'accueil public repond en HTTP 200. Aucune donnee ni
 configuration n'a ete modifiee.
+
+## Lot 154 - titre et autorisation de la recherche avancee
+
+La premiere passe de la matrice privee a revele que la recherche avancee
+servait directement son formulaire sans H1, sans titre de page exploitable et
+sans garde d'autorisation dans son contenu. Le squelette utilise maintenant
+l'autorisation `adherents_menu`, un `h1.grostitre` traduit et le CVT existant.
+
+Les commits `e706d2f1` et `70ce843a` sont deployes sur test-fiafe. Le second
+rend aussi le test des titres compatible avec la disposition en plugins freres
+du serveur. Dans Chrome authentifie, la route affiche le titre et le H1
+« Recherche avancee des adherents » sans erreur ; le formulaire reste complet
+et n'a pas ete soumis. Les 297 squelettes et composants recompilent.
