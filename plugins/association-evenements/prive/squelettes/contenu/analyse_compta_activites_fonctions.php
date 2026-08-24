@@ -44,27 +44,15 @@ function analyse_compta_activites_stats_exercice($exercice, $type = 'toutes', $v
     $date_debut = $bornes['debut'];
     $date_fin = $bornes['prochain_debut'];
 
-    // Construire clause vu : supporte '>=0' pour inclure non validées
-    $vu_clause = '';
-    if (is_numeric($vu)) {
-        $vu_clause = " AND c.vu=" . intval($vu);
-    } elseif (is_string($vu) && preg_match('#^>=\s*0$#', $vu)) {
-        $vu_clause = " AND c.vu >= 0";
-    }
-
-    // Nouveau WHERE : inclure les écritures liées aux activités ET aux événements
-    $where = "(c.objet=" . sql_quote('evenement') . ")" .
-             " AND c.date >= " . sql_quote($date_debut) .
-             " AND c.date < " . sql_quote($date_fin) .
-             $vu_clause;
-
-    $res = sql_select(
-        'c.id_compte, c.recette, c.depense, c.id_transaction, t.statut, t.mode',
-        'spip_asso_comptes c LEFT JOIN spip_transactions t ON t.id_transaction = c.id_transaction',
-        $where
-    );
-
-    while ($row = sql_fetch($res)) {
+	include_spip('inc/association_compta_ecritures');
+	$ecritures = association_compta_ecritures_lister(array(
+		'objet' => 'evenement',
+		'date_debut' => $date_debut,
+		'date_fin' => $date_fin,
+		'vu' => analyse_compta_activites_normaliser_vu($vu),
+	));
+	$transactions = analyse_compta_activites_transactions($ecritures);
+	foreach ($ecritures as $row) {
         $r = floatval($row['recette']);
         $d = floatval($row['depense']);
         // Ignorer totalement les lignes vides (ni recette ni depense)
@@ -81,8 +69,9 @@ function analyse_compta_activites_stats_exercice($exercice, $type = 'toutes', $v
         if ($inclure) {
             $stats['total_operations']++;
             // Statut & mode : distinguer les écritures sans transaction
-            $statut = ($row['id_transaction'] ? ($row['statut'] ?: 'inconnu') : 'hors_transaction');
-            $mode   = ($row['id_transaction'] ? ($row['mode'] ?: 'inconnu') : 'hors_transaction');
+			$transaction = $transactions[(int) ($row['id_transaction'] ?? 0)] ?? array();
+			$statut = !empty($row['id_transaction']) ? (!empty($transaction['statut']) ? $transaction['statut'] : 'inconnu') : 'hors_transaction';
+			$mode = !empty($row['id_transaction']) ? (!empty($transaction['mode']) ? $transaction['mode'] : 'inconnu') : 'hors_transaction';
             if (!isset($stats['par_statut'][$statut])) {
                 $stats['par_statut'][$statut] = array('count' => 0, 'montant' => 0.0); }
             $stats['par_statut'][$statut]['count']++;
@@ -99,6 +88,22 @@ function analyse_compta_activites_stats_exercice($exercice, $type = 'toutes', $v
     }
 
     return $stats;
+}
+
+function analyse_compta_activites_normaliser_vu($vu) {
+	if (is_numeric($vu)) {
+		return (int) $vu;
+	}
+	return is_string($vu) && preg_match('#^>=\s*0$#', $vu) ? '>=0' : 1;
+}
+
+function analyse_compta_activites_transactions(array $ecritures) {
+	$ids = array_values(array_filter(array_unique(array_map('intval', array_column($ecritures, 'id_transaction')))));
+	if (!$ids) {
+		return array();
+	}
+	include_spip('inc/association_paiements_transactions');
+	return association_paiements_transactions_lire($ids);
 }
 
 /**
@@ -133,71 +138,59 @@ function analyse_compta_activites_lister_evenements_exercice($exercice, $type = 
     $date_fin = $bornes['prochain_debut'];
     $rows_index = array(); // index par id_evenement
 
-    // Construire clause vu
-    $vu_clause = '';
-    if (is_numeric($vu)) {
-        $vu_clause = " AND c.vu=" . intval($vu);
-    } elseif (is_string($vu) && preg_match('#^>=\s*0$#', $vu)) {
-        $vu_clause = " AND c.vu >= 0";
-    }
-
-    // 1) Écritures via ACTIVITES -> événements (objet='activite')
-    $where_activite = "c.objet=" . sql_quote('activite') .
-                      " AND c.date >= " . sql_quote($date_debut) .
-                      " AND c.date < " . sql_quote($date_fin) .
-                      $vu_clause;
-    $select_act = "a.id_evenement, e.titre, e.date_debut, e.date_fin, "
-                . "SUM(c.recette) AS total_recettes, SUM(c.depense) AS total_depenses, COUNT(c.id_compte) AS nb_ops";
-    $from_act = "spip_asso_comptes c "
-              . "INNER JOIN spip_asso_activites a ON a.id_activite = c.id_objet "
-              . "LEFT JOIN spip_evenements e ON e.id_evenement = a.id_evenement";
-    $res_act = sql_select($select_act, $from_act, $where_activite, "a.id_evenement", "e.date_debut ASC");
-    while ($row = sql_fetch($res_act)) {
-        $id = intval($row['id_evenement']);
-        $r = floatval($row['total_recettes']);
-        $d = floatval($row['total_depenses']);
-        if (!isset($rows_index[$id])) {
-            $rows_index[$id] = array(
-                'id_evenement' => $id,
-                'titre' => $row['titre'],
-                'date_evenement' => $row['date_debut'],
-                'recettes' => 0.0,
-                'depenses' => 0.0,
-                'operations' => 0,
-            );
-        }
-        $rows_index[$id]['recettes'] += $r;
-        $rows_index[$id]['depenses'] += $d;
-        $rows_index[$id]['operations'] += intval($row['nb_ops']);
-    }
-
-    // 2) Écritures directes sur EVENEMENTS (objet='evenement')
-    $where_evt = "c.objet=" . sql_quote('evenement') .
-                 " AND c.date >= " . sql_quote($date_debut) .
-                 " AND c.date < " . sql_quote($date_fin) .
-                 $vu_clause;
-    $select_evt = "c.id_objet AS id_evenement, e.titre, e.date_debut, e.date_fin, "
-                 . "SUM(c.recette) AS total_recettes, SUM(c.depense) AS total_depenses, COUNT(c.id_compte) AS nb_ops";
-    $from_evt = "spip_asso_comptes c LEFT JOIN spip_evenements e ON e.id_evenement = c.id_objet";
-    $res_evt = sql_select($select_evt, $from_evt, $where_evt, "c.id_objet", "e.date_debut ASC");
-    while ($row = sql_fetch($res_evt)) {
-        $id = intval($row['id_evenement']);
-        $r = floatval($row['total_recettes']);
-        $d = floatval($row['total_depenses']);
-        if (!isset($rows_index[$id])) {
-            $rows_index[$id] = array(
-                'id_evenement' => $id,
-                'titre' => $row['titre'],
-                'date_evenement' => $row['date_debut'],
-                'recettes' => 0.0,
-                'depenses' => 0.0,
-                'operations' => 0,
-            );
-        }
-        $rows_index[$id]['recettes'] += $r;
-        $rows_index[$id]['depenses'] += $d;
-        $rows_index[$id]['operations'] += intval($row['nb_ops']);
-    }
+	include_spip('inc/association_compta_ecritures');
+	$ecritures = association_compta_ecritures_lister(array(
+		'objets' => array('evenement', 'activite'),
+		'date_debut' => $date_debut,
+		'date_fin' => $date_fin,
+		'vu' => analyse_compta_activites_normaliser_vu($vu),
+	));
+	$ids_activites = array();
+	$ids_evenements = array();
+	foreach ($ecritures as $ecriture) {
+		if (($ecriture['objet'] ?? '') === 'activite') {
+			$ids_activites[] = (int) ($ecriture['id_objet'] ?? 0);
+		} else {
+			$ids_evenements[] = (int) ($ecriture['id_objet'] ?? 0);
+		}
+	}
+	$activites = array();
+	$ids_activites = array_values(array_filter(array_unique($ids_activites)));
+	if ($ids_activites) {
+		foreach (sql_allfetsel('id_activite,id_evenement', 'spip_asso_activites', sql_in('id_activite', $ids_activites)) as $activite) {
+			$activites[(int) $activite['id_activite']] = (int) $activite['id_evenement'];
+			$ids_evenements[] = (int) $activite['id_evenement'];
+		}
+	}
+	$evenements = array();
+	$ids_evenements = array_values(array_filter(array_unique($ids_evenements)));
+	if ($ids_evenements) {
+		foreach (sql_allfetsel('id_evenement,titre,date_debut,date_fin', 'spip_evenements', sql_in('id_evenement', $ids_evenements)) as $evenement) {
+			$evenements[(int) $evenement['id_evenement']] = $evenement;
+		}
+	}
+	foreach ($ecritures as $ecriture) {
+		$id = ($ecriture['objet'] ?? '') === 'activite'
+			? (int) ($activites[(int) ($ecriture['id_objet'] ?? 0)] ?? 0)
+			: (int) ($ecriture['id_objet'] ?? 0);
+		if ($id <= 0) {
+			continue;
+		}
+		$evenement = $evenements[$id] ?? array();
+		if (!isset($rows_index[$id])) {
+			$rows_index[$id] = array(
+				'id_evenement' => $id,
+				'titre' => $evenement['titre'] ?? '',
+				'date_evenement' => $evenement['date_debut'] ?? '',
+				'recettes' => 0.0,
+				'depenses' => 0.0,
+				'operations' => 0,
+			);
+		}
+		$rows_index[$id]['recettes'] += (float) ($ecriture['recette'] ?? 0);
+		$rows_index[$id]['depenses'] += (float) ($ecriture['depense'] ?? 0);
+		$rows_index[$id]['operations']++;
+	}
 
     // Transformation + filtrage selon type
     $rows = array();
