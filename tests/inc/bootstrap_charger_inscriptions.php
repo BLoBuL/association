@@ -394,6 +394,17 @@ function lire_config($path, $default = null) {
 }
 
 function pipeline($nom, $flux) {
+    if ($nom === 'association_paiements_reglement_traiter') {
+        foreach (array(
+            'association_evenements_association_paiements_reglement_traiter',
+            'association_adhesions_association_paiements_reglement_traiter',
+            'association_compta_association_paiements_reglement_traiter',
+        ) as $traiter) {
+            if (function_exists($traiter)) {
+                $flux = $traiter($flux);
+            }
+        }
+    }
     return $flux;
 }
 

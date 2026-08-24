@@ -1,7 +1,26 @@
 <?php
 
 if (!defined('_ECRIRE_INC_VERSION')) {
-    return;
+	return;
+}
+
+function association_compta_association_paiements_reglement_traiter($flux) {
+	if (!empty($flux['data']['traite'])) {
+		return $flux;
+	}
+	$transaction = is_array($flux['args']['transaction'] ?? null) ? $flux['args']['transaction'] : array();
+	$id_commande = (int) ($transaction['id_commande'] ?? 0);
+	if (!$id_commande) {
+		return $flux;
+	}
+	include_spip('inc/comptes');
+	association_commande_comptable_synchroniser($id_commande, array(
+		'id_transaction' => (int) ($flux['args']['id_transaction'] ?? 0),
+		'forcer_paiement' => true,
+		'source' => 'association_paiements_reglement_traiter',
+	));
+	$flux['data'] = array('traite' => true, 'domaine' => 'commandes');
+	return $flux;
 }
 
 function association_compta_association_config_cli_registre($flux) {

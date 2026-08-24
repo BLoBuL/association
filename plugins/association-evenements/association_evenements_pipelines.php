@@ -4,6 +4,23 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+function association_evenements_association_paiements_reglement_traiter($flux) {
+	if (!empty($flux['data']['traite'])) {
+		return $flux;
+	}
+	$id_transaction = (int) ($flux['args']['id_transaction'] ?? 0);
+	$activite = $id_transaction
+		? sql_fetsel('*', 'spip_asso_activites', 'id_transaction=' . $id_transaction)
+		: array();
+	if (!$activite) {
+		return $flux;
+	}
+	include_spip('inc/association_evenements_paiements');
+	association_evenements_reglement_traiter($activite, $flux['args']['transaction'] ?? array());
+	$flux['data'] = array('traite' => true, 'domaine' => 'evenements');
+	return $flux;
+}
+
 function association_evenements_association_config_cli_registre($flux) {
 	include_spip('inc/association_evenements_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_evenements_config_cli_definitions());

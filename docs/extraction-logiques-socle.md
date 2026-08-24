@@ -947,3 +947,16 @@ La validation d'une écriture après règlement Bank rejoint la même API
 reprend la date de l'inscription, applique l'imputation de participation et
 marque l'écriture vue. Paiements déclenche ce service dans son parcours actuel ;
 Comptabilité ne lit plus l'inscription pour cette transition.
+
+## Lot 80 : callback Bank distribué
+
+Paiements valide le signal Bank et charge uniquement la transaction, puis
+publie `association_paiements_reglement_traiter`. Événements traite une
+inscription et ses notifications, Adhésions une cotisation, et Comptabilité une
+commande. Chaque fournisseur marque le règlement traité afin d'éviter un second
+traitement.
+
+Le plugin Paiements ne lit plus `spip_asso_activites` ni
+`spip_asso_cotisations` dans le callback d'encaissement. Les textes de journal
+des inscriptions et l'implémentation de leur transition appartiennent désormais
+à Événements.

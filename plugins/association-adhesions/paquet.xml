@@ -36,6 +36,7 @@
 	<pipeline nom="post_edition" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="afficher_contenu_objet" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_compta_cotisation_synchroniser" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="association_paiements_reglement_traiter" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_preparer" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_adhesions_pipelines.php" />

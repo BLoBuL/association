@@ -220,6 +220,24 @@ function association_adhesions_association_compta_cotisation_synchroniser($flux)
     return $flux;
 }
 
+function association_adhesions_association_paiements_reglement_traiter($flux) {
+	if (!empty($flux['data']['traite'])) {
+		return $flux;
+	}
+	$id_transaction = (int) ($flux['args']['id_transaction'] ?? 0);
+	$cotisation = $id_transaction
+		? sql_fetsel('*', 'spip_asso_cotisations', 'id_transaction=' . $id_transaction)
+		: array();
+	if (!$cotisation) {
+		return $flux;
+	}
+	include_spip('inc/cotisations');
+	include_spip('inc/api_cotisations');
+	mise_a_jour_cotisation($cotisation, $flux['args']['transaction'] ?? array());
+	$flux['data'] = array('traite' => true, 'domaine' => 'adhesions');
+	return $flux;
+}
+
 
 function association_i3_admin_peut_ignorer_obligatoires($id_auteur)
 {

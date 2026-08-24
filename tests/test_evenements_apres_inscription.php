@@ -22,6 +22,7 @@ if (!function_exists('supprimer_compte_activite')) {
 }
 
 require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/association_pipelines.php';
+require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/association_evenements_pipelines.php';
 require_once ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-paiements/association_paiements_pipelines.php';
 include_spip('formulaires/desinscription_evenement_public');
 include_spip('inc/fonctions/validation_attente_automatique');
