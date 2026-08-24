@@ -1924,3 +1924,10 @@ plus rendus avec `<label>` mais avec `<span class="label">` ; la feuille privee
 conserve exactement leur presentation. Un ancien bloc commente et inactif de
 selection du contexte a ete retire. La suite locale atteint 119 tests, tous
 valides.
+
+Les commits `2a7a7b15` et `a423ffa7` sont deployes sur test-fiafe avec les
+empreintes de l'artefact Git conformes. La recette Chrome a detecte puis permis
+de corriger l'initialisation manquante de `periode_contexte` : l'URL
+`periode_contexte=entreprise` marque maintenant visuellement « Entreprises »
+comme sélectionné. Les pages Adherents et Cotisations n'ont plus de `<label>`
+orphelin dans leurs groupes de filtres et ne produisent aucune erreur.
