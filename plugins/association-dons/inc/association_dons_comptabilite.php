@@ -32,44 +32,24 @@ function association_dons_compte_lire($id_don) {
  * Créer l'écriture comptable canonique d'un don.
  */
 function association_dons_compte_creer($date, $montant, $journal, $bienfaiteur, $id_don, $id_auteur = 0) {
-	include_spip('inc/comptes');
-
-	return inserer_compte(
-		$date,
-		$montant,
-		0,
-		"[->asso_don{$id_don}] - {$bienfaiteur}",
-		$GLOBALS['association_metas']['pc_dons'] ?? '',
-		$journal,
-		(int) $id_auteur,
-		(int) $id_don,
-		'asso_don'
-	);
+	include_spip('inc/association_compta_ecritures');
+	return association_compta_ecriture_creer(array(
+		'date' => $date, 'recette' => $montant, 'depense' => 0,
+		'justification' => "[->asso_don{$id_don}] - {$bienfaiteur}",
+		'imputation' => $GLOBALS['association_metas']['pc_dons'] ?? '', 'journal' => $journal,
+		'id_auteur' => (int) $id_auteur, 'id_objet' => (int) $id_don, 'objet' => 'asso_don',
+	));
 }
 
 /**
  * Modifier et normaliser l'écriture comptable d'un don.
  */
 function association_dons_compte_modifier($id_compte, $date, $montant, $journal, $bienfaiteur, $id_don, $id_auteur = 0) {
-	include_spip('inc/comptes');
-	$id_compte = modifier_compte(
-		$id_compte,
-		$date,
-		$montant,
-		0,
-		"[->asso_don{$id_don}] - {$bienfaiteur}",
-		$GLOBALS['association_metas']['pc_dons'] ?? '',
-		$journal
-	);
-	if ($id_compte) {
-		sql_updateq('spip_asso_comptes', array(
-			'justification' => "[->asso_don{$id_don}] - {$bienfaiteur}",
-			'journal' => $journal,
-			'id_auteur' => (int) $id_auteur,
-			'id_objet' => (int) $id_don,
-			'objet' => 'asso_don',
-		), 'id_compte=' . (int) $id_compte);
-	}
-
-	return $id_compte;
+	include_spip('inc/association_compta_ecritures');
+	return association_compta_ecriture_modifier($id_compte, array(
+		'date' => $date, 'recette' => $montant, 'depense' => 0,
+		'justification' => "[->asso_don{$id_don}] - {$bienfaiteur}",
+		'imputation' => $GLOBALS['association_metas']['pc_dons'] ?? '', 'journal' => $journal,
+		'id_auteur' => (int) $id_auteur, 'id_objet' => (int) $id_don, 'objet' => 'asso_don',
+	));
 }

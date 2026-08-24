@@ -83,24 +83,15 @@ function association_evenements_compte_remboursement_creer($id_transaction, $id_
 	if (!$contexte_evenement) {
 		$contexte_evenement = gestions_places($id_evenement);
 	}
-	include_spip('inc/comptes');
+	include_spip('inc/association_compta_ecritures');
 	$titre = $contexte_evenement['evenement_titre'] ?? ('#' . $id_evenement);
-	return inserer_compte(
-		date('Y-m-d H:i:s'),
-		0,
-		(float) $transaction['montant'],
-		'Remboursement de ' . $activite['nom_inscrit'] . ' ' . $activite['prenom_inscrit'] . ' pour l\'activité "' . $titre . '"',
-		$GLOBALS['association_metas']['pc_activites_paiement'] ?? '101',
-		'activite_remboursement|' . $id_activite,
-		(int) $activite['id_auteur'],
-		$id_evenement,
-		'evenement',
-		'',
-		'',
-		'',
-		$id_transaction,
-		1
-	);
+	return association_compta_ecriture_creer(array(
+		'date' => date('Y-m-d H:i:s'), 'recette' => 0, 'depense' => (float) $transaction['montant'],
+		'justification' => 'Remboursement de ' . $activite['nom_inscrit'] . ' ' . $activite['prenom_inscrit'] . ' pour l\'activité "' . $titre . '"',
+		'imputation' => $GLOBALS['association_metas']['pc_activites_paiement'] ?? '101',
+		'journal' => 'activite_remboursement|' . $id_activite, 'id_auteur' => (int) $activite['id_auteur'],
+		'id_objet' => $id_evenement, 'objet' => 'evenement', 'id_transaction' => $id_transaction, 'vu' => 1,
+	));
 }
 
 function association_evenements_compte_inscription_creer($id_activite, $contexte_evenement = array()) {
@@ -122,26 +113,18 @@ function association_evenements_compte_inscription_creer($id_activite, $contexte
 	if (!$contexte_evenement) {
 		$contexte_evenement = gestions_places($id_evenement);
 	}
-	include_spip('inc/comptes');
+	include_spip('inc/association_compta_ecritures');
 	$titre = $contexte_evenement['evenement_titre'] ?? ('#' . $id_evenement);
 	$imputation = $transaction['statut'] === 'ok'
 		? ($GLOBALS['association_metas']['pc_activites_paiement'] ?? '101')
 		: ($GLOBALS['association_metas']['pc_activites_creance'] ?? '101');
-	return inserer_compte(
-		$activite['date'] ?: date('Y-m-d H:i:s'),
-		(float) $transaction['montant'],
-		0,
-		'Participation de ' . $activite['nom_inscrit'] . ' ' . $activite['prenom_inscrit'] . ' à l\'activité "' . $titre . '"',
-		$imputation,
-		'activite|' . $id_activite,
-		(int) $activite['id_auteur'],
-		$id_evenement,
-		'evenement',
-		'',
-		'',
-		'',
-		(int) $activite['id_transaction']
-	);
+	return association_compta_ecriture_creer(array(
+		'date' => $activite['date'] ?: date('Y-m-d H:i:s'), 'recette' => (float) $transaction['montant'], 'depense' => 0,
+		'justification' => 'Participation de ' . $activite['nom_inscrit'] . ' ' . $activite['prenom_inscrit'] . ' à l\'activité "' . $titre . '"',
+		'imputation' => $imputation, 'journal' => 'activite|' . $id_activite,
+		'id_auteur' => (int) $activite['id_auteur'], 'id_objet' => $id_evenement, 'objet' => 'evenement',
+		'id_transaction' => (int) $activite['id_transaction'],
+	));
 }
 
 function association_evenements_compte_inscription_actualiser($id_activite, $id_transaction) {
@@ -165,22 +148,12 @@ function association_evenements_compte_inscription_actualiser($id_activite, $id_
 	if ($id_compte <= 0) {
 		return association_evenements_compte_inscription_creer($id_activite);
 	}
-	include_spip('inc/comptes');
-	modifier_compte(
-		$id_compte,
-		$activite['date'] ?: date('Y-m-d H:i:s'),
-		(float) $transaction['montant'],
-		0,
-		'',
-		$GLOBALS['association_metas']['pc_activites_creance'] ?? '101',
-		$activite['journal'] ?? '',
-		$id_evenement,
-		'evenement',
-		null,
-		null,
-		null,
-		$id_transaction,
-		0
-	);
+	include_spip('inc/association_compta_ecritures');
+	association_compta_ecriture_modifier($id_compte, array(
+		'date' => $activite['date'] ?: date('Y-m-d H:i:s'), 'recette' => (float) $transaction['montant'], 'depense' => 0,
+		'imputation' => $GLOBALS['association_metas']['pc_activites_creance'] ?? '101',
+		'journal' => $activite['journal'] ?? '', 'id_objet' => $id_evenement, 'objet' => 'evenement',
+		'id_transaction' => $id_transaction, 'vu' => 0,
+	));
 	return $id_compte;
 }

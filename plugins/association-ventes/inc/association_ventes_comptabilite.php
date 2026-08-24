@@ -23,33 +23,19 @@ function association_ventes_compte_lire($id_vente, $imputation) {
 }
 
 function association_ventes_compte_creer($date, $montant, $justification, $journal, $id_vente, $id_auteur, $imputation) {
-	include_spip('inc/comptes');
-
-	return inserer_compte(
-		$date,
-		$montant,
-		0,
-		$justification,
-		$imputation,
-		$journal,
-		(int) $id_auteur,
-		(int) $id_vente,
-		'asso_vente'
-	);
+	include_spip('inc/association_compta_ecritures');
+	return association_compta_ecriture_creer(array(
+		'date' => $date, 'recette' => $montant, 'depense' => 0,
+		'justification' => $justification, 'imputation' => $imputation, 'journal' => $journal,
+		'id_auteur' => (int) $id_auteur, 'id_objet' => (int) $id_vente, 'objet' => 'asso_vente',
+	));
 }
 
 function association_ventes_compte_modifier($id_compte, $date, $montant, $justification, $journal, $id_vente, $id_auteur, $imputation) {
-	include_spip('inc/comptes');
-	$id_compte = modifier_compte($id_compte, $date, $montant, 0, $justification, $imputation, $journal);
-	if ($id_compte) {
-		sql_updateq('spip_asso_comptes', array(
-			'justification' => $justification,
-			'journal' => $journal,
-			'id_auteur' => (int) $id_auteur,
-			'id_objet' => (int) $id_vente,
-			'objet' => 'asso_vente',
-		), 'id_compte=' . (int) $id_compte);
-	}
-
-	return $id_compte;
+	include_spip('inc/association_compta_ecritures');
+	return association_compta_ecriture_modifier($id_compte, array(
+		'date' => $date, 'recette' => $montant, 'depense' => 0,
+		'justification' => $justification, 'imputation' => $imputation, 'journal' => $journal,
+		'id_auteur' => (int) $id_auteur, 'id_objet' => (int) $id_vente, 'objet' => 'asso_vente',
+	));
 }

@@ -1029,3 +1029,10 @@ Comptabilité expose désormais `association_compta_ecriture_creer()` et
 comptables en liste blanche. Adhésions utilise cette API sans transmettre ses
 anciens paramètres positionnels (`reinscription`, catégorie et statut), puis
 synchronise explicitement sa propre table de cotisations.
+
+## Lot 89 : adoption de l'API structurée
+
+Événements, Dons et Ventes rejoignent Adhésions sur l'API structurée. Les
+modifications mettent maintenant à jour en une seule opération la justification,
+le journal et le lien canonique à l'objet, au lieu de compléter l'ancien helper
+positionnel par un second `sql_updateq()`.

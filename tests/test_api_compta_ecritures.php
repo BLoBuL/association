@@ -3,6 +3,12 @@
 $racine = dirname(__DIR__);
 $api = file_get_contents($racine . '/plugins/association-compta/inc/association_compta_ecritures.php');
 $adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_comptabilite.php');
+$domaines = array(
+	'Adhésions' => $adhesions,
+	'Dons' => file_get_contents($racine . '/plugins/association-dons/inc/association_dons_comptabilite.php'),
+	'Ventes' => file_get_contents($racine . '/plugins/association-ventes/inc/association_ventes_comptabilite.php'),
+	'Événements' => file_get_contents($racine . '/plugins/association-evenements/inc/association_evenements_comptabilite.php'),
+);
 
 foreach (array('association_compta_ecriture_creer', 'association_compta_ecriture_modifier') as $fonction) {
 	if (!str_contains($api, 'function ' . $fonction . '(')) {
@@ -18,10 +24,11 @@ foreach (array('reinscription', 'id_categorie', 'statut_cotisation') as $champ_m
 		exit(1);
 	}
 }
-if (str_contains($adhesions, 'inserer_compte(') || str_contains($adhesions, 'modifier_compte(')
-	|| !str_contains($adhesions, 'association_compta_ecriture_creer(')
-	|| !str_contains($adhesions, 'association_compta_ecriture_modifier(')) {
-	fwrite(STDERR, "Adhésions n’utilise pas exclusivement l’API comptable structurée.\n");
-	exit(1);
+foreach ($domaines as $domaine => $source) {
+	if (str_contains($source, 'inserer_compte(') || str_contains($source, 'modifier_compte(')
+		|| !str_contains($source, 'association_compta_ecriture_creer(')) {
+		fwrite(STDERR, "$domaine n’utilise pas exclusivement l’API comptable structurée.\n");
+		exit(1);
+	}
 }
 echo "OK: l’API d’écriture comptable est structurée et sans champ métier de cotisation.\n";
