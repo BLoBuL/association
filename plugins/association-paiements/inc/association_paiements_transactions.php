@@ -47,9 +47,46 @@ function association_paiements_transaction_modifier($id_transaction, array $donn
 }
 
 function association_paiements_transaction_supprimer_non_encaissee($id_transaction) {
-	$transaction = association_paiements_transaction_lire($id_transaction);
-	if (!$transaction || ($transaction['statut'] ?? '') === 'ok') {
-		return false;
+	$resultat = association_paiements_transactions_supprimer_non_encaissees(array($id_transaction), false);
+	return $resultat['supprimes'] === 1;
+}
+
+/**
+ * Simuler ou supprimer en lot des transactions non encaissées.
+ *
+ * Les transactions encaissées sont toujours protégées et les identifiants
+ * absents sont ignorés.
+ */
+function association_paiements_transactions_supprimer_non_encaissees(array $ids_transactions, $dry_run = true) {
+	$transactions = association_paiements_transactions_lire($ids_transactions);
+	$eligibles = array();
+	$protegees = array();
+	foreach ($transactions as $id_transaction => $transaction) {
+		if (($transaction['statut'] ?? '') === 'ok') {
+			$protegees[] = (int) $id_transaction;
+		} else {
+			$eligibles[] = (int) $id_transaction;
+		}
 	}
-	return sql_delete('spip_transactions', 'id_transaction=' . (int) $id_transaction) !== false;
+	$nb = count($eligibles);
+	if (!$dry_run && $eligibles) {
+		$supprimees = sql_delete(
+			'spip_transactions',
+			sql_in('id_transaction', $eligibles) . " AND statut<>'ok'"
+		);
+		if ($supprimees === false) {
+			return array(
+				'supprimes' => 0,
+				'ids' => $eligibles,
+				'protegees' => $protegees,
+				'erreur' => 'suppression_transactions_echouee',
+			);
+		}
+		$nb = (int) $supprimees;
+	}
+	return array(
+		'supprimes' => $nb,
+		'ids' => $eligibles,
+		'protegees' => $protegees,
+	);
 }

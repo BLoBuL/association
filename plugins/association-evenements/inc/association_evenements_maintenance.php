@@ -50,11 +50,18 @@ function asso_supprimer_inscriptions_par_ids(array $ids_activite, $dry_run = tru
  */
 function asso_supprimer_transactions_inscriptions(array $inscriptions, $dry_run = true) {
     $ids_tx = array_values(array_unique(array_filter(array_map('intval', array_column($inscriptions, 'id_transaction')))));
-    if (!$ids_tx) return ['supprimes' => 0];
-
-    $in = sql_in('id_transaction', $ids_tx);
-    $nb = $dry_run ? sql_countsel('spip_transactions', $in) : sql_delete('spip_transactions', $in);
-    return ['supprimes' => intval($nb)];
+    if (!$ids_tx) return ['supprimes' => 0, 'ids_activite_supprimables' => array_column($inscriptions, 'id_activite')];
+    include_spip('inc/association_paiements_transactions');
+    $resultat = association_paiements_transactions_supprimer_non_encaissees($ids_tx, $dry_run);
+    $protegees = array_flip($resultat['protegees'] ?? array());
+    $resultat['ids_activite_supprimables'] = array_values(array_map('intval', array_column(array_filter(
+        $inscriptions,
+        function ($inscription) use ($protegees) {
+            $id_transaction = (int) ($inscription['id_transaction'] ?? 0);
+            return !$id_transaction || !isset($protegees[$id_transaction]);
+        }
+    ), 'id_activite')));
+    return $resultat;
 }
 
 /**
@@ -112,24 +119,28 @@ function asso_supprimer_participations_evenements_orphelines($dry_run = true, $l
     $tx_ids = [];
 
     $from = 'spip_asso_activites AS a
-             LEFT JOIN spip_evenements AS e ON e.id_evenement=a.id_evenement
-             LEFT JOIN spip_transactions AS t ON t.id_transaction=a.id_transaction';
+             LEFT JOIN spip_evenements AS e ON e.id_evenement=a.id_evenement';
 
-    $where = 'e.id_evenement IS NULL AND (a.id_transaction IS NULL OR a.id_transaction=0 OR (a.id_transaction>0 AND (t.id_transaction IS NULL OR t.statut<>' . sql_quote('ok') . ')))';
+    $where = 'e.id_evenement IS NULL';
 
     $res = sql_select(
         'a.id_activite, a.id_transaction',
         $from,
         $where,
         '',
-        '',
-        intval($lot)
+        ''
     );
+    $candidats = [];
     while ($row = sql_fetch($res)) {
+        $candidats[] = $row;
+        if (!empty($row['id_transaction'])) $tx_ids[] = intval($row['id_transaction']);
+    }
+    include_spip('inc/association_paiements_transactions');
+    $transactions = association_paiements_transactions_lire($tx_ids);
+    foreach ($candidats as $row) {
+        $id_transaction = (int) ($row['id_transaction'] ?? 0);
+        if ($id_transaction && (($transactions[$id_transaction]['statut'] ?? '') === 'ok')) continue;
         $ids[] = intval($row['id_activite']);
-        if (!empty($row['id_transaction'])) {
-            $tx_ids[] = intval($row['id_transaction']);
-        }
     }
 
     if (!$ids) return ['supprimees' => 0];
@@ -154,35 +165,28 @@ function asso_supprimer_participations_evenements_orphelines($dry_run = true, $l
     }
 
     // Supprimer les transactions liées non encaissées
-    $tx_supprimees = 0;
-    $tx_ids_final = [];
-    if ($tx_ids) {
-        $tx_ids = array_values(array_unique($tx_ids));
-        $where_tx = sql_in('id_transaction', $tx_ids) . ' AND statut<>' . sql_quote('ok');
-        $res_tx = sql_select('id_transaction', 'spip_transactions', $where_tx);
-        while ($r = sql_fetch($res_tx)) {
-            $tx_ids_final[] = intval($r['id_transaction']);
-        }
-        if ($tx_ids_final) {
-            $in_tx = sql_in('id_transaction', $tx_ids_final);
-            $tx_supprimees = $dry_run ? sql_countsel('spip_transactions', $in_tx) : sql_delete('spip_transactions', $in_tx);
-            if ($tx_supprimees === false) {
-                return [
-                    'supprimees' => intval($nb),
-                    'ids' => $ids,
-                    'transactions_supprimees' => 0,
-                    'transactions_ids' => $tx_ids_final,
-                    'erreur' => 'suppression_transactions_participations_orphelines_echouee'
-                ];
-            }
-        }
+    $tx_ids_final = array_values(array_unique(array_filter(array_map(
+        function ($row) use ($ids) {
+            return in_array((int) $row['id_activite'], $ids, true) ? (int) $row['id_transaction'] : 0;
+        },
+        $candidats
+    ))));
+    $suppression_transactions = association_paiements_transactions_supprimer_non_encaissees($tx_ids_final, $dry_run);
+    if (!empty($suppression_transactions['erreur'])) {
+        return [
+            'supprimees' => intval($nb),
+            'ids' => $ids,
+            'transactions_supprimees' => 0,
+            'transactions_ids' => $suppression_transactions['ids'],
+            'erreur' => 'suppression_transactions_participations_orphelines_echouee'
+        ];
     }
 
     return [
         'supprimees' => intval($nb),
         'ids' => $ids,
-        'transactions_supprimees' => intval($tx_supprimees),
-        'transactions_ids' => $tx_ids_final
+        'transactions_supprimees' => intval($suppression_transactions['supprimes']),
+        'transactions_ids' => $suppression_transactions['ids']
     ];
 }
 
@@ -215,10 +219,8 @@ function asso_supprimer_participations_evenements_obsoletes($dry_run = true, $lo
     $tx_ids = [];
     $protegees = [];
 
-    // Rejoindre les tables pour vérifier l'existence de la transaction et son statut
     $from = 'spip_asso_activites AS a
-             LEFT JOIN spip_evenements AS e ON e.id_evenement=a.id_evenement
-             LEFT JOIN spip_transactions AS t ON t.id_transaction=a.id_transaction';
+             LEFT JOIN spip_evenements AS e ON e.id_evenement=a.id_evenement';
 
     // Critères : événement passé (e.date < limite) OR si pas de table evenements on utilise a.date < limite
     // et statut de l'inscription différent de 'ok'
@@ -226,7 +228,7 @@ function asso_supprimer_participations_evenements_obsoletes($dry_run = true, $lo
         . " AND (a.statut IS NULL OR a.statut<>" . sql_quote('ok') . ")";
 
     $res = sql_select(
-        'a.id_activite, a.id_transaction, t.statut AS tx_statut',
+        'a.id_activite, a.id_transaction',
         $from,
         $where,
         '',
@@ -234,13 +236,20 @@ function asso_supprimer_participations_evenements_obsoletes($dry_run = true, $lo
         intval($lot)
     );
 
+    $candidats = [];
     while ($row = sql_fetch($res)) {
+        $candidats[] = $row;
+        if (!empty($row['id_transaction'])) $tx_ids[] = (int) $row['id_transaction'];
+    }
+    include_spip('inc/association_paiements_transactions');
+    $transactions = association_paiements_transactions_lire($tx_ids);
+    foreach ($candidats as $row) {
         $id_act = intval($row['id_activite']);
         $ids[] = $id_act;
         $id_tx = !empty($row['id_transaction']) ? intval($row['id_transaction']) : 0;
         if ($id_tx) {
             // Si la transaction est réglée, on protège l'inscription
-            if (!empty($row['tx_statut']) && $row['tx_statut'] === 'ok') {
+            if (($transactions[$id_tx]['statut'] ?? '') === 'ok') {
                 $protegees[] = $id_act;
             } else {
                 $tx_ids[] = $id_tx;
@@ -291,52 +300,30 @@ function asso_supprimer_participations_evenements_obsoletes($dry_run = true, $lo
     }
 
     // Supprimer les transactions non réglées associées aux inscriptions supprimées
-    $transactions_supprimees = 0;
-    $transactions_ids = [];
-    if (true) {
-        // Collecter les id_transaction correspondants aux ids_a_supprimer
-        // Récupérer depuis la table pour être sûr du statut
-        $res_tx = sql_select('DISTINCT a.id_transaction', 'spip_asso_activites AS a', $in . ' AND a.id_transaction IS NOT NULL AND a.id_transaction<>0');
-        $tx_candidats = [];
-        while ($r = sql_fetch($res_tx)) {
-            $tx_candidats[] = intval($r['id_transaction']);
-        }
-        // Ajouter aussi ceux détectés précédemment
-        if ($tx_ids) {
-            $tx_candidats = array_merge($tx_candidats, $tx_ids);
-        }
-        $tx_candidats = array_values(array_unique(array_filter($tx_candidats)));
-
-        if ($tx_candidats) {
-            // Ne supprimer que celles qui ne sont pas 'ok'
-            $where_tx = sql_in('id_transaction', $tx_candidats) . ' AND statut<>' . sql_quote('ok');
-            $res_tx2 = sql_select('id_transaction', 'spip_transactions', $where_tx);
-            while ($r2 = sql_fetch($res_tx2)) {
-                $transactions_ids[] = intval($r2['id_transaction']);
-            }
-            if ($transactions_ids) {
-                $in_tx = sql_in('id_transaction', $transactions_ids);
-                $transactions_supprimees = $dry_run ? sql_countsel('spip_transactions', $in_tx) : sql_delete('spip_transactions', $in_tx);
-                if ($transactions_supprimees === false) {
-                    return [
-                        'supprimees' => intval($nb_suppr),
-                        'ids' => $ids_a_supprimer,
-                        'protegees' => count(array_unique($protegees)),
-                        'transactions_supprimees' => 0,
-                        'transactions_ids' => $transactions_ids,
-                        'erreur' => 'suppression_transactions_participations_obsoletes_echouee'
-                    ];
-                }
-            }
-        }
+    $tx_candidats = array_values(array_unique(array_filter(array_map(
+        function ($row) use ($ids_a_supprimer) {
+            return in_array((int) $row['id_activite'], $ids_a_supprimer, true) ? (int) $row['id_transaction'] : 0;
+        },
+        $candidats
+    ))));
+    $suppression_transactions = association_paiements_transactions_supprimer_non_encaissees($tx_candidats, $dry_run);
+    if (!empty($suppression_transactions['erreur'])) {
+        return [
+            'supprimees' => intval($nb_suppr),
+            'ids' => $ids_a_supprimer,
+            'protegees' => count(array_unique($protegees)),
+            'transactions_supprimees' => 0,
+            'transactions_ids' => $suppression_transactions['ids'],
+            'erreur' => 'suppression_transactions_participations_obsoletes_echouee'
+        ];
     }
 
     return [
         'supprimees' => intval($nb_suppr),
         'ids' => $ids_a_supprimer,
         'protegees' => count(array_unique($protegees)),
-        'transactions_supprimees' => intval($transactions_supprimees),
-        'transactions_ids' => $transactions_ids
+        'transactions_supprimees' => intval($suppression_transactions['supprimes']),
+        'transactions_ids' => $suppression_transactions['ids']
     ];
 }
 
