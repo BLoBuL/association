@@ -1659,3 +1659,18 @@ email. Les 27 auteurs possedant une adresse ont produit exactement les 27
 adresses uniques attendues. Les quatre fichiers deployes passent le lint PHP et
 SPIP 4.4.21 compile les 221 squelettes prives, douze pages publiques et 64
 composants front.
+
+## Lot 146 - privileges newsletter distribues
+
+Adhesions conserve le calcul des statuts, l'affectation des zones restreintes
+et la synchronisation GIS. La recherche des abonnes, la reconciliation des
+listes automatiques, les abonnements, desabonnements et suppressions
+Mailsubscribers appartiennent maintenant exclusivement a Communication.
+
+La suite locale couvre la bascule d'un statut `echu` vers `ok`, l'inscription
+aux listes par defaut et le retrait integral d'un auteur sorti. Sur test-fiafe,
+les 27 auteurs ayant un email valide retrouvent leurs 27 abonnes et tous leurs
+abonnements; l'empreinte des tables Mailsubscribers est strictement identique
+avant et apres le controle. Aucun abonnement, desabonnement ou email n'a ete
+declenche. Le lint PHP et la compilation des 221 squelettes prives, douze pages
+publiques et 64 composants front sont valides.
