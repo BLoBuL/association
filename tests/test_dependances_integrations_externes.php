@@ -12,6 +12,19 @@ $attendus = array(
 	'association-paiements/paquet.xml' => array('<utilise nom="commandes"', '<utilise nom="formidable"'),
 );
 $erreurs = array();
+$paquets = array_merge(
+	array($racine_monorepo . '/paquet.xml'),
+	glob($racine . '/association-*/paquet.xml') ?: array()
+);
+foreach ($paquets as $fichier_paquet) {
+	$contenu_paquet = file_get_contents($fichier_paquet);
+	if (!str_contains($contenu_paquet, 'compatibilite="[4.0.0;4.*]"')) {
+		$erreurs[] = "Compatibilité SPIP 4 absente de {$fichier_paquet}";
+	}
+	if (preg_match('/<(?:necessite|utilise)\s+nom="[^"]*(?:blobul|asso_bo|asso_fo)/i', $contenu_paquet)) {
+		$erreurs[] = "Dépendance Blobul historique interdite dans {$fichier_paquet}";
+	}
+}
 foreach ($attendus as $fichier => $marqueurs) {
 	$contenu = file_get_contents($racine . '/' . $fichier);
 	foreach ($marqueurs as $marqueur) {

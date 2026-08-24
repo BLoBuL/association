@@ -2364,3 +2364,53 @@ Prêts renvoie vers Ressources.
 La restauration a ensuite remis et relu les quatre options à `off`, leur état
 initial exact. Les modules sont donc de nouveau désactivés sur test-fiafe après
 une recette fonctionnelle sans écriture.
+
+## Lot 186 - preuve responsive en attente de viewport contrôlé
+
+Les parcours prioritaires restent validés à 1920 pixels dans Chrome. La
+session disponible ne permet toutefois ni de redimensionner sa fenêtre ni de
+fixer un viewport à 390, 768 et 1440 pixels. Ce lot reste donc volontairement
+ouvert : aucune preuve responsive simulée n'est substituée aux trois rendus
+visuels demandés.
+
+## Lot 187 - installation neuve et migration de la base DEV
+
+Une première installation Association a été exécutée dans une copie SPIP 4
+jetable, avec les dépendances tierces déjà installées mais sans aucune table ni
+méta Association. Avant activation, le contrôle retrouvait zéro table et zéro
+méta ; après activation ordonnée, il retrouve dix plugins, quatorze tables,
+douze objets métier déclarés par les modules et sept schémas. Deux passages du
+vérificateur et de `plugins:maj:bdd` sont idempotents. Les 221 squelettes
+privés, douze pages publiques et 64 composants front recompilent. L'empreinte
+de la base source n'a pas changé.
+
+La copie du dump historique DEV a révélé que SQLite 3.34 conservait la colonne
+réservée `transaction`. Les commits `898af87f` et `55a51439` reconstruisent la
+table transactionnellement et couvrent également l'adoption d'une table
+historique sans méta de module. La migration finale conserve 26 comptes, 41
+inscriptions, quatorze catégories d'activité, six catégories d'adhésion et
+trois ventes. Les dix écritures historiques produisent exactement dix
+cotisations avec l'empreinte stable
+`6d207697e5e6a4ecc279769b1b15fb14fcee1d748095a8e934692b0158c5b69f`.
+`tarifs_selectionnes` est présent, `transaction` absent, le second passage ne
+modifie rien et les 297 fonds recompilent. La base DEV d'origine reste
+inchangée : tous les contrôles ont porté sur des copies supprimées en fin de
+scénario.
+
+## Lot 188 - dépendances et autonomie front-office
+
+Les dix `paquet.xml` déclarent SPIP 4 et ne nécessitent ni n'utilisent un
+plugin Blobul historique. `inscription4` est la dépendance d'inscription du
+socle et des Événements. Les intégrations facultatives restent déclarées avec
+`utilise` et protégées à l'exécution ; les dépendances métier obligatoires sont
+explicites entre les modules du monorepo.
+
+Les usages publics sont autonomes dans leurs propriétaires : Inscription,
+Profil et fiche adhérent dans Adhésions ; Événement et albums dans Événements ;
+Ressources dans Prêts ; Newsletter et coque email dans Communication ; modèles
+de règlement dans Paiements. Un test contrôle la structure de page SPIP, les
+composants attendus et l'absence de dépendance aux anciens thèmes, CORE ou
+BANK Blobul. L'audit a aussi retiré une URL `test-fiafe` accidentellement
+laissée comme label PHP dans le chargeur d'une inscription historique ; un
+test interdit désormais toute URL de recette dans les sources exécutables des
+modules.

@@ -223,8 +223,8 @@ function generer_array_categories_participation($tableau_categories, $format = '
              $saisie_famille_active = 'oui';
          }
      }elseif($query_activite['id_auteur'] == '0' AND !empty($query_activite['association']) ){
-https://test-fiafe.blobul.com/spip.php?page=evenement&id_evenement=224&association=MON_ASSOCIATION#inscription_en_ligne         // Délégation FIAFE: conserver la valeur brute et laisser le plugin
-         // client normaliser l'affichage (association connue vs autre_association).
+         // Délégation FIAFE : conserver la valeur brute et laisser le plugin
+         // client normaliser l'affichage (association connue ou autre association).
          $data_activite['association'] = $query_activite['association'];
          $data_activite['select_type_inscrit'] = 'membre_reseau_fiafe';
          $data_activite['email_inscrit'] = $query_activite['email_inscrit'];

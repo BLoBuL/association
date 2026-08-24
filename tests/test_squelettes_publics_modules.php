@@ -21,6 +21,19 @@ foreach ($attendus as $fichier => $usage) {
 	}
 }
 
+$sources_metier = new RecursiveIteratorIterator(
+	new RecursiveDirectoryIterator($racine . '/plugins', FilesystemIterator::SKIP_DOTS)
+);
+foreach ($sources_metier as $source) {
+	if (!$source->isFile() || !in_array($source->getExtension(), array('php', 'html', 'js', 'css'), true)) {
+		continue;
+	}
+	if (str_contains(file_get_contents($source->getPathname()), 'test-fiafe.blobul.com')) {
+		fwrite(STDERR, "URL de recette codée en dur dans {$source->getPathname()}.\n");
+		exit(1);
+	}
+}
+
 $page_evenement = file_get_contents($racine . '/plugins/association-evenements/squelettes/evenement.html');
 foreach (array('album_photos_evenement', 'album_photos_evenement_locked') as $album) {
 	if (!str_contains($page_evenement, 'fond=inclure/' . $album)) {
