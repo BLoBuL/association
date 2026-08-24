@@ -2167,3 +2167,23 @@ réécrit une seule fois avec l'API SPIP. Le test fonctionnel couvre la
 persistance, l'effacement, l'exclusion des paramètres CVT et la restauration
 des filtres ; il interdit aussi les accès natifs dans ces trois fichiers. La
 suite locale atteint 133 tests, tous valides.
+
+## Lot 177 - contexte de recherche Adhérents sur les sessions SPIP
+
+Le contexte unifié et les helpers privés ne lisent plus `$_SESSION` et ne
+démarrent plus de session PHP. Ils chargent séparément la recherche rapide, la
+recherche avancée et les filtres avec `session_get()`, appliquent les mêmes
+priorités requête, session puis défauts, et réécrivent les états modifiés avec
+`session_set()`. La cartographie est actualisée. Un test fonctionnel couvre la
+restauration, l'effacement ciblé et les filtres dynamiques. Un garde global
+interdit désormais toute session PHP native dans la suite, à l'exception des
+quatre modèles de paiement qui reproduisent le contrat de confirmation du
+plugin Bank. La suite locale atteint 135 tests, tous valides.
+
+Le commit `511ae529` est déployé sur test-fiafe avec les deux empreintes de
+l'artefact Git conformes. Adhésions reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, la combinaison `statut_interne=ok` et
+`type_adherent=entreprise` donne un seul résultat, puis la page sans paramètre
+restaure le même résultat depuis la session SPIP. L'effacement ciblé ramène les
+14 adhérents attendus. Les trois états sont servis sans erreur PHP et la page
+ne déborde pas horizontalement à sa largeur de recette.
