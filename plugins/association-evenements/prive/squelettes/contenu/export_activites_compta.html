@@ -1,3 +1,4 @@
+[(#AUTORISER{administrer,activites}|sinon_interdire_acces)]
 <h1 class="grostitre"><:association_compta:titre_export_activites_compta:></h1>
 [(#SET{exercices,#VAL{%}|filtre_calcul_fonction_comptes_lister_exercices{%,''}})]
 [(#SET{exercice,#ENV{exercice,#GET{exercices}|reset}})]

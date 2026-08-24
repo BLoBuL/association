@@ -1843,3 +1843,24 @@ Un test structurel verrouille le titre, l'autorisation, l'autonomie du contact
 et l'absence des anciens textes. La suite locale atteint 115 tests, tous
 valides. L'inventaire des pages privees classe desormais `activites` et
 `voir_adherent` comme rationalisees dans leurs plugins proprietaires.
+
+Le commit `ae6bbee0` est deploye sur test-fiafe. Les quatre empreintes de
+l'artefact Git correspondent aux fichiers actifs, Adhésions reste actif en
+4.0.0 et les 221 squelettes privés, 12 pages publiques et 64 composants front
+compilent. Dans Chrome authentifie, la fiche de l'auteur 1 affiche le H1
+« Fiche adhérent — JuL BLoBuL », ses sections, deux liens `mailto:` et un lien
+`tel:` sans lien `call:` ni erreur d'execution. Aucun formulaire n'a ete soumis.
+
+## Lot 158 - gardes locales des routes privées métier
+
+L'audit systematique des contenus privés a detecte huit routes qui reposaient
+uniquement sur leur présence dans la navigation. Les catégories de cotisation,
+Notifications, la migration comptable et les pages globales d'analyse, suivi,
+export ou catégories d'activités portent maintenant une garde
+`#AUTORISER` avec refus explicite.
+
+Événements distingue l'accès à la liste, fondé sur les droits réellement
+calculés par `droit_auteur_evenements()`, de l'administration globale réservée
+aux administrateurs complets. Communication protège Notifications tout en
+conservant un repli autonome lorsque le socle Association n'est pas chargé.
+La suite locale atteint 116 tests, tous valides.

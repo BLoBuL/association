@@ -2,6 +2,14 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+function autoriser_notifications_menu_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
+	$qui = is_array($qui) ? $qui : ($GLOBALS['visiteur_session'] ?? array());
+	if (function_exists('association_est_admin_complet') && function_exists('association_normalize_qui')) {
+		return association_est_admin_complet(association_normalize_qui($qui));
+	}
+	return ($qui['statut'] ?? '') === '0minirezo' && empty($qui['restreint']) && empty($qui['restreint_id']);
+}
+
 
 function autoriser_newsletter_generer($faire, $type, $id, $qui, $opt) {
 	$qui = association_normalize_qui($qui);

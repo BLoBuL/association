@@ -7,7 +7,15 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 include_spip('inc/association_evenements_autorisations');
 
 function autoriser_activites_menu_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
-	return true;
+	$qui = association_normalize_qui($qui);
+	if (empty($qui['id_auteur'])) return false;
+	include_spip('association_options');
+	$droit = droit_auteur_evenements((int) $qui['id_auteur']);
+	return in_array($droit[1] ?? '', array('restreint', 'complet', 'restreint_wrong'), true);
+}
+
+function autoriser_activites_administrer_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
+	return association_est_admin_complet(association_normalize_qui($qui));
 }
 
 function autoriser_activites_associer_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
