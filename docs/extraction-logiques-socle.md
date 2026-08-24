@@ -1142,3 +1142,9 @@ classes que SPIP 4 applique aux pages réellement servies.
 Le bloc complet de présentation des justificatifs quitte la fin de la feuille
 du socle. Adhésions porte désormais l'en-tête, les vignettes, statuts, actions
 de validation ou de reprise et leur adaptation mobile dans sa feuille privée.
+
+## Lot 103 : tableau privé des adhérents
+
+Les statuts de diffusion, colonnes, défilement horizontal, tailles minimales et
+états de focus du tableau Adhérents quittent le socle. Ils rejoignent la feuille
+privée d'Adhésions, avec les règles d'accessibilité et de consultation mobile.
