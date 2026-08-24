@@ -469,23 +469,15 @@ function filtre_association_comptes_bornes_exercice_json($exercice){
  * - sinon on retourne la valeur en session (ou 0 par défaut)
  */
 function filtre_association_get_inclure_non_validees($env_val=''){
-    // démarrer la session si nécessaire
-    if (function_exists('session_status')) {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            @session_start();
-        }
-    } else {
-        @session_start();
-    }
+    include_spip('inc/session');
+
     if ($env_val !== null && $env_val !== '') {
         $v = intval($env_val) ? 1 : 0;
-        $_SESSION['inclure_non_validees'] = $v;
+        session_set('association_compta_inclure_non_validees', $v);
         return $v;
     }
-    if (isset($_SESSION['inclure_non_validees'])) {
-        return intval($_SESSION['inclure_non_validees']);
-    }
-    return 0;
+
+    return intval(session_get('association_compta_inclure_non_validees')) ? 1 : 0;
 }
 
 /**
