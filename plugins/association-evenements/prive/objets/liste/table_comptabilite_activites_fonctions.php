@@ -56,34 +56,23 @@ function table_comptabilite_activites_get_filtre_sens() {
  * @return int Nombre d'opérations correspondantes
  */
 function table_comptabilite_activites_compter_operations($id_evenement, $sens = 'toutes', $vu = '1') {
-    $id_evenement = intval($id_evenement);
+	include_spip('inc/association_compta_ecritures');
+	$criteres = array(
+		'objet' => 'evenement',
+		'id_objet' => (int) $id_evenement,
+		'vu' => table_comptabilite_activites_normaliser_vu($vu),
+	);
+	if (in_array($sens, array('recette', 'depense'), true)) {
+		$criteres['sens'] = $sens;
+	}
+	return count(association_compta_ecritures_lister($criteres, array('champs' => 'id_compte')));
+}
 
-    $where = [
-        "id_objet=" . sql_quote($id_evenement),
-        "objet=" . sql_quote('evenement'),
-    ];
-
-    // Clause vu
-    if (is_numeric($vu)) {
-        $where[] = "vu=" . sql_quote(intval($vu));
-    } elseif (is_string($vu) && preg_match('#^>=\s*0$#', $vu)) {
-        $where[] = "vu >= 0";
-    } else {
-        // Par défaut, filtrer les validées
-        $where[] = "vu=" . sql_quote(1);
-    }
-
-    switch ($sens) {
-        case 'recette':
-            $where[] = "recette > 0";
-            break;
-        case 'depense':
-            $where[] = "depense > 0";
-            break;
-        // 'toutes' : pas de filtre supplémentaire
-    }
-
-    return sql_countsel('spip_asso_comptes', $where);
+function table_comptabilite_activites_normaliser_vu($vu) {
+	if (is_numeric($vu)) {
+		return (int) $vu;
+	}
+	return is_string($vu) && preg_match('#^>=\s*0$#', $vu) ? '>=0' : 1;
 }
 
 /**
@@ -164,33 +153,18 @@ function table_comptabilite_activites_stats($id_evenement, $vu = '1') {
  *               - 'solde' (float) => total_recettes - total_depenses
  */
 function table_comptabilite_activites_montants($id_evenement, $vu = '1') {
-    $id_evenement = intval($id_evenement);
-
-    // Construire la clause WHERE en chaîne (sql_fetsel attend une chaîne)
-    $where = "id_objet=" . sql_quote($id_evenement)
-           . " AND objet=" . sql_quote('evenement');
-
-    if (is_numeric($vu)) {
-        $where .= " AND vu=" . sql_quote(intval($vu));
-    } elseif (is_string($vu) && preg_match('#^>=\s*0$#', $vu)) {
-        $where .= " AND vu >= 0";
-    } else {
-        $where .= " AND vu=" . sql_quote(1);
-    }
-
-    // Utiliser sql_fetsel pour récupérer les sommes
-    $row = sql_fetsel("SUM(recette) AS total_recettes, SUM(depense) AS total_depenses", 'spip_asso_comptes', $where);
-
-    $total_recettes = 0.0;
-    $total_depenses = 0.0;
-    if (!empty($row)) {
-        if (isset($row['total_recettes']) && $row['total_recettes'] !== null) {
-            $total_recettes = floatval($row['total_recettes']);
-        }
-        if (isset($row['total_depenses']) && $row['total_depenses'] !== null) {
-            $total_depenses = floatval($row['total_depenses']);
-        }
-    }
+	include_spip('inc/association_compta_ecritures');
+	$ecritures = association_compta_ecritures_lister(array(
+		'objet' => 'evenement',
+		'id_objet' => (int) $id_evenement,
+		'vu' => table_comptabilite_activites_normaliser_vu($vu),
+	), array('champs' => 'recette,depense'));
+	$total_recettes = 0.0;
+	$total_depenses = 0.0;
+	foreach ($ecritures as $ecriture) {
+		$total_recettes += (float) ($ecriture['recette'] ?? 0);
+		$total_depenses += (float) ($ecriture['depense'] ?? 0);
+	}
 
     $solde = $total_recettes - $total_depenses;
 

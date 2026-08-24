@@ -67,6 +67,63 @@ function association_compta_ecriture_supprimer($id_compte) {
 }
 
 /**
+ * Lire un ensemble d'écritures avec des critères métier structurés.
+ *
+ * La construction SQL reste la responsabilité de Comptabilité ; les modules
+ * consommateurs ne reçoivent que les lignes normalisées du journal.
+ */
+function association_compta_ecritures_lister(array $criteres = array(), array $options = array()) {
+	$where = array();
+	$objets = array_values(array_unique(array_filter(array_map('strval', (array) ($criteres['objets'] ?? array())), 'strlen')));
+	if (isset($criteres['objet']) && trim((string) $criteres['objet']) !== '') {
+		$objets[] = trim((string) $criteres['objet']);
+		$objets = array_values(array_unique($objets));
+	}
+	if ($objets) {
+		$where[] = sql_in('objet', $objets);
+	}
+	$ids_objets = array_values(array_filter(array_unique(array_map('intval', (array) ($criteres['ids_objets'] ?? array())))));
+	if (isset($criteres['id_objet']) && (int) $criteres['id_objet'] > 0) {
+		$ids_objets[] = (int) $criteres['id_objet'];
+		$ids_objets = array_values(array_unique($ids_objets));
+	}
+	if ($ids_objets) {
+		$where[] = sql_in('id_objet', $ids_objets);
+	}
+	$ids_transactions = array_values(array_filter(array_unique(array_map('intval', (array) ($criteres['ids_transactions'] ?? array())))));
+	if (isset($criteres['id_transaction'])) {
+		$ids_transactions[] = (int) $criteres['id_transaction'];
+		$ids_transactions = array_values(array_unique($ids_transactions));
+	}
+	if ($ids_transactions) {
+		$where[] = sql_in('id_transaction', $ids_transactions);
+	}
+	if (!empty($criteres['date_debut'])) {
+		$where[] = 'date>=' . sql_quote((string) $criteres['date_debut']);
+	}
+	if (!empty($criteres['date_fin'])) {
+		$where[] = 'date<' . sql_quote((string) $criteres['date_fin']);
+	}
+	if (isset($criteres['vu']) && is_numeric($criteres['vu'])) {
+		$where[] = 'vu=' . (int) $criteres['vu'];
+	} elseif (($criteres['vu'] ?? '') === '>=0') {
+		$where[] = 'vu>=0';
+	}
+	if (($criteres['sens'] ?? '') === 'recette') {
+		$where[] = 'recette>0';
+	} elseif (($criteres['sens'] ?? '') === 'depense') {
+		$where[] = 'depense>0';
+	}
+	if (!empty($criteres['journal_prefix'])) {
+		$where[] = 'journal LIKE ' . sql_quote((string) $criteres['journal_prefix'] . '%');
+	}
+	$champs = (string) ($options['champs'] ?? '*');
+	$ordre = (string) ($options['ordre'] ?? 'date,id_compte');
+	$limite = isset($options['limite']) ? max(0, (int) $options['limite']) : '';
+	return sql_allfetsel($champs, 'spip_asso_comptes', $where, '', $ordre, $limite) ?: array();
+}
+
+/**
  * Liste les écritures liées à un objet métier, avec reprise facultative des
  * anciens liens portés par id_journal.
  */
