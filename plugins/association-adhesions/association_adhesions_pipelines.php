@@ -16,6 +16,21 @@ function association_adhesions_association_configuration_saisies($flux) {
 	return $flux;
 }
 
+function association_adhesions_association_compta_ecritures_devises($flux) {
+	$ecritures = (array) ($flux['args']['ecritures'] ?? array());
+	$ids_comptes = array_values(array_filter(array_unique(array_map('intval', array_column($ecritures, 'id_compte')))));
+	if (!$ids_comptes) return $flux;
+	$cotisations = sql_allfetsel('id_compte,devise', 'spip_asso_cotisations', sql_in('id_compte', $ids_comptes));
+	foreach ($cotisations ?: array() as $cotisation) {
+		$id_compte = (int) ($cotisation['id_compte'] ?? 0);
+		$devise = strtoupper(trim((string) ($cotisation['devise'] ?? '')));
+		if ($id_compte && empty($flux['data'][$id_compte]) && preg_match('/^[A-Z]{3}$/', $devise)) {
+			$flux['data'][$id_compte] = $devise;
+		}
+	}
+	return $flux;
+}
+
 function association_adhesions_association_maintenance_bdd_configurer($flux) {
 	$source = $flux['args']['source'] ?? array();
 	$flux['data']['jours_inactivite'] = intval(association_maintenance_lire_source(

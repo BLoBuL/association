@@ -98,20 +98,14 @@ function association_comptes_totaux_par_devise($where) {
     include_spip('intl_fonctions');
     $devise_defaut = strtoupper(trim((string) (function_exists('intl_devise_defaut') ? intl_devise_defaut() : lire_config('intl/devise_defaut'))));
     $totaux = array();
-    $lignes = sql_allfetsel(
-        'c.recette, c.depense, c.statut_cotisation, t.devise AS transaction_devise, ca.devise AS categorie_devise',
-        'spip_asso_comptes c'
-            . ' LEFT JOIN spip_transactions t ON t.id_transaction=c.id_transaction'
-            . ' LEFT JOIN spip_asso_categories_adherents ca ON ca.id_categorie=c.id_categorie',
-        $where
-    );
+    $lignes = sql_allfetsel('c.id_compte,c.recette,c.depense,c.id_transaction', 'spip_asso_comptes c', $where);
+    $devises = pipeline('association_compta_ecritures_devises', array(
+        'args' => array('ecritures' => $lignes),
+        'data' => array(),
+    ));
 
     foreach ($lignes as $ligne) {
-        $devise_categorie = !empty($ligne['statut_cotisation']) ? ($ligne['categorie_devise'] ?? '') : '';
-        $devise_source = $ligne['transaction_devise'] ?? '';
-        if ($devise_source === '') {
-            $devise_source = $devise_categorie ?: $devise_defaut;
-        }
+        $devise_source = $devises[(int) ($ligne['id_compte'] ?? 0)] ?? $devise_defaut;
         $devise = association_cotisation_resoudre_devise($devise_source);
         if (!isset($totaux[$devise])) {
             $totaux[$devise] = array('recettes' => 0.0, 'depenses' => 0.0, 'solde' => 0.0);

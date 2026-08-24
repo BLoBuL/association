@@ -84,6 +84,19 @@ function association_bank_redirige_apres_retour_transaction($flux)
     return $flux;
 }
 
+function association_paiements_association_compta_ecritures_devises($flux) {
+	$ecritures = (array) ($flux['args']['ecritures'] ?? array());
+	include_spip('inc/association_paiements_transactions');
+	$transactions = association_paiements_transactions_lire(array_column($ecritures, 'id_transaction'));
+	foreach ($ecritures as $ecriture) {
+		$id_compte = (int) ($ecriture['id_compte'] ?? 0);
+		$id_transaction = (int) ($ecriture['id_transaction'] ?? 0);
+		$devise = strtoupper(trim((string) ($transactions[$id_transaction]['devise'] ?? '')));
+		if ($id_compte && preg_match('/^[A-Z]{3}$/', $devise)) $flux['data'][$id_compte] = $devise;
+	}
+	return $flux;
+}
+
 function association_paiements_association_maintenance_auteurs_encaisses($flux) {
 	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_auteurs'] ?? array()))));
 	if (!$ids) { return $flux; }

@@ -19,12 +19,18 @@ function intl_lister_devises() {
         'EUR' => array('symbole' => '€'),
     );
 }
+function pipeline($nom, $flux) {
+    if ($nom === 'association_compta_ecritures_devises') {
+        return array(1 => 'CNY', 2 => 'EUR');
+    }
+    return $flux['data'];
+}
 function sql_allfetsel($select, $table, $where = '') {
     if (strpos($table, 'spip_asso_comptes c') !== false) {
         return array(
-            array('recette' => 100, 'depense' => 0, 'statut_cotisation' => 'ok', 'transaction_devise' => 'CNY', 'categorie_devise' => 'CNY'),
-            array('recette' => 50, 'depense' => 0, 'statut_cotisation' => 'ok', 'transaction_devise' => '', 'categorie_devise' => 'EUR'),
-            array('recette' => 0, 'depense' => 10, 'statut_cotisation' => '', 'transaction_devise' => '', 'categorie_devise' => 'CNY'),
+            array('id_compte' => 1, 'id_transaction' => 101, 'recette' => 100, 'depense' => 0),
+            array('id_compte' => 2, 'id_transaction' => 0, 'recette' => 50, 'depense' => 0),
+            array('id_compte' => 3, 'id_transaction' => 0, 'recette' => 0, 'depense' => 10),
         );
     }
     return array();
@@ -47,6 +53,10 @@ test_assert($totaux['EUR']['recettes'] === 50.0, 'les recettes EUR restent sépa
 test_assert($totaux['EUR']['depenses'] === 10.0, 'une écriture générique utilise la devise Intl du site');
 test_assert($totaux['EUR']['solde'] === 40.0, 'le solde est calculé dans chaque devise');
 test_assert(count($totaux) === 2, 'aucune addition CNY/EUR n’est produite');
+$source_comptes = file_get_contents(PLUGIN_ROOT . '/plugins/association-compta/inc/fonctions/comptes.php');
+$debut_totaux = strpos($source_comptes, 'function association_comptes_totaux_par_devise(');
+$fin_totaux = strpos($source_comptes, 'function association_comptes_start_year_from_date(', $debut_totaux);
+test_assert(strpos(substr($source_comptes, $debut_totaux, $fin_totaux - $debut_totaux), 'spip_transactions') === false, 'le bilan ne joint plus directement Bank');
 
 $racine_compta = PLUGIN_ROOT . '/plugins/association-compta';
 $contenu = file_get_contents($racine_compta . '/prive/squelettes/contenu/comptes.html');
