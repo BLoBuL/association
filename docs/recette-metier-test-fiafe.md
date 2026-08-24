@@ -963,3 +963,33 @@ responsables et 15 sélections actives. L'empreinte de la répartition est
 Chrome authentifié confirme ensuite sur l'événement de recette que le champ
 Responsables contient une case sélectionnée, et que la fiche Activités affiche
 sa section Responsables sans fatal. Aucun formulaire ni email n'a été soumis.
+
+## Lot 69 — identifiants et cycle des prêts
+
+Le module Prêts 4.0.2 porte le schéma 1.1.1. Les colonnes historiques
+`id_ressource` (`VARCHAR`) et `id_emprunteur` (`TEXT`) deviennent des `BIGINT`
+indexés. La migration refuse explicitement une valeur non numérique ou un lien
+vers une ressource absente avant toute conversion. Sur SQLite, où l'affinité de
+type n'impose pas cette reconstruction, la déclaration canonique s'applique aux
+installations neuves et les valeurs continuent d'être validées par le métier.
+
+Une fixture bornée a été insérée sur le schéma 1.0.0 avant déploiement avec les
+anciens identifiants textuels. La première implémentation fondée uniquement sur
+`maj_tables()` a correctement été rejetée par la vérification, car SPIP n'altère
+pas le type d'une colonne existante. La migration 1.1.1 emploie donc un `ALTER
+TABLE ... MODIFY` explicite sur MySQL/MariaDB, puis laisse `maj_tables()` créer
+les index déclarés.
+
+La fixture a été conservée pendant la conversion, puis le cycle réel a validé
+les transitions `reserve` pour un prêt ouvert et `ok` après restitution. Elle a
+ensuite été supprimée. L'état final de test-fiafe est propre : zéro ressource et
+zéro prêt de recette, aucun identifiant invalide, aucun lien orphelin, aucun
+statut incohérent, et deux colonnes servies en `BIGINT(20) NOT NULL`.
+
+Le formulaire Ressource conserve maintenant le statut existant en édition, le
+formulaire Prêt refuse une ressource absente et synchronise son statut dans la
+transaction, et la suppression retrouve elle-même la ressource depuis le prêt.
+Chrome authentifié confirme sans fatal les listes Ressources et Prêts, le
+formulaire de création d'une ressource, le formulaire du prêt de recette et le
+statut Réservé effectivement coché sur la ressource existante. Aucun formulaire
+navigateur n'a été soumis.
