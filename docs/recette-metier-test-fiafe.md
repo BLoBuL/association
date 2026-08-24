@@ -2076,3 +2076,10 @@ d'édition du catalogue de notifications passent par le domaine Communication,
 leurs nouveaux onglets sont isolés et l'argument de diagnostic est traduit par
 Adhésions. Le bouton d'envoi de test reste inchangé et ne doit pas être utilisé
 en recette courante. La suite locale atteint 128 tests, tous valides.
+
+Le commit `34a7acd4` est déployé sur test-fiafe avec les trois empreintes de
+l'artefact Git conformes. Adhésions reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, le catalogue Adhésions affiche les
+boutons « Envoyer test » sans clé brute ni ancien libellé « EDITION » ; aucun
+article éditable correspondant n'est présent dans ce jeu. La page Adhérents
+affiche le fil d'Ariane natif. Aucun bouton de test n'a été déclenché.
