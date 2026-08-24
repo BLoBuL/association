@@ -13,6 +13,7 @@
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
 include_spip('inc/association_dons_comptabilite');
+include_spip('inc/destinations');
 
 function action_editer_asso_dons($id_don = null) {
 	if ($id_don === null) {
@@ -48,6 +49,7 @@ function action_editer_asso_dons($id_don = null) {
 		association_dons_compte_modifier(
 			$id_compte, $date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent
 		);
+		ajouter_destinations((int) $id_compte, (float) $argent, 0);
 
 		sql_updateq('spip_asso_dons', array(
 				'date_don' => $date_don,
@@ -70,7 +72,8 @@ function action_editer_asso_dons($id_don = null) {
 			'contrepartie' => $contrepartie,
 		 	'commentaire' => $commentaire));
 
-		association_dons_compte_creer($date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent);
+		$id_compte = association_dons_compte_creer($date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent);
+		ajouter_destinations((int) $id_compte, (float) $argent, 0);
 	}
 
 	return array($id_don, '');

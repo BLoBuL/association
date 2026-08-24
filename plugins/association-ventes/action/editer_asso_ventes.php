@@ -15,6 +15,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 }
 
 include_spip('inc/association_ventes_comptabilite');
+include_spip('inc/destinations');
 
 function action_editer_asso_ventes($id_vente = null)
 {
@@ -86,6 +87,9 @@ function ventes_modifier($date_vente, $article, $code, $acheteur, $id_acheteur, 
 			$GLOBALS['association_metas']['pc_frais_envoi']
         );
     }
+	$montant_destination = $recette
+		+ ($GLOBALS['association_metas']['pc_ventes'] == $GLOBALS['association_metas']['pc_frais_envoi'] ? $frais_envoi : 0);
+	ajouter_destinations((int) $id_compte, (float) $montant_destination, 0);
 }
 
 function ventes_insert($date_vente, $article, $code, $acheteur, $id_acheteur, $quantite, $date_envoi, $frais_envoi, $prix_vente, $commentaire, $journal, $recette)
@@ -105,10 +109,13 @@ function ventes_insert($date_vente, $article, $code, $acheteur, $id_acheteur, $q
     $justification='[vente n&deg; '.$id_vente.'->asso_vente'.$id_vente.'] - '.$article;
     if ($GLOBALS['association_metas']['pc_ventes']==$GLOBALS['association_metas']['pc_frais_envoi']) {
         /* si ventes et frais d'envoi sont associes a la meme reference, on ajoute une seule operation */
-        association_ventes_compte_creer($date_vente, $recette+$frais_envoi, $justification, $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_ventes']);
+        $id_compte = association_ventes_compte_creer($date_vente, $recette+$frais_envoi, $justification, $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_ventes']);
     } else { /* sinon on en insere deux */
-        association_ventes_compte_creer($date_vente, $recette, $justification, $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_ventes']);
+        $id_compte = association_ventes_compte_creer($date_vente, $recette, $justification, $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_ventes']);
         association_ventes_compte_creer($date_vente, $frais_envoi, $justification . ' - frais d\'envoi', $journal, $id_vente, $id_acheteur, $GLOBALS['association_metas']['pc_frais_envoi']);
     }
+	$montant_destination = $recette
+		+ ($GLOBALS['association_metas']['pc_ventes'] == $GLOBALS['association_metas']['pc_frais_envoi'] ? $frais_envoi : 0);
+	ajouter_destinations((int) $id_compte, (float) $montant_destination, 0);
     return $id_vente;
 }

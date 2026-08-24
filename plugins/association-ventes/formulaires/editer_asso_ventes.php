@@ -69,6 +69,11 @@ function formulaires_editer_asso_ventes_verifier_dist($id_vente) {
 	if ($frais_envoi<0) $erreurs['frais_envoi'] = _T('association_ventes:erreur_montant');
 	if ($quantite<0) $erreurs['quantite'] = _T('association_ventes:erreur_montant');
 
+	$recette = $quantite * $prix_vente;
+	$montant_destination = $recette
+		+ ($GLOBALS['association_metas']['pc_ventes'] == $GLOBALS['association_metas']['pc_frais_envoi'] ? $frais_envoi : 0);
+	verifier_destination_comptable($montant_destination, 'prix_vente', $erreurs);
+
 	/* verifier si on a un numero d'adherent qu'il existe dans la base */
 	$id_acheteur = _request('id_acheteur');
 	if ($id_acheteur != '') {
