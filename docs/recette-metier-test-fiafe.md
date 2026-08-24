@@ -1030,3 +1030,28 @@ présélectionnée. Aucun formulaire n'a été soumis et aucune donnée métier 
 été modifiée. Le premier chargement, réalisé avant la régénération effective du
 cache des pipelines, avait seulement affiché « Autres » et journalisé le
 pipeline désactivé ; le recalcul suivant a confirmé les six contributions.
+
+## Lots 94 à 96 — langue minimale et filtres propriétaires
+
+Le lot 94 (`c4fe0adc`) est déployé depuis l'artefact SHA-256
+`0b9b6478c27d26020cc9923a965b8994db188c24d1b173b6d5b9eeba1c765355`.
+Le domaine `association` ne contient plus que dix clés transversales. Le serveur
+résout « Vie associative », « Notification par email » depuis Événements et
+« Cotisations » depuis Adhésions. Chrome authentifié confirme les menus, la
+liste des activités et leurs actions sans clé de langue manquante.
+
+Le lot 95 (`a07e3a55`, artefact
+`aad7a1d99713e94e38c3c8798a0c7317e8ec15376218190e9867515130c1d2ec`)
+remplace le filtre absent `local_to_utc` par `date_iso` et retire la syntaxe
+invalide de `strtoupper` dans les notifications Événements. Une compilation
+complète produit 221 squelettes privés, douze pages publiques et 64 composants
+front sans ajouter une seule ligne au journal SPIP.
+
+Le filtre de période d'Adhésions est ensuite extrait du socle au commit
+`1428fa0c`. La première recette navigateur a correctement détecté quatre appels
+courts `scalar_val` encore présents dans les squelettes, malgré les tests PHP.
+Le correctif `f7da0ef0`, déployé depuis l'artefact SHA-256
+`55933990a94a82ff7c323ba8795075e13abc9883202820c0399b863a14e51522`,
+préfixe ces quatre appels et les couvre par le test. Chrome authentifié affiche
+de nouveau la liste de treize adhérents, les périodes et les filtres sans table
+d'erreur de squelette. La suite compte désormais 90 tests autonomes réussis.
