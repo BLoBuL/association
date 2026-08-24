@@ -6,6 +6,7 @@ $action = file_get_contents($racine . '/plugins/association-ventes/action/editer
 $formulaire = file_get_contents($racine . '/plugins/association-ventes/formulaires/editer_asso_ventes.php');
 $suppression = file_get_contents($racine . '/plugins/association-ventes/action/supprimer_ventes.php');
 $comptes = file_get_contents($racine . '/plugins/association-compta/inc/comptes.php');
+$options = file_get_contents($racine . '/plugins/association-ventes/association_ventes_options.php');
 
 $assertions = array(
 	array(str_contains($api, "'objet' => 'asso_vente'"), "les écritures doivent identifier l'objet vente"),
@@ -15,6 +16,7 @@ $assertions = array(
 	array(str_contains($formulaire, 'association_ventes_compte_lire('), "le formulaire doit utiliser la résolution métier"),
 	array(str_contains($suppression, "objet='asso_vente'"), "la suppression doit cibler les liens canoniques"),
 	array(!preg_match('/function (?:compte_vente|compte_vente_frais_envoi|modifier_compte_vente|modifier_activite_vente_frais_envoi)\s*\(/', $comptes), "Comptabilité ne doit plus posséder la logique Ventes"),
+	array(!str_contains($options, 'function generer_url_vente('), "le pseudo-objet vente ne doit plus avoir d'alias URL"),
 );
 
 foreach ($assertions as [$ok, $message]) {

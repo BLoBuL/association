@@ -911,3 +911,11 @@ correspondaient plus à aucun objet SQL déclaré et n'avaient aucun appelant. I
 sont supprimés avec `adherent_correction_statut()`, ancienne mutation globale
 jamais planifiée. Les parcours d'adhérent utilisent l'objet SPIP `auteur`, ses
 URLs natives et les transitions explicites du plugin Adhésions.
+
+## Lot 76 : URLs d'objets Dons et Ventes
+
+Les alias `generer_url_don()` et `generer_url_vente()` ne correspondaient à
+aucun objet SQL et renvoyaient un tableau au lieu d'une URL SPIP. Ils sont
+supprimés. Les seuls callbacks conservés suivent les objets déclarés,
+`asso_don` et `asso_vente`, également utilisés dans les raccourcis des
+justifications comptables.
