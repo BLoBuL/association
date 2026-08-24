@@ -1446,3 +1446,18 @@ Le premier rendu authentifié de l'onglet Adhésions affiche les six filtres et
 les onze scénarios d'audit conformes, sans adresse et sans envoi. La session
 navigateur a expiré lors du passage à l'onglet Activités ; ce second rendu doit
 être repris après reconnexion, tandis que sa preuve serveur est complète.
+
+## Lot 126 — écritures Dons et Ventes confinées à Comptabilité
+
+Dons et Ventes utilisent désormais l'API objet de Comptabilité pour retrouver
+et supprimer leurs écritures, y compris les anciens liens `id_journal`. Le reçu
+fiscal sélectionne ses dons dans le module Dons puis agrège uniquement les
+écritures validées sous l'imputation `pc_dons`; il ne lit plus le journal et
+n'utilise plus l'imputation erronée des cotisations.
+
+La copie DEV contient trois ventes et aucun don. Les trois ventes produisent le
+même ensemble d'écritures avec l'API et avec la lecture comparative historique.
+Le parcours fiscal est donc couvert par les tests de structure et de calcul,
+mais ne dispose pas d'une preuve positive sur donnée réelle dans cette copie.
+Aucune vente, écriture, ventilation ni donnée client n'a été supprimée et aucun
+PDF nominatif n'a été généré. Tous les squelettes compilent après déploiement.
