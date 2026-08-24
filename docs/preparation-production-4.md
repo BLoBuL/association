@@ -33,7 +33,8 @@ Notifications et Mailsubscribers.
 
 Les installateurs des modules adoptent les tables existantes avec
 `maj_tables()`. Les schémas `association_adhesions` et
-`association_evenements` sont en version `1.2.0` afin d'inclure tous les champs
+`association_evenements` sont respectivement en versions `1.3.0` et `1.2.0`
+afin d'inclure tous les champs
 nécessaires à une première installation, et pas seulement les colonnes déjà
 présentes sur un site historique. Leur désinstallation efface seulement la
 méta de version et ne supprime aucune donnée métier.
@@ -53,5 +54,10 @@ cotisation possède sa ligne correspondante dans `spip_asso_cotisations`.
 - aucune dépendance ou copie active d’un plugin Blobul ;
 - recette HTTP desktop/mobile des pages publiques ;
 - recette visuelle authentifiée des pages BO et FO ;
-- branches `4.x` propres et poussées pour les dix dépôts ;
+- branche `4.x` du monorepo propre et poussée avec les dix paquets ;
 - versions, états, tags et archives alignés au moment de la release.
+
+La stratégie de versions et de tags du monorepo est décrite dans
+[`versionnement-suite-4.md`](./versionnement-suite-4.md). Les anciens tags
+datés `6.x` appartiennent au dépôt BO historique et ne définissent pas la ligne
+de la suite 4.

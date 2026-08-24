@@ -2365,13 +2365,21 @@ La restauration a ensuite remis et relu les quatre options à `off`, leur état
 initial exact. Les modules sont donc de nouveau désactivés sur test-fiafe après
 une recette fonctionnelle sans écriture.
 
-## Lot 186 - preuve responsive en attente de viewport contrôlé
+## Lot 186 - recette responsive Chrome contrôlée
 
-Les parcours prioritaires restent validés à 1920 pixels dans Chrome. La
-session disponible ne permet toutefois ni de redimensionner sa fenêtre ni de
-fixer un viewport à 390, 768 et 1440 pixels. Ce lot reste donc volontairement
-ouvert : aucune preuve responsive simulée n'est substituée aux trois rendus
-visuels demandés.
+Chrome a été piloté avec des viewports CSS mesurés par la page à exactement
+390, 768 et 1440 pixels. À chaque largeur, neuf parcours ont été chargés : les
+pages publiques Inscription, Profil, Newsletter, Ressources et Événement 231,
+puis les pages authentifiées Adhérents, Cotisations, Activités et Comptes.
+Chaque contrôle relit le titre, le `h1`, la largeur du document et les motifs
+d'erreur d'exécution. Les 27 rendus possèdent leur titre attendu, ne signalent
+ni fatal ni fonction absente et ne créent aucun débordement horizontal.
+
+Des captures pleine hauteur ont complété les mesures sur Événement 231 et
+Adhérents aux trois largeurs. Elles montrent le formulaire public, les tarifs,
+la navigation privée, les filtres et le tableau d'adhérents réellement servis.
+Aucune soumission ni écriture métier n'a été réalisée. Après la recette, le
+zoom a été remis à 100 % et la fenêtre Chrome maximisée.
 
 ## Lot 187 - installation neuve et migration de la base DEV
 
