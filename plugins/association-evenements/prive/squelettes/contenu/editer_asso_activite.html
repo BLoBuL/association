@@ -1,3 +1,5 @@
+[(#AUTORISER{activites_menu}|sinon_interdire_acces)]
+<h1 class="grostitre"><:association_evenements:activite_ajouter_inscription:></h1>
 <div class="ajax">
 <BOUCLE_info_supp(CONDITION){si #CONFIG{association_metas/meta_cfg_event_form_info_supp}|=={oui}}>
 [(#FORMULAIRE_INSCRIPTION_EVENEMENT_MULTI{#ENV{id_evenement},#ENV{id_activite}})]

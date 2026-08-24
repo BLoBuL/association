@@ -1,1 +1,3 @@
+[(#AUTORISER{comptes_menu}|sinon_interdire_acces)]
+[(#ENV{titre,oui}|=={oui}|oui)<h1 class="grostitre">[(#ENV{id_plan}|intval|?{<:association_compta:modifier_plan:>,<:association_compta:ajouter_plan:>})]</h1>]
 #FORMULAIRE_EDITER_ASSO_PLAN{#ENV{id_plan}}

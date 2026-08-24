@@ -56,4 +56,21 @@ if (!str_contains($recherche_avancee, '<h1 class="grostitre"><:association_adhes
 	exit(1);
 }
 
+$editeurs_directs = array(
+	'association-compta/prive/squelettes/contenu/editer_asso_destinations.html' => 'destinations_menu',
+	'association-compta/prive/squelettes/contenu/editer_asso_plan.html' => 'comptes_menu',
+	'association-dons/prive/squelettes/contenu/editer_asso_dons.html' => 'dons_menu',
+	'association-prets/prive/squelettes/contenu/editer_asso_ressources.html' => 'ressources_menu',
+	'association-ventes/prive/squelettes/contenu/editer_asso_ventes.html' => 'ventes_menu',
+	'association-evenements/prive/squelettes/contenu/editer_asso_activite.html' => 'activites_menu',
+);
+foreach ($editeurs_directs as $fichier => $autorisation) {
+	$source = file_get_contents($racine_plugins . '/' . $fichier);
+	if (!str_contains($source, '<h1 class="grostitre">')
+		|| !str_contains($source, '#AUTORISER{' . $autorisation . '}')) {
+		fwrite(STDERR, "Titre ou autorisation absent de l editeur direct {$fichier}.\n");
+		exit(1);
+	}
+}
+
 echo "Titres des pages privées conformes\n";
