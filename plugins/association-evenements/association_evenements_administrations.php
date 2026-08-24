@@ -47,9 +47,59 @@ function association_evenements_migrer_tarifs_selectionnes() {
 
 	$type_serveur = $GLOBALS['connexions'][0]['type'] ?? '';
 	if (str_starts_with((string) $type_serveur, 'sqlite')) {
-		sql_alter('TABLE spip_asso_activites RENAME COLUMN "transaction" TO tarifs_selectionnes');
+		association_evenements_migrer_tarifs_selectionnes_sqlite();
 	} else {
 		sql_alter('TABLE spip_asso_activites CHANGE `transaction` tarifs_selectionnes TEXT NOT NULL');
+	}
+}
+
+/**
+ * Reconstruit la table sur les anciennes versions de SQLite.
+ *
+ * SQLite n'a ajouté ALTER TABLE DROP COLUMN qu'en 3.35. La reconstruction
+ * reste donc nécessaire sur les installations SPIP 4 utilisant SQLite 3.34.
+ * Elle est transactionnelle et conserve la table historique en cas d'échec.
+ */
+function association_evenements_migrer_tarifs_selectionnes_sqlite() {
+	$table = 'spip_asso_activites';
+	$table_historique = 'spip_asso_activites_migration_120';
+
+	sql_query('BEGIN IMMEDIATE');
+	try {
+		if (sql_showtable($table_historique, true)) {
+			throw new RuntimeException('La table temporaire de migration existe déjà.');
+		}
+
+		if (sql_alter("TABLE $table RENAME TO $table_historique") === false) {
+			throw new RuntimeException('Impossible de préserver la table historique.');
+		}
+
+		maj_tables(array($table));
+		$description_nouvelle = sql_showtable($table, true);
+		if (!$description_nouvelle || !isset($description_nouvelle['field']['tarifs_selectionnes'])) {
+			throw new RuntimeException('La nouvelle table des inscriptions est invalide.');
+		}
+
+		$champs_nouveaux = array_keys($description_nouvelle['field']);
+		$lignes = sql_allfetsel('*', $table_historique);
+		foreach ($lignes as $ligne) {
+			$ligne['tarifs_selectionnes'] = $ligne['transaction'] ?? '';
+			$ligne = array_intersect_key($ligne, array_flip($champs_nouveaux));
+			if (sql_insertq($table, $ligne) === false) {
+				throw new RuntimeException('Impossible de restaurer une inscription historique.');
+			}
+		}
+
+		if (sql_countsel($table) !== count($lignes)) {
+			throw new RuntimeException('Le nombre d’inscriptions restaurées est incohérent.');
+		}
+		if (sql_drop_table($table_historique) === false) {
+			throw new RuntimeException('Impossible de supprimer la table temporaire de migration.');
+		}
+		sql_query('COMMIT');
+	} catch (Throwable $e) {
+		sql_query('ROLLBACK');
+		throw $e;
 	}
 }
 

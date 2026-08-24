@@ -19,9 +19,13 @@ if (str_contains($schema, "'en_attente' =>") || str_contains($schema, "'valider'
 	$erreurs[] = 'Le schéma neuf réintroduit des colonnes Événements historiquement supprimées.';
 }
 if (!str_contains($administration, "['connexions'][0]['type']")
-	|| !str_contains($administration, 'RENAME COLUMN "transaction" TO tarifs_selectionnes')
+	|| !str_contains($administration, 'association_evenements_migrer_tarifs_selectionnes_sqlite()')
+	|| !str_contains($administration, 'BEGIN IMMEDIATE')
+	|| !str_contains($administration, "['tarifs_selectionnes'] = \$ligne['transaction'] ?? ''")
+	|| !str_contains($administration, 'sql_countsel($table) !== count($lignes)')
+	|| !str_contains($administration, "sql_query('ROLLBACK')")
 	|| !str_contains($administration, 'CHANGE `transaction` tarifs_selectionnes')) {
-	$erreurs[] = 'La migration de sélection tarifaire ne couvre pas SQLite et MySQL.';
+	$erreurs[] = 'La migration de sélection tarifaire ne couvre pas SQLite ancien et MySQL.';
 }
 if (!str_contains($paquet, 'schema="1.2.0"')
 	|| !str_contains($inventaire, "'association_evenements_base_version' => '1.2.0'")) {
