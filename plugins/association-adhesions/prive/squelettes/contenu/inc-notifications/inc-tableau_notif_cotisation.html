@@ -21,10 +21,10 @@
                 #SET{arg_action,#CLE|concat{':',#GET{type_actuel},':',#LANG,':',#GET{nb_jour_actuel},':',#GET{id_compte_courant},':',#GET{id_auteur_courant}}}
                 #SET{url_action,#URL_ACTION_AUTEUR{test_notification_cotisation,#GET{arg_action},#SELF}}
                 [(#BOUTON_ACTION{<:association_adhesions:test_notification_submit:>,#GET{url_action},'btn btn-mini ajax'})]
-                [(#ENV{debug_notifications}|=={1}|?{<div class="debug-arg" style="margin-top:6px;font-size:11px;color:#666">Arg: #GET{arg_action}</div>,''})]
+                [(#ENV{debug_notifications}|=={1}|?{<div class="debug-arg" style="margin-top:6px;font-size:11px;color:#666"><:association_adhesions:test_notification_argument:> : #GET{arg_action}</div>,''})]
             </td>
             <BOUCLE_page_editable_adhesion(ARTICLES){tout}{page=#CLE}>
-                <td style="min-width:50px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank">EDITION</a></td>
+                <td style="min-width:50px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank" rel="noopener noreferrer"><:association_communication:notifications_editer:></a></td>
             </BOUCLE_page_editable_adhesion><td></td><//B_page_editable_adhesion>
         </tr>
     </BOUCLE_notif_adhesion>
@@ -52,10 +52,10 @@
                 #SET{arg_action,#CLE|concat{':',#GET{type_actuel},':',#LANG,':',#GET{nb_jour_actuel},':',#GET{id_compte_courant},':',#GET{id_auteur_courant}}}
                 #SET{url_action,#URL_ACTION_AUTEUR{test_notification_cotisation,#GET{arg_action},#SELF}}
                  [(#BOUTON_ACTION{<:association_adhesions:test_notification_submit:>,#GET{url_action},'btn btn-mini ajax'})]
-                 [(#ENV{debug_notifications}|=={1}|?{<div class="debug-arg" style="margin-top:6px;font-size:11px;color:#666">Arg: #GET{arg_action}</div>,''})]
+                 [(#ENV{debug_notifications}|=={1}|?{<div class="debug-arg" style="margin-top:6px;font-size:11px;color:#666"><:association_adhesions:test_notification_argument:> : #GET{arg_action}</div>,''})]
              </td>
             <BOUCLE_page_editable_echeances(ARTICLES){tout}{page=#CLE}>
-                 <td style="min-width:50px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank">EDITION</a></td>
+                 <td style="min-width:50px"><a href="[(#URL_ECRIRE{article_edit,id_article=#ID_ARTICLE})]" target="_blank" rel="noopener noreferrer"><:association_communication:notifications_editer:></a></td>
              </BOUCLE_page_editable_echeances><td></td><//B_page_editable_echeances>
          </tr>
      </BOUCLE_notif_echeances>

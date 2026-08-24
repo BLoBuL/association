@@ -2068,3 +2068,11 @@ d'opération comptable » et l'écriture 260721229988 affiche « Modification d�
 opération comptable », sans erreur ni clé brute. Aucun formulaire n'a été
 soumis ; le message de succès est couvert par le test du CVT sans créer
 d'écriture de recette.
+
+## Lot 170 - catalogue de notifications Adhésions
+
+Le fil d'Ariane Adhérents utilise le libellé natif SPIP. Les deux actions
+d'édition du catalogue de notifications passent par le domaine Communication,
+leurs nouveaux onglets sont isolés et l'argument de diagnostic est traduit par
+Adhésions. Le bouton d'envoi de test reste inchangé et ne doit pas être utilisé
+en recette courante. La suite locale atteint 128 tests, tous valides.

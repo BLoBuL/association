@@ -369,6 +369,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array (
   'synchroniser_visiteurs' => 'Les visiteurs',
   'table_inscription_adherents_nb_resultat' => 'Nombres de résultat pour cette recherche : @nb_resultat@',
   'test_notification_submit' => 'Envoyer test',
+  'test_notification_argument' => 'Argument',
   'titre_csv' => 'Export',
   'titre_listes_cotisations' => 'Listes des cotisations',
   'titre_onglet_adherents' => 'Adhérents',
