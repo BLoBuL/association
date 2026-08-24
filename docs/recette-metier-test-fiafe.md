@@ -1961,3 +1961,11 @@ fonction globale ni alerte bloquante.
 
 Un test protège les frontières de traduction et les anti-patterns retirés. La
 suite locale atteint 121 tests, tous valides.
+
+Les commits `38c13927` et `26a7d13a` sont déployés sur test-fiafe avec les
+empreintes des artefacts Git conformes. Les plugins Comptabilité et Événements
+restent actifs en 4.0.0 et les 297 fonds recompilent. La recette Chrome de
+l'analyse comptable confirme la bascule traduite. La recette directe de la
+lightbox 231 a révélé un refus de l'API presse-papiers ; le repli ajouté a été
+rejoué par un clic réel et affiche désormais « Lien copié », sans erreur ni clé
+de langue brute. Aucune donnée métier n'a été modifiée.
