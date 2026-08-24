@@ -2073,18 +2073,27 @@ function ie_traiter_commons($mode, $id_evenement = 0, $id_activite = null, $post
             'transaction_data_count' => is_array($data_form['transaction'] ?? null) ? count($data_form['transaction']) : 0,
             'id_transaction_avant' => intval($id_transaction),
         ));
-        $handle = ie_handle_transaction($montant_total, $data_form['id_auteur'] ?? 0, $id_transaction);
-        $id_transaction = $handle['id_transaction'];
-		$transaction_persistante = $id_transaction > 0 ? association_evenements_transaction_lire($id_transaction) : array();
-        if (empty($transaction_persistante['id_transaction'])
-            || abs(floatval($transaction_persistante['montant'] ?? 0) - floatval($montant_total)) > 0.0001
-        ) {
-            return array('editable' => true, 'message_erreur' => _T('association_evenements:erreur_paiement_inscription_incoherent'));
+        include_spip('inc/association_evenements_paiements');
+        if (association_evenements_paiements_actifs()) {
+            $handle = ie_handle_transaction($montant_total, $data_form['id_auteur'] ?? 0, $id_transaction);
+            $id_transaction = $handle['id_transaction'];
+			$transaction_persistante = $id_transaction > 0 ? association_evenements_transaction_lire($id_transaction) : array();
+            if (empty($transaction_persistante['id_transaction'])
+                || abs(floatval($transaction_persistante['montant'] ?? 0) - floatval($montant_total)) > 0.0001
+            ) {
+                return array('editable' => true, 'message_erreur' => _T('association_evenements:erreur_paiement_inscription_incoherent'));
+            }
+            association_evenements_inscription_debug_message('[IE_TRAITER_TRANSACTION][' . $trace_id . '] ' . json_encode(array(
+                'id_transaction_apres' => intval($id_transaction),
+                'transaction_created' => !empty($handle['created']) ? 'oui' : 'non',
+            )), 'association' . _LOG_DEBUG);
+        } else {
+            association_evenements_inscription_debug_message('[IE_TRAITER_TRANSACTION][' . $trace_id . '] ' . json_encode(array(
+                'id_transaction_apres' => 0,
+                'transaction_created' => 'non',
+                'integration_paiements' => 'inactive',
+            )), 'association' . _LOG_DEBUG);
         }
-        association_evenements_inscription_debug_message('[IE_TRAITER_TRANSACTION][' . $trace_id . '] ' . json_encode(array(
-            'id_transaction_apres' => intval($id_transaction),
-            'transaction_created' => !empty($handle['created']) ? 'oui' : 'non',
-        )), 'association' . _LOG_DEBUG);
     }
 
     // Message journal (appel direct)

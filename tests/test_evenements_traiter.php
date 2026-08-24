@@ -135,6 +135,38 @@ function association_test_run_traiter_suite() {
             association_test_assert_same(1, count($transactions), 'Une transaction doit etre creee en payant');
             association_test_assert_contains('/public/paiement?id_transaction=', $res['redirect'], 'Le payant doit rediriger vers le paiement');
         },
+        'public_simple_payant_sans_paiements_persiste_sans_transaction' => function () {
+            association_test_reset_env(array(
+                'plugins' => array('association_paiements' => false),
+                'events' => array(
+                    1 => array(
+                        'payant' => true,
+                        'accompagnants' => false,
+                        'validation' => false,
+                        'validation_sur_paiement' => 'non',
+                        'type_inscrits_evenement' => 'public',
+                    ),
+                ),
+            ));
+            association_test_set_request(array(
+                'prenom_inscrit' => 'Paul',
+                'nom_inscrit' => 'Autonome',
+                'email_inscrit' => 'paul-autonome@example.test',
+                'tel_inscrit' => '0600000000',
+                'categorie' => 3,
+                'commentaire' => 'Sans module paiements',
+            ));
+
+            $res = formulaires_inscription_evenement_public_traiter_dist(1);
+            $activites = association_test_db_table('spip_asso_activites');
+
+            association_test_assert_contains('/public/evenement?id_evenement=1', $res['redirect'], 'Sans Paiements, revenir sur la fiche evenement');
+            association_test_assert_same(1, count($activites), 'Le tarif payant doit rester enregistrable sans Paiements');
+            association_test_assert_same(0, count(association_test_db_table('spip_transactions')), 'Aucune transaction ne doit etre creee sans Paiements');
+            $activite = reset($activites);
+            association_test_assert_same(0, intval($activite['id_transaction'] ?? 0), 'L identifiant de transaction doit rester nullable');
+            association_test_assert_true(!empty($activite['tarifs_selectionnes']), 'Le detail du tarif doit rester porte par l inscription');
+        },
         'prive_simple_payant_notifie' => function () {
             association_test_reset_env(array(
                 'auteur_session' => array('id_auteur' => 3),

@@ -5,14 +5,14 @@ require_once __DIR__ . '/inc/association_evenements_responsables.php';
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
 function association_evenements_integration_active($prefixe) {
-	if (function_exists('association_plugin_actif')) {
-		return association_plugin_actif($prefixe);
-	}
 	if (function_exists('test_plugin_actif')) {
 		$scenario = $GLOBALS['association_test_scenario']['plugins'] ?? null;
 		if (is_array($scenario) && array_key_exists($prefixe, $scenario)) {
 			return test_plugin_actif($prefixe);
 		}
+	}
+	if (function_exists('association_plugin_actif')) {
+		return association_plugin_actif($prefixe);
 	}
 
 	return true;
