@@ -1121,3 +1121,10 @@ La hiérarchie visuelle du formulaire d'import du plan comptable quitte la
 feuille générale du socle. Elle rejoint la feuille privée de Comptabilité et
 ses sélecteurs sont bornés à `.formulaire_importer_plan_comptable`, afin de ne
 plus modifier globalement toutes les saisies nommées `classe` ou `compte`.
+
+## Lot 100 : styles des notifications
+
+Les onglets, filtres et tableaux de la page privée Notifications quittent la
+feuille générale. Communication fournit maintenant sa propre feuille privée et
+borne tous les sélecteurs à `.page_notifications`, supprimant notamment les
+surcharges globales de tous les tableaux de l'espace privé.
