@@ -916,3 +916,15 @@ l'artefact SHA-256
 `1888fb6e4fcce0292d94c50f9351eb14d14bc8752c9a8d9a9cb4ab417f74c11e`.
 Les fils d'Ariane servis affichent désormais « Mettre à jour le don »,
 « Mettre à jour la vente » et « Migration des données comptables ».
+
+## Lot 66 — relecture des anciennes hiérarchies
+
+Le commit `fd96567` a été déployé dans Adhésions, Comptabilité et Événements
+depuis l'artefact SHA-256
+`9dfea2d5ab315b83263f7a19314ff3a4f023de8ec860e7b4bac008b83b170d13`.
+
+Chrome authentifié confirme sans fatal les quatre corrections : édition de
+cotisation, édition d'une catégorie d'activité, édition d'une catégorie de
+cotisation et analyse comptable des activités. Les fils d'Ariane affichent les
+sections intermédiaires attendues et les colonnes gauches proposent le retour
+vers Cotisations, Catégories ou Activités. Aucun formulaire n'a été soumis.
