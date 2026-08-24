@@ -1148,3 +1148,9 @@ de validation ou de reprise et leur adaptation mobile dans sa feuille privée.
 Les statuts de diffusion, colonnes, défilement horizontal, tailles minimales et
 états de focus du tableau Adhérents quittent le socle. Ils rejoignent la feuille
 privée d'Adhésions, avec les règles d'accessibilité et de consultation mobile.
+
+## Lot 104 : tableau responsive des cotisations
+
+Le tableau, sa légende, les badges de justificatifs, les icônes de première
+inscription ou renouvellement et la transformation en cartes sous 640 pixels
+quittent le socle. Toute cette présentation appartient maintenant à Adhésions.
