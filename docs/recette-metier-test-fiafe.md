@@ -2083,3 +2083,10 @@ recompilent. Dans Chrome authentifié, le catalogue Adhésions affiche les
 boutons « Envoyer test » sans clé brute ni ancien libellé « EDITION » ; aucun
 article éditable correspondant n'est présent dans ce jeu. La page Adhérents
 affiche le fil d'Ariane natif. Aucun bouton de test n'a été déclenché.
+
+## Lot 171 - tableau privé Bénévoles
+
+Le groupe résiduel des administrateurs et rédacteurs utilise le domaine
+`association_groupes`, avec une terminologie complète plutôt que l'abréviation
+historique. Un ancien bloc SPIP commenté est retiré. La suite locale atteint
+129 tests, tous valides.
