@@ -2,7 +2,7 @@
 <div itemscope itemtype="http://schema.org/EventReservation">
         <meta itemprop="reservationId" content="#ID_ACTIVITE"/>
         <meta itemprop="reservationNumber" content="#ID_ACTIVITE"/>
-        <meta itemprop="modifiedTime" content="[(#MAJ|local_to_utc{#META{timezone}})]"/>
+        <meta itemprop="modifiedTime" content="[(#MAJ|date_iso)]"/>
         <meta itemprop="modifyReservationUrl" content="#ID_ACTIVITE"/>
         [<meta itemprop="totalPrice" content="(#MONTANT)"/>
         <meta itemprop="priceCurrency" content="[(#CONFIG{intl/devise_defaut})]"/>]
@@ -13,7 +13,7 @@
 <BOUCLE_evenement(EVENEMENTS){id_evenement}>
     <div itemprop="reservationFor" itemscope itemtype="http://schema.org/Event">
         <meta itemprop="name" content="[(#TITRE|textebrut)]"/>
-        <meta itemprop="startDate" content="[(#DATE_DEBUT|local_to_utc{#META{timezone}})]"/>
+        <meta itemprop="startDate" content="[(#DATE_DEBUT|date_iso)]"/>
         <div itemprop="location" itemscope itemtype="http://schema.org/Place">
         [<meta itemprop="name" content="(#LIEU|sinon{#ADRESSE}|textebrut)"/>]
              [(#REM)<!--<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">

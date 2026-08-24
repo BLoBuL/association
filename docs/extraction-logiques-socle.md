@@ -1083,3 +1083,12 @@ clés transversales : menu, paramètres, dates, compte utilisateur et catégorie
 de journal. Les trois langues sont complètes et un test parcourt le code
 exécutable pour empêcher la réintroduction d'un consommateur métier sous le
 namespace `association`.
+
+## Lot 95 : filtres SPIP 4 des notifications Événements
+
+Les données structurées des réservations n'appellent plus le filtre Blobul
+absent `local_to_utc` : les dates utilisent le filtre natif `date_iso`. Une
+construction invalide de nom dans le reçu de remboursement, qui tentait de
+passer le prénom comme argument de `strtoupper`, est supprimée puisqu'elle
+n'était jamais consommée. Un test interdit désormais ces deux syntaxes dans
+les notifications autonomes d'Événements.

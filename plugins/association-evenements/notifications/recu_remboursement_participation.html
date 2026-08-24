@@ -12,7 +12,6 @@
         [(#SET{id_transaction,#ID_TRANSACTION})]
     </BOUCLE_transaction>    
     <BOUCLE_activite(ASSO_ACTIVITES){id_activite}>
-        [(#SET{nom_inscrit,#NOM_INSCRIT|strtoupper #PRENOM_INSCRIT})]
         [(#SET{id_activite,#ID_ACTIVITE})]
     </BOUCLE_activite>                       
         [(#SET{pourcentage_taxe,#CONFIG{association_metas/meta_cfg_taxe_evenement}})]
