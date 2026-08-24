@@ -28,10 +28,10 @@
             <span class="tooltiptext">
             <p>[(#VAL{association_evenements:}|concat{#GET{statut_inscription/statut_ouverture_inscription}}|_T)]</p>
             <br>---
-            [<p class="msg_quota_plein">(#GET{statut_inscription/places_disponibles}|=={non}|oui)Quota plein, plus de place disponible</p>]
-            [<p class="msg_liste_attente">(#GET{gestions_places/places_disponibles}|=={0}|et{#GET{gestions_places/places_en_attentes_disponible}|>{0}}|oui)Inscription uniquement en liste d'attente</p>]
-            [<p class="date_ouverture">Date ouverture : (#GET{statut_inscription/date_ouverture_inscription}|affdate{"d/m/Y<br> H:i"})</p>]
-            [<p class="date_fermeture">Date fermeture : (#GET{statut_inscription/date_fermeture_inscription}|affdate{"d/m/Y<br> H:i"})</p>]
+            [<p class="msg_quota_plein">(#GET{statut_inscription/places_disponibles}|=={non}|oui)<:association_evenements:activite_quota_plein:></p>]
+            [<p class="msg_liste_attente">(#GET{gestions_places/places_disponibles}|=={0}|et{#GET{gestions_places/places_en_attentes_disponible}|>{0}}|oui)<:association_evenements:activite_liste_attente_uniquement:></p>]
+            [<p class="date_ouverture"><:association_evenements:activite_date_ouverture:> (#GET{statut_inscription/date_ouverture_inscription}|affdate{"d/m/Y<br> H:i"})</p>]
+            [<p class="date_fermeture"><:association_evenements:activite_date_fermeture:> (#GET{statut_inscription/date_fermeture_inscription}|affdate{"d/m/Y<br> H:i"})</p>]
             </span>
         </div>
         
@@ -47,27 +47,27 @@
             </BOUCLE_mode_paiement_participation>
            </span></div>
         </BOUCLE_condition_payant>        
-            Gratuit
+            <:association_evenements:activite_gratuite:>
         <//B_condition_payant>
     </td>
     <td>
         [(#TYPE_INSCRITS_EVENEMENT|=={public}|oui)
-        <div class="tooltip "><i class="fas fa-user-plus"></i><span class="tooltiptext">Ouvert à tous</span></div>
+        <div class="tooltip "><i class="fas fa-user-plus"></i><span class="tooltiptext"><:association_evenements:activite_ouverte_tous:></span></div>
         ]
         [(#TYPE_INSCRITS_EVENEMENT|=={prive}|oui)
-        <div class="tooltip "><i class="fas fa-user-shield"></i><span class="tooltiptext">Ouvert aux utilisateurs authentifiés</span></div>
+        <div class="tooltip "><i class="fas fa-user-shield"></i><span class="tooltiptext"><:association_evenements:activite_ouverte_authentifies:></span></div>
         ]
         [(#TYPE_INSCRITS_EVENEMENT|=={strict}|oui)
-        <div class="tooltip "><i class="fas fa-user-lock"></i><span class="tooltiptext">Ouvert aux adhérents uniquement</span></div>
+        <div class="tooltip "><i class="fas fa-user-lock"></i><span class="tooltiptext"><:association_evenements:activite_ouverte_adherents:></span></div>
         ]
     </td>
     <td class="quota">
         [(#VALIDATION|=={oui}|oui)
-        <div class="tooltip preinscrit">[(#GET{nb_preinscrit}|array_sum)]<span class="tooltiptext">Nombre d'inscription en attente de validation</span></div>
+        <div class="tooltip preinscrit">[(#GET{nb_preinscrit}|array_sum)]<span class="tooltiptext"><:association_evenements:activite_nombre_preinscrits:></span></div>
         ]
-        <div class="tooltip inscrit">[(#GET{nb_inscrit}|array_sum)]/[(#PLACES|=={0}|?{∞,#PLACES})]<span class="tooltiptext">Nombre de membres inscrit</span></div>
+        <div class="tooltip inscrit">[(#GET{nb_inscrit}|array_sum)]/[(#PLACES|=={0}|?{∞,#PLACES})]<span class="tooltiptext"><:association_evenements:activite_nombre_inscrits:></span></div>
         [(#FILE_ATTENTES|=={oui}|et{#PLACES|>{0}})
-        <div class="tooltip attente">[(#GET{nb_attente}|array_sum)]/[(#ATTENTES|=={0}|?{∞,#ATTENTES})]<span class="tooltiptext">Nombre de membres en liste d'attente</span></div>
+        <div class="tooltip attente">[(#GET{nb_attente}|array_sum)]/[(#ATTENTES|=={0}|?{∞,#ATTENTES})]<span class="tooltiptext"><:association_evenements:activite_nombre_attente:></span></div>
         ]
     </td>
     <td class=""><a href="[(#URL_ECRIRE{voir_activites}|parametre_url{id,#ID_EVENEMENT})]" title="<:association_evenements:activite_bouton_gerer_inscription:>" class="lien_fa"><i class="fa fa-list" aria-hidden="true"></i></a></td>

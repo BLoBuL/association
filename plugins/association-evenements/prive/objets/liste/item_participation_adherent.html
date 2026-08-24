@@ -5,7 +5,7 @@
         <BOUCLE_evenement(EVENEMENTS){id_evenement}{tout}>
             <INCLURE{fond=prive/inclure/miniature_evenement,id_evenement,date_evenement=oui}/>
         </BOUCLE_evenement>
-        <td>Le rendez-vous a été supprimé.</td>
+        <td><:association_evenements:evenement_supprime:></td>
         <//B_evenement>
         <td class="statut">
             [(#STATUT|=={ok}|oui)<:association_evenements:activite_content_cotisation_ok:>]

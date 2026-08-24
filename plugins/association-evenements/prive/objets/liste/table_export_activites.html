@@ -6,12 +6,12 @@
 #SET{date_fin,#ENV{annee}|sinon{#GET{date_annee_defaut}}}
 
 <B_tableau_activites>
-<div><b>Filtres :</b>
-    <span><a href="[(#SELF|parametre_url{payant,''})]" [class="(#ENV{payant}|=={''}|et{#ENV{payant}|!={0}})on]">Tout</a> | </span>
-    <span><a href="[(#SELF|parametre_url{payant,1})]" [class="(#ENV{payant}|=={1}|oui)on]">Payant </a> | </span>
-    <span><a href="[(#SELF|parametre_url{payant,0})]" [class="(#ENV{payant}|=={0}|oui)on]">Gratuit</a></span>
+<div><strong><:association_evenements:export_filtres:></strong>
+    <span><a href="[(#SELF|parametre_url{payant,''})]" [class="(#ENV{payant}|=={''}|et{#ENV{payant}|!={0}})on]"><:association_evenements:export_filtre_tout:></a> | </span>
+    <span><a href="[(#SELF|parametre_url{payant,1})]" [class="(#ENV{payant}|=={1}|oui)on]"><:association_evenements:export_filtre_payant:></a> | </span>
+    <span><a href="[(#SELF|parametre_url{payant,0})]" [class="(#ENV{payant}|=={0}|oui)on]"><:association_evenements:export_filtre_gratuit:></a></span>
 <br>
-    <div><b>Année :</b>
+    <div><strong><:association_evenements:export_filtre_annee:></strong>
 <BOUCLE_filtre_annee(EVENEMENTS) {inscription = 1}
                                                                     {payant ?}
                                                                     {statut = publie}

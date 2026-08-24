@@ -1931,3 +1931,14 @@ de corriger l'initialisation manquante de `periode_contexte` : l'URL
 `periode_contexte=entreprise` marque maintenant visuellement « Entreprises »
 comme sélectionné. Les pages Adherents et Cotisations n'ont plus de `<label>`
 orphelin dans leurs groupes de filtres et ne produisent aucune erreur.
+
+## Lot 162 - listes privées Evenements traduisibles
+
+La liste des activités et l'export ne portent plus en dur les états de quota,
+liste d'attente, ouverture, fermeture, gratuité, audience et compteurs
+d'inscriptions. Les filtres d'export et les messages d'événement supprimé sont
+également fournis par le domaine `association_evenements`.
+
+Les quatre fils d'Ariane du module utilisent le libellé natif
+`<:info_racine_site:>` de SPIP. Un test couvre les listes, les messages et les
+hiérarchies. La suite locale atteint 120 tests, tous valides.
