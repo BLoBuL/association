@@ -9,7 +9,7 @@
 <div class="cadre-formulaire-editer">
     <div class="filtres">
         <form method="post" action="[(#SELF|parametre_url{imputation,''})]">
-        <select name="imputation" class="fondl" onchange="form.submit()">
+        <select name="imputation" class="fondl association-compta-submit-on-change">
             <option value="%" [(#GET{imputation}|=={%}|oui)selected="selected"]><:association_compta:tous:></option>
             <BOUCLE_plans(ASSO_PLAN){par classe}{par code}>
             [(#SET{classe_precedente,#CLASSE_PRECEDENTE})]
@@ -26,7 +26,7 @@
         </form>
     </div>
 
-    <form method="post" action="#URL_ACTION_AUTEUR{traiter_comptes,'',#SELF}" id="form_comptes">
+    <form method="post" action="#URL_ACTION_AUTEUR{traiter_comptes,'',#SELF}" id="form_comptes" data-confirm-suppression="<:association_compta:confirmer_suppression_selection|attribut_html:>">
 
           <div class="actions-group">
                 <select name="action_groupe" id="action_groupe">
@@ -35,7 +35,7 @@
                       <option value="invalider"><:association_compta:invalider_selection:></option>
                       <option value="supprimer"><:association_compta:supprimer_selection:></option>
                 </select>
-            <input type="submit" name="appliquer" value="<:association_compta:appliquer:>" class="submit" onclick="return confirm_action();" />
+            <input type="submit" name="appliquer" value="<:association_compta:appliquer:>" class="submit" />
           </div>
 
 
@@ -51,7 +51,7 @@
                     <th><:association_compta:montant:></th>
                     <th><:association_compta:actions:></th>
                     <th class="checkbox">
-                      <input id="check_all" name="selecteur_comptes[]" type="checkbox" value="check_all" onclick="return cocherOuDecocherTout(this);">
+                      <input id="check_all" name="selecteur_comptes[]" type="checkbox" value="check_all">
                       <label for="check_all"></label>
                     </th>
                 </tr>
@@ -63,27 +63,3 @@
 
   </form>
 </div>
-
-<script>
-  function confirm_action() {
-  var action = document.getElementById('action_groupe').value;
-  if (action == 'supprimer') {
-    return confirm('<:association_compta:confirmer_suppression_selection:>');
-  }
-  return true;
-  }
-
-  document.getElementById('action_groupe').addEventListener('change', function() {
-  document.getElementById('action_masse').value = this.value;
-  });
-
-  function cocherOuDecocherTout(source) {
-  var checkboxes = document.querySelectorAll('input[name="selecteur_comptes[]"]');
-  for (var i=0; i<checkboxes.length; i++) {
-    if (checkboxes[i].value != 'check_all') {
-      checkboxes[i].checked = source.checked;
-    }
-  }
-  return true;
-  }
-</script>
