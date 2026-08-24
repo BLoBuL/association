@@ -5,6 +5,59 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 /**
+ * Statistiques comptables globales des événements d'un exercice.
+ *
+ * Le calcul appartient au module métier ; les écritures et transactions sont
+ * toutefois obtenues par les API de leurs plugins propriétaires.
+ */
+function association_evenements_stats_compta_exercice($exercice) {
+	$stats = array(
+		'total_operations' => 0,
+		'total_recettes' => 0.0,
+		'total_depenses' => 0.0,
+		'montant_moyen' => 0.0,
+		'par_statut' => array(),
+		'par_mode' => array(),
+	);
+	$bornes = association_comptes_bornes_exercice((int) $exercice);
+	include_spip('inc/association_compta_ecritures');
+	$ecritures = association_compta_ecritures_lister(array(
+		'objets' => array('activite', 'evenement'),
+		'journaux_legacy' => array('activite|'),
+		'date_debut' => $bornes['debut'],
+		'date_fin' => $bornes['prochain_debut'],
+	));
+	include_spip('inc/association_paiements_transactions');
+	$transactions = association_paiements_transactions_lire(array_column($ecritures, 'id_transaction'));
+	foreach ($ecritures as $ecriture) {
+		$recette = (float) ($ecriture['recette'] ?? 0);
+		$depense = (float) ($ecriture['depense'] ?? 0);
+		if ($recette == 0 && $depense == 0) {
+			continue;
+		}
+		$stats['total_recettes'] += $recette;
+		$stats['total_depenses'] += $depense;
+		$stats['total_operations']++;
+		$id_transaction = (int) ($ecriture['id_transaction'] ?? 0);
+		$transaction = $transactions[$id_transaction] ?? array();
+		$statut = $id_transaction ? (($transaction['statut'] ?? '') ?: 'inconnu') : 'hors_transaction';
+		$mode = $id_transaction ? (($transaction['mode'] ?? '') ?: 'inconnu') : 'hors_transaction';
+		foreach (array('par_statut' => $statut, 'par_mode' => $mode) as $cle => $valeur) {
+			if (!isset($stats[$cle][$valeur])) {
+				$stats[$cle][$valeur] = array('count' => 0, 'montant' => 0.0);
+			}
+			$stats[$cle][$valeur]['count']++;
+			$stats[$cle][$valeur]['montant'] += $recette - $depense;
+		}
+	}
+	$stats['solde'] = $stats['total_recettes'] - $stats['total_depenses'];
+	if ($stats['total_operations']) {
+		$stats['montant_moyen'] = $stats['solde'] / $stats['total_operations'];
+	}
+	return $stats;
+}
+
+/**
  * Liste (agrégée) des événements payants d'un exercice comptable.
  * Un événement est considéré payant s'il possède au moins une opération (recette ou dépense > 0).
  * Retourne un tableau indexé numériquement de lignes:

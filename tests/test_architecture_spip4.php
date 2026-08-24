@@ -30,6 +30,21 @@ $verifier(
 );
 $adhesions_paquet = file_get_contents($racine . '/plugins/association-adhesions/paquet.xml');
 $evenements_paquet = file_get_contents($racine . '/plugins/association-evenements/paquet.xml');
+$compta_paquet = file_get_contents($racine . '/plugins/association-compta/paquet.xml');
+$compta_fonctions = file_get_contents($racine . '/plugins/association-compta/inc/fonctions/comptes.php');
+$evenements_pipelines = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
+$verifier(
+	strpos($compta_paquet, 'nom="association_evenements_stats_compta"') !== false
+		&& strpos($evenements_paquet, 'nom="association_evenements_stats_compta"') !== false
+		&& strpos($evenements_pipelines, 'function association_evenements_association_evenements_stats_compta(') !== false,
+	'Les statistiques comptables Evenements doivent etre fournies par le plugin metier.'
+);
+$verifier(
+	strpos($compta_fonctions, "sql_quote('activite')") === false
+		&& strpos($compta_fonctions, "sql_quote('evenement')") === false
+		&& strpos($compta_fonctions, "sql_quote('activite|%')") === false,
+	'Comptabilite ne doit plus connaitre les criteres propres aux Evenements.'
+);
 $verifier(strpos($adhesions_paquet, '<chemin path="squelettes"') === false, 'Adhesions doit exposer sa racine pour rendre prive/ chargeable.');
 $verifier(strpos($evenements_paquet, '<chemin path="squelettes"') === false, 'Evenements doit exposer sa racine pour rendre prive/ chargeable.');
 $verifier(strpos($paquet, '<necessite nom="bank"') === false, 'Bank doit etre porte par le module Paiements.');

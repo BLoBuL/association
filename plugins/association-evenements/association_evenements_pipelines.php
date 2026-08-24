@@ -106,6 +106,12 @@ function association_evenements_association_compta_migration_metiers($flux) {
 	return $flux;
 }
 
+function association_evenements_association_evenements_stats_compta($flux) {
+	include_spip('inc/association_evenements_statistiques_compta');
+	$flux['data'] = association_evenements_stats_compta_exercice((int) ($flux['args']['exercice'] ?? 0));
+	return $flux;
+}
+
 function association_evenements_association_compta_objets_declarer($flux) {
 	$data = array();
 	$evenements = sql_select('id_evenement,titre,date_debut', 'spip_evenements', '', '', 'date_debut DESC');

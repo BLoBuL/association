@@ -435,58 +435,12 @@ function stats_compta_activites_exercice($exercice){
         'par_statut' => array(),
         'par_mode' => array(),
     );
-    $exercice = intval($exercice);
-    $bornes = association_comptes_bornes_exercice($exercice);
-    $date_debut = $bornes['debut'];
-    $date_fin = $bornes['prochain_debut'];
-
-    // Nouveau WHERE : inclure écritures liées aux activites OU evenements, et conserver l'ancien pattern journal pour rétro-compatibilité.
-    $where = "((c.objet=" . sql_quote('activite') . " OR c.objet=" . sql_quote('evenement') . ")"
-           . " OR c.journal LIKE " . sql_quote('activite|%') . ")"
-           . " AND c.date >= " . sql_quote($date_debut)
-           . " AND c.date < " . sql_quote($date_fin);
-
-    $lignes = sql_allfetsel('c.id_compte,c.recette,c.depense,c.id_transaction', 'spip_asso_comptes c', $where);
-    $transactions = pipeline('association_paiements_transactions_informations', array(
-		'args' => array('ids_transactions' => array_column($lignes, 'id_transaction')),
+	$stats['solde'] = 0.0;
+	$distribuees = pipeline('association_evenements_stats_compta', array(
+		'args' => array('exercice' => (int) $exercice),
 		'data' => array(),
 	));
-
-    foreach ($lignes as $row) {
-        $r = floatval($row['recette']);
-        $d = floatval($row['depense']);
-        // Ignorer totalement les lignes sans mouvement
-        if ($r == 0 && $d == 0) {
-            continue;
-        }
-        // Totaux globaux
-        $stats['total_recettes'] += $r;
-        $stats['total_depenses'] += $d;
-        $stats['total_operations']++;
-
-        // Statut & mode : 'hors_transaction' si pas de transaction associée (ex: dépense interne, écriture manuelle)
-        $transaction = $transactions[(int) ($row['id_transaction'] ?? 0)] ?? array();
-        $statut = ($row['id_transaction'] ? (($transaction['statut'] ?? '') ?: 'inconnu') : 'hors_transaction');
-        $mode   = ($row['id_transaction'] ? (($transaction['mode'] ?? '') ?: 'inconnu') : 'hors_transaction');
-
-        if (!isset($stats['par_statut'][$statut])) {
-            $stats['par_statut'][$statut] = array('count' => 0, 'montant' => 0.0);
-        }
-        $stats['par_statut'][$statut]['count']++;
-        $stats['par_statut'][$statut]['montant'] += ($r - $d);
-
-        if (!isset($stats['par_mode'][$mode])) {
-            $stats['par_mode'][$mode] = array('count' => 0, 'montant' => 0.0);
-        }
-        $stats['par_mode'][$mode]['count']++;
-        $stats['par_mode'][$mode]['montant'] += ($r - $d);
-    }
-
-    $stats['solde'] = $stats['total_recettes'] - $stats['total_depenses'];
-    if ($stats['total_operations'] > 0) {
-        $stats['montant_moyen'] = $stats['solde'] / $stats['total_operations'];
-    }
-    return $stats;
+	return is_array($distribuees) && $distribuees ? array_replace($stats, $distribuees) : $stats;
 }
 /**
  * Filtre SPIP pour accéder aux stats comptables des activités d'un exercice

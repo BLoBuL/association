@@ -29,6 +29,7 @@
 	<pipeline nom="association_paiements_transactions_references" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_compta_migration_metiers" action="" />
 	<pipeline nom="association_compta_ecritures_devises" action="" />
+	<pipeline nom="association_evenements_stats_compta" action="" />
 	<pipeline nom="association_compta_autoriser_ecriture" action="" />
 	<pipeline nom="association_compta_objets_declarer" action="" />
 	<pipeline nom="association_compta_redirection_ecriture" action="" />

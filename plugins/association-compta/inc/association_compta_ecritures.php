@@ -85,8 +85,16 @@ function association_compta_ecritures_lister(array $criteres = array(), array $o
 		$objets[] = trim((string) $criteres['objet']);
 		$objets = array_values(array_unique($objets));
 	}
+	$journaux_legacy = array_values(array_unique(array_filter(array_map('strval', (array) ($criteres['journaux_legacy'] ?? array())), 'strlen')));
+	$liens_metier = array();
 	if ($objets) {
-		$where[] = sql_in('objet', $objets);
+		$liens_metier[] = sql_in('objet', $objets);
+	}
+	foreach ($journaux_legacy as $prefixe) {
+		$liens_metier[] = 'journal LIKE ' . sql_quote($prefixe . '%');
+	}
+	if ($liens_metier) {
+		$where[] = count($liens_metier) > 1 ? '(' . implode(' OR ', $liens_metier) . ')' : reset($liens_metier);
 	}
 	$ids_objets = array_values(array_filter(array_unique(array_map('intval', (array) ($criteres['ids_objets'] ?? array())))));
 	if (isset($criteres['id_objet']) && (int) $criteres['id_objet'] > 0) {
