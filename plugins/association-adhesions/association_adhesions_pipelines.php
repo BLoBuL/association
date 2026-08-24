@@ -122,6 +122,7 @@ function association_adhesions_association_compta_objets_declarer($flux) {
 		'label_selection' => 'association_compta:choix_cotisation', 'data' => $data,
 		'imputation_recette' => $GLOBALS['association_metas']['pc_cotisations_paiement'] ?? '',
 		'imputation_depense' => $GLOBALS['association_metas']['pc_cotisations_creance'] ?? '',
+		'destination_defaut' => 'cotisations',
 	);
 	return $flux;
 }

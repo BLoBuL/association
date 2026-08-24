@@ -261,6 +261,10 @@ function formulaires_editer_asso_comptes_charger_dist($id_compte = 'new') {
         }
 
     }
+	$definitions = association_compta_objets_definitions();
+	$type_objet = $valeurs['objet'] ?? 'autre';
+	$destination_defaut = $definitions[$type_objet]['destination_defaut'] ?? '';
+	update_destination_contexte_from_compte($valeurs, $id_compte_int, $destination_defaut);
 
     return $valeurs;
 
@@ -346,6 +350,8 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
         $erreurs['montant'] = _T('association_compta:erreur_recette_depense');
     }
 
+	verifier_destination_comptable((float) _request('montant'), 'montant', $erreurs);
+
 /*    // Vérification de la date
     if ($erreur_date = association_verifier_date(_request('date'))) {
         $erreurs['date'] = _request('date') . "&nbsp;:&nbsp;" . $erreur_date;
@@ -413,6 +419,7 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
 			'id_objet' => $id_objet, 'objet' => $objet, 'vu' => 1,
 		));
     }
+    ajouter_destinations((int) $id_compte, (float) $recette, (float) $depense);
     // Mettre à jour directement sans passer par objet_modifier
 
 

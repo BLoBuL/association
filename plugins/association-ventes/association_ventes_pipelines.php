@@ -26,6 +26,7 @@ function association_ventes_association_compta_objets_declarer($flux) {
 		'label' => 'association_compta:choix_vente', 'objet' => 'asso_vente', 'champ' => 'id_vente',
 		'label_selection' => 'association_compta:choix_vente', 'data' => $data,
 		'imputation_recette' => $GLOBALS['association_metas']['pc_ventes'] ?? '',
+		'destination_defaut' => 'ventes',
 	);
 	return $flux;
 }

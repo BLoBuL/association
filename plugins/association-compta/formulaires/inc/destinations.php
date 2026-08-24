@@ -61,7 +61,7 @@ function _get_map_of_destination_id_montant($id_compte)
     return '';
 }
 
-function verifier_destination_comptable($montant, $montant_field, $erreurs) {
+function verifier_destination_comptable($montant, $montant_field, &$erreurs) {
     /* verifier si besoin que le montant des destinations correspond bien au montant de l'opération, sauf si on a deja une erreur de montant */
     if (destinations_are_enabled() && !array_key_exists($montant_field, $erreurs))
     {
@@ -79,8 +79,11 @@ function _verifier_montant_destinations($montant_attendu)
 {
     $err = '';
 
-    $toutesDestinations = _request('id_dest');
-    $toutesDestinationsMontants = _request('montant_dest');
+    $toutesDestinations = array_values((array) _request('id_dest'));
+    $toutesDestinationsMontants = array_values((array) _request('montant_dest'));
+	if (!$toutesDestinations) {
+		return _T('association_compta:erreur_pas_de_destination');
+	}
 
     /* on verifie que le montant des destinations correspond au montant global et qu'il n'y a pas deux fois la meme destination (uniquement si on a plusieurs destinations) */
     $total_destination = 0;
@@ -97,7 +100,7 @@ function _verifier_montant_destinations($montant_attendu)
                 $err = _T('association_compta:erreur_destination_dupliquee');
             }
 
-            $total_destination += association_recupere_montant($toutesDestinationsMontants[$id]); /* les montants sont dans un autre tableau aux meme cles */
+            $total_destination += association_recupere_montant($toutesDestinationsMontants[$id] ?? 0); /* les montants sont dans un autre tableau aux meme cles */
         }
 
         /* on verifie que la somme des montants des destinations correspond au montant attendu */
@@ -106,9 +109,8 @@ function _verifier_montant_destinations($montant_attendu)
         }
 
     } else { /* une seule destination, le montant peut ne pas avoir ete precise, dans ce cas pas de verif, c'est le montant attendu qui sera entre dans la base */
-        /* quand on a une seule destination, l'id dans les tableaux est forcement 1 par contruction de l'editeur */
-        if ($toutesDestinationsMontants[1]) {
-            $montant = association_recupere_montant($toutesDestinationsMontants[1]);
+        if (!empty($toutesDestinationsMontants[0])) {
+            $montant = association_recupere_montant($toutesDestinationsMontants[0]);
             /* on verifie que le montant indique correspond au montant attendu */
             if ($montant_attendu != $montant) {
                 $err = _T('association_compta:erreur_montant_destination');

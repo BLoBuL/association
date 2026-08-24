@@ -26,6 +26,7 @@ function association_dons_association_compta_objets_declarer($flux) {
 		'label' => 'association_compta:choix_don', 'objet' => 'asso_don', 'champ' => 'id_don',
 		'label_selection' => 'association_compta:choix_don', 'data' => $data,
 		'imputation_recette' => $GLOBALS['association_metas']['pc_dons'] ?? '',
+		'destination_defaut' => 'dons',
 	);
 	return $flux;
 }

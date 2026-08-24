@@ -127,6 +127,7 @@ function association_evenements_association_compta_objets_declarer($flux) {
 		'data' => $data,
 		'imputation_recette' => $GLOBALS['association_metas']['pc_activites_paiement'] ?? '',
 		'imputation_depense' => $GLOBALS['association_metas']['pc_activites_frais'] ?? '',
+		'destination_defaut' => 'activites',
 		'verrouiller' => (int) _request('id_evenement') > 0,
 	);
 	return $flux;

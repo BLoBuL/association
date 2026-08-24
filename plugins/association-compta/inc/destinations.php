@@ -28,9 +28,11 @@ function ajouter_destinations($id_compte, $recette, $depense, $destination_map =
         $destinationIds = array_keys($destination_map);
         $destinationMontants = array_values($destination_map);
     } else { // donnees de formulaire Associaspip
-        $destinationIds = _request('id_dest');
-        $destinationMontants = _request('montant_dest');
+        $destinationIds = (array) _request('id_dest');
+        $destinationMontants = (array) _request('montant_dest');
     }
+	$destinationIds = array_values($destinationIds);
+	$destinationMontants = array_values($destinationMontants);
 
     if (!count($destinationIds)
         || !count($destinationMontants)
@@ -85,7 +87,7 @@ function create_destination_map_for_montant(
 // TODO: on a per-user basis? here global..
 function destinations_are_enabled()
 {
-    return association_valeur_bdd_est_vraie($GLOBALS['association_metas']['destinations']);
+    return association_valeur_bdd_est_vraie($GLOBALS['association_metas']['destinations'] ?? '');
 }
 
 function default_destination_is_set($dc_name)
