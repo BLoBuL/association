@@ -91,7 +91,7 @@ function sql_fetch($resultat) { return array_shift($GLOBALS['test_select_rows'])
 function bank_devise_defaut() { return array('code' => 'EUR', 'symbole' => '€'); }
 function intl_devise_defaut() { return $GLOBALS['test_config']['intl/devise_defaut'] ?? 'EUR'; }
 function intl_lister_devises() { return array('CNY' => array('symbole' => '¥'), 'EUR' => array('symbole' => '€')); }
-function association_adhesions_compte_cotisation_creer($date, $montant, $justification, $imputation, $journal, $id_auteur, $reinscription, $id_categorie, $statut, $id_transaction) {
+function association_adhesions_compte_cotisation_creer($date, $montant, $justification, $imputation, $journal, $id_auteur, $reinscription, $id_categorie, $statut, $id_transaction, $date_fin_validite = null) {
     $id = count($GLOBALS['test_comptes']) + 1;
     $GLOBALS['test_comptes'][$id] = compact('id_auteur', 'id_categorie', 'id_transaction') + array(
         'id_compte' => $id,
@@ -99,15 +99,19 @@ function association_adhesions_compte_cotisation_creer($date, $montant, $justifi
         'justification' => $justification,
         'statut_cotisation' => $statut,
         'reinscription' => $reinscription,
+        'date' => $date,
+        'date_fin_validite' => $date_fin_validite,
     );
     return $id;
 }
-function association_adhesions_compte_cotisation_modifier($date, $montant, $justification, $imputation, $journal, $reinscription, $id_categorie, $id_compte, $statut, $id_transaction) {
+function association_adhesions_compte_cotisation_modifier($date, $montant, $justification, $imputation, $journal, $reinscription, $id_categorie, $id_compte, $statut, $id_transaction, $date_fin_validite = null) {
     $GLOBALS['test_comptes'][$id_compte] = array_merge($GLOBALS['test_comptes'][$id_compte], array(
         'montant' => $montant,
         'id_categorie' => $id_categorie,
         'statut_cotisation' => $statut,
         'reinscription' => $reinscription,
+        'date' => $date,
+        'date_fin_validite' => $date_fin_validite,
     ));
 }
 function changer_statut_cotisation($id_compte, $origine = '', $notifier = true) {
@@ -228,6 +232,30 @@ test_assert(
     ($GLOBALS['test_comptes'][1]['justification'] ?? '') === 'Cotisation synthétique #1',
     'la justification préparée par le formulaire est conservée par l API'
 );
+
+test_reset('auto', 100);
+$resultat = api_traiter_cotisation(array(
+    'id_auteur' => 1,
+    'id_categorie' => 10,
+    'origine' => 'prive',
+    'montant' => 75.5,
+    'date_operation' => '2026-05-12',
+    'date_fin_validite' => '2027-05-11',
+));
+test_assert($resultat['montant'] === 75.5, 'le BO conserve le montant réellement saisi');
+test_assert(($GLOBALS['test_comptes'][1]['date'] ?? '') === '2026-05-12 00:00:00', 'le BO conserve la date comptable saisie');
+test_assert(($GLOBALS['test_comptes'][1]['date_fin_validite'] ?? '') === '2027-05-11', 'le BO transmet la validité propre à la cotisation');
+
+test_reset('auto', 100);
+$resultat = api_traiter_cotisation(array(
+    'id_auteur' => 1,
+    'id_categorie' => 10,
+    'origine' => 'public',
+    'montant' => 1,
+    'date_operation' => '2020-01-01',
+));
+test_assert($resultat['montant'] === 100.0, 'le public ne peut pas remplacer le tarif de catégorie');
+test_assert(($GLOBALS['test_comptes'][1]['date'] ?? '') !== '2020-01-01 00:00:00', 'le public ne peut pas antidater la cotisation');
 
 test_reset('auto', 80);
 $GLOBALS['test_config']['/association_metas/meta_cfg_taxe'] = 20;

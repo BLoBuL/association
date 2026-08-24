@@ -65,6 +65,24 @@ sont également internalisées dans les chemins standards de leur module métier
 | `blobul-CORE/emails/` | Communication : `emails/` | coque HTML responsive, logo du site, titre, contenu, bouton et pied de page, sans configuration ni marque Blobul |
 | `blobul-ASSO_FO/inclure/album_photos_evenement*.html` | Événements : `squelettes/inclure/` | portfolio public et variante verrouillée, inclus directement par `squelettes/evenement.html` |
 
+Les autres fichiers de `blobul-ASSO_FO` ont été relus avant exclusion ; ils ne
+doivent pas être copiés dans un plugin métier sans leur ancien thème :
+
+| Source historique | Remplacement autonome | Décision |
+|---|---|---|
+| `formulaires/inscription.*` | Adhésions : page `inscription` et formulaire public d'Inscription 4 | utiliser l'API du plugin déclaré plutôt que maintenir une surcharge Inscription 3 |
+| `formulaires/editer_mailsubscriber_public.*` | Communication : page `newsletter` et formulaire public de Mailsubscribers | conserver le CVT officiel du plugin déclaré |
+| `inclure/forum.html` | forum/commentaires standards du squelette SPIP actif | composant éditorial générique, sans logique Association |
+| `inclure/menu_visiteur.html` | en-tête du squelette actif et URLs de connexion SPIP | composant de thème, sans logique métier |
+| `inclure/inc-item_article_mini.html` | listes d'articles du squelette actif | composant éditorial de thème |
+| `inclure/inc-item_auteur.html` | boucles et modèles auteurs du squelette actif | composant éditorial et présentation de thème |
+| `inclure/inc-documents.html`, `inc-item_document.html` | modèles Documents et portfolio du squelette actif | composants génériques ; les deux albums réellement propres aux événements sont déjà dans Événements |
+
+Cette exclusion évite de transformer la suite métier en thème global. Elle ne
+retire aucune fonction Association : inscription/adhésion, newsletter,
+événements, portfolio protégé, paiement et catalogue de prêts possèdent chacun
+leur page ou modèle autonome dans leur plugin responsable.
+
 Le compilateur SPIP de la suite parcourt désormais, pour chaque module, les
 dossiers `squelettes/`, `modeles/`, `emails/` et `notifications/`. Une ressource
 rapatriée n'est donc pas seulement inventoriée : son chargement comme fond SPIP

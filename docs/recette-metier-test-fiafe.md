@@ -1309,3 +1309,24 @@ privés, douze pages publiques et 64 composants front.
 La session Chrome antérieure est invalidée par le remplacement de la base :
 la preuve serveur est complète, mais la validation visuelle authentifiée de ce
 nouveau rendu reste à reprendre après reconnexion du compte de recette.
+
+## Lot 117 — frontière complète des actifs FO historiques
+
+La revue exhaustive de `blobul-ASSO_FO` confirme que les composants métier
+indispensables sont déjà autonomes : adhésion/inscription dans Adhésions,
+newsletter dans Communication, fiche et inscription événement dans
+Événements, modèles Bank dans Paiements et ressources dans Prêts. Les fragments
+restants (menu visiteur, cartes d'article/auteur/document et forum générique)
+appartiennent au squelette éditorial SPIP ou au thème et ne sont donc pas
+recopiés dans la suite métier. La matrice et les remplacements officiels sont
+consignés dans `docs/inventaire-pages-et-squelettes.md`.
+
+La recette Chrome sans session sert correctement l'inscription, la newsletter
+(champ Email et bouton d'inscription), les ressources et l'événement 183. Ce
+dernier expose le formulaire non-adhérent complet jusqu'au bouton de validation
+sans qu'aucune donnée soit soumise. La compilation serveur conserve 221
+squelettes privés, douze pages publiques et 64 composants front.
+
+Les dépréciations visibles proviennent toujours d'Accès Restreint 6.3.1 sous
+PHP 8.4 ; elles sont extérieures aux dix plugins Association et ne masquent pas
+les formulaires servis.
