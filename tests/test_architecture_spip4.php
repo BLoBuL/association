@@ -412,6 +412,14 @@ $verifier(
 		&& strpos($css_evenements, '#formulaire_voir_activites.formulaire_asso') !== false,
 	'La fiche privée et les inscriptions doivent être stylées par Événements.'
 );
+$verifier(
+	strpos($css_socle, '.bloc-resume-compta') === false
+		&& strpos($css_socle, '.boite_stats_compact') === false
+		&& strpos($css_compta, '.bloc-resume-compta') !== false
+		&& strpos($css_compta, '.tableau_evenements_payants') !== false
+		&& strpos($css_compta, '.boite_stats_expanded') !== false,
+	'Les résumés et statistiques comptables doivent appartenir à Comptabilité.'
+);
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
