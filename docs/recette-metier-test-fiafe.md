@@ -1514,3 +1514,23 @@ comptables canoniques et aucun ancien lien `activite`. Aucun compte ni aucune
 ventilation n'a été modifié ou supprimé. Les deux fichiers déployés ont les
 mêmes empreintes SHA-256 que leur source, le cache a été vidé et SPIP 4.4.21
 compile 221 squelettes privés, douze pages publiques et 64 composants front.
+
+## Lot 130 — statistiques Événements distribuées
+
+Les cartes comptables d'un événement, l'analyse annuelle et l'ancien filtre
+fondé sur les journaux `activite|…` ne construisent plus de requêtes directes
+sur `spip_asso_comptes`. Comptabilité expose une API de lecture structurée par
+objet, période, transaction, validation et sens de mouvement. L'analyse des
+modes et statuts obtient les données minimales de Bank par l'API du module
+Paiements, sans joindre directement `spip_transactions`. Les écritures
+canoniques `evenement` et historiques `activite` restent agrégées ensemble.
+
+Sur test-fiafe, les cinq événements possédant des écritures produisent les
+mêmes comptes et montants dans dix jeux de validation. Pour les exercices 2024,
+2025 et 2026, les listes et statistiques ont été comparées sur les filtres
+Toutes, Recettes et Dépenses, avec et sans écritures non validées : les 36
+comparaisons sont identiques aux requêtes historiques. L'ancien filtre par
+journal est également identique sur les trois exercices. Aucune donnée n'a été
+modifiée. Toutes les empreintes déployées correspondent aux sources et SPIP
+4.4.21 compile 221 squelettes privés, douze pages publiques et 64 composants
+front.
