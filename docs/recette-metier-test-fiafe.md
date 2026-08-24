@@ -1942,3 +1942,11 @@ d'inscriptions. Les filtres d'export et les messages d'événement supprimé son
 Les quatre fils d'Ariane du module utilisent le libellé natif
 `<:info_racine_site:>` de SPIP. Un test couvre les listes, les messages et les
 hiérarchies. La suite locale atteint 120 tests, tous valides.
+
+Le commit `c93044c2` est déployé sur test-fiafe avec les neuf empreintes de
+l'artefact Git conformes. Le plugin Événements reste actif en 4.0.0, SPIP est
+sain et les 297 fonds recompilent. Dans Chrome authentifié, Activités, Export
+des événements, Suivi des inscriptions et la fiche de l'activité 231 sont
+servis sans erreur ni clé de langue brute ; les filtres traduits et le fil
+d'Ariane natif sont visibles sur les pages concernées. Aucune action métier
+n'a été déclenchée.
