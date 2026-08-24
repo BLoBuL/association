@@ -1534,3 +1534,24 @@ journal est également identique sur les trois exercices. Aucune donnée n'a ét
 modifiée. Toutes les empreintes déployées correspondent aux sources et SPIP
 4.4.21 compile 221 squelettes privés, douze pages publiques et 64 composants
 front.
+
+## Lot 131 — export et synchronisation Événements distribués
+
+Les totaux de l'export CSV et l'action de synchronisation ne manipulent plus
+directement le journal comptable. Les recherches, corrections et suppressions
+passent par l'API Comptabilité, qui retire également les ventilations. Les
+transactions associées aux inscriptions sont chargées en lot par Paiements au
+lieu d'une jointure sur la table Bank. Le nettoyage des doublons est calculé à
+partir des écritures retournées par l'API et conserve au plus une recette et un
+remboursement par transaction.
+
+Les totaux CSV des cinq événements comptabilisés sont identiques à la lecture
+historique. Le diagnostic de synchronisation compare les comptes et
+transactions de treize événements sans aucun écart d'API, aucun doublon
+supprimable et aucune écriture orpheline. Il détecte cependant deux dates et
+deux indicateurs de validation que l'exécution réelle de la synchronisation
+corrigerait. Cette action n'a pas été lancée pendant la recette afin de ne pas
+modifier les données ; ces quatre corrections restent donc explicitement en
+attente d'une recette fonctionnelle de l'action. Les empreintes des fichiers
+déployés correspondent aux sources et les 221 squelettes privés, douze pages
+publiques et 64 composants front compilent sous SPIP 4.4.21.
