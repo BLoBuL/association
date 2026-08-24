@@ -792,6 +792,19 @@ Une seconde mise à jour ne produit aucune opération. La sauvegarde SPIP SQLite
 contient ensuite les 41 activités, expose `tarifs_selectionnes` et ne contient
 plus la colonne réservée.
 
+## Lot 64 : navigation privée prioritaire normalisée
+
+Les parcours fréquents qui ne possédaient qu'un contenu privé disposent
+désormais des deux squelettes attendus par SPIP : `hierarchie/` et
+`navigation/`. Le lot couvre le suivi et les exports d'activités, les
+bénévoles, la recherche avancée d'adhérents et la suppression de cotisation.
+
+Chaque fil d'Ariane relie l'accueil et la section métier puis marque la page
+courante avec `strong.on`. Chaque colonne gauche commence par la navigation
+native `dist`, ouvre une boîte `raccourcis` et fournit un retour vers la page
+parente. Les fichiers appartiennent au plugin propriétaire de la page, y
+compris l'export comptable dans Comptabilité et les bénévoles dans Groupes.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

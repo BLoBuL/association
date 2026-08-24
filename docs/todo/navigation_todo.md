@@ -52,20 +52,20 @@ Racine du site > [Section] > [Sous-section si applicable] > Page courante (sans 
 #### Groupe Activités
 | Page | hierarchie | navigation | Fil d'ariane cible |
 |------|-----------|------------|-------------------|
-| `suivi_activites` | ❌ manquant | ✅ existant | Racine > Activités > Suivi des activités |
-| `export_activites` | ❌ manquant | — | Racine > Activités > Export inscriptions |
-| `export_activites_compta` | ❌ manquant | — | Racine > Activités > Export comptable |
+| `suivi_activites` | ✅ lot 64 | ✅ lot 64 | Racine > Activités > Suivi des activités |
+| `export_activites` | ✅ lot 64 | ✅ lot 64 | Racine > Activités > Export inscriptions |
+| `export_activites_compta` | ✅ lot 64 | ✅ lot 64 | Racine > Comptabilité > Export comptable |
 
 #### Groupe Adhérents
 | Page | hierarchie | navigation | Fil d'ariane cible |
 |------|-----------|------------|-------------------|
-| `benevoles` | ❌ manquant | — | Racine > Adhérents > Bénévoles |
-| `recherche_avancee` | ❌ manquant | — | Racine > Adhérents > Recherche avancée |
+| `benevoles` | ✅ lot 64 | ✅ lot 64 | Racine > Adhérents > Bénévoles |
+| `recherche_avancee` | ✅ lot 64 | ✅ lot 64 | Racine > Adhérents > Recherche avancée |
 
 #### Groupe Cotisations
 | Page | hierarchie | navigation | Fil d'ariane cible |
 |------|-----------|------------|-------------------|
-| `cotisation_suppression` | ❌ manquant | — | Racine > Cotisations > Supprimer une cotisation |
+| `cotisation_suppression` | ✅ lot 64 | ✅ lot 64 | Racine > Cotisations > Supprimer une cotisation |
 
 #### Groupe Comptabilité
 | Page | hierarchie | navigation | Fil d'ariane cible |
@@ -111,10 +111,9 @@ Racine du site > [Section] > [Sous-section si applicable] > Page courante (sans 
 
 Les pages suivantes ont un contenu mais aucun fichier `navigation/` :
 
-- `benevoles`, `cotisation_suppression`, `export_activites`, `export_activites_compta`
 - `editer_asso_comptes`, `editer_asso_destinations`, `editer_asso_dons`
 - `editer_asso_plan`, `editer_asso_ressources`, `editer_asso_ventes`
-- `migration_donnees_comptables`, `recherche_avancee`, `suivi_activites`
+- `migration_donnees_comptables`
 - `transaction`, `transaction_abandon`, `transaction_remboursement`, `transaction_suppression`
 
 Chaque navigation doit a minima inclure un **lien retour** vers la page parente de la section.
