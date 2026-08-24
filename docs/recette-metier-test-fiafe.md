@@ -2020,3 +2020,12 @@ leurs titres traduits sans erreur ni clé brute. GIS n'est pas actif sur ce jeu
 de test et aucun article éditable correspondant n'est présent : ces deux états
 conditionnels sont prouvés par compilation et test structurel, mais pas par un
 rendu visuel actif. Aucun message n'a été envoyé.
+
+## Lot 167 - pages privées sensibles Adhésions
+
+La miniature d'un adhérent supprimé et les repères de paiement des
+destinataires collectifs sont traduisibles. La page de suppression d'une
+cotisation utilise des libellés du domaine Adhésions et réactive surtout un
+garde SPIP `autoriser('modifier', 'asso_compte')` avant tout rendu du
+formulaire. Le lien de paiement ouvert dans un nouvel onglet est isolé. La
+suite locale atteint 125 tests, tous valides.

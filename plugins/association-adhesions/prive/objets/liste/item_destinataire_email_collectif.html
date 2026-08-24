@@ -9,12 +9,12 @@
                        [<div class="tooltip"><i class="fa fa-check-circle" aria-hidden="true"></i>(#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
                             <span class="tooltiptext"><p>
                                 #INSCRIPTION
-                               Transaction : N°#ID_TRANSACTION
-                                Mode : <small>#MODE</small></p></span>
+                               <:association_adhesions:libelle_transaction:> : N°#ID_TRANSACTION
+                                <:association_adhesions:libelle_mode_paiement:> : <small>#MODE</small></p></span>
                         </div>]
                   </BOUCLE_transaction_ok>
                  <BOUCLE_transaction_pas_ok(TRANSACTIONS){id_transaction}{statut IN attente,commande}>
-                    [<a href="(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION&transaction_hash=#TRANSACTION_HASH})" title="En attente de paiement" target="_blank">
+                    [<a href="(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION&transaction_hash=#TRANSACTION_HASH})" title="<:association_adhesions:paiement_en_attente|attribut_html:>" target="_blank" rel="noopener noreferrer">
                        [<div class="tooltip"><i class="fa-regular fa-clock" aria-hidden="true"></i> (#MONTANT|bank_affiche_montant{#DEVISE,symbol}|replace{',00',''})
                             <span class="tooltiptext"><p>
                                 #INSCRIPTION

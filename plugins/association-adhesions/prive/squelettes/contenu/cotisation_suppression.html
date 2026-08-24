@@ -1,14 +1,14 @@
-﻿<!--[(#AUTORISER{menu,_transactions}|sinon_interdire_acces)]-->
+[(#AUTORISER{modifier,asso_compte,#ENV{id_compte}}|sinon_interdire_acces)]
 <BOUCLE_asso_cotisation(ASSO_COTISATIONS){id_compte}>
-<h1 class="grostitre">Suppression de la cotisation ##ID_COMPTE</h1>
+<h1 class="grostitre"><:association_adhesions:cotisation_suppression_titre{numero=#ID_COMPTE}:></h1>
 <div class="transaction">
 	#BOITE_OUVRIR{'',infos simple}
 		<BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
-		<div class="qui">Liée à [<a href='[(#ID_AUTEUR|generer_objet_url{auteur})]'>(#NOM)</a>[ \((#EMAIL)\)]]</div>
+		<div class="qui"><:association_adhesions:cotisation_liee_a:> [<a href='[(#ID_AUTEUR|generer_objet_url{auteur})]'>(#NOM)</a>[ \((#EMAIL)\)]]</div>
 		</BOUCLE_auteur>
-    <div class="ajax">
-	   [(#FORMULAIRE_SUPPRIMER_ASSO_COTISATION{#ID_COMPTE})]
-        </div>   
+	<div class="ajax">
+		[(#FORMULAIRE_SUPPRIMER_ASSO_COTISATION{#ID_COMPTE})]
+	</div>
 	#BOITE_FERMER
 </div>
 </BOUCLE_asso_cotisation>
