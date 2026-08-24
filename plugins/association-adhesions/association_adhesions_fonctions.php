@@ -195,10 +195,10 @@ function filtre_liste_periodes_cotisations($limite = 0, $avec_stats = false, $ty
 		$aujourdhui = date('Y-m-d');
 		$periode['encours'] = ($aujourdhui >= $periode['date_debut'] && $aujourdhui <= $periode['date_fin']);
 
-		// Compter les cotisations dans cette période (id_categorie > 0 = cotisations uniquement)
+		// Compter les cotisations métier dans cette période.
 		$nb_cotisations = sql_countsel(
-			'spip_asso_comptes',
-			"id_categorie > 0 AND date >= " . sql_quote($periode['date_debut']) . " AND date <= " . sql_quote($periode['date_fin'])
+			'spip_asso_cotisations',
+			"date_creation >= " . sql_quote($periode['date_debut']) . " AND date_creation <= " . sql_quote($periode['date_fin'])
 		);
 		$periode['nb_cotisations'] = intval($nb_cotisations);
 

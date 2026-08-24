@@ -83,3 +83,28 @@ function association_cotisation_rattacher_compte($id_compte, $id_cotisation) {
 		);
 	}
 }
+
+/**
+ * Modifie l'état métier et maintient temporairement la colonne historique.
+ */
+function association_cotisation_statut_modifier($id_compte, $statut) {
+	$id_compte = (int) $id_compte;
+	$statut = (string) $statut;
+	$id_cotisation = $id_compte
+		? (int) sql_getfetsel('id_cotisation', 'spip_asso_cotisations', 'id_compte=' . $id_compte)
+		: 0;
+	if (!$id_cotisation) {
+		return false;
+	}
+	if (sql_updateq('spip_asso_cotisations', array('statut' => $statut), 'id_cotisation=' . $id_cotisation) === false) {
+		return false;
+	}
+
+	// Compatibilité 4.0 : cette colonne sera retirée après validation de tous les
+	// sites historiques. Aucun lecteur métier de la suite ne l'utilise plus.
+	$table_compte = sql_showtable('spip_asso_comptes', true);
+	if (!empty($table_compte['field']['statut_cotisation'])) {
+		sql_updateq('spip_asso_comptes', array('statut_cotisation' => $statut), 'id_compte=' . $id_compte);
+	}
+	return true;
+}

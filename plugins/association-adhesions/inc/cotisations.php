@@ -239,12 +239,7 @@ function changer_statut_cotisation($id_compte, $origine = '',$notifier = true){
         }else{
             // Cas post-paiement: passer la cotisation en 'demande' et ne PAS activer l'adhérent
             // Post-paiement : état modifié (silencieux)
-            sql_updateq(
-                'spip_asso_comptes',
-                ['statut_cotisation' => 'demande'],
-                'id_compte=' . intval($id_compte)
-            );
-			association_cotisation_synchroniser_depuis_compte($id_compte, array('statut' => 'demande'));
+            association_cotisation_statut_modifier($id_compte, 'demande');
             // Recharger lâ€™état de la cotisation avant notification
 			$query_cotisation = association_cotisation_lire_par_compte($id_compte);
 
@@ -674,7 +669,7 @@ function notifier_cotisation_adherent($query_cotisation,$query_categories,$query
  * Prépare un contexte plat pour les notifications de cotisation.
  * Retourne false si on ne peut pas construire un contexte (par ex. email manquant).
  *
- * @param array|int|null $query_cotisation Ligne de spip_asso_comptes ou id_compte
+ * @param array|int|null $query_cotisation Cotisation métier fusionnée ou id_compte
  * @param array $query_categories Ligne de spip_asso_categories_adherents
  * @param array $query_transaction Ligne de spip_transactions
  * @param array $options Options additionnelles (email_override, validite, nb_jour_differences, type_adherent, nom_entreprise, nom_adherent)
@@ -1141,7 +1136,7 @@ function notifier_cotisation_admin($query_cotisation, $query_categories = [], $q
  * - Les autres secondaires de l'ancien principal sont rattachés au nouveau principal.
  *
  * Cette opération est loguée pour audit. Elle n'affecte pas les comptes financiers
- * (spip_asso_comptes) ; elle modifie uniquement les relations entre auteurs.
+ * comptable ; elle modifie uniquement les relations entre auteurs.
  *
  * @param int $id_secondaire Identifiant du compte secondaire payeur
  * @return bool true si l'opération a été faite, false sinon

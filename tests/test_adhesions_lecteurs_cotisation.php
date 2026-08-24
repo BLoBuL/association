@@ -44,6 +44,25 @@ if (strpos($cotisations, "sql_countsel('spip_asso_comptes', 'id_transaction='") 
 	$erreurs[] = 'La détection des paiements en cours lit encore les statuts historiques.';
 }
 
+$acces_comptables_autorises = array(
+	'inc/association_adhesions_migration.php',
+	'inc/association_adhesions_migration_compta.php',
+	'inc/cotisations_stockage.php',
+);
+$iterateur = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($racine));
+foreach ($iterateur as $fichier) {
+	if (!$fichier->isFile() || $fichier->getExtension() !== 'php' || str_contains($fichier->getPathname(), DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR)) {
+		continue;
+	}
+	$relatif = str_replace('\\', '/', substr($fichier->getPathname(), strlen($racine)));
+	if (in_array($relatif, $acces_comptables_autorises, true)) {
+		continue;
+	}
+	if (strpos(file_get_contents($fichier->getPathname()), 'spip_asso_comptes') !== false) {
+		$erreurs[] = "$relatif accède au journal comptable hors adaptateur ou migration.";
+	}
+}
+
 if ($erreurs) {
 	fwrite(STDERR, implode("\n", $erreurs) . "\n");
 	exit(1);

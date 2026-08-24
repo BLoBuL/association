@@ -1408,3 +1408,18 @@ Sur test-fiafe, seule la simulation a été exécutée. Elle trouve zéro cotisa
 orpheline, zéro cotisation ancienne supprimable et ne modifie pas l'empreinte
 `539e32880edaf51c1ec1f8aae8c4b0b8118a8f8b1a328c2ea82e4b99e6e8b1af`.
 Les dix cotisations historiques et leur empreinte canonique restent intactes.
+
+## Lot 123 — derniers accès comptables isolés dans l'adaptateur
+
+Le compteur de cotisations par période et la transition post-paiement ne
+consultent plus directement `spip_asso_comptes`. Le compteur repose sur
+`spip_asso_cotisations.date_creation` et toute modification de statut passe par
+l'adaptateur de stockage d'Adhésions, qui écrit d'abord la table métier.
+
+Pour assurer la migration progressive des installations historiques, cet
+adaptateur maintient temporairement `statut_cotisation` dans l'écriture
+comptable lorsque cette ancienne colonne existe. Cette compatibilité est
+strictement confinée à l'adaptateur ; les seuls autres accès directs autorisés
+sont les deux migrations qui importent et normalisent les données existantes.
+Un test récursif empêche désormais la réintroduction d'un lecteur comptable
+dans le code métier d'Adhésions.
