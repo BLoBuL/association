@@ -1181,3 +1181,9 @@ lien avec Association : navigation `header-style-1`, slider `mk-edge-slider`,
 PocketWifi, réservation et footer `mk-footer`. Ces surcharges, dont un `h1`
 global à 60 pixels, sont supprimées afin de laisser le privé SPIP 4 gouverner
 sa typographie et sa structure.
+
+## Lot 109 : formulaires événement et adhérent
+
+La mise en évidence de l'inscription dans le formulaire Agenda rejoint
+Événements. Le masquage des champs éditoriaux PGP, nom de site et URL dans le
+profil auteur rejoint Adhésions. Ces adaptations ne résident plus dans le socle.
