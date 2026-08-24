@@ -169,7 +169,7 @@
         <Cell><Data ss:Type="Number">#NOMBRE_INSCRITS</Data></Cell>
        <Cell><Data ss:Type="String">[(#NOM_PARTICIPANTS|textebrut)]</Data></Cell> 
         <Cell><Data ss:Type="String">[(#COMMENTAIRE|textebrut)]</Data></Cell>   
-       <B_data_transaction><Cell><Data ss:Type="String"><BOUCLE_data_transaction(DATA){source  table, #TRANSACTION|unserialize}{','}>[(#VALEUR|foreach|supprimer_tags)]</BOUCLE_data_transaction></Data></Cell></B_data_transaction>
+       <B_data_transaction><Cell><Data ss:Type="String"><BOUCLE_data_transaction(DATA){source table, #TARIFS_SELECTIONNES|unserialize}{','}>[(#VALEUR|foreach|supprimer_tags)]</BOUCLE_data_transaction></Data></Cell></B_data_transaction>
         <BOUCLE_transaction(TRANSACTIONS){id_transaction}>[(#SET{montant_total,#GET{montant_total}|plus{#MONTANT}})]<Cell><Data ss:Type="String">##ID_TRANSACTION</Data></Cell>
         <Cell><Data ss:Type="String">#STATUT</Data></Cell>
         <Cell><Data ss:Type="Number">#MONTANT</Data></Cell>

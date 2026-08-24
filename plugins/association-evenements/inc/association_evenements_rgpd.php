@@ -57,7 +57,7 @@ function association_evenements_rgpd_export_inscriptions($id_auteur, $email = ''
 			'transaction' => function_exists('association_paiements_rgpd_export_transaction')
 				? association_paiements_rgpd_export_transaction($id_transaction)
 				: array(),
-			'transaction_enregistree' => association_rgpd_decoder_structure($row['transaction'] ?? ''),
+			'tarifs_selectionnes' => association_rgpd_decoder_structure($row['tarifs_selectionnes'] ?? ''),
 		);
 	}
 	return $export;

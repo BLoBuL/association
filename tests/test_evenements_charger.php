@@ -352,7 +352,7 @@ function association_test_run_charger_suite() {
                             'nombre_inscrits' => 2,
                             'nb_invite' => 1,
                             'participants_json' => '{}',
-                            'transaction' => '',
+                            'tarifs_selectionnes' => '',
                             'nom_participants' => 'Jean Dupont, Invite Test',
                             'commentaire' => '',
                             'annotation' => '',

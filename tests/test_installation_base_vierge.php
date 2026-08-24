@@ -32,7 +32,7 @@ $schemas = array(
 	'association_adhesions_base_version' => '1.2.0',
 	'association_compta_base_version' => '1.0.0',
 	'association_dons_base_version' => '1.0.0',
-	'association_evenements_base_version' => '1.1.0',
+	'association_evenements_base_version' => '1.2.0',
 	'association_prets_base_version' => '1.0.0',
 	'association_ventes_base_version' => '1.0.0',
 );

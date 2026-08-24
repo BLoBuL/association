@@ -139,7 +139,7 @@ function activites_insert($categorie_result, $date, $id_evenement, $id_auteur, $
         'id_transaction'    => $id_transaction,
         'commentaire'       => $commentaire,
         'notify_the_members' => $notify_the_members,
-        'transaction'       => serialize($transaction))
+        'tarifs_selectionnes' => serialize($transaction))
     );
     // 4) Enregistrement du log
   } else {
@@ -151,7 +151,7 @@ function activites_insert($categorie_result, $date, $id_evenement, $id_auteur, $
       "nombre_inscrits"   => $nombre_inscrits,
       'id_transaction'    => $id_transaction,
       "commentaire"       => $commentaire,
-      'transaction'       => serialize($transaction)
+      'tarifs_selectionnes' => serialize($transaction)
     ),
       "id_activite=$id_activite");
   }

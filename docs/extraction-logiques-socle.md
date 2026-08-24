@@ -770,6 +770,28 @@ test parcourt récursivement ces actifs et interdit le retour de références au
 trois plugins Blobul historiques. La suite reste donc utilisable en front office
 avec les plugins métier seuls et leurs dépendances publiques déclarées.
 
+## Lot 62 : sélection tarifaire Événements compatible SQLite
+
+La colonne historique `transaction` de `spip_asso_activites` ne contient pas
+une transaction Bank : elle mémorise la sélection tarifaire sérialisée de
+l'inscription. Elle appartient donc entièrement au plugin Événements et porte
+désormais le nom métier `tarifs_selectionnes`.
+
+Le schéma Événements 1.2.0 renomme la colonne sans recopier les données, avec
+une instruction adaptée à SQLite et à MySQL/MariaDB. Tous les producteurs et
+consommateurs de la suite — formulaires, actions, export RGPD, CSV et export
+comptable XML — utilisent le nouveau champ. Les vraies relations Bank
+continuent d'utiliser `id_transaction` et `spip_transactions`.
+
+La migration a été rejouée sur une installation SPIP 4 isolée alimentée par
+une sauvegarde fraîche de DEV. Les 41 activités sont conservées et l'empreinte
+canonique des sélections tarifaires reste strictement identique avant et après
+migration :
+`c4153b33e271949218168ea9e59bf908737f365b1f9325147a2ae3ab17aa96c5`.
+Une seconde mise à jour ne produit aucune opération. La sauvegarde SPIP SQLite
+contient ensuite les 41 activités, expose `tarifs_selectionnes` et ne contient
+plus la colonne réservée.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

@@ -170,7 +170,7 @@ function action_modifier_activites() {
 		"nombre_inscrits"   => $nombre_inscrits,
 		"commentaire"       => $commentaire,
         "journal" => $message_journal,
-		'transaction' => serialize($transaction)
+		'tarifs_selectionnes' => serialize($transaction)
 	),
 		"id_activite=$id_activite");
 	// Envoi d'un email de confirmation a l'adhérent inscrit

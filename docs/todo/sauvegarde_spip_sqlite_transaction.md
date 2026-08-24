@@ -1,4 +1,21 @@
-# TODO — Compatibilité de la sauvegarde SPIP avec la colonne `transaction`
+# Suivi — Compatibilité de la sauvegarde SPIP avec la colonne `transaction`
+
+## Résolution dans la suite Association 4 autonome
+
+Le contenu réel a été audité : la colonne contient la sélection tarifaire
+sérialisée de l'inscription et non les données d'une transaction Bank. Le
+plugin Événements 1.2.0 la renomme en `tarifs_selectionnes`. Les actions,
+formulaires, exports CSV/XML et RGPD de ce monorepo sont migrés ensemble.
+
+Le scénario a été validé sur une restauration isolée de la base DEV : les 41
+activités et l'intégralité des valeurs sont conservées, la mise à jour est
+idempotente et la sauvegarde SQLite SPIP inclut désormais la table complète.
+
+Le présent document reste ouvert uniquement pour le parc historique hors de la
+suite autonome : anciens plugins Blobul, thèmes ou surcharges de sites qui
+liraient encore directement `#TRANSACTION`. Ils ne sont pas des dépendances de
+la nouvelle suite et ne doivent pas bloquer son installation, mais doivent être
+inventoriés avant toute propagation de cette évolution sur ces anciens sites.
 
 ## Contexte
 
@@ -63,7 +80,7 @@ logiques métier connexes.
     migration, purger les caches, contrôler les compteurs et valeurs, tester les
     parcours concernés et conserver un retour arrière vers l'ancien schéma.
 
-## Solution provisoire d'exploitation
+## Solution provisoire d'exploitation du parc historique
 
 Tant que la migration coordonnée n'est pas validée et déployée, conserver la
 colonne `transaction` et utiliser une sauvegarde MySQL/MariaDB native pour les

@@ -786,3 +786,28 @@ valides. La compilation réelle de la page de l'événement 230 produit 24 464
 octets et contient à la fois le portfolio et le formulaire d'inscription. La
 condition finale réserve le portfolio complet aux sessions dont
 `statut_interne=ok`; les autres visiteurs utilisent le squelette verrouillé.
+
+## Lot 62 — répétition de migration depuis la base DEV
+
+Une sauvegarde fraîche de `dev.blobul.com` a été restaurée dans un SPIP 4
+isolé, hors chemin public et hors base de test-fiafe. Elle contient notamment
+26 comptes, 10 cotisations, 41 activités, 14 catégories d'activité, 6
+catégories d'adhérent, 3 ventes et 156 métas Association.
+
+La sauvegarde initiale reproduit l'anomalie historique : SPIP ne peut pas
+créer `spip_asso_activites` dans SQLite à cause de la colonne réservée
+`transaction`. Les 41 lignes ont donc été réinjectées dans la table déclarée
+par Événements 1.2.0, en conservant la valeur sous
+`tarifs_selectionnes`. Le nombre de lignes et l'empreinte canonique des valeurs
+avant/après sont identiques
+(`c4153b33e271949218168ea9e59bf908737f365b1f9325147a2ae3ab17aa96c5`).
+
+Le vérificateur réel confirme ensuite 10 plugins, 14 tables, 12 objets SQL et
+7 schémas à jour. Une seconde exécution de `plugins:maj:bdd` est idempotente.
+Enfin, une nouvelle sauvegarde SPIP inclut bien les 41 activités avec
+`tarifs_selectionnes`, sans colonne `transaction`; son empreinte SHA-256 est
+`07f7339b414cd0ff9b29b02fe3ad6844e0d7dca506a2d7368af54ca6ec502a7d`.
+
+Cette preuve valide le scénario de reprise DEV. La migration MySQL et les
+parcours servis sur test-fiafe sont contrôlés dans l'étape de déploiement du
+même lot.

@@ -118,7 +118,7 @@ function association_test_charger_fixture_par_defaut() {
                 'statut' => 'ok',
                 'nombre_inscrits' => 2,
                 'participants_json' => json_encode(array('adherent' => array(), 'conjoint' => array())),
-                'transaction' => serialize(array()),
+                'tarifs_selectionnes' => serialize(array()),
                 'nom_participants' => 'Jean Dupont, Marie Dupont',
                 'commentaire' => 'Commentaire test',
                 'annotation' => 'Annotation test',
@@ -136,7 +136,7 @@ function association_test_charger_fixture_par_defaut() {
                 'statut' => 'ok',
                 'nombre_inscrits' => 2,
                 'participants_json' => json_encode(array('adherent' => array(), 'conjoint' => array())),
-                'transaction' => serialize(array(
+                'tarifs_selectionnes' => serialize(array(
                     11 => array(
                         'id_participants' => array('adherent', 'conjoint'),
                         'nombre' => 2,
@@ -160,7 +160,7 @@ function association_test_charger_fixture_par_defaut() {
                 'statut' => 'preinscrit',
                 'nombre_inscrits' => 2,
                 'participants_json' => json_encode(array('inscrit_1' => array(), 'inscrit_2' => array())),
-                'transaction' => serialize(array(
+                'tarifs_selectionnes' => serialize(array(
                     11 => array('id_participants' => array('inscrit_1', 'inscrit_2'), 'nombre' => 2, 'montant' => 24),
                 )),
                 'nom_participants' => 'Paul Test, Lea Test',

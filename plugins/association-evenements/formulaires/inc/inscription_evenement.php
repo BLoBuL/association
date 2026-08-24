@@ -225,21 +225,21 @@ https://test-fiafe.blobul.com/spip.php?page=evenement&id_evenement=224&associati
              $data_activite['famille']  = $participants_json;
          }
      }elseif(($affichage_dans_activites['payant'] == true) && ($affichage_dans_activites['accompagnants'] == false) && ($saisie_famille_active == 'non')) {
-         $transaction = array_keys(unserialize($query_activite['transaction']));
+         $transaction = array_keys(unserialize($query_activite['tarifs_selectionnes']));
          $transaction = array_shift($transaction);
          $data_activite['categorie'] =$transaction;
      }elseif(($affichage_dans_activites['payant'] == true) && ($affichage_dans_activites['accompagnants'] == false) && ($saisie_famille_active == 'oui')) {
-         $transaction=unserialize($query_activite['transaction']);
+         $transaction=unserialize($query_activite['tarifs_selectionnes']);
          foreach( $transaction AS $categorie => $value){
              $data_activite['categorie'][$categorie] = $value['id_participants'];
          }
      }elseif(($affichage_dans_activites['payant'] == true) && ($affichage_dans_activites['accompagnants'] == true) && ($saisie_famille_active == 'non')) {
-         $transaction=unserialize($query_activite['transaction']);
+         $transaction=unserialize($query_activite['tarifs_selectionnes']);
          foreach( $transaction AS $categorie => $value){
              $data_activite['categorie'][$categorie] = $value['nombre'];
          }
      }elseif(($affichage_dans_activites['payant'] == true) && ($saisie_famille_active == 'oui')) {
-         $transaction=unserialize($query_activite['transaction']);
+         $transaction=unserialize($query_activite['tarifs_selectionnes']);
          foreach( $transaction AS $categorie => $value){
              $data_activite['categorie'][$categorie] = $value['id_participants'];
          }
@@ -1539,7 +1539,7 @@ function inserer_asso_activites($id_evenement, $data_form, $cal_result, $id_tran
         'nb_invite' => $data_form['nb_invite'] ?? 0, // Invités hors famille
         'commentaire' => $data_form['commentaire'] ?? '', // Commentaire de l'inscription
         'id_transaction' => $id_transaction, // ID de la transaction
-        'transaction' => $nouvelle_transaction, // Données de la transaction sérialisées
+        'tarifs_selectionnes' => $nouvelle_transaction,
         'annotation' => $data_form['annotation'] ?? '', // Annotation supplémentaire
         'journal' => $message_journal, // Message de journalisation
         'ip_inscrit' => $data_form['id_auteur'] ? '' : $ip_client ,// IP du client, si disponible
@@ -1578,7 +1578,7 @@ function modifier_asso_activites($id_activite,$data_form,$cal_result,$id_transac
             'nb_invite' => $data_form['nb_invite'] ?? 0,
             'commentaire' => $data_form['commentaire'] ?? '',
             'id_transaction' => $id_transaction,
-            'transaction' => $nouvelle_transaction,
+            'tarifs_selectionnes' => $nouvelle_transaction,
             'annotation' => $data_form['annotation'] ?? '',
             'journal' => $message_journal,
             'ip_inscrit' => $data_form['id_auteur'] ? '' : $ip_client ,// IP du client, si disponible

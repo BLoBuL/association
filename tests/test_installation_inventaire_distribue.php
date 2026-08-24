@@ -46,7 +46,7 @@ verifier(empty($inventaire['erreurs']), 'aucune contribution ne se contredit');
 $attendus = array(
 	'association_adhesions_base_version' => '1.2.0',
 	'association_compta_base_version' => '1.0.0',
-	'association_evenements_base_version' => '1.1.0',
+	'association_evenements_base_version' => '1.2.0',
 );
 foreach ($attendus as $meta => $version) {
 	verifier(($inventaire['schemas'][$meta] ?? '') === $version, "$meta appartient au module attendu");

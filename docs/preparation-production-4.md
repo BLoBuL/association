@@ -33,7 +33,7 @@ Notifications et Mailsubscribers.
 
 Les installateurs des modules adoptent les tables existantes avec
 `maj_tables()`. Les schémas `association_adhesions` et
-`association_evenements` sont en version `1.1.0` afin d'inclure tous les champs
+`association_evenements` sont en version `1.2.0` afin d'inclure tous les champs
 nécessaires à une première installation, et pas seulement les colonnes déjà
 présentes sur un site historique. Leur désinstallation efface seulement la
 méta de version et ne supprime aucune donnée métier.
