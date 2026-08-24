@@ -128,7 +128,8 @@ function changer_statut_cotisation($id_compte, $origine = '',$notifier = true){
     // Récupère les informations de la cotisation
 	$query_cotisation = association_cotisation_lire_par_compte($id_compte);
     $query_categories = sql_fetsel('*', 'spip_asso_categories_adherents', "id_categorie=" . $query_cotisation['id_categorie']);
-    $query_transaction = sql_fetsel('*', 'spip_transactions', "id_transaction=" . intval($query_cotisation['id_transaction']));
+    include_spip('inc/association_paiements_transactions');
+    $query_transaction = association_paiements_transaction_lire((int) ($query_cotisation['id_transaction'] ?? 0));
     if (!$query_transaction) {
         $query_transaction = array(
             'id_transaction' => 0,
@@ -1555,7 +1556,8 @@ function association_contexte_adhesion($id_auteur, $date_reference = null) {
         }
     }
 
-    $transactions = sql_allfetsel('id_transaction', 'spip_transactions', 'id_auteur=' . $id_auteur . " AND statut IN ('commande','attente')");
+    include_spip('inc/association_paiements_transactions');
+    $transactions = association_paiements_transactions_auteur_lire($id_auteur, array('commande', 'attente'));
     foreach ($transactions as $transaction) {
         $id_transaction = intval($transaction['id_transaction'] ?? 0);
         if ($id_transaction && sql_countsel('spip_asso_cotisations', 'id_transaction=' . $id_transaction . " AND statut IN ('demande','attente')")) {

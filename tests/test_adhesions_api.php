@@ -220,6 +220,9 @@ foreach (array('auto' => 'ok', 'pre-paiement' => 'demande', 'post-paiement' => '
     test_assert($resultat['id_transaction'] === 0, "une cotisation gratuite $validation ne crée pas de transaction");
     test_assert($GLOBALS['test_bank_calls'] === 0, "une cotisation gratuite $validation n’appelle pas Bank");
 }
+function association_paiements_transaction_modifier($id_transaction, array $valeurs) {
+    return sql_updateq('spip_transactions', $valeurs, 'id_transaction=' . intval($id_transaction));
+}
 
 test_reset('auto', 0);
 $resultat = api_traiter_cotisation(array(

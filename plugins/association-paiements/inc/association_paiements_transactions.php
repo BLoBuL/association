@@ -48,7 +48,7 @@ function association_paiements_transaction_modifier($id_transaction, array $donn
 	if ($id_transaction <= 0) {
 		return false;
 	}
-	$autorises = array('statut', 'mode', 'montant_ht', 'montant', 'montant_regle', 'reglee', 'finie', 'date_paiement', 'message');
+	$autorises = array('statut', 'mode', 'montant_ht', 'montant', 'devise', 'montant_regle', 'reglee', 'finie', 'date_paiement', 'message');
 	$donnees = array_intersect_key($donnees, array_flip($autorises));
 	if (!$donnees) {
 		return true;

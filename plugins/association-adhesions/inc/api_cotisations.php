@@ -337,11 +337,12 @@ function api_traiter_cotisation($params) {
             // Si une transaction existe déjà, elle reste synchronisée (y compris
             // lors d'une correction du montant à zéro).
             if ($id_transaction) {
-                sql_updateq('spip_transactions', [
+                include_spip('inc/association_paiements_transactions');
+                association_paiements_transaction_modifier($id_transaction, [
                     'montant'     => $montant_final,
                     'montant_ht'  => $montant_ht,
                     'devise'      => $devise,
-                ], "id_transaction=$id_transaction");
+                ]);
             }
 
             // Modification de la cotisation dans les comptes

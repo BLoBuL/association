@@ -57,9 +57,10 @@ function association_migrer_cotisations_depuis_comptes() {
 function association_cotisation_devise_historique($compte) {
 	$devise = '';
 	$id_transaction = (int) ($compte['id_transaction'] ?? 0);
-	$transaction = sql_showtable('spip_transactions', true);
-	if ($id_transaction && isset($transaction['field']['devise'])) {
-		$devise = (string) sql_getfetsel('devise', 'spip_transactions', 'id_transaction=' . $id_transaction);
+	if ($id_transaction) {
+		include_spip('inc/association_paiements_transactions');
+		$transaction = association_paiements_transaction_lire($id_transaction);
+		$devise = (string) ($transaction['devise'] ?? '');
 	}
 
 	$id_categorie = (int) ($compte['id_categorie'] ?? 0);
