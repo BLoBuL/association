@@ -52,3 +52,53 @@ function association_evenements_compte_valider_transaction($id_transaction) {
 
 	return $id_compte;
 }
+
+function association_evenements_compte_remboursement_creer($id_transaction, $id_activite = 0, $contexte_evenement = array()) {
+	$id_transaction = (int) $id_transaction;
+	$id_activite = (int) $id_activite;
+	if ($id_transaction <= 0) {
+		return 0;
+	}
+	if ($id_activite <= 0) {
+		$id_activite = (int) sql_getfetsel('id_activite', 'spip_asso_activites', 'id_transaction=' . $id_transaction);
+	}
+	$activite = $id_activite
+		? sql_fetsel('*', 'spip_asso_activites', 'id_activite=' . $id_activite)
+		: array();
+	$transaction = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . $id_transaction);
+	if (!$activite || !$transaction) {
+		association_log('comptabilite', 'Remboursement evenement ignore: inscription ou transaction introuvable', 'erreur');
+		return 0;
+	}
+
+	$id_evenement = (int) $activite['id_evenement'];
+	$existant = (int) sql_getfetsel(
+		'id_compte',
+		'spip_asso_comptes',
+		'id_transaction=' . $id_transaction . " AND objet='evenement' AND id_objet=" . $id_evenement . ' AND depense>0'
+	);
+	if ($existant > 0) {
+		return $existant;
+	}
+	if (!$contexte_evenement) {
+		$contexte_evenement = gestions_places($id_evenement);
+	}
+	include_spip('inc/comptes');
+	$titre = $contexte_evenement['evenement_titre'] ?? ('#' . $id_evenement);
+	return inserer_compte(
+		date('Y-m-d H:i:s'),
+		0,
+		(float) $transaction['montant'],
+		'Remboursement de ' . $activite['nom_inscrit'] . ' ' . $activite['prenom_inscrit'] . ' pour l\'activité "' . $titre . '"',
+		$GLOBALS['association_metas']['pc_activites_paiement'] ?? '101',
+		'activite_remboursement|' . $id_activite,
+		(int) $activite['id_auteur'],
+		$id_evenement,
+		'evenement',
+		'',
+		'',
+		'',
+		$id_transaction,
+		1
+	);
+}

@@ -968,3 +968,14 @@ inscription et ne choisit plus la fiche d'un adhérent. Le pipeline
 `association_paiements_redirection_transaction` laisse Événements rediriger
 vers l'activité et Adhésions vers l'auteur de la cotisation. En absence de
 propriétaire métier, la fiche native de la transaction sert de repli.
+
+## Lot 82 : remboursement Bank distribué
+
+Le formulaire générique de remboursement ne lit plus la table des inscriptions
+et ne crée plus lui-même une écriture d'événement. Après le remboursement Bank,
+il publie `association_paiements_remboursement_traiter` avec la raison et la
+demande éventuelle de notification.
+
+Événements reconnaît sa transaction, crée sans doublon la dépense comptable
+dans son API métier et programme le reçu de remboursement. Le plugin Paiements
+reste ainsi exploitable indépendamment des événements et de leurs tables.

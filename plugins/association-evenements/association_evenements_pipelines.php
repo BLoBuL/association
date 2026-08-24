@@ -35,6 +35,41 @@ function association_evenements_association_paiements_redirection_transaction($f
 	return $flux;
 }
 
+function association_evenements_association_paiements_remboursement_traiter($flux) {
+	if (!empty($flux['data']['traite'])) {
+		return $flux;
+	}
+	$id_transaction = (int) ($flux['args']['id_transaction'] ?? 0);
+	$activite = $id_transaction
+		? sql_fetsel('id_activite,email_inscrit', 'spip_asso_activites', 'id_transaction=' . $id_transaction)
+		: array();
+	if (!$activite) {
+		return $flux;
+	}
+
+	include_spip('inc/association_evenements_comptabilite');
+	association_evenements_compte_remboursement_creer($id_transaction, (int) $activite['id_activite']);
+	if (!empty($flux['args']['notifier']) && !empty($activite['email_inscrit'])) {
+		job_queue_add(
+			'facteur_envoyer_recu_participation',
+			'Notification - Recu remboursement',
+			array(
+				$activite['email_inscrit'],
+				$id_transaction,
+				(int) $activite['id_activite'],
+				'remboursement',
+				(string) ($flux['args']['raison'] ?? ''),
+			),
+			'',
+			true,
+			0,
+			0
+		);
+	}
+	$flux['data'] = array('traite' => true, 'domaine' => 'evenements');
+	return $flux;
+}
+
 function association_evenements_association_config_cli_registre($flux) {
 	include_spip('inc/association_evenements_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_evenements_config_cli_definitions());

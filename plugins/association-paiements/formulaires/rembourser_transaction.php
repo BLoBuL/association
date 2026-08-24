@@ -49,16 +49,17 @@ function formulaires_rembourser_transaction_traiter_dist($id_transaction){
 	$raison_remboursement = "<hr />\n".date('Y-m-d H:i:s').' REMBOURSEMENT '.remboursement_prefixe()." : ".$raison;
     $res = array();
 	$rembourser_transaction = charger_fonction('rembourser_transaction','bank');
-    $query_activite = sql_fetsel('*', 'spip_asso_activites', "id_transaction=$id_transaction");
-    
 	if($rembourser_transaction($id_transaction,array('message'=>$raison_remboursement))){
-		include_spip('inc/comptes');
-		inserer_compte_remboursement_activite($id_transaction, intval($query_activite['id_activite'] ?? 0));
+		pipeline('association_paiements_remboursement_traiter', array(
+			'args' => array(
+				'id_transaction' => (int) $id_transaction,
+				'raison' => (string) $raison,
+				'notifier' => !empty($notifier_inscrit),
+			),
+			'data' => array('traite' => false, 'domaine' => ''),
+		));
 
 		$res['message_ok'] = _L('Transaction remboursée');
-        if(!empty($query_activite) AND isset($notifier_inscrit)){
-                    job_queue_add('facteur_envoyer_recu_participation', 'Notification - Recu remboursement', $arguments = array( $query_activite['email_inscrit'],$id_transaction,$query_activite['id_activite'],'remboursement',$raison), $file = '', $no_duplicate = TRUE, $time= 0 , $priority=0) ;
-       }
         $page = 'transactions';
         $args = "id_transaction=".$id_transaction;
         $res['redirect'] = generer_url_ecrire($page,$args);
