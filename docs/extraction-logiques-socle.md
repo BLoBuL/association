@@ -763,8 +763,9 @@ comme un contrat fonctionnel de la suite, et non comme de simples copies :
 - les albums Événements issus de `blobul-ASSO_FO` sont fournis dans le dossier
   `squelettes` d'Événements et sont effectivement inclus par sa page publique.
 
-Sur la page `evenement`, un auteur authentifié reçoit le portfolio complet et
-un visiteur anonyme la variante verrouillée avec le parcours de connexion. Un
+Sur la page `evenement`, un adhérent à jour (`statut_interne=ok`) reçoit le
+portfolio complet ; tout autre visiteur reçoit la variante verrouillée avec le
+parcours de connexion. Un
 test parcourt récursivement ces actifs et interdit le retour de références aux
 trois plugins Blobul historiques. La suite reste donc utilisable en front office
 avec les plugins métier seuls et leurs dépendances publiques déclarées.

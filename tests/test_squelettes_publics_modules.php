@@ -28,8 +28,8 @@ foreach (array('album_photos_evenement', 'album_photos_evenement_locked') as $al
 		exit(1);
 	}
 }
-if (!str_contains($page_evenement, '#SESSION{id_auteur}|oui') || !str_contains($page_evenement, '#SESSION{id_auteur}|non')) {
-	fwrite(STDERR, "La page Événements ne sépare pas le portfolio public authentifié de sa variante verrouillée.\n");
+if (!str_contains($page_evenement, '#SESSION{statut_interne}|=={ok}|oui') || !str_contains($page_evenement, '#SESSION{statut_interne}|!={ok}|oui')) {
+	fwrite(STDERR, "La page Événements ne réserve pas le portfolio complet aux adhérents à jour.\n");
 	exit(1);
 }
 
