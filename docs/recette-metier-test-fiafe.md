@@ -1089,3 +1089,23 @@ onze scénarios rendu sans erreur. Aucun message n'a été envoyé.
 Pour chacun des deux lots, les 90 tests autonomes passent. Le serveur conserve
 dix plugins actifs, quatorze tables, douze objets SQL et sept schémas à jour ;
 il compile 221 squelettes privés, douze pages publiques et 64 composants front.
+
+## Lots 101 et 102 — feuille privée Adhésions
+
+Le lot 101 (`cd234dbe`) est déployé depuis l'artefact SHA-256
+`624da96ae5759812fe8808a9af4465a40327b06c3fa1d001ebd3a518b64910a4`.
+Chrome authentifié confirme la carte Cotisations avec ses quatre groupes de
+filtres, la sélection bleue du type d'inscription, les périodes actives et les
+catégories. La page Adhérents conserve ses cinq colonnes, les couleurs de
+statut, les treize résultats et le tableau complet sans erreur de squelette.
+
+Le lot 102 (`eef5f867`) est déployé depuis l'artefact SHA-256
+`de0cda74048b003fdfeec05c235bd637651dab80ed26d206d277e8c2d6fc33d6`.
+La fiche de la cotisation 957 affiche le panneau autonome « Contrôle des
+justificatifs », son état vide et le vrai formulaire métier de cotisation. La
+recette est restée en lecture seule : aucun fichier, statut ou formulaire n'a
+été modifié.
+
+Les deux lots passent chacun les 90 tests autonomes. Le serveur valide toujours
+les dix plugins, quatorze tables, douze objets SQL et sept schémas, puis compile
+221 squelettes privés, douze pages publiques et 64 composants front.
