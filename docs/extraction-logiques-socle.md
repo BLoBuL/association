@@ -1050,3 +1050,10 @@ son test de création, qui était rendu impossible par un `intval()` préalable.
 Les deux classeurs XML historiques qui parcourent Agenda, les tarifs et les
 inscriptions rejoignent Événements. Leurs URL publiques restent identiques,
 mais Comptabilité ne fournit plus de squelette dépendant des tables métier.
+
+## Lot 92 : autorisations comptables distribuées
+
+Comptabilité ne résout plus un événement et n'appelle plus directement son
+autorisation. Elle publie `association_compta_autoriser_ecriture` avec le lien
+objet de l'écriture. Événements reconnaît son contexte, résout éventuellement
+une inscription et délègue à l'autorisation native de l'événement.

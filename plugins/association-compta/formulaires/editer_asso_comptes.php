@@ -191,14 +191,7 @@ function formulaires_editer_asso_comptes_charger_dist($id_compte = 'new') {
 
     // Normaliser l'id de compte pour l'autorisation (0 = création)
     $id_compte_int = ($id_compte === 'new') ? 0 : intval($id_compte);
-    // Essayer de résoudre un id_evenement pertinent (depuis request / id_compte / id_activite)
-    $id_evenement_ctx = association_obtenir_evenement_contexte($id_compte_int, array());
-    $opt_check = array();
-    if ($id_evenement_ctx > 0) {
-        $opt_check['id_evenement'] = $id_evenement_ctx;
-    }
-
-    if (!autoriser('modifier', 'asso_compte', $id_compte_int, null, $opt_check)) {
+    if (!autoriser('modifier', 'asso_compte', $id_compte_int)) {
         // Interdire l'accès au formulaire
         return array('message_erreur' => _T('association_compta:erreur_autorisation'));
     }
@@ -263,10 +256,7 @@ function formulaires_editer_asso_comptes_verifier_dist($id_compte = 'new') {
     include_spip('inc/autoriser');
     include_spip('association_autoriser');
     $id_compte_int = ($id_compte === 'new') ? 0 : intval($id_compte);
-    $id_evenement_ctx = association_obtenir_evenement_contexte($id_compte_int, array());
-    $opt_check = array();
-    if ($id_evenement_ctx > 0) $opt_check['id_evenement'] = $id_evenement_ctx;
-    if (!autoriser('modifier', 'asso_compte', $id_compte_int, null, $opt_check)) {
+    if (!autoriser('modifier', 'asso_compte', $id_compte_int)) {
         return array('message_erreur' => _T('association_compta:erreur_autorisation'));
     }
 
@@ -380,10 +370,7 @@ function formulaires_editer_asso_comptes_traiter_dist($id_compte='new', $id_rubr
     include_spip('inc/autoriser');
     include_spip('association_autoriser');
     $id_compte_int = ($id_compte === 'new') ? 0 : intval($id_compte);
-    $id_evenement_ctx = association_obtenir_evenement_contexte($id_compte_int, array());
-    $opt_check = array();
-    if ($id_evenement_ctx > 0) $opt_check['id_evenement'] = $id_evenement_ctx;
-    if (!autoriser('modifier', 'asso_compte', $id_compte_int, null, $opt_check)) {
+    if (!autoriser('modifier', 'asso_compte', $id_compte_int)) {
         return array('message_erreur' => _T('association_compta:erreur_autorisation'));
     }
 

@@ -6,6 +6,7 @@ $migration = file_get_contents($racine . '/plugins/association-compta/formulaire
 $edition = file_get_contents($racine . '/plugins/association-compta/formulaires/editer_asso_comptes.php');
 $evenements = file_get_contents($racine . '/plugins/association-evenements/inc/association_evenements_comptabilite.php');
 $pipelines = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
+$autorisations_compta = file_get_contents($racine . '/plugins/association-compta/association_compta_autoriser.php');
 
 $erreurs = array();
 foreach (array('inserer_compte_activite', 'inserer_compte_remboursement_activite', 'modifier_compte_activite') as $fonction) {
@@ -48,6 +49,14 @@ foreach (array('association_evenements_compte_inscription_creer', 'association_e
 }
 if (!str_contains($pipelines, 'function association_evenements_association_compta_migration_metiers(')) {
 	$erreurs[] = "Événements ne contribue pas à la migration comptable distribuée.";
+}
+if (str_contains($autorisations_compta, 'association_obtenir_evenement_contexte(')
+	|| str_contains($autorisations_compta, "autoriser('modifier', 'evenement'")
+	|| !str_contains($autorisations_compta, "pipeline('association_compta_autoriser_ecriture'")) {
+	$erreurs[] = "Les autorisations Comptabilité connaissent encore directement Événements.";
+}
+if (!str_contains($pipelines, 'function association_evenements_association_compta_autoriser_ecriture(')) {
+	$erreurs[] = "Événements ne possède pas sa délégation d’autorisation comptable.";
 }
 
 if ($erreurs) {

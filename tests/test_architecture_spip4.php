@@ -375,8 +375,9 @@ $verifier(
 $verifier(
 	strpos($autorisation_compta, "include_spip('inc/association_evenements_autorisations')") === false
 		&& strpos($autorisation_compta, 'spip_asso_activites') === false
-		&& strpos($autorisation_compta, "pipeline('association_evenement_resoudre_contexte'") !== false,
-	'Comptabilite doit resoudre le contexte evenement par contrat sans lire la table du module.'
+		&& strpos($autorisation_compta, "pipeline('association_compta_autoriser_ecriture'") !== false
+		&& strpos($autorisation_compta, "autoriser('modifier', 'evenement'") === false,
+	'Comptabilite doit deleguer l autorisation de l ecriture sans connaitre le module metier.'
 );
 $verifier(
 	strpos($configuration_socle, "config == 'comptabilite'") === false

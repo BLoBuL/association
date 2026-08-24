@@ -40,16 +40,7 @@ function autoriser_comptes_dist($faire, $type = '', $id = 0, $qui = null, $opt =
 		return true;
 	}
 	if ($qui['statut'] === '1comite') {
-		$id_evenement = 0;
-		if ((int) $id > 0) {
-			$compte = sql_fetsel('objet,id_objet', 'spip_asso_comptes', 'id_compte=' . (int) $id);
-			if ($compte && $compte['objet'] === 'evenement') {
-				$id_evenement = (int) $compte['id_objet'];
-			}
-		} else {
-			$id_evenement = (int) (($opt['id_evenement'] ?? 0) ?: _request('id_evenement'));
-		}
-		return $id_evenement > 0 && autoriser('modifier', 'evenement', $id_evenement, $qui, $opt);
+		return association_compta_autoriser_ecriture_deleguer($faire, (int) $id, $qui, $opt);
 	}
 	return false;
 }
@@ -63,51 +54,28 @@ function autoriser_asso_comptes_creer_dist($faire, $type, $id, $qui, $opt) {
 		return true;
 	}
 	if ($qui['statut'] === '1comite') {
-		$id_evenement = association_obtenir_evenement_contexte(0, is_array($opt) ? $opt : array());
-		return $id_evenement > 0 && autoriser('modifier', 'evenement', $id_evenement, $qui, $opt);
+		return association_compta_autoriser_ecriture_deleguer($faire, 0, $qui, $opt);
 	}
 	return false;
 }
 
 
-function association_obtenir_evenement_contexte($id_compte = 0, $opt = array()){
-	// 1) opt explicite
-	if (is_array($opt) && !empty($opt['id_evenement'])) {
-		return intval($opt['id_evenement']);
-	}
-
-	// 2) request id_evenement
-	$id = intval(_request('id_evenement'));
-	if ($id > 0) return $id;
-
-	// 3) id_activite -> map to evenement
-	$id_activite = 0;
-	if (is_array($opt) && !empty($opt['id_activite'])) {
-		$id_activite = intval($opt['id_activite']);
-	}
-	if ($id_activite <= 0) {
-		$id_activite = intval(_request('id_activite'));
-	}
-	if ($id_activite > 0) {
-		$id_evenement = (int) pipeline('association_evenement_resoudre_contexte', array(
-			'args' => array('id_activite' => $id_activite),
-			'data' => 0,
-		));
-		if ((int) $id_evenement > 0) {
-			return (int) $id_evenement;
-		}
-	}
-
-	// 4) id_compte fourni (param ou request) -> lire l'objet/id_objet
-	$id_c = intval($id_compte ?: (_request('id') ?: _request('id_compte')));
-	if ($id_c > 0) {
-		$row = sql_fetsel('objet,id_objet', 'spip_asso_comptes', 'id_compte=' . intval($id_c));
-		if ($row && isset($row['objet']) && $row['objet'] === 'evenement') {
-			return intval($row['id_objet']);
-		}
-	}
-
-	return 0;
+function association_compta_autoriser_ecriture_deleguer($faire, $id_compte, $qui, $opt = array()) {
+	$compte = $id_compte > 0
+		? sql_fetsel('objet,id_objet', 'spip_asso_comptes', 'id_compte=' . (int) $id_compte)
+		: array();
+	$decision = pipeline('association_compta_autoriser_ecriture', array(
+		'args' => array(
+			'faire' => $faire,
+			'id_compte' => (int) $id_compte,
+			'objet' => (string) ($compte['objet'] ?? ''),
+			'id_objet' => (int) ($compte['id_objet'] ?? 0),
+			'qui' => $qui,
+			'opt' => is_array($opt) ? $opt : array(),
+		),
+		'data' => null,
+	));
+	return $decision === true;
 }
 
 function autoriser_modifier_asso_compte_dist($faire, $type='', $id=0, $qui = NULL, $opt = NULL){
@@ -138,13 +106,7 @@ function autoriser_modifier_asso_compte_dist($faire, $type='', $id=0, $qui = NUL
 		}
 
 		// Resolve event context (from id_compte, id_activite, id_evenement, opt)
-		$id_evenement = association_obtenir_evenement_contexte($id_compte, is_array($opt) ? $opt : array());
-		if ($id_evenement > 0) {
-			// Delegate decision to event-level authorization
-			$res = (bool)autoriser('modifier', 'evenement', $id_evenement, $qui, $opt);
-			association_debug_log('autoriser_modifier_asso_compte delegate to evenement modifier result=' . (int)$res, 'association_autorisation');
-			return $res;
-		}
+		return association_compta_autoriser_ecriture_deleguer($faire, $id_compte, $qui, $opt);
 	}
 
 	return false;
@@ -163,9 +125,7 @@ function autoriser_creer_asso_compte_dist($faire, $type='', $id=0, $qui = NULL, 
 
 	// For editors, require an event context and delegate to event authorization
 	if ($qui['statut'] === '1comite') {
-		$id_evenement = association_obtenir_evenement_contexte(0, is_array($opt) ? $opt : array());
-		if ($id_evenement <= 0) return false;
-		return (bool)autoriser('modifier', 'evenement', $id_evenement, $qui, $opt);
+		return association_compta_autoriser_ecriture_deleguer($faire, 0, $qui, $opt);
 	}
 
 	return false;

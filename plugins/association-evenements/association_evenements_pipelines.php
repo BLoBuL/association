@@ -101,6 +101,30 @@ function association_evenements_association_compta_objets_lister($flux) {
 	return $flux;
 }
 
+function association_evenements_association_compta_autoriser_ecriture($flux) {
+	if ($flux['data'] !== null) {
+		return $flux;
+	}
+	$opt = is_array($flux['args']['opt'] ?? null) ? $flux['args']['opt'] : array();
+	$objet = (string) ($flux['args']['objet'] ?? '');
+	$id_objet = (int) ($flux['args']['id_objet'] ?? 0);
+	$id_evenement = 0;
+	if ($objet === 'evenement' && $id_objet > 0) {
+		$id_evenement = $id_objet;
+	}
+	if ($id_evenement <= 0) {
+		$id_evenement = (int) (($opt['id_evenement'] ?? 0) ?: _request('id_evenement'));
+	}
+	$id_activite = (int) (($opt['id_activite'] ?? 0) ?: _request('id_activite'));
+	if ($id_evenement <= 0 && $id_activite > 0) {
+		$id_evenement = (int) sql_getfetsel('id_evenement', 'spip_asso_activites', 'id_activite=' . $id_activite);
+	}
+	if ($id_evenement > 0) {
+		$flux['data'] = (bool) autoriser('modifier', 'evenement', $id_evenement, $flux['args']['qui'] ?? null, $opt);
+	}
+	return $flux;
+}
+
 function association_evenements_association_config_cli_registre($flux) {
 	include_spip('inc/association_evenements_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_evenements_config_cli_definitions());
