@@ -96,14 +96,14 @@ Racine du site > [Section] > [Sous-section si applicable] > Page courante (sans 
 
 ---
 
-### ⚠️ Pages avec hierarchie existante à relire / corriger
+### ✅ Pages historiques relues au lot 66
 
 | Page | Problème probable |
 |------|-----------------|
-| `editer_asso_cotisation` | Vérifier lien retour vers `cotisations` |
-| `editer_asso_categorie_activite` | Vérifier lien retour vers `categories_activites` |
-| `editer_asso_categorie_cotisation` | Vérifier lien retour vers `categories_cotisation` |
-| `analyse_compta_activites` | Vérifier cohérence avec section parente |
+| `editer_asso_cotisation` | ✅ page courante et retour `cotisations` |
+| `editer_asso_categorie_activite` | ✅ URL plurielle et retour `categories_activites` |
+| `editer_asso_categorie_cotisation` | ✅ page courante et retour `categories_cotisation` |
+| `analyse_compta_activites` | ✅ retour explicite vers `activites` |
 
 ---
 

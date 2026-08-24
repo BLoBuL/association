@@ -818,6 +818,15 @@ spécialisé conserve ses squelettes dans son propre plugin. Le test de navigati
 couvre désormais 22 pages privées et vérifie la présence du fil d'Ariane, de
 la navigation native SPIP et du lien parent.
 
+## Lot 66 : anciennes hiérarchies remises aux conventions SPIP
+
+La dernière passe corrige les quatre squelettes déjà présents mais incomplets :
+l'édition de cotisation n'a plus deux niveaux identiques, les catégories
+d'activité utilisent l'URL plurielle réellement servie, les catégories de
+cotisation affichent leur section intermédiaire et l'analyse comptable propose
+un retour explicite vers Activités. Toutes les pages marquent maintenant leur
+entrée courante par `strong.on`.
+
 ## État après le lot 22
 
 La répartition du grand formulaire de configuration est achevée pour les

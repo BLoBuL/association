@@ -3,10 +3,12 @@
 $racine = dirname(__DIR__);
 $pages = array(
 	'plugins/association-evenements' => array(
+		'editer_asso_categorie_activite' => 'categories_activites',
 		'suivi_activites' => 'activites',
 		'export_activites' => 'activites',
 	),
 	'plugins/association-compta' => array(
+		'analyse_compta_activites' => 'activites',
 		'export_activites_compta' => 'comptes',
 		'editer_asso_comptes' => 'comptes',
 		'editer_asso_destinations' => 'destinations',
@@ -19,6 +21,8 @@ $pages = array(
 		'benevoles' => 'adherents',
 	),
 	'plugins/association-adhesions' => array(
+		'editer_asso_cotisation' => 'cotisations',
+		'editer_asso_categorie_cotisation' => 'categories_cotisation',
 		'recherche_avancee' => 'adherents',
 		'cotisation_suppression' => 'cotisations',
 	),
