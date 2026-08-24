@@ -83,13 +83,16 @@ function association_evenements_responsables_ids($id_evenement = 0, $id_article 
 function association_evenements_responsables_choix($id_evenement = 0, $id_article = 0): array {
 	$id_evenement = intval($id_evenement);
 	$id_article = intval($id_article);
+	$defaut = $id_evenement > 0
+		? association_evenements_responsables_ids($id_evenement)
+		: array();
 	if ($id_evenement > 0 && $id_article <= 0) {
 		$id_article = intval(sql_getfetsel('id_article', 'spip_evenements', 'id_evenement=' . $id_evenement));
 	}
 
-	$choix = array();
+	$auteurs = array();
 	if ($id_article > 0) {
-		$lignes = sql_allfetsel(
+		$auteurs = sql_allfetsel(
 			'DISTINCT auteurs.id_auteur, auteurs.nom_famille, auteurs.prenom, auteurs.nom',
 			'spip_auteurs AS auteurs INNER JOIN spip_auteurs_liens AS lien ON auteurs.id_auteur=lien.id_auteur',
 			array(
@@ -100,16 +103,36 @@ function association_evenements_responsables_choix($id_evenement = 0, $id_articl
 			'',
 			'auteurs.nom_famille, auteurs.prenom, auteurs.nom'
 		);
-		foreach ($lignes ?: array() as $auteur) {
+	}
+
+	$ids_disponibles = array_map('intval', array_column($auteurs ?: array(), 'id_auteur'));
+	$ids_a_ajouter = array_values(array_diff($defaut, $ids_disponibles));
+	if ($ids_a_ajouter) {
+		$selectionnes = sql_allfetsel(
+			'id_auteur, nom_famille, prenom, nom',
+			'spip_auteurs',
+			array(sql_in('id_auteur', $ids_a_ajouter), "statut_interne='ok'")
+		);
+		$auteurs = array_merge($auteurs ?: array(), $selectionnes ?: array());
+	}
+
+	$choix = array();
+	if ($auteurs) {
+		usort($auteurs, static function ($auteur_a, $auteur_b) {
+			$nom_a = ($auteur_a['nom_famille'] ?? '') . ' ' . ($auteur_a['prenom'] ?? '') . ' ' . ($auteur_a['nom'] ?? '');
+			$nom_b = ($auteur_b['nom_famille'] ?? '') . ' ' . ($auteur_b['prenom'] ?? '') . ' ' . ($auteur_b['nom'] ?? '');
+			return strcasecmp($nom_a, $nom_b);
+		});
+		foreach ($auteurs as $auteur) {
 			$id_auteur = intval($auteur['id_auteur']);
 			$nom = trim(($auteur['nom_famille'] ?? '') . ' ' . ($auteur['prenom'] ?? ''));
 			$choix[$id_auteur] = $nom !== '' ? $nom : (string) ($auteur['nom'] ?? $id_auteur);
 		}
 	}
 
-	$defaut = $id_evenement > 0
-		? association_evenements_responsables_ids($id_evenement)
-		: array_keys($choix);
+	if ($id_evenement <= 0) {
+		$defaut = array_keys($choix);
+	}
 
 	return array(
 		'choix' => $choix,

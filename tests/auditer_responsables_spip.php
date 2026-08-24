@@ -32,6 +32,10 @@ foreach ($evenements ?: array() as $evenement) {
 		fwrite(STDERR, "Défauts incohérents pour l’événement {$id_evenement}.\n");
 		exit(1);
 	}
+	if (array_diff($ids, array_keys($choix['choix']))) {
+		fwrite(STDERR, "Responsable sélectionné absent des choix pour l’événement {$id_evenement}.\n");
+		exit(1);
+	}
 	foreach ($ids as $id_auteur) {
 		$actif = sql_countsel(
 			'spip_auteurs',

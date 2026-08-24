@@ -27,10 +27,12 @@ function sql_allfetsel($select, $table, $where = '', $groupby = '', $orderby = '
 	if (str_contains($table, 'spip_auteurs_liens')) {
 		return array(
 			array('id_auteur' => 2, 'nom_famille' => 'Alpha', 'prenom' => 'Anne', 'nom' => ''),
-			array('id_auteur' => 3, 'nom_famille' => 'Beta', 'prenom' => 'Bob', 'nom' => ''),
 		);
 	}
 	if ($table === 'spip_auteurs') {
+		if (str_contains($select, 'nom_famille')) {
+			return array(array('id_auteur' => 3, 'nom_famille' => 'Beta', 'prenom' => 'Bob', 'nom' => ''));
+		}
 		return array(array('id_auteur' => 2), array('id_auteur' => 3));
 	}
 	return array();
@@ -72,7 +74,7 @@ responsables_assert(
 
 $choix_nouveau = association_evenements_responsables_choix(0, 9);
 responsables_assert(
-	$choix_nouveau['defaut'] === array(2, 3),
+	$choix_nouveau['defaut'] === array(2),
 	'Les auteurs de l’article doivent initialiser un nouvel événement.'
 );
 
