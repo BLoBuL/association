@@ -41,9 +41,8 @@ function montant_signe($recette, $depense) {
  * @return float
  */
 function total_recettes_evenement($id_evenement) {
-    $id = intval($id_evenement);
-    $sum = sql_getfetsel('SUM(recette)', 'spip_asso_comptes', 'id_objet=' . $id . ' AND objet="evenement"');
-    return $sum ? floatval($sum) : 0.0;
+	$totaux = association_evenements_totaux_comptables((int) $id_evenement);
+	return $totaux['recettes'];
 }
 
 /**
@@ -53,9 +52,22 @@ function total_recettes_evenement($id_evenement) {
  * @return float
  */
 function total_depenses_evenement($id_evenement) {
-    $id = intval($id_evenement);
-    $sum = sql_getfetsel('SUM(depense)', 'spip_asso_comptes', 'id_objet=' . $id . ' AND objet="evenement"');
-    return $sum ? floatval($sum) : 0.0;
+	$totaux = association_evenements_totaux_comptables((int) $id_evenement);
+	return $totaux['depenses'];
+}
+
+function association_evenements_totaux_comptables($id_evenement) {
+	include_spip('inc/association_compta_ecritures');
+	$ecritures = association_compta_ecritures_lister(array(
+		'objet' => 'evenement',
+		'id_objet' => (int) $id_evenement,
+	), array('champs' => 'recette,depense'));
+	$totaux = array('recettes' => 0.0, 'depenses' => 0.0);
+	foreach ($ecritures as $ecriture) {
+		$totaux['recettes'] += (float) ($ecriture['recette'] ?? 0);
+		$totaux['depenses'] += (float) ($ecriture['depense'] ?? 0);
+	}
+	return $totaux;
 }
 
 /**
