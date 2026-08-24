@@ -118,29 +118,6 @@ function association_comparateur_date($datetime1, $datetime2, $signe) {
 }
 
 /**
- * Calculer un nombre de jours calendaires entre deux dates.
- *
- * @param string $debut
- * @param string $fin
- * @param bool $absolu
- * @return int|null
- */
-function NbJours($debut, $fin, $absolu = true) {
-	$timestamp_debut = strtotime($debut);
-	$timestamp_fin = strtotime($fin);
-	if ($timestamp_debut === false || $timestamp_fin === false) {
-		association_log('association', "NbJours: date invalide debut={$debut} fin={$fin}", 'erreur');
-		return null;
-	}
-
-	$date_debut = new DateTimeImmutable(date('Y-m-d', $timestamp_debut));
-	$date_fin = new DateTimeImmutable(date('Y-m-d', $timestamp_fin));
-	$jours = (int) $date_debut->diff($date_fin)->format('%r%a');
-
-	return $absolu ? abs($jours) : $jours;
-}
-
-/**
  * Formater un montant avec deux décimales.
  *
  * @param mixed $montant

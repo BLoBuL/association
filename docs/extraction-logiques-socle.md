@@ -845,3 +845,11 @@ est consignée dans `docs/recette-metier-test-fiafe.md`.
 
 Chaque lot suivant doit passer les tests autonomes, le staging des dix plugins, puis une
 compilation et une recette SPIP réelle avant déploiement.
+
+## Lot 70 : calcul calendaire des adhésions
+
+Le helper historique global `NbJours` n'avait plus qu'un seul consommateur :
+le génie de contrôle des échéances d'Adhésions. Il quitte donc les options du
+socle et devient `association_adhesions_nombre_jours()` dans le plugin métier.
+Le comportement calendaire, le signe optionnel et le retour contrôlé sur une
+date invalide sont conservés, avec une catégorie de journal propre au module.

@@ -521,6 +521,12 @@ $verifier(
 	'La liste des statuts internes des adhérents doit appartenir à Adhésions.'
 );
 $verifier(
+	strpos($options_socle, 'function NbJours(') === false
+		&& strpos($options_adhesions, 'function association_adhesions_nombre_jours(') !== false
+		&& strpos(file_get_contents($racine . '/plugins/association-adhesions/genie/association_taches_generales.php'), 'NbJours(') === false,
+	'Le calcul calendaire des échéances doit appartenir à Adhésions avec un nom conforme.'
+);
+$verifier(
 	!is_file($racine . '/inc/association_familles.php')
 		&& is_file($racine . '/plugins/association-adhesions/inc/association_familles.php')
 		&& !is_file($racine . '/formulaires/migrer_familles_association.php')

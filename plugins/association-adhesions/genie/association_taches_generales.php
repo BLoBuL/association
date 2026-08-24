@@ -60,7 +60,7 @@ function genie_association_taches_generales($tache) {
          $timestamp_validite = strtotime($auteur['validite']);
          if ($timestamp_validite !== false) {
              $date_validite = date('Y-m-d', $timestamp_validite);
-             $nb_jour_differences = NbJours($date_actuelle_ymd, $date_validite, false);
+             $nb_jour_differences = association_adhesions_nombre_jours($date_actuelle_ymd, $date_validite, false);
          }
      }
 
