@@ -1129,3 +1129,10 @@ feuille générale. Communication fournit maintenant sa propre feuille privée e
 borne tous les sélecteurs à `body.notifications`, la classe réellement fournie
 par le privé SPIP 4, supprimant notamment les
 surcharges globales de tous les tableaux de l'espace privé.
+
+## Lot 101 : filtres privés d'Adhésions
+
+Les cartes, options et variantes de filtres des listes Adhérents et Cotisations
+quittent la feuille générale. Adhésions fournit sa première feuille privée et
+borne les sélecteurs à `body.adherents` et `body.cotisations`, conformément aux
+classes que SPIP 4 applique aux pages réellement servies.
