@@ -1864,3 +1864,11 @@ calculés par `droit_auteur_evenements()`, de l'administration globale réservé
 aux administrateurs complets. Communication protège Notifications tout en
 conservant un repli autonome lorsque le socle Association n'est pas chargé.
 La suite locale atteint 116 tests, tous valides.
+
+Le commit `4354dec1` est deploye sur test-fiafe avec les dix empreintes de
+l'artefact Git conformes. Les quatre plugins concernes restent actifs en
+4.0.0, SPIP est sain et les 297 fonds recompilent. L'evaluation des droits dans
+le contexte SPIP accepte le webmestre et refuse un visiteur synthetique pour
+`administrer/activites` et `notifications_menu`. Dans Chrome authentifie, les
+huit routes affichent leur titre et leur H1 sans refus ni erreur d'execution.
+Aucune action ni aucun formulaire n'a ete soumis.
