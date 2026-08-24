@@ -19,7 +19,15 @@ if (!str_contains($adhesions, "objet='cotisation'") || str_contains($evenements,
 	$erreurs[] = 'La migration des cotisations n’est pas isolée dans Adhésions.';
 }
 if (!str_contains($evenements, "c.objet='evenement'") || str_contains($adhesions, "c.objet='evenement'")) {
-	$erreurs[] = 'La migration des événements n’est pas isolée dans Événements.';
+	if (!str_contains($evenements, "'objet' => 'evenement'")) {
+		$erreurs[] = 'La migration des événements n’est pas isolée dans Événements.';
+	}
+}
+if (str_contains($evenements, 'spip_asso_comptes')
+	|| str_contains($evenements, 'spip_transactions')
+	|| !str_contains($evenements, 'association_compta_ecritures_lister(')
+	|| !str_contains($evenements, 'association_paiements_transactions_lire(')) {
+	$erreurs[] = 'La migration des événements contourne encore les APIs propriétaires.';
 }
 if (!str_contains($paiements, 'function association_paiements_association_compta_migration_metiers(')) {
 	$erreurs[] = 'Paiements ne prend pas en charge ses transactions orphelines pendant la migration.';
