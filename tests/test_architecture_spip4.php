@@ -383,6 +383,12 @@ $verifier(
 		&& strpos($css_adhesions, '.justificatifs-action-valider') !== false,
 	'Le contrôle documentaire des cotisations doit être stylé par Adhésions.'
 );
+$verifier(
+	strpos($css_socle, '.tableau-adherents-scroll') === false
+		&& strpos($css_adhesions, '.tableau-adherents-scroll .tableau_adherents') !== false
+		&& strpos($css_adhesions, '.tableau_adherents .statut_mailsubscriber') !== false,
+	'Le tableau privé des adhérents doit être stylé par Adhésions.'
+);
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
