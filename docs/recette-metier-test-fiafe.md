@@ -2281,3 +2281,43 @@ débordement, mais affichent logiquement « Accès interdit » car ces deux modu
 sont désactivés dans la configuration persistante du site. Le cycle complet
 est donc prouvé par les tests fonctionnels des helpers et les contrôles
 structurels des actions, sans créer de don, vente ou écriture de recette.
+
+## Lot 183 - matrice globale et contrat d'installation Adhésions
+
+La reprise complète des 140 tests canoniques est verte. Une passe Chrome
+authentifiée a contrôlé les pages Adhérents, Cotisations, Activités, Bénévoles,
+Comptes, Notifications, Paramètres, Recherche avancée, Suivi des inscriptions,
+Export, Analyse comptable et Plan comptable. Toutes possèdent leur titre et
+leur contenu, sans fatal, fichier manquant ni débordement horizontal sur la
+surface Chrome disponible de 1920 pixels. Dons, Prêts, Ventes et Destinations
+répondent proprement par « Accès interdit », conformément aux modules ou à
+l'option Destinations désactivés sur ce site. Les anciens noms de recette
+`adherents_recherche_avancee`, `suivi_inscriptions`, `plans_comptables` et
+`destinations_comptables` ne sont pas des entrées SPIP : les chemins canoniques
+sont respectivement `recherche_avancee`, `suivi_activites`, `plan_comptable` et
+`destinations`.
+
+Les pages publiques Inscription, Profil, Newsletter, Ressources et Événement
+231 sont servies dans leur cadre SPIP, avec leur titre et leurs formulaires,
+sans fatal ni débordement à cette largeur. Après le déploiement et la purge du
+cache, une seconde passe ciblée a revalidé Adhérents, Cotisations, Comptes,
+Newsletter et Événement. Font Awesome est chargé sur les pages publiques ; le
+privé utilise les icônes natives de SPIP.
+
+La commande d'installation a détecté une divergence réelle : le paquet
+Adhésions et la base servie étaient correctement en schéma 1.3.0, mais son
+inventaire distribué attendait encore 1.2.0. Le commit `ee9bb29c` aligne ce
+contrat et ajoute un test générique comparant chaque schéma inventorié à son
+`paquet.xml`, afin que toute future montée de schéma incohérente soit rejetée.
+
+Après déploiement ciblé avec sauvegarde et concordance SHA-256, le serveur
+confirme deux fois dix plugins actifs, quatorze tables, douze objets SQL et
+sept schémas à jour. `plugins:maj:bdd` ne trouve aucune mise à jour. Le
+vérificateur de la copie DEV retrouve dix écritures historiques et exactement
+dix cotisations, avec l'empreinte inchangée
+`6d207697e5e6a4ecc279769b1b15fb14fcee1d748095a8e934692b0158c5b69f` et une
+seconde exécution idempotente. Les 221 squelettes privés, douze pages publiques
+et 64 composants front recompilent sous SPIP 4.4.21. Les journaux récents ne
+contiennent ni fatal, ni erreur SQL, ni dépréciation Association ; seuls des
+avertissements SPIP signalent le stockage fichier de contextes AJAX dépassant
+2 000 caractères.
