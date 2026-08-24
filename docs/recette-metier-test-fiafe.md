@@ -2422,3 +2422,27 @@ BANK Blobul. L'audit a aussi retiré une URL `test-fiafe` accidentellement
 laissée comme label PHP dans le chargeur d'une inscription historique ; un
 test interdit désormais toute URL de recette dans les sources exécutables des
 modules.
+
+## Lot 189 - clôture de recette et alignement du déploiement
+
+La suite finale compte 141 tests automatisés valides. Le staging construit
+depuis le commit `84c142c8baafaa52ae665e766728cb40a77b7985` contient exactement
+les dix plugins du monorepo. Son archive de déploiement possède l'empreinte
+SHA-256
+`7c35d922e607e9fd85e94eff9b1700855956653ef7c99cec48ce8bb7e1962974`.
+
+Les dix répertoires ont été remplacés atomiquement sur test-fiafe. Aucun
+retour arrière n'a été nécessaire, aucune sauvegarde persistante n'a été
+conservée et aucun répertoire temporaire de déploiement ne subsiste. Le
+serveur retrouve dix plugins actifs, quatorze tables, douze objets SQL et sept
+schémas ; le vérificateur d'installation passe et les 297 fonds (221 privés,
+12 publics et 64 composants front) recompilent. Le diagnostic SPIP 4 est sain,
+les journaux récents ne contiennent aucune erreur et le contrôle HTTP public
+renvoie 200.
+
+Après ce déploiement intégral, Chrome authentifié a relu une fiche Événement
+publique et la page privée Adhérents : titres et contenus attendus, aucune
+erreur d'exécution et aucun débordement horizontal. La stratégie de version
+est désormais documentée en série 4.x, avec des tags qualifiés par module et
+un éventuel tag de suite. Aucun tag ni release n'est créé avant l'arbitrage
+explicite du canal `test` ou `stable`.
