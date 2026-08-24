@@ -1126,5 +1126,6 @@ plus modifier globalement toutes les saisies nommées `classe` ou `compte`.
 
 Les onglets, filtres et tableaux de la page privée Notifications quittent la
 feuille générale. Communication fournit maintenant sa propre feuille privée et
-borne tous les sélecteurs à `.page_notifications`, supprimant notamment les
+borne tous les sélecteurs à `body.notifications`, la classe réellement fournie
+par le privé SPIP 4, supprimant notamment les
 surcharges globales de tous les tableaux de l'espace privé.

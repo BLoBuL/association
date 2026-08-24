@@ -364,8 +364,9 @@ $verifier(
 );
 $verifier(
 	strpos($css_socle, '.notifications-filters') === false
-		&& strpos($css_communication, '.page_notifications .notifications-filters') !== false
-		&& strpos($css_communication, '.page_notifications table thead th') !== false,
+		&& strpos($css_communication, 'body.notifications .notifications-filters') !== false
+		&& strpos($css_communication, 'body.notifications table thead th') !== false
+		&& strpos($css_communication, '.page_notifications') === false,
 	'Les styles de notifications doivent appartenir au plugin Communication et être bornés à sa page.'
 );
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
