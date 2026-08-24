@@ -1147,3 +1147,16 @@ rendus après le chargement de la feuille privée propre à Événements.
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
+
+## Lot 106 — fiche activité et inscriptions
+
+Les commits `34fe0b0c` et `95ab790e` sont déployés depuis l'artefact SHA-256
+`7763604e4056f8d9b0a0b5e4583c708074743796a50d4850c22443f3def39b76`.
+La fiche authentifiée de l'événement 183 conserve son image, son responsable,
+le tableau de bord, la configuration d'inscription et les raccourcis. Les cinq
+inscriptions visibles gardent leurs statuts, couleurs, informations et actions,
+sans erreur de squelette. La recette est restée strictement en lecture seule.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
