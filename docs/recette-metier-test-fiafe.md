@@ -1631,3 +1631,31 @@ reellement consommes, sans ecart. Les statistiques des exercices 2024, 2025 et
 des empreintes SHA-256 locales et distantes identiques; leur lint PHP est
 valide. SPIP 4.4.21 compile enfin 221 squelettes prives, douze pages publiques
 et 64 composants front.
+
+## Lot 144 - statistiques comptables fournies par Evenements
+
+La fonction de compatibilite conservee par Comptabilite distribue maintenant
+le calcul au plugin Evenements. Les criteres `activite`, `evenement` et le
+journal historique `activite|` ont quitte Comptabilite; son API accepte un
+contrat generique associant objets canoniques et prefixes de journaux anciens.
+
+Sur test-fiafe, les exercices 2024, 2025 et 2026 produisent exactement les
+memes agregats que l'ancienne jointure. Les quatre commandes restent egalement
+identiques sur les champs consommes. Le lint des quatre fichiers PHP et la
+compilation des 221 squelettes prives, douze pages publiques et 64 composants
+front sont valides.
+
+## Lot 145 - creation des campagnes centralisee dans Communication
+
+Les deux anciennes actions d'Adhesions et le formulaire moderne de
+Communication utilisent maintenant la meme API de creation Mailshot. Cette API
+normalise et deduplique les adresses, cree la campagne et ses destinataires,
+recalcule son total si necessaire puis reveille la file de travaux. Aucun code
+actif d'Adhesions n'ecrit encore dans `spip_mailshots` ou
+`spip_mailshots_destinataires`.
+
+La recette distante est restee en lecture seule et n'a cree ni campagne ni
+email. Les 27 auteurs possedant une adresse ont produit exactement les 27
+adresses uniques attendues. Les quatre fichiers deployes passent le lint PHP et
+SPIP 4.4.21 compile les 221 squelettes prives, douze pages publiques et 64
+composants front.
