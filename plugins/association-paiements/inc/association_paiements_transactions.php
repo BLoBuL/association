@@ -45,3 +45,11 @@ function association_paiements_transaction_modifier($id_transaction, array $donn
 	}
 	return sql_updateq('spip_transactions', $donnees, 'id_transaction=' . $id_transaction) !== false;
 }
+
+function association_paiements_transaction_supprimer_non_encaissee($id_transaction) {
+	$transaction = association_paiements_transaction_lire($id_transaction);
+	if (!$transaction || ($transaction['statut'] ?? '') === 'ok') {
+		return false;
+	}
+	return sql_delete('spip_transactions', 'id_transaction=' . (int) $id_transaction) !== false;
+}
