@@ -204,6 +204,28 @@ function sql_select($select, $from, $where = '', $group = '', $order = '', $limi
     return association_test_make_result(array());
 }
 
+function sql_allfetsel($select, $from, $where = '', $group = '', $order = '', $limit = '') {
+    if ($from === 'spip_transactions') {
+        $ids = association_test_extract_ids_from_in(is_array($where) ? implode(' AND ', $where) : $where);
+        return array_values(array_filter($GLOBALS['association_test_tables']['spip_transactions'], function ($row) use ($ids) {
+            return !$ids || in_array((int) ($row['id_transaction'] ?? 0), $ids, true);
+        }));
+    }
+    if ($from === 'spip_asso_cotisations AS c') {
+        return array_values(array_filter($GLOBALS['association_test_tables']['spip_asso_cotisations'], function ($row) use ($where) {
+            if (($row['statut'] ?? '') === 'ok') return false;
+            if (preg_match("/date_creation<='([^']+)'/", (string) $where, $m)) {
+                return (string) ($row['date_creation'] ?? '') <= $m[1];
+            }
+            return true;
+        }));
+    }
+    $resultat = sql_select($select, $from, $where, $group, $order, $limit);
+    $rows = array();
+    while ($row = sql_fetch($resultat)) $rows[] = $row;
+    return $rows;
+}
+
 function association_compta_ecriture_supprimer($id_compte) {
     $id_compte = intval($id_compte);
     sql_delete('spip_asso_destination_op', 'id_compte=' . $id_compte);
@@ -305,6 +327,7 @@ function association_test_reset_tables() {
     $GLOBALS['association_test_transaction_snapshot'] = null;
 }
 
+include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_transactions.php';
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_maintenance_cotisations.php';

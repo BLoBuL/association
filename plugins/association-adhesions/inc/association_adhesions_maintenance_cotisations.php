@@ -40,23 +40,11 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
     $protegees = [];
     // Protéger celles liées à une transaction encaissée (statut ok)
     $ids_tx = array_values(array_unique(array_filter($orphans)));
-    if ($ids_tx) {
-        $in_tx = sql_in('t.id_transaction', $ids_tx);
-        $res2 = sql_select(
-            't.id_transaction',
-            'spip_transactions AS t',
-            $in_tx . ' AND t.statut=' . sql_quote('ok')
-        );
-        $tx_ok = [];
-        while ($r = sql_fetch($res2)) {
-            $tx_ok[] = intval($r['id_transaction']);
-        }
-        if ($tx_ok) {
-            foreach ($orphans as $id_compte => $id_tx) {
-                if ($id_tx && in_array($id_tx, $tx_ok, true)) {
-                    $protegees[] = $id_compte;
-                }
-            }
+    include_spip('inc/association_paiements_transactions');
+    $transactions = association_paiements_transactions_lire($ids_tx);
+    foreach ($orphans as $id_compte => $id_tx) {
+        if ($id_tx && (($transactions[$id_tx]['statut'] ?? '') === 'ok')) {
+            $protegees[] = $id_compte;
         }
     }
 
@@ -98,46 +86,21 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
     }
 
     // Transactions liées non réglées à supprimer
-    $transactions_supprimees = 0;
-    $transactions_ids = [];
-    // On suppose la présence de la table spip_transactions
-    {
-         // Collecter les id_transaction des cotisations supprimées
-         $tx_ids = [];
-         foreach ($a_supprimer as $id_compte) {
-             $id_tx = $orphans[$id_compte];
-             if ($id_tx) {
-                 $tx_ids[] = $id_tx;
-             }
-         }
-         $tx_ids = array_values(array_unique($tx_ids));
-         if ($tx_ids) {
-             $in_tx = sql_in('id_transaction', $tx_ids) . ' AND statut<>' . sql_quote('ok');
-             // Récupérer la liste exacte (filtrée statut <> ok) pour retour
-             $res_tx = sql_select('id_transaction', 'spip_transactions', $in_tx);
-             while ($r = sql_fetch($res_tx)) {
-                 $transactions_ids[] = intval($r['id_transaction']);
-             }
-             if ($transactions_ids) {
-                 $where_del = sql_in('id_transaction', $transactions_ids);
-                 $transactions_supprimees = $dry_run
-                     ? sql_countsel('spip_transactions', $where_del)
-                     : sql_delete('spip_transactions', $where_del);
-                 if ($transactions_supprimees === false) {
-                     if (!$dry_run) {
-                         sql_query('ROLLBACK');
-                     }
-                     return [
-                         'supprimees' => intval($nb_cotisations),
-                         'ids' => $a_supprimer,
-                         'protegees' => count($protegees),
-                         'transactions_supprimees' => 0,
-                         'transactions_ids' => $transactions_ids,
-                         'erreur' => 'suppression_transactions_cotisations_orphelines_echouee'
-                     ];
-                 }
-             }
-         }
+    $tx_ids = [];
+    foreach ($a_supprimer as $id_compte) {
+        if (!empty($orphans[$id_compte])) $tx_ids[] = (int) $orphans[$id_compte];
+    }
+    $suppression_transactions = association_paiements_transactions_supprimer_non_encaissees($tx_ids, $dry_run);
+    if (!empty($suppression_transactions['erreur'])) {
+        if (!$dry_run) sql_query('ROLLBACK');
+        return [
+            'supprimees' => intval($nb_cotisations),
+            'ids' => $a_supprimer,
+            'protegees' => count($protegees),
+            'transactions_supprimees' => 0,
+            'transactions_ids' => $suppression_transactions['ids'],
+            'erreur' => 'suppression_transactions_cotisations_orphelines_echouee'
+        ];
     }
 
     if (!$dry_run) {
@@ -148,8 +111,8 @@ function association_adhesions_supprimer_cotisations_orphelines($dry_run = true,
         'supprimees' => intval($nb_cotisations),
         'ids' => $a_supprimer,
         'protegees' => count($protegees),
-        'transactions_supprimees' => intval($transactions_supprimees),
-        'transactions_ids' => $transactions_ids
+        'transactions_supprimees' => intval($suppression_transactions['supprimes']),
+        'transactions_ids' => $suppression_transactions['ids']
     ];
 }
 
@@ -171,25 +134,17 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
     $ids_cot = [];
     $tx_ids_candidates = [];
 
-    // Jointure pour exclure les cotisations liées à une transaction encaissée
     $where = "c.statut<>" . sql_quote('ok')
-        . " AND c.date_creation<=" . sql_quote($limite)
-        . " AND (t.id_transaction IS NULL OR t.statut<>" . sql_quote('ok') . ")";
-    $res = sql_select(
-        'c.id_compte,c.id_transaction',
-        'spip_asso_cotisations AS c LEFT JOIN spip_transactions AS t ON t.id_transaction=c.id_transaction',
-        $where,
-        '',
-        '',
-        intval($lot)
-    );
-    while ($row = sql_fetch($res)) {
-        $idc = intval($row['id_compte']);
-        $ids_cot[] = $idc;
-        $idt = intval($row['id_transaction']);
-        if ($idt) {
-            $tx_ids_candidates[] = $idt;
-        }
+        . " AND c.date_creation<=" . sql_quote($limite);
+    $candidates = sql_allfetsel('id_compte,id_transaction', 'spip_asso_cotisations AS c', $where) ?: array();
+    include_spip('inc/association_paiements_transactions');
+    $transactions = association_paiements_transactions_lire(array_column($candidates, 'id_transaction'));
+    foreach ($candidates as $row) {
+        $idt = intval($row['id_transaction'] ?? 0);
+        if ($idt && (($transactions[$idt]['statut'] ?? '') === 'ok')) continue;
+        $ids_cot[] = intval($row['id_compte']);
+        if ($idt) $tx_ids_candidates[] = $idt;
+        if (count($ids_cot) >= $lot) break;
     }
 
     if (!$ids_cot) {
@@ -224,37 +179,17 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
     }
 
     // Suppression des transactions non encaissées associées
-    $transactions_supprimees = 0;
-    $transactions_ids = [];
-    if ($tx_ids_candidates) {
-        $tx_ids_candidates = array_values(array_unique(array_filter($tx_ids_candidates)));
-        if ($tx_ids_candidates) {
-            $where_tx = sql_in('id_transaction', $tx_ids_candidates) . ' AND statut<>' . sql_quote('ok');
-            // Lister exactement celles à supprimer
-            $res_tx = sql_select('id_transaction', 'spip_transactions', $where_tx);
-            while ($r = sql_fetch($res_tx)) {
-                $transactions_ids[] = intval($r['id_transaction']);
-            }
-            if ($transactions_ids) {
-                $in_tx_final = sql_in('id_transaction', $transactions_ids);
-                $transactions_supprimees = $dry_run
-                    ? sql_countsel('spip_transactions', $in_tx_final)
-                    : sql_delete('spip_transactions', $in_tx_final);
-                if ($transactions_supprimees === false) {
-					if (!$dry_run) {
-						sql_query('ROLLBACK');
-					}
-                    return [
-                        'supprimees' => intval($nb_cot),
-                        'ids' => $ids_cot,
-                        'limite' => $limite,
-                        'transactions_supprimees' => 0,
-                        'transactions_ids' => $transactions_ids,
-                        'erreur' => 'suppression_transactions_cotisations_non_encaissees_echouee'
-                    ];
-                }
-            }
-        }
+    $suppression_transactions = association_paiements_transactions_supprimer_non_encaissees($tx_ids_candidates, $dry_run);
+    if (!empty($suppression_transactions['erreur'])) {
+		if (!$dry_run) sql_query('ROLLBACK');
+        return [
+            'supprimees' => intval($nb_cot),
+            'ids' => $ids_cot,
+            'limite' => $limite,
+            'transactions_supprimees' => 0,
+            'transactions_ids' => $suppression_transactions['ids'],
+            'erreur' => 'suppression_transactions_cotisations_non_encaissees_echouee'
+        ];
     }
 
 	if (!$dry_run) {
@@ -265,8 +200,8 @@ function association_adhesions_supprimer_cotisations_non_encaissees_anciennes($m
         'supprimees' => intval($nb_cot),
         'ids' => $ids_cot,
         'limite' => $limite,
-        'transactions_supprimees' => intval($transactions_supprimees),
-        'transactions_ids' => $transactions_ids
+        'transactions_supprimees' => intval($suppression_transactions['supprimes']),
+        'transactions_ids' => $suppression_transactions['ids']
     ];
 }
 

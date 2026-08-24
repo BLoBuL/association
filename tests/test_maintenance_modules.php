@@ -55,6 +55,11 @@ if (strpos($paiements_api, 'function association_paiements_transactions_supprime
 	fwrite(STDERR, "Paiements ne fournit pas la suppression protegee en lot.\n");
 	exit(1);
 }
+if (strpos($adhesions_cotisations, 'spip_transactions') !== false
+	|| strpos($adhesions_cotisations, 'association_paiements_transactions_supprimer_non_encaissees(') === false) {
+	fwrite(STDERR, "La maintenance Cotisations contourne encore la facade Paiements.\n");
+	exit(1);
+}
 
 if (strpos($socle, "include_spip('inc/association_evenements_maintenance');") !== false
 	|| strpos($pipelines_evenements, 'function association_evenements_association_maintenance_bdd_executer(') === false) {
