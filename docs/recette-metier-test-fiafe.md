@@ -811,3 +811,38 @@ Enfin, une nouvelle sauvegarde SPIP inclut bien les 41 activités avec
 Cette preuve valide le scénario de reprise DEV. La migration MySQL et les
 parcours servis sur test-fiafe sont contrôlés dans l'étape de déploiement du
 même lot.
+
+Le commit `9120472` a ensuite été déployé atomiquement dans Événements et
+Comptabilité depuis l'artefact SHA-256
+`70b31051e352ebc9ac4681b4ecd1ab1f7f3fb50cfd6a024194b754c5c1c7707a`.
+Sur MySQL, les 41 lignes sont conservées et l'empreinte avant/après reste
+`55d7102115e08fe2ae40aaf07d50cffa32904202a1f57bdf6c387073eba33a52`.
+La méta passe de 1.1.0 à 1.2.0 ; une seconde mise à jour ne trouve plus aucune
+opération. Le vérificateur confirme 10 plugins, 14 tables, 12 objets SQL et 7
+schémas à jour. Une sauvegarde SPIP réelle contient les 41 activités avec
+`tarifs_selectionnes`, sans `transaction` (SHA-256
+`b06243722426e5be2039618b5eaf04a755764f88fa73ebc524f2db339dcca0d3`).
+
+La première passe Chrome a détecté deux défauts de chargement issus de la
+scission, corrigés et redéployés : les champs extras chargeaient encore
+`association_options` au lieu des options Événements (`118a3c9`, artefact
+`ab7e986796515286663defa9919d281c60d2f48d8ddaf176ac7afab9b861c2d5`),
+puis la surcharge du formulaire Agenda appelait l'API d'édition avant son
+inclusion (`95f0451`, artefact
+`64c0952985ec0659ee0bd8128c766e79a87e27c830415aadc696a3daa2305b2e`).
+
+Après ces corrections, Chrome authentifié valide sans fatal :
+
+- la page publique de l'événement 230 et son formulaire d'inscription ;
+- la page privée Activités et ses huit entrées de navigation distribuées ;
+- la fiche privée de l'événement et son tableau de bord d'inscription ;
+- la liste des inscriptions, ses raccourcis CSV/XML et le formulaire BO
+  d'ajout ;
+- le formulaire Agenda complet, y compris responsables, participation
+  financière, tarifs, modes de paiement, accompagnants et liste d'attente.
+
+Le contrôle HTTP sans session reste bloqué par Cloudflare en 403, tandis que le
+parcours Chrome authentifié est bien servi. La tentative de forcer les largeurs
+390/768/1440 dans cette session Chrome est restée à la largeur native de 1920
+pixels ; elle ne constitue donc pas une preuve responsive et devra être rejouée
+sur une surface acceptant réellement l'émulation de viewport.
