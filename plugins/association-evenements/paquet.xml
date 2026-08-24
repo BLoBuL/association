@@ -57,4 +57,5 @@
 	<pipeline nom="association_compta_autoriser_ecriture" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_compta_objets_declarer" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_compta_redirection_ecriture" inclure="association_evenements_pipelines.php" />
+	<style source="prive/themes/spip/css/evenements.css" type="prive" />
 </paquet>

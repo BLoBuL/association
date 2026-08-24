@@ -1,0 +1,78 @@
+/* Styles privés propres au domaine Événements. */
+
+/*TABLEAUX ACTIVITES*/
+.tableau_listes_activite th.titre,
+.tableau_listes_activite td.titre {
+    text-align: left;
+    font-weight: 600;
+    padding: 1em .5em;
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+.tableau_listes_activite td a.lien_fa {
+    padding: 10px;
+}
+.tableau_listes_activite tr.ligne_activite {
+    background-color: #f1ffa5;
+}
+.tableau_listes_activite tr.ligne_activite:nth-child(2n-1) {
+    background-color: #f6ffc4;
+}
+.tableau_listes_activite .statut_inscription .tooltip i {}
+.tableau_listes_activite .statut_inscription .inscription_ouverte.tooltip {
+    background-color: var(--statut-ok);
+    color: white;
+}
+.tableau_listes_activite .statut_inscription .inscription_ouverte.tooltip .msg_liste_attente{
+    color: #a8c3ff;
+}
+.tableau_listes_activite .statut_inscription .ouverture_a_venir.tooltip {
+    background-color: var(--statut-prospect);
+}
+.tableau_listes_activite .statut_inscription .ouverture_a_venir.tooltip .date_ouverture{
+    color: var(--statut-prospect);
+}
+.tableau_listes_activite .statut_inscription .inscription_ouverte.liste_attente.tooltip {
+    background-color: #a8c3ff;
+}
+.tableau_listes_activite .statut_inscription .inscription_ouverte.quota_plein.tooltip,
+.tableau_listes_activite .statut_inscription .inscription_ferme.tooltip,
+.tableau_listes_activite .statut_inscription .inscription_suspendue.tooltip {
+    background-color: #ff8282;
+}
+.tableau_listes_activite .statut_inscription .inscription_ouverte.quota_plein.tooltip .msg_quota_plein,
+.tableau_listes_activite .statut_inscription .inscription_ferme.tooltip .date_fermeture{
+    color: #ff8282;
+}
+.tableau_listes_export_activite{
+}
+.tableau_listes_export_activite .separateur_annuel,
+.tableau_listes_export_activite .separateur_annuel th{
+    background-color: #445000;
+}
+.tableau_listes_export_activite .separateur_mensuel,
+.tableau_listes_export_activite .separateur_mensuel th{
+    background-color: #768b00;
+}
+.tableau_listes_export_activite td.quota{
+    min-width: inherit;
+}
+.tableau_listes_export_activite .ouverture_a_venir {
+    background-color: #fde56e;
+}
+.tableau_listes_export_activite .inscription_ouverte {
+    background-color: #a8c3ff;
+}
+.tableau_listes_export_activite .inscription_ouverte.quota_plein {
+    background-color: #ff8282;
+}
+.tableau_listes_export_activite .inscription_ouverte.liste_attente {
+     background-color: #a8c3ff;
+}
+.tableau_listes_export_activite .inscription_ferme,
+.tableau_listes_export_activite .inscription_suspendue {
+     background-color: #ff8282;
+}
+.tableau_listes_export_activite .evenement_termine {
+    background-color: white;
+}

@@ -342,6 +342,7 @@ $css_socle = file_get_contents($racine . '/prive/themes/spip/css/asso.css');
 $css_compta = file_get_contents($racine . '/plugins/association-compta/prive/themes/spip/css/comptabilite.css');
 $css_communication = file_get_contents($racine . '/plugins/association-communication/prive/themes/spip/css/communication.css');
 $css_adhesions = file_get_contents($racine . '/plugins/association-adhesions/prive/themes/spip/css/adhesions.css');
+$css_evenements = file_get_contents($racine . '/plugins/association-evenements/prive/themes/spip/css/evenements.css');
 $compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
@@ -395,6 +396,13 @@ $verifier(
 		&& strpos($css_adhesions, '.tableau-cotisations-scroll .tableau_cotisations_adherent') !== false
 		&& strpos($css_adhesions, '@media (max-width: 640px)') !== false,
 	'Le tableau responsive des cotisations doit être stylé par Adhésions.'
+);
+$verifier(
+	strpos($css_socle, '.tableau_listes_activite') === false
+		&& strpos($css_socle, '.tableau_listes_export_activite') === false
+		&& strpos($css_evenements, '.tableau_listes_activite') !== false
+		&& strpos($css_evenements, '.tableau_listes_export_activite') !== false,
+	'Les listes privées des activités doivent être stylées par Événements.'
 );
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
