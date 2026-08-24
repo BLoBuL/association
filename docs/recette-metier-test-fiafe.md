@@ -1798,3 +1798,20 @@ rend aussi le test des titres compatible avec la disposition en plugins freres
 du serveur. Dans Chrome authentifie, la route affiche le titre et le H1
 « Recherche avancee des adherents » sans erreur ; le formulaire reste complet
 et n'a pas ete soumis. Les 297 squelettes et composants recompilent.
+
+## Lot 155 - titres des editeurs metier directs
+
+La matrice privee avec les modules optionnels temporairement actifs a montre
+que six routes `editer_asso_*` servaient leur CVT sans H1. Les editeurs de
+destinations, plan comptable, dons, ressources, ventes et inscriptions a un
+evenement possedent maintenant leur autorisation et leur titre de page. Les
+anciens wrappers `edit_*` passent `titre=non` a l'inclusion pour ne pas creer de
+double H1.
+
+Le commit `fe3a7f62` est deploye sur test-fiafe. Les options `destinations`,
+`dons`, `prets` et `ventes`, initialement vides, ont ete placees sur `on` le
+temps de la recette puis restaurees exactement a vide ; `comptes` est reste sur
+`on`. Les cinq listes, les cinq editeurs de creation et l'editeur d'inscription
+de l'evenement 231 affichent un titre, un H1 et leur formulaire sans erreur.
+Aucun formulaire n'a ete soumis. Tous les squelettes compilent apres
+restauration de la configuration.
