@@ -19,11 +19,14 @@ if (str_contains($schema, "'en_attente' =>") || str_contains($schema, "'valider'
 	$erreurs[] = 'Le schéma neuf réintroduit des colonnes Événements historiquement supprimées.';
 }
 if (!str_contains($administration, "['connexions'][0]['type']")
+	|| !str_contains($administration, "array('association_evenements_migrer_tarifs_selectionnes')")
 	|| !str_contains($administration, 'association_evenements_migrer_tarifs_selectionnes_sqlite()')
 	|| !str_contains($administration, 'BEGIN IMMEDIATE')
 	|| !str_contains($administration, "['tarifs_selectionnes'] = \$ligne['transaction'] ?? ''")
 	|| !str_contains($administration, 'sql_countsel($table) !== count($lignes)')
 	|| !str_contains($administration, "sql_query('ROLLBACK')")
+	|| !str_contains($administration, 'SET tarifs_selectionnes = `transaction`')
+	|| !str_contains($administration, 'DROP COLUMN `transaction`')
 	|| !str_contains($administration, 'CHANGE `transaction` tarifs_selectionnes')) {
 	$erreurs[] = 'La migration de sélection tarifaire ne couvre pas SQLite ancien et MySQL.';
 }

@@ -13,6 +13,7 @@ function association_evenements_upgrade($nom_meta_base_version, $version_cible) 
 				'spip_asso_activites',
 				'spip_asso_categories_activites_liens',
 			)),
+			array('association_evenements_migrer_tarifs_selectionnes'),
 		),
 	);
 	$maj['1.1.0'] = $maj['create'];
@@ -37,17 +38,19 @@ function association_evenements_migrer_tarifs_selectionnes() {
 	}
 
 	$champs = array_keys($description['field'] ?? array());
-	if (in_array('tarifs_selectionnes', $champs, true)) {
-		return;
-	}
 	if (!in_array('transaction', $champs, true)) {
-		maj_tables(array('spip_asso_activites'));
+		if (!in_array('tarifs_selectionnes', $champs, true)) {
+			maj_tables(array('spip_asso_activites'));
+		}
 		return;
 	}
 
 	$type_serveur = $GLOBALS['connexions'][0]['type'] ?? '';
 	if (str_starts_with((string) $type_serveur, 'sqlite')) {
 		association_evenements_migrer_tarifs_selectionnes_sqlite();
+	} elseif (in_array('tarifs_selectionnes', $champs, true)) {
+		sql_query('UPDATE spip_asso_activites SET tarifs_selectionnes = `transaction`');
+		sql_alter('TABLE spip_asso_activites DROP COLUMN `transaction`');
 	} else {
 		sql_alter('TABLE spip_asso_activites CHANGE `transaction` tarifs_selectionnes TEXT NOT NULL');
 	}
