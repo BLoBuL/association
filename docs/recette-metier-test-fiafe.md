@@ -2146,3 +2146,13 @@ neuf événements possédant un document sont tous postérieurs au 24 août 2026
 la galerie historique conditionnée par `{age>0}` ne peut donc pas être rendue
 visuellement sans altérer les données de recette. Ses deux états restent
 couverts par compilation et test structurel.
+
+## Lot 175 - préférence de session Comptabilité native SPIP 4
+
+Le filtre qui mémorise l'inclusion des écritures non validées ne démarre plus
+une session PHP et ne manipule plus `$_SESSION`. Il charge `inc/session`, écrit
+la préférence avec `session_set()` sous la clé métier
+`association_compta_inclure_non_validees`, puis la relit avec `session_get()`.
+Un test fonctionnel couvre la valeur par défaut, l'activation, la persistance
+et la désactivation ; il interdit aussi le retour des deux accès PHP natifs
+dans le module Comptabilité. La suite locale atteint 132 tests, tous valides.
