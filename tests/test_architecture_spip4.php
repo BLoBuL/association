@@ -377,6 +377,12 @@ $verifier(
 		&& strpos($css_adhesions, 'body.adherents .asso-filtres') !== false,
 	'Les styles de filtres Adhésions doivent appartenir au module et être bornés à ses pages.'
 );
+$verifier(
+	strpos($css_socle, '.justificatifs-cotisation') === false
+		&& strpos($css_adhesions, '.justificatifs-cotisation') !== false
+		&& strpos($css_adhesions, '.justificatifs-action-valider') !== false,
+	'Le contrôle documentaire des cotisations doit être stylé par Adhésions.'
+);
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
