@@ -45,6 +45,13 @@ $verifier(
 		&& strpos($compta_fonctions, "sql_quote('activite|%')") === false,
 	'Comptabilite ne doit plus connaitre les criteres propres aux Evenements.'
 );
+$verifier(
+	is_file($racine . '/plugins/association-evenements/prive/squelettes/top/analyse_compta_activites.html')
+		&& is_file($racine . '/plugins/association-evenements/prive/objets/liste/item_compte_activites.html')
+		&& !is_file($racine . '/plugins/association-compta/prive/squelettes/top/analyse_compta_activites.html')
+		&& !is_file($racine . '/plugins/association-compta/prive/objets/liste/item_compte_activites.html'),
+	'Les squelettes comptables specialises Evenements doivent appartenir au module Evenements.'
+);
 $verifier(strpos($adhesions_paquet, '<chemin path="squelettes"') === false, 'Adhesions doit exposer sa racine pour rendre prive/ chargeable.');
 $verifier(strpos($evenements_paquet, '<chemin path="squelettes"') === false, 'Evenements doit exposer sa racine pour rendre prive/ chargeable.');
 $verifier(strpos($paquet, '<necessite nom="bank"') === false, 'Bank doit etre porte par le module Paiements.');
