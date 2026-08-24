@@ -2204,3 +2204,22 @@ recompilent. Dans Chrome, la page publique de l'événement 231 charge bien
 `plugins/association-paiements/css/association_paiements.css`, sans erreur ni
 débordement horizontal. La ressource répond en HTTP 200 avec le type
 `text/css`. Aucun paiement ni formulaire n'a été déclenché.
+
+## Lot 179 - interactions privées Comptabilité compatibles AJAX SPIP
+
+La liste des écritures ne contient plus de scripts ni de gestionnaires
+`onclick` inline. Le plugin déclare désormais son propre script privé, qui
+utilise la délégation d'événements pour rester actif après un remplacement
+AJAX : soumission du filtre d'imputation, sélection globale, confirmation de
+suppression groupée et confirmation d'une suppression individuelle. Le code
+inactif qui cherchait le champ inexistant `action_masse` et la requête `fetch`
+redondante de l'ancien stockage PHP sont supprimés. La suite locale atteint
+137 tests, tous valides.
+
+Le commit `66edae17` est déployé sur test-fiafe avec les cinq empreintes de
+l'artefact Git conformes. Comptabilité reste actif en 4.0.0 et les 297 fonds
+recompilent. Dans Chrome authentifié, la page Comptes charge le nouveau script
+versionné, ne contient aucun gestionnaire inline et reste sans erreur ni
+débordement. Le contrôle visible « tout sélectionner » coche les deux écritures
+affichées, puis les décoche correctement ; aucun formulaire ni lien d'action
+n'a été soumis et la console reste vide d'avertissement ou d'erreur.
