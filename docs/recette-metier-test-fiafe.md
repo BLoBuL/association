@@ -1555,3 +1555,22 @@ modifier les données ; ces quatre corrections restent donc explicitement en
 attente d'une recette fonctionnelle de l'action. Les empreintes des fichiers
 déployés correspondent aux sources et les 221 squelettes privés, douze pages
 publiques et 64 composants front compilent sous SPIP 4.4.21.
+
+## Lot 132 — façade Paiements pour les parcours Événements
+
+La comptabilisation, les reçus de participation, les contrôles d'éligibilité,
+la désinscription publique, l'expiration automatique et les actions BO ne
+lisent ou ne modifient plus directement `spip_transactions`. Paiements fournit
+une façade de lecture en lot ou unitaire et une modification limitée aux champs
+de cycle Bank attendus. La suppression demandée depuis le BO refuse désormais
+explicitement une transaction au statut `ok`, afin qu'une suppression
+d'inscription ne détruise jamais un historique encaissé.
+
+Les douze champs exposés par la façade correspondent exactement aux 45
+transactions de la copie DEV. Parmi les seize transactions liées aux
+inscriptions actuelles, quatre encaissements sont maintenant protégés et douze
+transactions non encaissées restent éligibles à la suppression métier. La
+recette est restée en lecture seule : aucune inscription, transaction ou
+écriture n'a été modifiée, aucun reçu ni email n'a été envoyé. Les empreintes
+déployées correspondent aux sources et SPIP 4.4.21 compile 221 squelettes
+privés, douze pages publiques et 64 composants front.
