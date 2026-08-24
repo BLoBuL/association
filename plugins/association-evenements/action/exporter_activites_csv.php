@@ -94,35 +94,11 @@ function action_exporter_activites_csv_dist()
 				$preas[10] = 'b.nationalite';
 		}
 
-	// spip_transactions
-	$trouver_table = charger_fonction('trouver_table', 'base');
-	$desc = $trouver_table('spip_transactions');
-
-	$key_array = array(
-		'id_transaction',
-		'montant',
-		'statut',
-	);
-
-	// Correction du problème quand il n'y a pas de transaction créé ( id_transaction = 0 )
-	$query_prepare = sql_fetsel('id_transaction', 'spip_asso_activites', "id_evenement = $id_evenement");
-
-	if( $query_prepare['id_transaction'] !== '0' AND $config_evenement['payant']){
-
-		$transaction = 'INNER JOIN spip_transactions AS c ON (b.id_auteur = a.id_auteur AND a.id_transaction=c.id_transaction)';
-
-		foreach ($key_array as $result)
-			if(array_key_exists($result, $desc['field'])){
-				if($result == 'id_transaction')
-					$preas[14] = 'c.id_transaction';
-				elseif($result == 'montant')
-					$preas[15] = 'c.montant';
-				elseif($result == 'statut')
-					$preas[16] = 'c.statut AS paiement_statut';
-			}
-
-	} else
-		$transaction = 'ON (b.id_auteur = a.id_auteur)';
+	$colonnes_paiement = array();
+	if ($config_evenement['payant']) {
+		$preas[14] = 'a.id_transaction';
+		$colonnes_paiement = array('montant', 'paiement_statut');
+	}
 
 	// Mise en forme
 	ksort($preas);
@@ -130,11 +106,13 @@ function action_exporter_activites_csv_dist()
 
 	$liste = implode(',', $preas);
         
-     if($config_evenement['payant']){
-		$query_activites = sql_select($liste, "spip_asso_activites AS a INNER JOIN spip_auteurs AS b $transaction", "a.id_evenement = $id_evenement",'','(a.statut="ok") DESC, (a.statut="preinscrit") DESC, a.statut, a.id_activite');
-     }else{
-         $query_activites = sql_select($liste, "spip_asso_activites AS a INNER JOIN spip_auteurs AS b ", "a.id_evenement = $id_evenement AND b.id_auteur = a.id_auteur",'','(a.statut="ok") DESC, (a.statut="preinscrit") DESC, a.statut, a.id_activite');
-     }
+	$query_activites = sql_select(
+		$liste,
+		'spip_asso_activites AS a INNER JOIN spip_auteurs AS b ON b.id_auteur=a.id_auteur',
+		'a.id_evenement=' . $id_evenement,
+		'',
+		'(a.statut="ok") DESC, (a.statut="preinscrit") DESC, a.statut, a.id_activite'
+	);
 	$preas_clean = array();
 
 	$remplacement  = array( "a.", "b.", "c.", "statut AS ", "statut AS " );
@@ -142,17 +120,32 @@ function action_exporter_activites_csv_dist()
 		$key = str_replace($remplacement,'', $key);
 		$preas_clean[] = $key;
 	}
+	$preas_clean = array_merge($preas_clean, $colonnes_paiement);
 
 	if(sql_count($query_activites)){
 		$resultat_final = array();
-		$result = array();
+		$lignes = array();
+		$ids_transactions = array();
 
 		while ($adherent_array = sql_fetch($query_activites)) {
-			foreach($preas_clean as $key){
-				$result[] = $adherent_array[$key];
+			$lignes[] = $adherent_array;
+			if (!empty($adherent_array['id_transaction'])) {
+				$ids_transactions[] = (int) $adherent_array['id_transaction'];
+			}
+		}
+		include_spip('inc/association_paiements_transactions');
+		$transactions = association_paiements_transactions_lire($ids_transactions);
+		foreach ($lignes as $adherent_array) {
+			$result = array();
+			foreach (array_diff($preas_clean, $colonnes_paiement) as $key) {
+				$result[] = $adherent_array[$key] ?? '';
+			}
+			if ($config_evenement['payant']) {
+				$transaction = $transactions[(int) ($adherent_array['id_transaction'] ?? 0)] ?? array();
+				$result[] = $transaction['montant'] ?? '';
+				$result[] = $transaction['statut'] ?? '';
 			}
 			$resultat_final[] = $result;
-			$result = array();
 		}
 
 		$titre = _T('association_evenements:titre_csv_activites', array('id_evenement' => $id_evenement))."-".$GLOBALS['meta']['nom_site']."-".date('Y-m-d');
