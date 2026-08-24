@@ -1069,3 +1069,23 @@ Depuis la session Chrome authentifiée, l'URL publique
 `text/csv`, 2 948 octets et aucune erreur de squelette. Les avertissements PHP
 8.4 imprimés en tête de réponse proviennent toujours d'Accès restreint 6.3.1,
 hors du monorepo Association.
+
+## Lots 99 et 100 — premières feuilles métier autonomes
+
+Le lot 99 (`2d2e812f`) est déployé depuis l'artefact SHA-256
+`e8ac392de4a46837d811b2ed00205273bda43fb24b7fecb7360bfac79474badc`.
+Le formulaire d'import du plan comptable conserve sa hiérarchie et son contenu
+dans Chrome authentifié, tandis que ses règles ne ciblent plus les formulaires
+des autres plugins.
+
+Le lot 100 corrigé (`33e00f70`) est déployé depuis l'artefact SHA-256
+`ba35c72b094129aa2da41ffe6c68d88b84523dc48bb8ebd41cbb1b05c27a0afb`.
+La première capture a révélé que le privé SPIP sert la classe
+`body.notifications` et non `.page_notifications`. Après correction et nouveau
+déploiement, Chrome authentifié confirme les quatre onglets alignés, l'onglet
+Adhésions actif en bleu, le panneau Filtres encadré et le tableau d'audit de
+onze scénarios rendu sans erreur. Aucun message n'a été envoyé.
+
+Pour chacun des deux lots, les 90 tests autonomes passent. Le serveur conserve
+dix plugins actifs, quatorze tables, douze objets SQL et sept schémas à jour ;
+il compile 221 squelettes privés, douze pages publiques et 64 composants front.
