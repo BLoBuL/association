@@ -44,12 +44,30 @@ verifier(count($inventaire['schemas']) === 7, 'les modules déclarent sept sché
 verifier(empty($inventaire['erreurs']), 'aucune contribution ne se contredit');
 
 $attendus = array(
-	'association_adhesions_base_version' => '1.2.0',
+	'association_adhesions_base_version' => '1.3.0',
 	'association_compta_base_version' => '1.0.0',
 	'association_evenements_base_version' => '1.2.0',
 );
 foreach ($attendus as $meta => $version) {
 	verifier(($inventaire['schemas'][$meta] ?? '') === $version, "$meta appartient au module attendu");
+}
+
+// Le contrat distribué doit toujours suivre le schema de chaque paquet.xml.
+// Cette vérification évite qu'une migration valide rende la commande de
+// contrôle d'installation faussement rouge après une montée de schéma.
+foreach (array_merge(array('association'), $modules) as $module) {
+	$paquet = $module === 'association'
+		? $racine . '/paquet.xml'
+		: $racine . '/plugins/' . $module . '/paquet.xml';
+	$xml = file_get_contents($paquet);
+	if (!preg_match('/\bschema="([^"]+)"/', $xml, $match)) {
+		continue;
+	}
+	$meta = str_replace('-', '_', $module) . '_base_version';
+	verifier(
+		($inventaire['schemas'][$meta] ?? '') === $match[1],
+		"le schéma inventorié de $module correspond à paquet.xml"
+	);
 }
 
 $commande = file_get_contents($racine . '/spip-cli/AssociationInstallationVerifier.php');
