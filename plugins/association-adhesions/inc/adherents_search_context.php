@@ -41,18 +41,18 @@ class AdherentsSearchContext {
      * @return AdherentsSearchContext
      */
     public static function fromRequest() {
+        include_spip('inc/session');
+        $session_rapide = session_get('adherents_recherche_rapide');
+        $session_rapide = is_array($session_rapide) ? $session_rapide : array();
+        $session_avancee = session_get('adherents_recherche_avancee');
+        $session_avancee = is_array($session_avancee) ? $session_avancee : array();
+        $session_filtres = session_get('adherents_filtres');
+        $session_filtres = is_array($session_filtres) ? $session_filtres : array();
+
         // 0. EFFACEMENT DE LA RECHERCHE SI DEMANDÉ
         if (_request('clear_search')) {
-            if (!isset($_SESSION)) {
-                session_start();
-            }
-            unset($_SESSION['adherents_recherche_rapide']);
-            unset($_SESSION['adherents_recherche_avancee']);
-        }
-
-        // Démarrer session pour la persistance des filtres
-        if (!isset($_SESSION)) {
-            session_start();
+            $session_rapide = array();
+            $session_avancee = array();
         }
 
         // Réinitialisation ciblée d'un filtre demandé par l'UI
@@ -61,12 +61,12 @@ class AdherentsSearchContext {
             $to_clear = is_array($clear_filters) ? $clear_filters : explode(',', (string)$clear_filters);
             foreach ($to_clear as $k) {
                 $k = trim($k);
-                if ($k) unset($_SESSION['adherents_filtres'][$k]);
+                if ($k) unset($session_filtres[$k]);
             }
         }
 
         if (association_recherche_avancee_reset_demandee()) {
-            unset($_SESSION['adherents_recherche_avancee']);
+            $session_avancee = array();
         }
 
         $champs_recherche = array('_input_nom_famille', '_input_prenom', '_input_email', '_input_mobile');
@@ -79,20 +79,20 @@ class AdherentsSearchContext {
                 if (isset($_REQUEST[$champ])) unset($_REQUEST[$champ]);
                 if (isset($_GET[$champ])) unset($_GET[$champ]);
                 if (isset($_POST[$champ])) unset($_POST[$champ]);
-                if (!empty($_SESSION['adherents_recherche_rapide'][$champ])) {
-                    unset($_SESSION['adherents_recherche_rapide'][$champ]);
+                if (!empty($session_rapide[$champ])) {
+                    unset($session_rapide[$champ]);
                 }
             }
-            if (!empty($_SESSION['adherents_recherche_rapide'])) {
+            if (!empty($session_rapide)) {
                 $reste = false;
                 foreach ($champs_recherche as $champ) {
-                    if (!empty($_SESSION['adherents_recherche_rapide'][$champ])) {
+                    if (!empty($session_rapide[$champ])) {
                         $reste = true;
                         break;
                     }
                 }
                 if (!$reste) {
-                    unset($_SESSION['adherents_recherche_rapide']);
+                    $session_rapide = array();
                 }
             }
         }
@@ -135,8 +135,7 @@ class AdherentsSearchContext {
         );
         foreach ($filters as $k => $v) {
             if (array_key_exists($k, $_REQUEST)) {
-                if (!isset($_SESSION['adherents_filtres'])) $_SESSION['adherents_filtres'] = array();
-                $_SESSION['adherents_filtres'][$k] = $v;
+                $session_filtres[$k] = $v;
             }
         }
 
@@ -144,8 +143,8 @@ class AdherentsSearchContext {
         foreach (array('periode','statut_interne','type_adherent','type_compte','type_cotisation') as $k) {
             if (!array_key_exists($k, $_REQUEST) // pas de paramètre explicite
                 && (empty($ctx->$k))) {
-                if (!empty($_SESSION['adherents_filtres'][$k])) {
-                    $val = $_SESSION['adherents_filtres'][$k];
+                if (!empty($session_filtres[$k])) {
+                    $val = $session_filtres[$k];
                     // Traduire 'tout' en null pour les filtres concernés
                     if (in_array($k, array('periode','statut_interne','type_adherent','type_cotisation'), true) && $val === 'tout') {
                         $ctx->$k = null; // filtre désactivé
@@ -158,16 +157,13 @@ class AdherentsSearchContext {
 
         // 1.d Filtres dynamiques configurés (champs extras radio/select)
         $dyn_defs = function_exists('liste_filtres_dynamiques_adherents') ? liste_filtres_dynamiques_adherents() : array();
-        if (!isset($_SESSION['adherents_filtres'])) {
-            $_SESSION['adherents_filtres'] = array();
-        }
         foreach ($dyn_defs as $nom_filtre => $def) {
             $valeur_requete = _request($nom_filtre);
             if ($valeur_requete !== null) {
-                $_SESSION['adherents_filtres'][$nom_filtre] = $valeur_requete;
+                $session_filtres[$nom_filtre] = $valeur_requete;
                 $ctx->filtres_dynamiques[$nom_filtre] = ($valeur_requete === 'tout') ? null : $valeur_requete;
-            } elseif (isset($_SESSION['adherents_filtres'][$nom_filtre])) {
-                $valeur_session = $_SESSION['adherents_filtres'][$nom_filtre];
+            } elseif (isset($session_filtres[$nom_filtre])) {
+                $valeur_session = $session_filtres[$nom_filtre];
                 $ctx->filtres_dynamiques[$nom_filtre] = ($valeur_session === 'tout') ? null : $valeur_session;
             } else {
                 $ctx->filtres_dynamiques[$nom_filtre] = null;
@@ -214,13 +210,8 @@ class AdherentsSearchContext {
 
         // c) Si pas de recherche POST/GET, lire depuis la session
         if (!$recherche_rapide_active && empty($_POST['type_recherche'])) {
-            if (!isset($_SESSION)) {
-                session_start();
-            }
-
             // Restaurer recherche rapide depuis session
-            if (!empty($_SESSION['adherents_recherche_rapide'])) {
-                $session_rapide = $_SESSION['adherents_recherche_rapide'];
+            if (!empty($session_rapide)) {
                 $ctx->recherche_type = 'rapide';
                 $ctx->nom = isset($session_rapide['_input_nom_famille']) ? $session_rapide['_input_nom_famille'] : null;
                 $ctx->prenom = isset($session_rapide['_input_prenom']) ? $session_rapide['_input_prenom'] : null;
@@ -228,8 +219,7 @@ class AdherentsSearchContext {
                 $ctx->mobile = isset($session_rapide['_input_mobile']) ? $session_rapide['_input_mobile'] : null;
             }
             // Restaurer recherche avancée depuis session
-            elseif (!empty($_SESSION['adherents_recherche_avancee'])) {
-                $session_avancee = $_SESSION['adherents_recherche_avancee'];
+            elseif (!empty($session_avancee)) {
                 $ctx->recherche_type = 'avancee';
                 $ctx->type_recherche = isset($session_avancee['type_recherche']) ? $session_avancee['type_recherche'] : null;
                 $ctx->operateur_recherche = isset($session_avancee['operateur_recherche']) ? $session_avancee['operateur_recherche'] : 'AND';
@@ -250,7 +240,7 @@ class AdherentsSearchContext {
         include_spip('prive/squelettes/contenu/adherents_fonctions');
 
         // 4.1 Période en cours par défaut (uniquement si pas de paramètre ET pas de valeur session)
-        if (!$ctx->periode && !isset($_REQUEST['periode']) && empty($_SESSION['adherents_filtres']['periode'])) {
+        if (!$ctx->periode && !isset($_REQUEST['periode']) && empty($session_filtres['periode'])) {
             $periodes = filtre_liste_periodes_cotisations(0, false);
             if (is_array($periodes)) {
                 foreach ($periodes as $p) {
@@ -264,14 +254,18 @@ class AdherentsSearchContext {
         }
 
         // 4.2 Statut interne par défaut = 'ok'
-        if (!$ctx->statut_interne && !isset($_REQUEST['statut_interne']) && empty($_SESSION['adherents_filtres']['statut_interne'])) {
+        if (!$ctx->statut_interne && !isset($_REQUEST['statut_interne']) && empty($session_filtres['statut_interne'])) {
             $ctx->statut_interne = 'ok';
         }
 
         // 4.3 Type de compte par défaut = 'compte_principal' (si gestion active)
-        if (!$ctx->type_compte && !isset($_REQUEST['type_compte']) && empty($_SESSION['adherents_filtres']['type_compte']) && function_exists('est_actif_gestion_comptes_secondaires') && est_actif_gestion_comptes_secondaires()) {
+        if (!$ctx->type_compte && !isset($_REQUEST['type_compte']) && empty($session_filtres['type_compte']) && function_exists('est_actif_gestion_comptes_secondaires') && est_actif_gestion_comptes_secondaires()) {
             $ctx->type_compte = 'compte_principal';
         }
+
+        session_set('adherents_recherche_rapide', $session_rapide ?: null);
+        session_set('adherents_recherche_avancee', $session_avancee ?: null);
+        session_set('adherents_filtres', $session_filtres ?: null);
 
         return $ctx;
     }

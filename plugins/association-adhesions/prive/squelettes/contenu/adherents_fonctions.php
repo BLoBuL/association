@@ -478,15 +478,13 @@ function preparer_liste_adherents($data = '') {
  */
 function get_recherche_active_resume() {
     $resume = array();
-
-    // Démarrer session si nécessaire
-    if (!isset($_SESSION)) {
-        session_start();
-    }
+    include_spip('inc/session');
+    $recherche_rapide = session_get('adherents_recherche_rapide');
+    $recherche_avancee = session_get('adherents_recherche_avancee');
 
     // Vérifier recherche rapide
-    if (!empty($_SESSION['adherents_recherche_rapide'])) {
-        $criteres = $_SESSION['adherents_recherche_rapide'];
+    if (is_array($recherche_rapide) && !empty($recherche_rapide)) {
+        $criteres = $recherche_rapide;
         $parts = array();
 
         if (!empty($criteres['_input_nom_famille'])) {
@@ -510,8 +508,8 @@ function get_recherche_active_resume() {
         }
     }
     // Vérifier recherche avancée
-    elseif (!empty($_SESSION['adherents_recherche_avancee'])) {
-        $criteres = $_SESSION['adherents_recherche_avancee'];
+    elseif (is_array($recherche_avancee) && !empty($recherche_avancee)) {
+        $criteres = $recherche_avancee;
         $nb_criteres = count($criteres) - 2; // Enlever 'type_recherche' et 'operateur_recherche'
 
         $resume = array(
@@ -530,12 +528,14 @@ function get_recherche_active_resume() {
  * @return array
  */
 function filtre_filtres_effectifs(){
-    if (!isset($_SESSION)) session_start();
+    include_spip('inc/session');
+    $filtres_session = session_get('adherents_filtres');
+    $filtres_session = is_array($filtres_session) ? $filtres_session : array();
 
     // Si la requête demande l'effacement de la recherche rapide, supprimer en session
     if (!empty($_REQUEST['clear_search'])) {
-        unset($_SESSION['adherents_recherche_rapide']);
-        unset($_SESSION['adherents_recherche_avancee']);
+        session_set('adherents_recherche_rapide', null);
+        session_set('adherents_recherche_avancee', null);
     }
 
     // Si la requête demande l'effacement de filtres spécifiques, les supprimer en session
@@ -543,7 +543,7 @@ function filtre_filtres_effectifs(){
         $to_clear = is_array($_REQUEST['clear_filters']) ? $_REQUEST['clear_filters'] : explode(',', (string)$_REQUEST['clear_filters']);
         foreach ($to_clear as $k) {
             $k = trim($k);
-            if ($k) unset($_SESSION['adherents_filtres'][$k]);
+            if ($k) unset($filtres_session[$k]);
         }
     }
 
@@ -552,8 +552,8 @@ function filtre_filtres_effectifs(){
     // Période
     if (isset($_REQUEST['periode'])) {
         $eff['periode'] = $_REQUEST['periode'] === 'tout' ? '' : $_REQUEST['periode'];
-    } elseif (!empty($_SESSION['adherents_filtres']['periode'])) {
-        $eff['periode'] = $_SESSION['adherents_filtres']['periode'] === 'tout' ? '' : $_SESSION['adherents_filtres']['periode'];
+    } elseif (!empty($filtres_session['periode'])) {
+        $eff['periode'] = $filtres_session['periode'] === 'tout' ? '' : $filtres_session['periode'];
     } else {
         $eff['periode'] = periode_defaut_libelle();
     }
@@ -561,8 +561,8 @@ function filtre_filtres_effectifs(){
     // Statut interne
     if (isset($_REQUEST['statut_interne'])) {
         $eff['statut_interne'] = $_REQUEST['statut_interne'] === 'tout' ? '' : $_REQUEST['statut_interne'];
-    } elseif (!empty($_SESSION['adherents_filtres']['statut_interne'])) {
-        $eff['statut_interne'] = $_SESSION['adherents_filtres']['statut_interne'] === 'tout' ? '' : $_SESSION['adherents_filtres']['statut_interne'];
+    } elseif (!empty($filtres_session['statut_interne'])) {
+        $eff['statut_interne'] = $filtres_session['statut_interne'] === 'tout' ? '' : $filtres_session['statut_interne'];
     } else {
         $eff['statut_interne'] = 'ok';
     }
@@ -570,8 +570,8 @@ function filtre_filtres_effectifs(){
     // Type adhérent (pas de défaut)
     if (isset($_REQUEST['type_adherent'])) {
         $eff['type_adherent'] = $_REQUEST['type_adherent'] === 'tout' ? '' : $_REQUEST['type_adherent'];
-    } elseif (!empty($_SESSION['adherents_filtres']['type_adherent'])) {
-        $eff['type_adherent'] = $_SESSION['adherents_filtres']['type_adherent'] === 'tout' ? '' : $_SESSION['adherents_filtres']['type_adherent'];
+    } elseif (!empty($filtres_session['type_adherent'])) {
+        $eff['type_adherent'] = $filtres_session['type_adherent'] === 'tout' ? '' : $filtres_session['type_adherent'];
     } else {
         $eff['type_adherent'] = '';
     }
@@ -580,8 +580,8 @@ function filtre_filtres_effectifs(){
     $def_compte = est_actif_gestion_comptes_secondaires() ? 'compte_principal' : '';
     if (isset($_REQUEST['type_compte'])) {
         $eff['type_compte'] = $_REQUEST['type_compte']; // peut être 'defaut'
-    } elseif (!empty($_SESSION['adherents_filtres']['type_compte'])) {
-        $eff['type_compte'] = $_SESSION['adherents_filtres']['type_compte'];
+    } elseif (!empty($filtres_session['type_compte'])) {
+        $eff['type_compte'] = $filtres_session['type_compte'];
     } else {
         $eff['type_compte'] = $def_compte;
     }
@@ -589,8 +589,8 @@ function filtre_filtres_effectifs(){
     // Type cotisation (basé sur les catégories, pas de défaut)
     if (isset($_REQUEST['type_cotisation'])) {
         $eff['type_cotisation'] = $_REQUEST['type_cotisation'] === 'tout' ? '' : $_REQUEST['type_cotisation'];
-    } elseif (!empty($_SESSION['adherents_filtres']['type_cotisation'])) {
-        $eff['type_cotisation'] = $_SESSION['adherents_filtres']['type_cotisation'] === 'tout' ? '' : $_SESSION['adherents_filtres']['type_cotisation'];
+    } elseif (!empty($filtres_session['type_cotisation'])) {
+        $eff['type_cotisation'] = $filtres_session['type_cotisation'] === 'tout' ? '' : $filtres_session['type_cotisation'];
     } else {
         $eff['type_cotisation'] = '';
     }
@@ -601,14 +601,16 @@ function filtre_filtres_effectifs(){
             $valeur = _request($nom_filtre);
             if ($valeur !== null) {
                 $eff[$nom_filtre] = ($valeur === 'tout') ? '' : $valeur;
-                $_SESSION['adherents_filtres'][$nom_filtre] = $eff[$nom_filtre];
-            } elseif (!empty($_SESSION['adherents_filtres'][$nom_filtre])) {
-                $eff[$nom_filtre] = $_SESSION['adherents_filtres'][$nom_filtre];
+                $filtres_session[$nom_filtre] = $eff[$nom_filtre];
+            } elseif (!empty($filtres_session[$nom_filtre])) {
+                $eff[$nom_filtre] = $filtres_session[$nom_filtre];
             } else {
                 $eff[$nom_filtre] = '';
             }
         }
     }
+
+    session_set('adherents_filtres', $filtres_session ?: null);
 
     return $eff;
 }
@@ -854,12 +856,11 @@ function filtre_trier_colonne_dynamique_dist($adherents){
  }
 
 function association_liste_champs_recherche_avancee_actifs(){
-    if (!isset($_SESSION)) {
-        session_start();
-    }
+    include_spip('inc/session');
+    $recherche_avancee = session_get('adherents_recherche_avancee');
     $params = array();
-    if (!empty($_SESSION['adherents_recherche_avancee']) && is_array($_SESSION['adherents_recherche_avancee'])) {
-        foreach ($_SESSION['adherents_recherche_avancee'] as $champ => $valeur) {
+    if (is_array($recherche_avancee) && !empty($recherche_avancee)) {
+        foreach ($recherche_avancee as $champ => $valeur) {
             if (is_array($valeur)) {
                 continue;
             }
@@ -909,13 +910,12 @@ function filtre_get_recherche_rapide_active_dist(){
      }
 
      if (!count($actifs)) {
-         if (!isset($_SESSION)) {
-             session_start();
-         }
-         if (!empty($_SESSION['adherents_recherche_rapide']) && is_array($_SESSION['adherents_recherche_rapide'])) {
+         include_spip('inc/session');
+         $recherche_rapide = session_get('adherents_recherche_rapide');
+         if (is_array($recherche_rapide) && !empty($recherche_rapide)) {
              foreach ($champs as $champ) {
-                 if (!empty($_SESSION['adherents_recherche_rapide'][$champ])) {
-                     $actifs[$champ] = $_SESSION['adherents_recherche_rapide'][$champ];
+                 if (!empty($recherche_rapide[$champ])) {
+                     $actifs[$champ] = $recherche_rapide[$champ];
                  }
              }
          }

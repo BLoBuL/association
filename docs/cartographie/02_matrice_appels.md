@@ -2276,7 +2276,7 @@ Chaque section ci-dessous liste **toutes** les occurrences detectees statiquemen
 - Total occurrences: **6**
 - Repartition: `appel_php`=6
 - Occurrences:
-  - `inc/adherents_search_context.php:272` (appel_php, caller: `(global)`) -> `if (!$ctx->type_compte && !isset($_REQUEST['type_compte']) && empty($_SESSION['adherents_filtres']['type_compte']) && function_exists('est_actif_gestion_comptes_secondaires') && est_actif_gestion_comptes_secondaires()) {`
+  - `inc/adherents_search_context.php` (appel_php, caller: `(global)`) -> `if (!$ctx->type_compte && !isset($_REQUEST['type_compte']) && empty($session_filtres['type_compte']) && function_exists('est_actif_gestion_comptes_secondaires') && est_actif_gestion_comptes_secondaires()) {`
   - `prive/squelettes/contenu/adherents_fonctions.php:239` (appel_php, caller: `filtre_a_type_compte`) -> `return est_actif_gestion_comptes_secondaires();`
   - `prive/squelettes/contenu/adherents_fonctions.php:248` (appel_php, caller: `gestion_comptes_secondaires_active`) -> `return est_actif_gestion_comptes_secondaires();`
   - `prive/squelettes/contenu/adherents_fonctions.php:256` (appel_php, caller: `filtre_liste_type_compte`) -> `if (est_actif_gestion_comptes_secondaires()) {`
