@@ -11,6 +11,7 @@
 // TODO -> Peut être passer 'modifier_activites' et 'ajouter_activites' en un seul et meme fichier
 if (!defined("_ECRIRE_INC_VERSION")) return;
 include_spip('inc/fonctions/activite_enregistrement_calculator');
+include_spip('inc/association_paiements_transactions');
 function action_modifier_activites() {
 	$securiser_action         = charger_fonction('securiser_action', 'inc');
 	$id_activite              = $securiser_action();
@@ -29,10 +30,13 @@ function action_modifier_activites() {
     $notify_the_members       = _request('notify_the_members');
 	$montant_total            = 0;
 	$gestions_places          = gestions_places($id_evenement);
-	if(!isset($gratuit_single))
-		$query_activites        = sql_fetsel('*, b.statut AS statut_transaction, a.statut AS statut_activite ', "spip_asso_activites AS a JOIN spip_transactions AS b ON a.id_transaction=b.id_transaction", "a.id_activite=$id_activite" );
-	else
-		$query_activites        = sql_fetsel('*', "spip_asso_activites", "id_activite=$id_activite" );
+	$query_activites = sql_fetsel('*', 'spip_asso_activites', 'id_activite=' . (int) $id_activite);
+	if (!isset($gratuit_single) && $query_activites) {
+		$transaction_existante = association_paiements_transaction_lire((int) ($query_activites['id_transaction'] ?? 0));
+		$query_activites['statut_activite'] = $query_activites['statut'] ?? '';
+		$query_activites['statut_transaction'] = $transaction_existante['statut'] ?? '';
+		$query_activites = array_merge($transaction_existante, $query_activites);
+	}
 	$query_evenement          = sql_fetsel('*', "spip_evenements", "id_evenement=$id_evenement" );
 	$evenement_payant         = $query_evenement['payant'];
 	$accompagnant_desactives  = ($query_evenement['accompagnants'] == 'non')? true : false;
@@ -97,8 +101,8 @@ function action_modifier_activites() {
 		 * validation + validé)
 		 * RESULTAT : Modification de la transaction en gratuit et validation
 		 */
-		if($query_activites['mode'] !== 'gratuit' AND (!$cal_result['gestion']['validation'] OR ($cal_result['gestion']['validation'] AND $valider)))
-			sql_updateq('spip_transactions',  array(
+		if(($query_activites['mode'] ?? '') !== 'gratuit' AND (!$cal_result['gestion']['validation'] OR ($cal_result['gestion']['validation'] AND $valider)))
+			association_paiements_transaction_modifier((int) $query_activites['id_transaction'], array(
 				'mode'          => 'gratuit',
 				'reglee'        => 'oui',
 				'statut'        => 'ok',
@@ -107,47 +111,43 @@ function action_modifier_activites() {
 				'montant_ht'    => '0',
 				'montant'       => '0',
 				'date_paiement'   => date('Y-m-d H:i:s'),
-			),
-				'id_transaction='.$query_activites['id_transaction']);
+			));
 		/* B/
      * transaction enrengistrée n'est pas définie sur gratuite ET
      * validation + pas validé
      * Modification de la transaction en gratuit sans validation
      */
-		elseif ($query_activites['mode'] !== 'gratuit' AND $cal_result['gestion']['validation'] AND !$valider)
-			sql_updateq('spip_transactions',  array(
+		elseif (($query_activites['mode'] ?? '') !== 'gratuit' AND $cal_result['gestion']['validation'] AND !$valider)
+			association_paiements_transaction_modifier((int) $query_activites['id_transaction'], array(
 				'mode'        => 'gratuit',
 				'montant_ht'  => '0',
 				'montant'     => '0',
-			),
-				'id_transaction='.$query_activites['id_transaction']);
+			));
 		/* C/
      * transaction enrengistrée définie sur gratuite ET
      * (pas de validation OU
      * validation + validé)
      * Validation de la transaction
      */
-		elseif ($query_activites['mode'] == 'gratuit' AND
+		elseif (($query_activites['mode'] ?? '') == 'gratuit' AND
 			(!$cal_result['gestion']['validation'] OR ($cal_result['gestion']['validation'] AND $valider)))
-			sql_updateq('spip_transactions',  array(
+			association_paiements_transaction_modifier((int) $query_activites['id_transaction'], array(
 				'reglee'          => 'oui',
 				'statut'          => 'ok',
 				'finie'           => 1,
 				'date_paiement'   => date('Y-m-d H:i:s'),
-			),
-				'id_transaction='.$query_activites['id_transaction']);
+			));
 	} else {
 		$cal_result = activite_enregistrement_calculator($id_evenement, $nombre_inscrits, $valider, $montant_payer = false, $id_activite);
 		/* A/
      * transaction enregistrée définie sur gratuite ou non
      * RESULTAT : Modification de la transaction en payant
      */
-		sql_updateq('spip_transactions', array(
+		association_paiements_transaction_modifier((int) $query_activites['id_transaction'], array(
 			'mode'        => '',
 			'montant_ht'  => $montant_total,
 			'montant'     => $montant_total,
-		),
-			'id_transaction=' . $query_activites['id_transaction']);
+		));
 	}
     
     

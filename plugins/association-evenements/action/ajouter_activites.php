@@ -12,6 +12,7 @@
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
 include_spip('inc/fonctions/activite_enregistrement_calculator');
+include_spip('inc/association_paiements_transactions');
 function action_ajouter_activites() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
     $id_activite      = $securiser_action();
@@ -104,14 +105,13 @@ function activites_insert($categorie_result, $date, $id_evenement, $id_auteur, $
 		$id_transaction = $inserer_transaction('0',$options);
 		if(!$cal_result['gestion']['validation'] OR $valider){
 			// Si la validation n'est pas obligatoire ou si c'est validé, on valide en plus l'inscrition
-			sql_updateq('spip_transactions',  array(
+			association_paiements_transaction_modifier($id_transaction, array(
 				'reglee'         => 'oui',
 				'statut'         => 'ok',
 				'finie'          => 1,
 				'montant_regle'  => '0',
-				'date_paiement'  => date('yyyy-MM-dd HH:mm:ss'),
-			),
-				'id_transaction='.$id_transaction);
+				'date_paiement'  => date('Y-m-d H:i:s'),
+			));
 		}
 	} else {
 		#CAS PAYANT
