@@ -1173,3 +1173,11 @@ Les résumés de recettes, dépenses et soldes, le tableau des écritures, la
 rentabilité des événements ainsi que les statistiques compactes ou détaillées
 rejoignent la feuille privée de Comptabilité. Le socle ne présente plus ces
 données métier et les définitions de cartes déjà autonomes ne sont pas doublées.
+
+## Lot 108 : retrait du thème public étranger
+
+Le bas de la feuille privée contenait encore des règles de thème Jupiter sans
+lien avec Association : navigation `header-style-1`, slider `mk-edge-slider`,
+PocketWifi, réservation et footer `mk-footer`. Ces surcharges, dont un `h1`
+global à 60 pixels, sont supprimées afin de laisser le privé SPIP 4 gouverner
+sa typographie et sa structure.

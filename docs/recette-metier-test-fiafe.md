@@ -1160,3 +1160,16 @@ sans erreur de squelette. La recette est restée strictement en lecture seule.
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
+
+## Lot 107 — statistiques comptables autonomes
+
+Les commits `88e045d1` et `cfea82f5` sont déployés depuis l'artefact SHA-256
+`8a95a57ab988e634f36eddaf277be904daac99df272767b333417f922837ca04`.
+La page Comptabilité conserve ses totaux, cartes, exercices, filtres et son
+écriture visible. L'analyse comptable des activités présente ses cinq cartes,
+l'événement payant, les montants et l'export sans erreur de squelette. Aucun
+filtre, export ni bouton d'écriture n'a été déclenché pendant cette recette.
+
+Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
+douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
+pages publiques et 64 composants front.
