@@ -54,6 +54,7 @@ foreach ($racines as $racine_plugin) {
 // ni les compagnons des pages comme le fait le pipeline web complet.
 include_spip('association_fonctions');
 include_spip('inc/filtres_ecrire');
+include_spip('public/assembler');
 $trouver_table = charger_fonction('trouver_table', 'base');
 foreach (array('spip_asso_cotisations', 'asso_cotisations', 'spip_asso_comptes', 'spip_asso_activites') as $table) {
 	if (!$trouver_table($table)) {
