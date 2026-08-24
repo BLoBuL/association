@@ -420,6 +420,13 @@ $verifier(
 		&& strpos($css_compta, '.boite_stats_expanded') !== false,
 	'Les résumés et statistiques comptables doivent appartenir à Comptabilité.'
 );
+$verifier(
+	strpos($css_socle, '.mk-edge-slider') === false
+		&& strpos($css_socle, '#mk-footer') === false
+		&& strpos($css_socle, '.header-style-1') === false
+		&& strpos($css_socle, 'font-size: 60px') === false,
+	'La feuille privée du socle ne doit plus embarquer un thème public étranger à SPIP.'
+);
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
