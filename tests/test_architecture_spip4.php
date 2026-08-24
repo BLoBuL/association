@@ -341,6 +341,7 @@ $compta_script_destinations = $racine . '/plugins/association-compta/javascript/
 $css_socle = file_get_contents($racine . '/prive/themes/spip/css/asso.css');
 $css_compta = file_get_contents($racine . '/plugins/association-compta/prive/themes/spip/css/comptabilite.css');
 $css_communication = file_get_contents($racine . '/plugins/association-communication/prive/themes/spip/css/communication.css');
+$css_adhesions = file_get_contents($racine . '/plugins/association-adhesions/prive/themes/spip/css/adhesions.css');
 $compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
@@ -368,6 +369,13 @@ $verifier(
 		&& strpos($css_communication, 'body.notifications table thead th') !== false
 		&& strpos($css_communication, '.page_notifications') === false,
 	'Les styles de notifications doivent appartenir au plugin Communication et être bornés à sa page.'
+);
+$verifier(
+	strpos($css_socle, '.filtre-card') === false
+		&& strpos($css_socle, '.filtre-important') === false
+		&& strpos($css_adhesions, 'body.cotisations .filtre-card') !== false
+		&& strpos($css_adhesions, 'body.adherents .asso-filtres') !== false,
+	'Les styles de filtres Adhésions doivent appartenir au module et être bornés à ses pages.'
 );
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');

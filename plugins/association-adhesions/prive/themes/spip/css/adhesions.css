@@ -1,0 +1,174 @@
+/* Présentation privée du module Adhésions. */
+
+body.cotisations .filtre-card {
+	padding: 14px;
+	margin-bottom: 14px;
+	background: #fff;
+	border: 1px solid #e6eef5;
+	border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+body.cotisations .filtre-card-header {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	margin-bottom: 10px;
+}
+
+body.cotisations .filtre-card-title {
+	flex: 0 0 auto;
+	margin: 0;
+	color: #1f2937;
+	font-size: 16px;
+	white-space: nowrap;
+}
+
+body.cotisations .filtre-card-sub {
+	min-width: 0;
+	margin: 0;
+	color: #6b7280;
+	font-size: 13px;
+}
+
+body.adherents .asso-filtres,
+body.cotisations .asso-filtres {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+}
+
+body.adherents .filtre-groupe,
+body.cotisations .filtre-groupe {
+	min-width: 200px;
+}
+
+body.adherents .filtre-groupe label,
+body.cotisations .filtre-groupe label {
+	display: block;
+	margin-bottom: 6px;
+	color: #374151;
+	font-size: 13px;
+	font-weight: 700;
+}
+
+body.adherents .filtre-groupe .options,
+body.cotisations .filtre-groupe .options {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 8px;
+}
+
+body.adherents .option,
+body.cotisations .option {
+	display: inline-block;
+	padding: 6px 10px;
+	color: #111827;
+	text-decoration: none;
+	background: #f7fafc;
+	border: 1px solid #eef2f7;
+	border-radius: 20px;
+}
+
+body.adherents .option:hover,
+body.cotisations .option:hover {
+	background: #eef2ff;
+	border-color: #d6e4ff;
+}
+
+body.adherents .option.selected,
+body.cotisations .option.selected {
+	color: #0f172a;
+	font-weight: 600;
+	background: #e6f0ff;
+	border-color: #bcd6ff;
+}
+
+body.adherents .badge-encours,
+body.cotisations .badge-encours {
+	margin-left: 6px;
+	color: #10b981;
+}
+
+body.cotisations .filtre-important {
+	padding-left: 10px;
+	border-left: 3px solid #2563eb;
+}
+
+body.cotisations .filtre-important .option {
+	background: #fff;
+	border-color: #e6eef5;
+}
+
+body.cotisations .filtre-important .option.selected {
+	color: #fff;
+	background: #2563eb;
+	border-color: #1e40af;
+}
+
+body.adherents .tableau_asso thead th,
+body.cotisations .tableau_asso thead th {
+	background: #f8fafc;
+}
+
+body.adherents .inline-filters,
+body.cotisations .inline-filters {
+	align-items: center;
+}
+
+body.adherents .inline-filters li a,
+body.cotisations .inline-filters li a {
+	display: inline-block;
+	padding: 6px 10px;
+	color: var(--text-color, #2e2e2e);
+	font-size: 0.95rem;
+	font-weight: 600;
+	text-decoration: none;
+	background: #fff;
+	border: 1px solid var(--filtre-type-border, #d1d6db);
+	border-radius: 6px;
+	transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+body.adherents .inline-filters li a:hover,
+body.cotisations .inline-filters li a:hover {
+	color: inherit;
+	background: var(--bg-hover, #f9fafb);
+	border-color: color-mix(in srgb, var(--filtre-type-border, #d1d6db) 50%, transparent);
+}
+
+body.adherents .inline-filters li a.ajax.active,
+body.adherents .inline-filters li a.ajax:active,
+body.cotisations .inline-filters li a.ajax.active,
+body.cotisations .inline-filters li a.ajax:active {
+	color: #fff;
+	background: var(--filtre-type-border, #fd7e14);
+	border-color: var(--filtre-type-border, #fd7e14);
+}
+
+@media (max-width: 800px) {
+	body.adherents .asso-filtres,
+	body.cotisations .asso-filtres {
+		flex-direction: column;
+	}
+
+	body.adherents .filtre-groupe,
+	body.cotisations .filtre-groupe {
+		min-width: auto;
+	}
+}
+
+@media (max-width: 520px) {
+	body.adherents .inline-filters li a,
+	body.cotisations .inline-filters li a {
+		padding: 6px 8px;
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 420px) {
+	body.cotisations .filtre-card-header {
+		flex-direction: column;
+		gap: 4px;
+	}
+}

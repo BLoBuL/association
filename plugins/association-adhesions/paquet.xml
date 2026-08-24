@@ -50,4 +50,5 @@
 
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_adhesions.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_adhesions.php" />
+	<style source="prive/themes/spip/css/adhesions.css" type="prive" />
 </paquet>
