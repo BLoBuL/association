@@ -4,6 +4,7 @@ $racine = dirname(__DIR__);
 $paquet = file_get_contents($racine . '/paquet.xml');
 $base = file_get_contents($racine . '/base/association_evenements.php');
 $admin = file_get_contents($racine . '/association_evenements_administrations.php');
+$champs_extras = file_get_contents($racine . '/base/association_champs_extras.php');
 $erreurs = array();
 foreach (array('prefix="association_evenements"', 'schema="1.2.0"', 'nom="agenda"', 'nom="saisies"', 'nom="verifier"') as $attendu) {
 	if (strpos($paquet, $attendu) === false) $erreurs[] = 'déclaration absente: ' . $attendu;
@@ -15,6 +16,11 @@ foreach (array('type_inscrit', 'association', 'participants_json', 'visible_in_l
 	if (strpos($base, "'" . $champ . "'") === false) $erreurs[] = 'champ métier absent: ' . $champ;
 }
 if (strpos($admin, 'sql_drop_table') !== false) $erreurs[] = 'désinstallation destructive';
+if (!str_contains($champs_extras, "include_spip('association_evenements_options')")
+	|| str_contains($champs_extras, "include_spip('association_options')")
+	|| str_contains($champs_extras, '_DIR_PLUGIN_ASSOCIATION')) {
+	$erreurs[] = 'les champs extras doivent charger les options de leur propre plugin';
+}
 if (!is_file($racine . '/squelettes/evenement.html')) $erreurs[] = 'page publique événement absente';
 if ($erreurs) {
 	fwrite(STDERR, implode("\n", $erreurs) . "\n");

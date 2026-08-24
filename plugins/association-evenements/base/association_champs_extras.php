@@ -86,10 +86,7 @@ $donnees = [];
 $metas = isset($GLOBALS['association_metas']) && is_array($GLOBALS['association_metas']) ? $GLOBALS['association_metas'] : array();
 
 if (!function_exists('responsables_evenement')) {
-	include_spip('association_options');
-}
-if (!function_exists('responsables_evenement') && defined('_DIR_PLUGIN_ASSOCIATION')) {
-	require_once _DIR_PLUGIN_ASSOCIATION . 'association_options.php';
+	include_spip('association_evenements_options');
 }
 
 // Préparation des responsables
