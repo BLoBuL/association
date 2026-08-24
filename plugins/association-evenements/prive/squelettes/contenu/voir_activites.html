@@ -19,7 +19,6 @@
         [(#ENV{affichage}|=={inscriptions}|non)
             <li class="inscriptions"><a href="[(#SELF|parametre_url{affichage,inscriptions})]" class="ajax"><:association_evenements:voir_activites_onglet_inscriptions:></a></li>
         ]
-        <!--<li class="participants"><a href="[(#SELF|parametre_url{affichage,participants})]" class="ajax">Participants</a></li>-->
         [(#AUTORISER{onglet_activites, evenement, #ENV{id}, '', #ARRAY{onglet,mailshots_activite}}|oui)
         [(#ENV{affichage}|=={mailshots_activite}|oui)
             <li class="mailshots_activite"><strong class="on" aria-current="page"><:association_evenements:voir_activites_onglet_emails_collectifs:></strong></li>

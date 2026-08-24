@@ -2095,3 +2095,10 @@ Le commit `ce3bf7a7` est déployé sur test-fiafe avec les deux empreintes de
 l'artefact Git conformes. Groupes reste actif en 4.0.0 et les 297 fonds
 recompilent. Dans Chrome authentifié, Bénévoles affiche « Autres
 administrateurs et rédacteurs » sans erreur, clé brute ni ancien intitulé.
+
+## Lot 172 - retrait des interfaces privées mortes
+
+L'ancien onglet Participants d'Événements et les anciennes colonnes
+Autorisation/Parrain/Commande/Facture de Paiements étaient conservés sous forme
+de HTML commenté. Ils sont supprimés afin que les squelettes ne portent plus
+d'interface morte. La suite locale atteint 130 tests, tous valides.

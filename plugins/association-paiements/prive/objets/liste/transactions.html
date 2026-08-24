@@ -17,16 +17,12 @@
 				<th class="id_auteur">[(#TRI{id_auteur,<:bank:adherent_transaction:>,ajax})]</th>
 				<th class="nom" ><:bank:justification_transaction:></th>
 				<th class='mode' >[(#TRI{mode,<:bank:label_tri_mode:>,ajax})]</th>
-				[(#REM)<!--<th class='autorisation_id' >[(#TRI{autorisation_id,<:bank:label_tri_autorisation:>,ajax})]</th>-->]
 				[(#CONFIG{association_metas/meta_cfg_taxe_evenement}|ou{#CONFIG{association_metas/meta_cfg_taxe}}|oui)
                     <th class='montant_ht' >[(#TRI{montant_ht,<:bank:label_tri_montant_ht:>,ajax})]</th>]
 				<th class='montant' >[(#TRI{montant,<:bank:label_tri_montant_ttc:>,ajax})]</th>
 				<th class='regle' >[(#TRI{montant_regle,<:bank:label_tri_montant_paye:>,ajax})]</th>
 				<th class='statut' >[(#TRI{statut,<:bank:label_tri_statut:>,ajax})]</th>
                 <th class='action'><:association_paiements:colonne_actions:></th>
-				<!--<th class='parrain' >[(#TRI{parrain,<:bank:label_tri_parrain:>,ajax})]</th>
-				<th class="id_commande"><abbr title="Commande">C</abbr></th>
-				<th class="id_facture"><abbr title="Facture">F</abbr></th>-->
 			</tr>
 		</thead>
 		<BOUCLE_transactions(transactions)
