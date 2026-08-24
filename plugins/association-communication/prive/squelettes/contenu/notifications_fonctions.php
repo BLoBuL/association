@@ -18,47 +18,37 @@ function association_notifications_metiers(): array {
 }
 
 function radio_type_adherent(){
-    $liste_champs_extra = lire_config('champs_extras_spip_auteurs');
-    foreach($liste_champs_extra as $champs_extra ){
-        if($champs_extra['options']['nom'] == 'radio_type_adherent'){
-            $res = $champs_extra['options']['datas'];                
-        }
-      }    
-    if(!isset($res)){
-        $res = array('adherent' => 'Adhérent');
-    }
-    return saisies_chaine2tableau($res) ;
+    $flux = pipeline('association_notification_exemple', array(
+        'args' => array('operation' => 'types_adherents'),
+        'data' => array(),
+    ));
+    return is_array($flux) && array_key_exists('args', $flux)
+        ? (array) ($flux['data'] ?? array())
+        : (array) $flux;
 }
 function exemple_adherent_par_type($radio_type_adherent){
-    //$array_radio_type_adherent = radio_type_adherent();    
-    $res=array();
-    if($radio_type_adherent != 'adherent'){
-    //if(count($array_radio_type_adherent) > 1){
-        //foreach($array_radio_type_adherent as $cle_type_adherent => $label_type_adherent){
-            $query_id_auteur=sql_getfetsel('id_auteur', 'spip_auteurs',"radio_type_adherent=". sql_quote($radio_type_adherent),'','id_auteur DESC');
-            //$res+=array($cle_type_adherent => $query_auteur);
-            //$res=$query_id_compte;
-        //}
-    }else{
-            $query_id_auteur=sql_getfetsel('id_auteur', 'spip_auteurs',"statut='6forum'",'','id_auteur DESC');
-    }
-    $res=sql_fetsel('id_compte,id_auteur,reinscription,id_transaction', 'spip_asso_comptes','id_auteur='. sql_quote($query_id_auteur),'','id_compte DESC');
-    return $res ;
+    $flux = pipeline('association_notification_exemple', array(
+        'args' => array('operation' => 'cotisation', 'type_adherent' => (string) $radio_type_adherent),
+        'data' => array(),
+    ));
+    return is_array($flux) && array_key_exists('args', $flux)
+        ? (array) ($flux['data'] ?? array())
+        : (array) $flux;
 }
 function exemple_activite_par_statut($statut, $nombre_inscrits = 1, $payant = 0){
-
-    $critere_payant = ($payant == 0) ? ' AND id_transaction = 0 ' :  ' AND id_transaction >= 1 ';
-    $critere_nombre_inscrits = ($nombre_inscrits == 1) ? ' AND nombre_inscrits = 1 ' :  ' AND nombre_inscrits > 1 ';
-    
-    $criteres_complet = "statut=". sql_quote($statut) . $critere_payant . $critere_nombre_inscrits;
-        
-    if($query_asso_activite=sql_getfetsel('id_activite', 'spip_asso_activites',$criteres_complet,'','id_activite DESC')){
-        $res = $query_asso_activite;
-    }else{
-        $res = false;
-    }
-
-    return $res;
+    $flux = pipeline('association_notification_exemple', array(
+        'args' => array(
+            'operation' => 'activite',
+            'statut' => (string) $statut,
+            'nombre_inscrits' => (int) $nombre_inscrits,
+            'payant' => (bool) $payant,
+        ),
+        'data' => 0,
+    ));
+    $id_activite = is_array($flux) && array_key_exists('args', $flux)
+        ? (int) ($flux['data'] ?? 0)
+        : (int) $flux;
+    return $id_activite ?: false;
 }
 
 

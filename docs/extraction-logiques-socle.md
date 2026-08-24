@@ -1223,3 +1223,17 @@ contrôles d'appartenance à l'événement et d'exclusion des désinscriptions.
 Communication reste propriétaire du moteur mutualisé, de la normalisation et
 de la déduplication des adresses, ainsi que des gabarits d'envoi. Le test du
 parcours collectif verrouille désormais cette séparation SQL.
+
+## Lot 114 : exemples de notifications distribués
+
+La page commune Notifications ne choisit plus elle-même une cotisation dans le
+journal comptable ni une participation dans la table Événements. Elle demande
+un exemple par le pipeline `association_notification_exemple`.
+
+Adhésions fournit les types d'adhérents et une cotisation issue de
+`spip_asso_cotisations`, enrichie par son adaptateur uniquement lorsque
+l'écriture comptable est nécessaire. Événements fournit l'identifiant d'une
+participation correspondant au statut, au nombre d'inscrits et au caractère
+payant demandés. Communication conserve seulement la composition de la page et
+des gabarits ; un test interdit désormais toute lecture de ces tables dans ses
+fonctions de squelette.

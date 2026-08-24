@@ -8,6 +8,7 @@
 	<pipeline nom="notifications_destinataires" inclure="association_communication_pipelines.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_notifications_metiers" action="" />
+	<pipeline nom="association_notification_exemple" action="" />
 	<pipeline nom="association_notifications_audit_html" action="" />
 	<pipeline nom="association_maintenance_supprimer_donnees_auteurs" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_configuration_listes_diffusion" inclure="association_communication_pipelines.php" />

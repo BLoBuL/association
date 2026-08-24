@@ -43,6 +43,7 @@
 	<pipeline nom="association_compta_objets_declarer" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="association_notification_exemple" inclure="inc/association_adhesions_notifications.php" />
 	<pipeline nom="formulaire_saisies" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="saisies_afficher_si_saisies" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="i3_definition_champs" inclure="association_adhesions_pipelines.php" />

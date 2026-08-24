@@ -15,6 +15,20 @@ if (strpos($paquet, '<pipeline nom="association_notifications_metiers" action=""
 	fwrite(STDERR, "Le pipeline métier n'est pas déclaré par le paquet\n");
 	exit(1);
 }
+if (strpos($paquet, '<pipeline nom="association_notification_exemple" action="" />') === false
+	|| strpos($fonctions, "pipeline('association_notification_exemple'") === false
+	|| preg_match('/spip_asso_comptes|spip_asso_activites/', $fonctions)) {
+	fwrite(STDERR, "Les exemples de Notifications ne sont pas delegues aux plugins metier\n");
+	exit(1);
+}
+$fournisseur_adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_notifications.php');
+$fournisseur_evenements = file_get_contents($racine . '/plugins/association-evenements/inc/association_evenements_notifications.php');
+if (strpos($fournisseur_adhesions, "'spip_asso_cotisations'") === false
+	|| strpos($fournisseur_adhesions, 'association_cotisation_lire_par_compte') === false
+	|| strpos($fournisseur_evenements, "'spip_asso_activites'") === false) {
+	fwrite(STDERR, "Les plugins proprietaires ne fournissent pas leurs exemples de notification\n");
+	exit(1);
+}
 if (strpos($page, 'tab,metiers') === false || strpos($page, 'inc-tableau_notif_metiers') === false) {
 	fwrite(STDERR, "L'onglet des notifications métier est absent\n");
 	exit(1);
