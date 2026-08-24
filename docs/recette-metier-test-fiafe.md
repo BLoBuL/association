@@ -993,3 +993,21 @@ Chrome authentifié confirme sans fatal les listes Ressources et Prêts, le
 formulaire de création d'une ressource, le formulaire du prêt de recette et le
 statut Réservé effectivement coché sur la ressource existante. Aucun formulaire
 navigateur n'a été soumis.
+
+## Lot 70 — calcul calendaire des adhésions
+
+Le helper historique global `NbJours()` a quitté le socle. Son unique appelant,
+le génie des échéances, utilise maintenant
+`association_adhesions_nombre_jours()` fourni par Adhésions. Les 76 tests
+autonomes passent et test-fiafe compile 221 squelettes privés, 12 pages
+publiques et 64 composants front. Le manifeste servi correspond au commit
+`5f6e4c23`; les dix plugins, quatorze tables, douze objets SQL et sept schémas
+restent valides.
+
+La page d'accueil publique a été rejouée dans Chrome après le déploiement. Le
+contenu, la navigation et le formulaire Inscription 4 sont rendus et la console
+JavaScript ne contient aucune erreur. La recette visuelle révèle toutefois de
+nombreux avertissements PHP 8.4 imprimés avant et au milieu du HTML par
+`accesrestreint` 6.3.1 (`inc/accesrestreint.php`). Cette anomalie appartient à
+une dépendance externe à la suite Association ; elle n'est pas masquée ni
+attribuée aux squelettes autonomes du monorepo.
