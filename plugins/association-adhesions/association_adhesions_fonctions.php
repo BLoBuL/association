@@ -268,21 +268,20 @@ function periode_date_fin($libelle){
 }
 
 function filtre_filtres_effectifs_cotisations(){
-	if (!isset($_SESSION)) session_start();
-	if (!isset($_SESSION['cotisations_filtres'])) {
-		$_SESSION['cotisations_filtres'] = array();
-	}
+	include_spip('inc/session');
+	$filtres_session = session_get('cotisations_filtres');
+	$filtres_session = is_array($filtres_session) ? $filtres_session : array();
 
 	$eff = array();
 
 	// Helper de persistance : URL > Session > null
-	$persist = function($key){
+	$persist = function($key) use (&$filtres_session){
 		if (array_key_exists($key, $_REQUEST)){
-			$_SESSION['cotisations_filtres'][$key] = $_REQUEST[$key];
+			$filtres_session[$key] = $_REQUEST[$key];
 			return $_REQUEST[$key];
 		}
-		if (!empty($_SESSION['cotisations_filtres'][$key])) {
-			return $_SESSION['cotisations_filtres'][$key];
+		if (!empty($filtres_session[$key])) {
+			return $filtres_session[$key];
 		}
 		return null;
 	};
@@ -311,6 +310,8 @@ function filtre_filtres_effectifs_cotisations(){
 	// Type cotisation : vide par défaut
 	$type_cot = $persist('type_cotisation');
 	$eff['type_cotisation'] = ($type_cot === 'tout' || !$type_cot) ? '' : $type_cot;
+
+	session_set('cotisations_filtres', $filtres_session);
 
 	return $eff;
 }

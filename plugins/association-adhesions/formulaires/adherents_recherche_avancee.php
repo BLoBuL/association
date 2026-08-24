@@ -31,6 +31,8 @@ function formulaires_adherents_recherche_avancee_verifier_dist(){
 }
 
 function formulaires_adherents_recherche_avancee_traiter_dist(){
+    include_spip('inc/session');
+
     // Sauvegarder les critères de recherche en session pour qu'ils persistent
     // lors de l'utilisation des filtres (période, statut, type)
 
@@ -49,10 +51,7 @@ function formulaires_adherents_recherche_avancee_traiter_dist(){
 
     // Sauvegarder en session si des critères sont présents
     if (!empty($criteres_recherche)) {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
-        $_SESSION['adherents_recherche_avancee'] = $criteres_recherche;
+        session_set('adherents_recherche_avancee', $criteres_recherche);
 
         // Log pour debug
         association_log('adherents', 'Recherche avancée sauvegardée en session: ' . count($criteres_recherche) . ' critères', 'debug');

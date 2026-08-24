@@ -78,6 +78,8 @@ function formulaires_adherents_recherche_rapide_verifier_dist(){
 }
 
 function formulaires_adherents_recherche_rapide_traiter_dist(){
+    include_spip('inc/session');
+
     // Sauvegarder les critères de recherche rapide en session
     $criteres_recherche = array();
 
@@ -92,18 +94,12 @@ function formulaires_adherents_recherche_rapide_traiter_dist(){
 
     // Sauvegarder en session si des critères sont présents
     if (!empty($criteres_recherche)) {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
         $criteres_recherche['recherche'] = 'rapide'; // Marqueur
-        $_SESSION['adherents_recherche_rapide'] = $criteres_recherche;
+        session_set('adherents_recherche_rapide', $criteres_recherche);
 
         association_log('adherents', 'Recherche rapide sauvegardée en session: ' . count($criteres_recherche) . ' critères', 'debug');
     } else {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
-        unset($_SESSION['adherents_recherche_rapide']);
+        session_set('adherents_recherche_rapide', null);
         association_log('adherents', 'Recherche rapide réinitialisée (aucun critère soumis)', 'debug');
     }
 
