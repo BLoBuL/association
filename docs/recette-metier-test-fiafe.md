@@ -760,3 +760,12 @@ les fieldsets transversaux. Il expose 30 saisies racines et 127 noms de saisies
 au total, dont les 122 configurations persistantes couvertes par le registre
 CLI. L'installation reste valide et aucune erreur ne subsiste après la sonde de
 validation finale.
+
+## Lot 60 — statuts internes rattachés à Adhésions
+
+Le commit `85e8e46` a été déployé atomiquement dans le socle, Adhésions et
+Communication depuis l'artefact SHA-256
+`9996ca7474b5e096b0091ba9dbc4027848563367d7eabb27e015bfb529cff274`.
+Dans le contexte SPIP servi, Adhésions expose exactement la liste historique
+`sorti, prospect, ok, echu, relance`. L'installation des dix plugins reste
+valide et Communication peut lire la liste sans notice.
