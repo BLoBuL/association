@@ -446,13 +446,13 @@ function stats_compta_activites_exercice($exercice){
            . " AND c.date >= " . sql_quote($date_debut)
            . " AND c.date < " . sql_quote($date_fin);
 
-    $res = sql_select(
-        'c.id_compte, c.recette, c.depense, c.id_transaction, t.statut, t.mode',
-        'spip_asso_comptes c LEFT JOIN spip_transactions t ON t.id_transaction = c.id_transaction',
-        $where
-    );
+    $lignes = sql_allfetsel('c.id_compte,c.recette,c.depense,c.id_transaction', 'spip_asso_comptes c', $where);
+    $transactions = pipeline('association_paiements_transactions_informations', array(
+		'args' => array('ids_transactions' => array_column($lignes, 'id_transaction')),
+		'data' => array(),
+	));
 
-    while ($row = sql_fetch($res)) {
+    foreach ($lignes as $row) {
         $r = floatval($row['recette']);
         $d = floatval($row['depense']);
         // Ignorer totalement les lignes sans mouvement
@@ -465,8 +465,9 @@ function stats_compta_activites_exercice($exercice){
         $stats['total_operations']++;
 
         // Statut & mode : 'hors_transaction' si pas de transaction associée (ex: dépense interne, écriture manuelle)
-        $statut = ($row['id_transaction'] ? ($row['statut'] ?: 'inconnu') : 'hors_transaction');
-        $mode   = ($row['id_transaction'] ? ($row['mode'] ?: 'inconnu') : 'hors_transaction');
+        $transaction = $transactions[(int) ($row['id_transaction'] ?? 0)] ?? array();
+        $statut = ($row['id_transaction'] ? (($transaction['statut'] ?? '') ?: 'inconnu') : 'hors_transaction');
+        $mode   = ($row['id_transaction'] ? (($transaction['mode'] ?? '') ?: 'inconnu') : 'hors_transaction');
 
         if (!isset($stats['par_statut'][$statut])) {
             $stats['par_statut'][$statut] = array('count' => 0, 'montant' => 0.0);

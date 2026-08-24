@@ -123,28 +123,11 @@ function association_comptes_date_normalisee($date) {
 function association_commande_comptable_transaction($id_commande, $id_transaction = 0) {
     $id_commande = intval($id_commande);
     $id_transaction = intval($id_transaction);
-    if (!sql_showtable('spip_transactions', true)) {
-        return array();
-    }
-
-    if ($id_transaction > 0) {
-        $transaction = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . $id_transaction);
-        if ($transaction) {
-            return $transaction;
-        }
-    }
-
-    if ($id_commande <= 0 || !association_comptes_table_a_champ('spip_transactions', 'id_commande')) {
-        return array();
-    }
-
-    return sql_fetsel(
-        '*',
-        'spip_transactions',
-        'id_commande=' . $id_commande,
-        '',
-        'id_transaction DESC'
-    ) ?: array();
+    $transactions = pipeline('association_paiements_transactions_informations', array(
+		'args' => array('id_transaction' => $id_transaction, 'id_commande' => $id_commande),
+		'data' => array(),
+	));
+    return $transactions ? reset($transactions) : array();
 }
 
 /**
@@ -313,4 +296,3 @@ function association_commande_comptable_synchroniser($id_commande, $options = ar
 		'id_transaction' => $id_transaction, 'vu' => $vu,
 	));
 }
-

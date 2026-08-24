@@ -12,6 +12,18 @@ function include_spip($path) {
 function association_log($journal, $message, $niveau = 'info') {
     $GLOBALS['association_test_logs'][] = array($journal, $message, $niveau);
 }
+function pipeline($nom, $flux) {
+    if ($nom !== 'association_paiements_transactions_informations') return $flux['data'];
+    $rows = $GLOBALS['association_test_tables']['spip_transactions']['rows'];
+    $id_transaction = intval($flux['args']['id_transaction'] ?? 0);
+    $id_commande = intval($flux['args']['id_commande'] ?? 0);
+    foreach (array_reverse($rows, true) as $id => $row) {
+        if (($id_transaction && $id === $id_transaction) || (!$id_transaction && $id_commande && intval($row['id_commande']) === $id_commande)) {
+            return array($id => $row);
+        }
+    }
+    return array();
+}
 
 $GLOBALS['association_metas'] = array(
     'comptes' => 1,

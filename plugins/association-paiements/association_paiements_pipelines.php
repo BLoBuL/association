@@ -97,6 +97,18 @@ function association_paiements_association_compta_ecritures_devises($flux) {
 	return $flux;
 }
 
+function association_paiements_association_paiements_transactions_informations($flux) {
+	$ids = (array) ($flux['args']['ids_transactions'] ?? array());
+	if (!empty($flux['args']['id_transaction'])) $ids[] = (int) $flux['args']['id_transaction'];
+	include_spip('inc/association_paiements_transactions');
+	$flux['data'] = association_paiements_transactions_lire($ids);
+	if (!$flux['data'] && !empty($flux['args']['id_commande'])) {
+		$transaction = association_paiements_transaction_commande_lire((int) $flux['args']['id_commande']);
+		if ($transaction) $flux['data'][(int) $transaction['id_transaction']] = $transaction;
+	}
+	return $flux;
+}
+
 function association_paiements_association_maintenance_auteurs_encaisses($flux) {
 	$ids = array_values(array_filter(array_map('intval', (array) ($flux['args']['ids_auteurs'] ?? array()))));
 	if (!$ids) { return $flux; }
