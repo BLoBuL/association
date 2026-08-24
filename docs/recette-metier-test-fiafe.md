@@ -1768,3 +1768,20 @@ abandonnee 783 affiche sa confirmation et son action signee ; la transaction
 en attente 1120 est refusee et n'affiche aucune suppression. Aucun lien de
 suppression n'a ete active. Paiements reste actif en 4.0.0 et tous les
 squelettes compilent sans erreur.
+
+## Lot 153 - contrats des integrations externes
+
+Les paquets declarent maintenant leurs contrats externes : Medias est une
+dependance obligatoire d'Adhesions pour les justificatifs ; Commandes est une
+integration optionnelle de Comptabilite et Paiements ; Formidable est une
+integration optionnelle de Paiements. Les lectures de maintenance restent
+gardees par l'activation du plugin et la compatibilite des anciennes commandes
+verifie la presence effective des tables avant lecture.
+
+Les commits `47c1b7ce` et `1fedb88a` sont deployes sur test-fiafe. Les
+empreintes des trois `paquet.xml` correspondent aux fichiers locaux ; Adhesions,
+Comptabilite et Paiements restent actifs en 4.0.0. Medias et Formidable sont
+actifs, Commandes est absent mais ses tables historiques restent lisibles. Le
+test autonome passe dans les dispositions monorepo et deployee, tous les
+squelettes compilent et l'accueil public repond en HTTP 200. Aucune donnee ni
+configuration n'a ete modifiee.
