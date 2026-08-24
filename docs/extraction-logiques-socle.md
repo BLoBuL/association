@@ -1072,3 +1072,14 @@ leurs liens canoniques et leurs imputations. La redirection vers la fiche d'un
 La création d'une écriture distingue désormais explicitement un identifiant
 positif de la sentinelle textuelle `new`, afin de ne plus appeler par erreur la
 branche de modification avec l'identifiant zéro.
+
+## Lot 94 : domaine de langue du socle minimal
+
+Les modules métier disposant tous de leur propre domaine, les anciens fichiers
+`association_fr`, `association_en` et `association_es` ne conservent plus les
+milliers de libellés historiques des adhésions, événements, comptes, dons,
+ventes, prêts et communications. Le domaine du socle contient exactement dix
+clés transversales : menu, paramètres, dates, compte utilisateur et catégories
+de journal. Les trois langues sont complètes et un test parcourt le code
+exécutable pour empêcher la réintroduction d'un consommateur métier sous le
+namespace `association`.

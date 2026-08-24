@@ -139,7 +139,7 @@ function association_test_run_helpers_suite() {
         },
         'recapitulatif_multi_public_semantique' => function () {
             $template = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/formulaires/inscription_evenement_multi_public.html');
-            $lang = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/lang/association_fr.php');
+            $lang = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/lang/association_evenements_fr.php');
 
             association_test_assert_contains('<table class="inscription-evenement-public__recap-table">', $template, 'Le recapitulatif doit utiliser un tableau semantique');
             association_test_assert_contains('<th scope="row" class="inscription-evenement-public__recap-label">#VALEUR{label}</th>', $template, 'Le libelle du recapitulatif doit etre un en-tete de ligne sans parentheses');

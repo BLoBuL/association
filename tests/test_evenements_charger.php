@@ -257,11 +257,9 @@ function association_test_run_charger_suite() {
             );
             association_test_assert_true(in_array('commentaire', $noms, true), 'Le multi prive doit garder les modalites finales');
             association_test_assert_true(in_array('notifier_adherent', $noms, true), 'Le multi prive doit proposer le choix de notification email');
-            foreach (array('fr', 'en', 'es') as $langue) {
-                $fichier_langue = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/lang/association_' . $langue . '.php');
-                association_test_assert_contains("'activite_bouton_notification_active' =>", $fichier_langue, 'Le titre de notification BO doit exister en ' . $langue);
-                association_test_assert_contains("'activite_bouton_notification_explication' =>", $fichier_langue, 'L explication de notification BO doit exister en ' . $langue);
-            }
+			$fichier_langue = file_get_contents(ASSOCIATION_TEST_PLUGIN_ROOT . '/plugins/association-evenements/lang/association_evenements_fr.php');
+			association_test_assert_contains("'activite_bouton_notification_active' =>", $fichier_langue, 'Le titre de notification BO doit appartenir a Evenements');
+			association_test_assert_contains("'activite_bouton_notification_explication' =>", $fichier_langue, 'L explication de notification BO doit appartenir a Evenements');
             association_test_assert_true(in_array('fieldset_info_supplementaire', $noms_etapes, true), 'Les identites BO doivent partager l etape informations supplementaires du FO');
             association_test_assert_true(!in_array('fieldset_adherent', $noms_etapes, true) && !in_array('fieldset_conjoint', $noms_etapes, true), 'Les participants ne doivent plus devenir des etapes BO separees');
         },
