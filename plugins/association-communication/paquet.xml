@@ -23,4 +23,5 @@
 	<pipeline nom="autoriser" inclure="association_communication_autoriser.php" />
 	<pipeline nom="mailsubscriber_informations_liees" inclure="association_communication_pipelines.php" />
 	<pipeline nom="corbeille_table_infos" inclure="association_communication_pipelines.php" />
+	<style source="prive/themes/spip/css/communication.css" type="prive" />
 </paquet>

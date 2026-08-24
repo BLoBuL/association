@@ -340,6 +340,7 @@ $utils_socle = file_get_contents($racine . '/inc/association/utils.php');
 $compta_script_destinations = $racine . '/plugins/association-compta/javascript/jquery.destinations_form.js';
 $css_socle = file_get_contents($racine . '/prive/themes/spip/css/asso.css');
 $css_compta = file_get_contents($racine . '/plugins/association-compta/prive/themes/spip/css/comptabilite.css');
+$css_communication = file_get_contents($racine . '/plugins/association-communication/prive/themes/spip/css/communication.css');
 $compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
@@ -360,6 +361,12 @@ $verifier(
 	strpos($css_socle, '.editer.compte.niveau-1') === false
 		&& strpos($css_compta, '.formulaire_importer_plan_comptable .editer.compte.niveau-1') !== false,
 	'Les styles du plan comptable doivent appartenir au plugin Comptabilité.'
+);
+$verifier(
+	strpos($css_socle, '.notifications-filters') === false
+		&& strpos($css_communication, '.page_notifications .notifications-filters') !== false
+		&& strpos($css_communication, '.page_notifications table thead th') !== false,
+	'Les styles de notifications doivent appartenir au plugin Communication et être bornés à sa page.'
 );
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
