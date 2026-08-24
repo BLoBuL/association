@@ -102,39 +102,6 @@ body.navigation_avec_icones #page {
 tbody tr.even th {
     background: inherit
 }
-@media (min-width: 1px) {
-/*    .association #conteneur #contenu,
-    .association.large #conteneur #contenu,
-    .association #conteneur #contenu,*/
-    .adherents #conteneur #contenu,
-    .adherents.large #conteneur #contenu,
-    .adherents #conteneur #navigation,
-    .adherents.large #conteneur #navigation,
-    .voir_activites #conteneur #navigation,
-    .voir_activites.large #conteneur #navigation,
-    .activites #navigation,
-    .activites .large #navigation,
-    .activites #contenu,
-    .activites .large #contenu,
-    .voir_activites #contenu,
-    .voir_activites .large #contenu,
-    .voir_adherent #contenu,
-    .voir_adherent .large #contenu,
-    .voir_adherent #conteneur #navigation,
-    .voir_adherent.large #conteneur #navigation,
-    .configurer_association #contenu {
-/*        clear: both;
-        float: none;
-        width: 100%;
-        max-width: 1200px;
-        margin: 20px auto;
-        display: table;*/
-    }
-    .configurer_association .formulaire_config_association {
-        /*margin: auto;*/
-    }
-}
-
 div.table_page {
     /*background-color: white;*/
 }
@@ -655,8 +622,7 @@ div.table_page {
 .tableau_asso .id,
 .tableau_asso .nb,
 .tableau_asso .date,
-.tableau_asso .titre,
-.tableau_asso .nom_adherent {
+.tableau_asso .titre {
     text-align: left;
 }
 .tableau_asso .id,
@@ -699,20 +665,6 @@ div.table_page {
     background-color: #ffe0e0;
 }
 
-/*PAGE ADHERENTS*//*
-.voir_adherent #navigation .box.info,
-.adherents #navigation .box.info {
-    display: table-cell;
-    padding: .5%;
-    width: 32%;
-    vertical-align: bottom;
-}
-.activites #navigation .box.info,
-.association #navigation .box.info {
-    padding: .5%;
-    width: 32%;
-    margin: 0;
-}*/
 .liste_statuts li {
     width: 100%;
 }
@@ -883,17 +835,6 @@ tr.echec {
 .tableau_asso p{
     margin: 0;
 }
-/*PAGE INSCRIPTION*/
-/*.voir_activites #navigation .box.info,
-.voir_activites .large #navigation .box.info {
-    width: 32%;
-    margin: 15px 0 0 1%;
-    float: left;
-}
-.voir_activites #navigation .box.info:first-child,
-.voir_activites .large #navigation .box.info:first-child {
-    margin-left: 0;
-}*/
 .raccourcis ul.liste_raccourcis{
     margin: 0;
     padding-left: 0;
@@ -1623,18 +1564,6 @@ form.formulaire_asso {
     margin-left: 0.4em;
     color: #22c55e;
     font-size: 0.7em;
-}
-
-.adherents .filtre-groupe .options .option.encours.selected {
-    color: #1e3a8a;
-    background: #dbeafe;
-    border-left-color: #2563eb;
-    box-shadow: inset 0 0 0 1px #93c5fd;
-}
-
-.adherents .filtre-groupe .options .option.encours.selected:hover,
-.adherents .filtre-groupe .options .option.encours.selected:focus-visible {
-    background: #bfdbfe;
 }
 
 /* Styles des options de statut avec code couleur */
