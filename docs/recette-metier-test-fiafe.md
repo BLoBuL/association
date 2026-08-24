@@ -2045,3 +2045,10 @@ une autorisation spécifique `rembourser` sur la transaction. Le formulaire CVT
 rejoue désormais cette autorisation et vérifie le statut encaissé aux étapes
 charger, vérifier et traiter ; ses retours sont traduits. La suite locale
 atteint 126 tests, tous valides.
+
+Le commit `ec57870a` est déployé sur test-fiafe avec les quatre empreintes de
+l'artefact Git conformes. Comptabilité et Paiements restent actifs en 4.0.0 et
+les 297 fonds recompilent. Dans Chrome authentifié, Comptes affiche la bascule
+traduite et la transaction encaissée 260721229990 ouvre un formulaire de
+remboursement autorisé avec titre et auteur lié, sans erreur ni clé brute. Le
+formulaire n'a pas été soumis et aucun remboursement n'a été déclenché.
