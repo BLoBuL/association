@@ -1166,3 +1166,10 @@ d'ouverture, quotas, listes d'attente et séparateurs annuels ou mensuels.
 La présentation de la fiche d'un événement rejoint Événements : onglets,
 configuration, quotas, responsables, logos des participations et largeur du
 formulaire d'inscription privé ne sont plus fournis par le socle historique.
+
+## Lot 107 : tableaux et statistiques comptables
+
+Les résumés de recettes, dépenses et soldes, le tableau des écritures, la
+rentabilité des événements ainsi que les statistiques compactes ou détaillées
+rejoignent la feuille privée de Comptabilité. Le socle ne présente plus ces
+données métier et les définitions de cartes déjà autonomes ne sont pas doublées.
