@@ -39,6 +39,8 @@
 	<pipeline nom="association_paiements_reglement_traiter" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_paiements_redirection_transaction" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_preparer" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="association_maintenance_bdd_executer" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="association_compta_migration_metiers" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="formulaire_saisies" inclure="association_adhesions_pipelines.php" />

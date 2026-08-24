@@ -28,7 +28,7 @@ function pipeline($nom, $flux) {
         ),
 		'association_maintenance_bdd_executer' => array(
 			'association_evenements_association_maintenance_bdd_executer',
-			'association_compta_association_maintenance_bdd_executer',
+			'association_adhesions_association_maintenance_bdd_executer',
 			'association_paiements_association_maintenance_bdd_executer',
 			'association_communication_association_maintenance_bdd_executer',
 		),
@@ -274,6 +274,7 @@ function association_test_reset_tables() {
 
 include_once PLUGIN_ROOT . '/plugins/association-evenements/inc/association_evenements_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_maintenance.php';
+include_once PLUGIN_ROOT . '/plugins/association-adhesions/inc/association_adhesions_maintenance_cotisations.php';
 include_once PLUGIN_ROOT . '/plugins/association-communication/inc/association_communication_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-compta/inc/association_compta_maintenance.php';
 include_once PLUGIN_ROOT . '/plugins/association-paiements/inc/association_paiements_maintenance.php';
@@ -316,10 +317,10 @@ association_test_assert(($resultat['suppression_auteurs_skippee'] ?? false) === 
 association_test_assert(isset($GLOBALS['association_test_tables']['spip_auteurs'][2]), 'l auteur est conservé en cas d échec partiel');
 
 association_test_reset_tables();
-$GLOBALS['association_test_tables']['spip_asso_comptes'][2] = array('id_compte' => 2, 'id_auteur' => 999, 'recette' => 0, 'id_transaction' => 303);
+$GLOBALS['association_test_tables']['spip_asso_comptes'][2] = array('id_compte' => 2, 'id_auteur' => 999, 'recette' => 0, 'id_transaction' => 303, 'objet' => 'cotisation');
 $GLOBALS['association_test_tables']['spip_transactions'][303] = array('id_transaction' => 303, 'id_auteur' => 999, 'statut' => 'attente');
 $GLOBALS['association_test_fail_delete_tables'] = array('spip_transactions');
-$resultat = asso_supprimer_cotisations_orphelines(false, 1000);
+$resultat = association_adhesions_supprimer_cotisations_orphelines(false, 1000);
 association_test_assert(($resultat['erreur'] ?? '') === 'suppression_transactions_cotisations_orphelines_echouee', 'une erreur explicite remonte si la suppression des transactions liées échoue');
 
 echo "Tous les tests maintenance BDD ont réussi.\n";

@@ -1003,3 +1003,11 @@ Le formulaire d'écriture comptable ne requête plus `spip_evenements` pour
 construire son sélecteur. Il demande les objets disponibles via
 `association_compta_objets_lister` ; Événements fournit les libellés datés de
 ses événements. Comptabilité reste utilisable sans la table Agenda.
+
+## Lot 86 : maintenance des cotisations
+
+Les nettoyages d'écritures de cotisation quittent Comptabilité et rejoignent
+Adhésions. La détection des orphelines est désormais bornée explicitement à
+`objet='cotisation'`, ce qui évite de supprimer une autre écriture comptable
+simplement parce que son auteur a disparu. La maintenance planifiée et la
+migration automatique utilisent les mêmes services préfixés d'Adhésions.

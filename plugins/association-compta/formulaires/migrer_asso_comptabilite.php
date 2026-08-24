@@ -130,14 +130,7 @@ function formulaires_migrer_asso_comptabilite_traiter_dist(){
         // Nouveau: en mode auto, on nettoie d'abord la BDD puis on applique la migration et on synchronise les événements
         include_spip('genie/association_maintenance_bdd');
 
-        // 1) Nettoyages liés aux cotisations (exécution réelle: dry_run = false)
-        $lot_max = 100000;
-        // - cotisations orphelines
-        asso_supprimer_cotisations_orphelines(false, $lot_max);
-        // - cotisations non encaissées âgées (> 6 mois)
-        asso_supprimer_cotisations_non_encaissees_anciennes(time(), 6, false, $lot_max);
-        // - transactions orphelines
-        asso_supprimer_transactions_orphelines(false, $lot_max);
+		$lot_max = 100000;
 
         // 2) Migration automatique des imputations selon la config
         $cfg = get_config_plan_comptable_migration();
@@ -145,7 +138,7 @@ function formulaires_migrer_asso_comptabilite_traiter_dist(){
 
 		// 3) Laisser chaque plugin métier synchroniser ses propres écritures.
 		pipeline('association_compta_migration_metiers', array(
-			'args' => array('mode' => 'auto'),
+			'args' => array('mode' => 'auto', 'lot' => $lot_max, 'maintenant' => time(), 'mois_non_encaisse' => 6),
 			'data' => array(),
 		));
     }

@@ -17,14 +17,12 @@ function pipeline($nom, $flux) {
 		'association_maintenance_bdd_configurer' => array(
 			'association_adhesions_association_maintenance_bdd_configurer',
 			'association_evenements_association_maintenance_bdd_configurer',
-			'association_compta_association_maintenance_bdd_configurer',
 			'association_paiements_association_maintenance_bdd_configurer',
 			'association_communication_association_maintenance_bdd_configurer',
 		),
 		'association_maintenance_bdd_verifier_configuration' => array(
 			'association_adhesions_association_maintenance_bdd_verifier_configuration',
 			'association_evenements_association_maintenance_bdd_verifier_configuration',
-			'association_compta_association_maintenance_bdd_verifier_configuration',
 		),
 	);
 	foreach ($fournisseurs[$nom] ?? array() as $fonction) {
@@ -73,11 +71,11 @@ $options = association_maintenance_options_depuis_source($source);
 $assert($options['enabled'] === false && $options['dry_run'] === false && $options['lot'] === 42, 'options globales incorrectes');
 $assert($options['jours_inactivite'] === 111, 'seuil Adhésions absent');
 $assert($options['jours_inscriptions_en_attente'] === 22, 'seuil Événements absent');
-$assert($options['mois_non_encaisse'] === 7, 'seuil Comptabilité absent');
+$assert($options['mois_non_encaisse'] === 7, 'seuil cotisations Adhésions absent');
 $assert(count($options['actions']) === 12, 'les douze actions métier doivent être fournies');
 $assert($options['actions']['supprimer_auteurs_sans_paiements'] === false, 'booléen Adhésions incorrect');
 $assert($options['actions']['supprimer_participations_obsoletes'] === true, 'booléen Événements incorrect');
-$assert($options['actions']['supprimer_cotisations_orphelines'] === false, 'booléen Comptabilité incorrect');
+$assert($options['actions']['supprimer_cotisations_orphelines'] === false, 'booléen cotisations Adhésions incorrect');
 $assert($options['actions']['supprimer_transactions_orphelines'] === false, 'booléen Paiements incorrect');
 $assert($options['actions']['supprimer_urls_obsoletes'] === false, 'booléen Communication incorrect');
 $assert(association_maintenance_options_depuis_source($source, true)['dry_run'] === true, 'le CVT doit pouvoir forcer le dry-run');
@@ -90,6 +88,6 @@ $GLOBALS['maintenance_test_request'] = array(
 $erreurs = pipeline('association_maintenance_bdd_verifier_configuration', array('args' => array(), 'data' => array()));
 $assert(isset($erreurs['meta_cfg_maintenance_jours_inactivite']), 'Adhésions doit refuser zéro');
 $assert(isset($erreurs['meta_cfg_maintenance_jours_inscriptions_attente']), 'Événements doit refuser une valeur non numérique');
-$assert(!isset($erreurs['meta_cfg_maintenance_mois_non_encaisse']), 'Comptabilité doit accepter un entier positif');
+$assert(!isset($erreurs['meta_cfg_maintenance_mois_non_encaisse']), 'Adhésions doit accepter un entier positif');
 
 echo "OK: configuration et validation de maintenance distribuées entre les modules.\n";

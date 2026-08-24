@@ -23,20 +23,64 @@ function association_adhesions_association_maintenance_bdd_configurer($flux) {
 		'meta_cfg_maintenance_jours_inactivite',
 		365
 	));
+	$flux['data']['mois_non_encaisse'] = intval(association_maintenance_lire_source(
+		$source,
+		'meta_cfg_maintenance_mois_non_encaisse',
+		6
+	));
 	$flux['data']['actions']['supprimer_auteurs_sans_paiements'] = association_maintenance_valeur_booleenne(
 		association_maintenance_lire_source($source, 'meta_cfg_maintenance_supprimer_auteurs_sans_paiements', true)
 	);
 	$flux['data']['actions']['anonymiser_auteurs_avec_paiements'] = association_maintenance_valeur_booleenne(
 		association_maintenance_lire_source($source, 'meta_cfg_maintenance_anonymiser_auteurs_avec_paiements', true)
 	);
+	foreach (array('supprimer_cotisations_orphelines', 'supprimer_cotisations_non_encaissees') as $action) {
+		$flux['data']['actions'][$action] = association_maintenance_valeur_booleenne(
+			association_maintenance_lire_source($source, 'meta_cfg_maintenance_' . $action, true)
+		);
+	}
 	return $flux;
 }
 
 function association_adhesions_association_maintenance_bdd_verifier_configuration($flux) {
-	$champ = 'meta_cfg_maintenance_jours_inactivite';
-	if ($erreur = association_config_maintenance_verifier_entier($champ)) {
-		$flux['data'][$champ] = $erreur;
+	foreach (array('meta_cfg_maintenance_jours_inactivite', 'meta_cfg_maintenance_mois_non_encaisse') as $champ) {
+		if ($erreur = association_config_maintenance_verifier_entier($champ)) {
+			$flux['data'][$champ] = $erreur;
+		}
 	}
+	return $flux;
+}
+
+function association_adhesions_association_maintenance_bdd_executer($flux) {
+	include_spip('inc/association_adhesions_maintenance_cotisations');
+	$options = (array) ($flux['args']['options'] ?? array());
+	$actions = (array) ($options['actions'] ?? array());
+	$dry_run = (bool) ($options['dry_run'] ?? true);
+	$lot = (int) ($options['lot'] ?? 1000);
+	$maintenant = (int) ($flux['args']['maintenant'] ?? time());
+	$flux['data']['supprimer_cotisations_orphelines'] = !empty($actions['supprimer_cotisations_orphelines'])
+		? association_adhesions_supprimer_cotisations_orphelines($dry_run, $lot)
+		: array('skipped' => true);
+	$flux['data']['supprimer_cotisations_non_encaissees_anciennes'] = !empty($actions['supprimer_cotisations_non_encaissees'])
+		? association_adhesions_supprimer_cotisations_non_encaissees_anciennes($maintenant, (int) ($options['mois_non_encaisse'] ?? 6), $dry_run, $lot)
+		: array('skipped' => true);
+	return $flux;
+}
+
+function association_adhesions_association_compta_migration_metiers($flux) {
+	if (($flux['args']['mode'] ?? '') !== 'auto') {
+		return $flux;
+	}
+	include_spip('inc/association_adhesions_maintenance_cotisations');
+	$lot = (int) ($flux['args']['lot'] ?? 100000);
+	$maintenant = (int) ($flux['args']['maintenant'] ?? time());
+	$flux['data']['cotisations_orphelines'] = association_adhesions_supprimer_cotisations_orphelines(false, $lot);
+	$flux['data']['cotisations_non_encaissees'] = association_adhesions_supprimer_cotisations_non_encaissees_anciennes(
+		$maintenant,
+		(int) ($flux['args']['mois_non_encaisse'] ?? 6),
+		false,
+		$lot
+	);
 	return $flux;
 }
 

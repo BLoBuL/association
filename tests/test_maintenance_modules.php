@@ -7,6 +7,7 @@ $communication = file_get_contents($racine . '/plugins/association-communication
 $compta = file_get_contents($racine . '/plugins/association-compta/inc/association_compta_maintenance.php');
 $paiements = file_get_contents($racine . '/plugins/association-paiements/inc/association_paiements_maintenance.php');
 $adhesions = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_maintenance.php');
+$adhesions_cotisations = file_get_contents($racine . '/plugins/association-adhesions/inc/association_adhesions_maintenance_cotisations.php');
 $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
 $pipelines_communication = file_get_contents($racine . '/plugins/association-communication/association_communication_pipelines.php');
 $pipelines_compta = file_get_contents($racine . '/plugins/association-compta/association_compta_pipelines.php');
@@ -73,8 +74,10 @@ if (strpos($socle, "include_spip('inc/association_communication_maintenance');")
 $proprietaires = array(
 	'Comptabilité' => array($compta, array(
 		'asso_supprimer_comptes_auteurs',
-		'asso_supprimer_cotisations_orphelines',
-		'asso_supprimer_cotisations_non_encaissees_anciennes',
+	)),
+	'Adhésions cotisations' => array($adhesions_cotisations, array(
+		'association_adhesions_supprimer_cotisations_orphelines',
+		'association_adhesions_supprimer_cotisations_non_encaissees_anciennes',
 	)),
 	'Paiements' => array($paiements, array(
 		'asso_supprimer_transactions_auteurs',
@@ -93,9 +96,9 @@ foreach ($proprietaires as $domaine => $definition) {
 }
 if (strpos($socle, "include_spip('inc/association_compta_maintenance');") !== false
 	|| strpos($socle, "include_spip('inc/association_paiements_maintenance');") !== false
-	|| strpos($pipelines_compta, 'function association_compta_association_maintenance_bdd_executer(') === false
+	|| strpos($pipelines_adhesions, 'function association_adhesions_association_maintenance_bdd_executer(') === false
 	|| strpos($pipelines_paiements, 'function association_paiements_association_maintenance_bdd_executer(') === false) {
-	fwrite(STDERR, "Comptabilité ou Paiements ne fournit pas sa maintenance par pipeline.\n");
+	fwrite(STDERR, "Adhésions ou Paiements ne fournit pas sa maintenance par pipeline.\n");
 	exit(1);
 }
 
@@ -111,7 +114,6 @@ if (strpos($socle, "pipeline('association_maintenance_bdd_configurer'") === fals
 foreach (array(
 	'adhesions' => $pipelines_adhesions,
 	'evenements' => $pipelines_evenements,
-	'compta' => $pipelines_compta,
 	'paiements' => $pipelines_paiements,
 	'communication' => $pipelines_communication,
 ) as $module => $source_pipeline) {

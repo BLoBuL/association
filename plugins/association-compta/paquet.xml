@@ -25,9 +25,6 @@
 	<pipeline nom="association_menu_entrees" inclure="inc/association_compta_menu.php" />
 	<pipeline nom="association_configuration_saisies" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_configuration_verifier" inclure="association_compta_pipelines.php" />
-	<pipeline nom="association_maintenance_bdd_executer" inclure="association_compta_pipelines.php" />
-	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_compta_pipelines.php" />
-	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_paiements_reglement_traiter" inclure="association_compta_pipelines.php" />
 	<pipeline nom="association_compta_migration_metiers" action="" />
 	<pipeline nom="association_compta_objets_lister" action="" />

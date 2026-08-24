@@ -16,6 +16,18 @@ function association_paiements_association_configuration_saisies($flux) {
 	return $flux;
 }
 
+function association_paiements_association_compta_migration_metiers($flux) {
+	if (($flux['args']['mode'] ?? '') !== 'auto') {
+		return $flux;
+	}
+	include_spip('inc/association_paiements_maintenance');
+	$flux['data']['transactions_orphelines'] = asso_supprimer_transactions_orphelines(
+		false,
+		(int) ($flux['args']['lot'] ?? 100000)
+	);
+	return $flux;
+}
+
 
 function association_trig_bank_notifier_reglement($flux)
 {
