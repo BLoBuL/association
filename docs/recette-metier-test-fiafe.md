@@ -1461,3 +1461,22 @@ Le parcours fiscal est donc couvert par les tests de structure et de calcul,
 mais ne dispose pas d'une preuve positive sur donnée réelle dans cette copie.
 Aucune vente, écriture, ventilation ni donnée client n'a été supprimée et aucun
 PDF nominatif n'a été généré. Tous les squelettes compilent après déploiement.
+
+## Lot 127 — écritures Prêts déléguées à Comptabilité
+
+Prêts ne lit, ne crée, ne modifie et ne supprime plus directement les lignes de
+`spip_asso_comptes` ni leurs ventilations. Son adaptateur appelle désormais
+l'API objet de Comptabilité. Les nouvelles écritures portent le lien canonique
+`objet=pret` et `id_objet`, tandis que la lecture conserve la compatibilité avec
+les anciennes écritures identifiées par `id_journal` et le préfixe historique
+de leur justification. L'auteur comptable d'une nouvelle écriture est bien
+l'emprunteur du prêt.
+
+La copie DEV servie par test-fiafe ne contient actuellement aucun prêt : le
+vérificateur en lecture seule valide donc le chargement des deux formats et
+l'absence d'écart, mais ne constitue pas une preuve positive sur une ligne
+historique réelle. Les quatre fichiers déployés ont des empreintes SHA-256
+identiques à leur source, le cache a été vidé et SPIP 4.4.21 compile toujours
+221 squelettes privés, douze pages publiques et 64 composants front. Aucun prêt
+ni aucune écriture comptable n'a été créé, modifié ou supprimé pendant cette
+recette.
