@@ -19,7 +19,7 @@
 			<td>#DUREE</td><td>[(#DATE_RETOUR|=={0000-00-00}|non)[(#DATE_RETOUR|affdate)]]</td>
 			<td class="action">
 				[(#AUTORISER{modifier,pret,#ID_PRET}|oui)<a href="[(#URL_ECRIRE{edit_pret,id_old=#ID_PRET})]" class="btn btn_mini"><:association_prets:prets_nav_editer:></a>]
-				[(#AUTORISER{supprimer,pret,#ID_PRET}|oui)[(#BOUTON_ACTION{<:association_prets:prets_nav_annuler:>,#URL_ACTION_AUTEUR{supprimer_prets,#ID_PRET-#ID_RESSOURCE,#SELF},btn_mini btn_danger,<:association_prets:confirmer_suppression:>})]]
+				[(#AUTORISER{supprimer,pret,#ID_PRET}|oui)[(#BOUTON_ACTION{<:association_prets:prets_nav_annuler:>,#URL_ACTION_AUTEUR{supprimer_prets,#ID_PRET,#SELF},btn_mini btn_danger,<:association_prets:confirmer_suppression:>})]]
 			</td>
 		</tr>
 		</BOUCLE_prets>

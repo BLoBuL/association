@@ -16,16 +16,14 @@ include_spip('inc/editer');
 function formulaires_editer_asso_ressources_charger_dist($id_ressource='') {
 	include_spip('intl_fonctions');
 
-	//TODO: bug id ressource oui
-	/* cet appel va charger dans $contexte tous les champs de la table spip_asso_dons associes a l'id_don passe en param */
+	$id_ressource = intval($id_ressource);
+	/* Charger les champs de la ressource demandée avec l'API CVT objet de SPIP. */
 	$contexte = formulaires_editer_objet_charger('asso_ressources', $id_ressource, '', '',  generer_url_ecrire('ressources'), '');
-
-	// cannot be null! this sets to checked the default radio button
-	$contexte['statut'] = 'ok';
 
 	/* si c'est une nouvelle operation, on charge la date d'aujourd'hui */
 	if (!$id_ressource) {
 		$contexte['date_acquisition'] = date('Y-m-d');
+		$contexte['statut'] = 'ok';
 	}
 	
 	/* paufiner la presentation des valeurs  */
@@ -33,7 +31,7 @@ function formulaires_editer_asso_ressources_charger_dist($id_ressource='') {
 		$contexte['pu'] = association_nbrefr($contexte['pu']);
 	}
 
-	$contexte['title'] = $id_ressource === '' ? _T('association_prets:ressources_nav_ajouter') : _T('association_prets:ressources_nav_editer');
+	$contexte['title'] = $id_ressource > 0 ? _T('association_prets:ressources_nav_editer') : _T('association_prets:ressources_nav_ajouter');
 	$contexte['devise'] = strtoupper(trim((string) (function_exists('intl_devise_defaut') ? intl_devise_defaut() : lire_config('intl/devise_defaut'))));
 
 	return $contexte;
@@ -60,7 +58,7 @@ function formulaires_editer_asso_ressources_verifier_dist($id_ressource='') {
 	return $erreurs;
 }
 
-function formulaires_editer_asso_ressources_traiter($id_ressource='') {
+function formulaires_editer_asso_ressources_traiter_dist($id_ressource='') {
 		//convertir les date au format timedate
 	foreach ($_POST as $champ => $mot) {
 		if (!is_string($mot)) {

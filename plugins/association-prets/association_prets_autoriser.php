@@ -18,7 +18,8 @@ function autoriser_ressource_modifier_dist($faire, $type = '', $id = 0, $qui = n
 }
 
 function autoriser_ressource_supprimer_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
-	return autoriser_ressources_menu_dist($faire, $type, $id, $qui, $opt);
+	return autoriser_ressources_menu_dist($faire, $type, $id, $qui, $opt)
+		&& (intval($id) <= 0 || !sql_countsel('spip_asso_prets', 'id_ressource=' . intval($id)));
 }
 
 function autoriser_pret_modifier_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {

@@ -81,9 +81,27 @@ Le pret suit une logique simple:
 2. modification de la duree, des dates ou de l'emprunteur;
 3. suppression si besoin.
 
+## Identifiants et cohérence du cycle
+
+Depuis le schéma 1.1.0, `id_ressource` et `id_emprunteur` sont des identifiants
+`BIGINT` indexés. La création et l'édition refusent une ressource inexistante.
+La suppression d'une ressource est refusée tant qu'un prêt historique lui est
+rattaché, afin de ne jamais créer de lien orphelin.
+
+Le statut de la ressource est recalculé dans la même transaction que le prêt :
+
+- au moins un prêt sans date de retour : `reserve` ;
+- tous les prêts restitués ou supprimés : `ok`.
+
+La suppression d'un prêt retrouve elle-même sa ressource depuis la base. Elle
+ne fait plus confiance à un deuxième identifiant transmis dans l'URL signée.
+L'édition directe d'une ressource conserve désormais son statut existant au
+lieu de le réinitialiser silencieusement à `ok`.
+
 ## Points de vigilance
 
-- Le code contient encore des commentaires `TODO` sur le traitement des identifiants.
-- Les interactions comptables semblent presentes mais moins structurantes que pour dons, ventes ou evenements.
-- La doc utilisateur devra distinguer clairement ressource et pret.
+- Les interactions comptables restent moins structurantes que pour dons,
+  ventes ou événements, mais l'écriture et le prêt sont modifiés dans une même
+  transaction.
+- La documentation utilisateur doit distinguer clairement ressource et prêt.
 

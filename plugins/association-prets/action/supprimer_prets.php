@@ -17,21 +17,20 @@ include_spip('inc/prets');
 function action_supprimer_prets_dist() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
 	$arg = $securiser_action();
-	if (preg_match('/^(\d+)\D(\d+)/', $arg, $r)) {
-		list(,$id_pret,$id_ressource) = $r;
-		$id_pret = (int) $id_pret;
-		$id_ressource = (int) $id_ressource;
+	if ($id_pret = intval($arg)) {
 		if (!autoriser('supprimer', 'pret', $id_pret)) {
 			include_spip('inc/minipres');
 			echo minipres();
 			exit;
 		}
+		$id_ressource = intval(sql_getfetsel('id_ressource', 'spip_asso_prets', 'id_pret=' . $id_pret));
+		if ($id_ressource <= 0) {
+			return;
+		}
 		sql_query('START TRANSACTION');
 		$ok = sql_delete('spip_asso_prets', 'id_pret=' . $id_pret) !== false;
 		$ok = $ok && sql_delete('spip_asso_comptes', association_pret_compte_where($id_pret)) !== false;
-		$ok = $ok && sql_updateq('spip_asso_ressources',
-			array('statut'=>'ok'),
-			'id_ressource=' . $id_ressource) !== false;
+		$ok = $ok && association_prets_synchroniser_statut_ressource($id_ressource);
 		sql_query($ok ? 'COMMIT' : 'ROLLBACK');
 	}
 }

@@ -44,6 +44,14 @@ function formulaires_editer_asso_pret_charger_dist($id_pret = 0, $id_ressource =
 
 function formulaires_editer_asso_pret_verifier_dist($id_pret = 0, $id_ressource = 0) {
 	$erreurs = array();
+	$id_pret = intval($id_pret);
+	$id_ressource = $id_pret
+		? intval(sql_getfetsel('id_ressource', 'spip_asso_prets', 'id_pret=' . $id_pret))
+		: intval($id_ressource);
+	if ($id_ressource <= 0 || !sql_countsel('spip_asso_ressources', 'id_ressource=' . $id_ressource)) {
+		$erreurs['message_erreur'] = _T('association_prets:ressource_introuvable');
+		return $erreurs;
+	}
 	foreach (array('date_sortie', 'id_emprunteur') as $champ) {
 		if (!strlen(trim((string) _request($champ)))) {
 			$erreurs[$champ] = _T('info_obligatoire');
@@ -80,6 +88,9 @@ function formulaires_editer_asso_pret_traiter_dist($id_pret = 0, $id_ressource =
 	$id_ressource = (int) $id_ressource;
 	if ($id_pret) {
 		$id_ressource = (int) sql_getfetsel('id_ressource', 'spip_asso_prets', 'id_pret=' . $id_pret);
+	}
+	if ($id_ressource <= 0 || !sql_countsel('spip_asso_ressources', 'id_ressource=' . $id_ressource)) {
+		return array('message_erreur' => _T('association_prets:ressource_introuvable'));
 	}
 	$date_sql = static function ($date, $vide = '0000-00-00') {
 		$date = trim((string) $date);
@@ -133,7 +144,7 @@ function formulaires_editer_asso_pret_traiter_dist($id_pret = 0, $id_ressource =
 			$ok = (bool) sql_insertq('spip_asso_comptes', $compte);
 		}
 	}
-	$ok = $ok && sql_updateq('spip_asso_ressources', array('statut' => 'reserve'), 'id_ressource=' . $id_ressource) !== false;
+	$ok = $ok && association_prets_synchroniser_statut_ressource($id_ressource);
 	if (!$ok) {
 		sql_query('ROLLBACK');
 		return array('message_erreur' => _T('association_prets:pret_enregistrement_erreur'));
