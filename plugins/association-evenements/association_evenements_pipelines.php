@@ -240,7 +240,7 @@ function association_evenements_association_maintenance_bdd_executer($flux) {
 	if (!empty($actions['supprimer_inscriptions_non_validees']) && $anciennes) {
 		$transactions = asso_supprimer_transactions_inscriptions($anciennes, $dry_run);
 		$flux['data']['supprimer_transactions_inscriptions'] = $transactions;
-		if (asso_resultat_en_echec($transactions)) {
+		if (association_maintenance_resultat_en_echec($transactions)) {
 			$flux['data']['supprimer_inscriptions_non_validees'] = array('skipped' => true, 'raison' => 'suppression_transactions_echec');
 		} else {
 			$flux['data']['supprimer_inscriptions_non_validees'] = asso_supprimer_inscriptions_par_ids(array_column($anciennes, 'id_activite'), $dry_run);

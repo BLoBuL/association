@@ -6,7 +6,7 @@
  * @param $db_value
  * @return bool
  */
-function is_db_value_true($db_value)
+function association_valeur_bdd_est_vraie($db_value)
 {
     return in_array(strtolower((string)$db_value), ["on", "1", "oui"]);
 }

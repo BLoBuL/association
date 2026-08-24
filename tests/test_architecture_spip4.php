@@ -335,6 +335,8 @@ $fonctions_socle = file_get_contents($racine . '/association_fonctions.php');
 $options_socle = file_get_contents($racine . '/association_options.php');
 $options_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_options.php');
 $options_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_options.php');
+$maintenance_socle = file_get_contents($racine . '/genie/association_maintenance_bdd.php');
+$utils_socle = file_get_contents($racine . '/inc/association/utils.php');
 $compta_script_destinations = $racine . '/plugins/association-compta/javascript/jquery.destinations_form.js';
 $compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
@@ -342,6 +344,16 @@ $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenem
 $pipelines_paiements = file_get_contents($racine . '/plugins/association-paiements/association_paiements_pipelines.php');
 $pipelines_compta = file_get_contents($racine . '/plugins/association-compta/association_compta_pipelines.php');
 $pipelines_communication = file_get_contents($racine . '/plugins/association-communication/association_communication_pipelines.php');
+$verifier(
+	strpos($maintenance_socle, 'function asso_resultat_en_echec') === false
+		&& strpos($maintenance_socle, 'function association_maintenance_resultat_en_echec') !== false,
+	'Le helper de maintenance transverse doit porter le préfixe du plugin.'
+);
+$verifier(
+	strpos($utils_socle, 'function is_db_value_true') === false
+		&& strpos($utils_socle, 'function association_valeur_bdd_est_vraie') !== false,
+	'Le helper de normalisation BDD doit porter le préfixe du plugin.'
+);
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');

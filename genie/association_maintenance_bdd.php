@@ -165,7 +165,7 @@ function association_maintenance_bdd_run($maintenant = null, array $opt = []) {
  * @param mixed $resultat
  * @return bool
  */
-function asso_resultat_en_echec($resultat) {
+function association_maintenance_resultat_en_echec($resultat) {
     if ($resultat === false) {
         return true;
     }
@@ -176,7 +176,7 @@ function asso_resultat_en_echec($resultat) {
         if ($cle === 'erreur' && $valeur) {
             return true;
         }
-        if (is_array($valeur) && asso_resultat_en_echec($valeur)) {
+        if (is_array($valeur) && association_maintenance_resultat_en_echec($valeur)) {
             return true;
         }
         if ($valeur === false) {

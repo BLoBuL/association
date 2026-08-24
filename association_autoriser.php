@@ -99,8 +99,8 @@ function association_normalize_qui($qui) {
  */
 function association_module_actif($module) {
 	return !empty($GLOBALS['association_metas'][$module])
-		&& function_exists('is_db_value_true')
-		&& is_db_value_true($GLOBALS['association_metas'][$module]);
+		&& function_exists('association_valeur_bdd_est_vraie')
+		&& association_valeur_bdd_est_vraie($GLOBALS['association_metas'][$module]);
 }
 
 /**

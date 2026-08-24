@@ -43,7 +43,7 @@ function asso_supprimer_auteurs(array $ids_auteurs, $dry_run = true) {
 		'data' => array(),
 	));
 	$resultat = is_array($resultat) ? $resultat : array();
-	if (asso_resultat_en_echec($resultat)) {
+	if (association_maintenance_resultat_en_echec($resultat)) {
 		$resultat['supprimes'] = 0;
 		$resultat['erreur'] = 'suppression_associee_echouee';
 		$resultat['suppression_auteurs_skippee'] = true;
