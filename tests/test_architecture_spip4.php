@@ -404,6 +404,14 @@ $verifier(
 		&& strpos($css_evenements, '.tableau_listes_export_activite') !== false,
 	'Les listes privées des activités doivent être stylées par Événements.'
 );
+$verifier(
+	strpos($css_socle, '.voir_activites_bloc_configuration') === false
+		&& strpos($css_socle, '.table_responsables_activite') === false
+		&& strpos($css_evenements, '.voir_activites_bloc_configuration') !== false
+		&& strpos($css_evenements, '.table_responsables_activite') !== false
+		&& strpos($css_evenements, '#formulaire_voir_activites.formulaire_asso') !== false,
+	'La fiche privée et les inscriptions doivent être stylées par Événements.'
+);
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');

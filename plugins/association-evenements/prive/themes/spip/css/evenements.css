@@ -76,3 +76,102 @@
 .tableau_listes_export_activite .evenement_termine {
     background-color: white;
 }
+
+/* Fiche privée d'un événement et suivi de ses inscriptions. */
+.tableau_participation_adherent .nom .logo_evenement {
+    width: 60px;
+}
+.voir_activites .onglets_voir_activites {
+    display: flex;
+}
+.liste_configuration {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.liste_configuration li {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    margin: 0 0 6px 0;
+}
+.liste_configuration li span {
+    display: block;
+    padding: 5px 10px;
+    font-size: 13px;
+    background-color: #ced6a2;
+}
+.liste_configuration li span.label {
+    flex: 1 1 auto;
+    text-align: left;
+}
+.liste_configuration li span.valeur {
+    min-width: 90px;
+    color: white;
+    text-align: right;
+    background-color: #849814;
+}
+.voir_activites_bloc_configuration .table_configuration_activite {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 10px 0;
+}
+.voir_activites_bloc_configuration .table_configuration_activite th,
+.voir_activites_bloc_configuration .table_configuration_activite td {
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #e5e5e5;
+}
+.voir_activites_bloc_configuration .table_configuration_activite th {
+    width: 52%;
+    font-weight: 600;
+}
+.voir_activites_bloc_configuration .quota_activite {
+    margin-bottom: 12px;
+}
+.bloc_responsables_separator {
+    clear: both;
+    padding: 0 0 1em 0;
+}
+.table_responsables_activite {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table_responsables_activite tr.responsable {
+    border-bottom: 1px solid #ebebeb;
+}
+.table_responsables_activite tr.responsable:last-child {
+    border-bottom: 0;
+}
+.table_responsables_activite td.responsable_logo {
+    width: 45px;
+    height: 45px;
+    vertical-align: middle;
+    padding: 6px 0;
+}
+.table_responsables_activite td.responsable_logo img {
+    background-color: #ccc;
+}
+.table_responsables_activite td.responsable_info {
+    padding: 6px 0 6px 10px;
+    vertical-align: middle;
+}
+.table_responsables_activite .nom_famille {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 120%;
+    color: #555;
+}
+.table_responsables_activite .email a {
+    text-decoration: none;
+    font-size: 110%;
+    color: #555;
+}
+#tableau_inscriptions_activite .responsable .nom a.bouton_editer {
+    background-color: rgba(251, 255, 25, 0.8);
+}
+#formulaire_voir_activites.formulaire_asso {
+    max-width: none;
+    padding: 20px 0;
+}
