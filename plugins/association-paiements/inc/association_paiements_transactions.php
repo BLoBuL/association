@@ -13,7 +13,7 @@ function association_paiements_transactions_lire(array $ids_transactions) {
 		return array();
 	}
 	$rows = sql_allfetsel(
-		'id_transaction,statut,mode,montant,date_transaction,date_paiement',
+		'id_transaction,statut,mode,montant,devise,date_transaction,date_paiement',
 		'spip_transactions',
 		sql_in('id_transaction', $ids_transactions)
 	);
@@ -22,4 +22,13 @@ function association_paiements_transactions_lire(array $ids_transactions) {
 		$index[(int) $row['id_transaction']] = $row;
 	}
 	return $index;
+}
+
+function association_paiements_transaction_lire($id_transaction) {
+	$id_transaction = (int) $id_transaction;
+	if ($id_transaction <= 0) {
+		return array();
+	}
+	$transactions = association_paiements_transactions_lire(array($id_transaction));
+	return $transactions[$id_transaction] ?? array();
 }

@@ -2,11 +2,15 @@
 
 $racine = dirname(__DIR__);
 $source = file_get_contents($racine . '/plugins/association-evenements/inc/association_evenements_comptabilite.php');
-foreach (array('spip_asso_comptes', 'spip_asso_destination_op') as $table) {
+foreach (array('spip_asso_comptes', 'spip_asso_destination_op', 'spip_transactions') as $table) {
 	if (strpos($source, $table) !== false) {
 		fwrite(STDERR, "Événements accède encore directement à {$table}.\n");
 		exit(1);
 	}
+}
+if (strpos($source, 'association_paiements_transaction_lire(') === false) {
+	fwrite(STDERR, "La couche comptable Événements contourne la façade Paiements.\n");
+	exit(1);
 }
 foreach (array(
 	'association_compta_ecritures_objet_lister(',

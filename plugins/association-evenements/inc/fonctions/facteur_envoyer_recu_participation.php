@@ -6,11 +6,20 @@ function facteur_envoyer_recu_participation($email_inscrit,$id_transaction,$id_a
     include_spip('inc/filtres');
     include_spip('inc/notifications_emails');
     $query_activite = sql_fetsel('id_evenement,date', 'spip_asso_activites', "id_activite=$id_activite");
-    $query_transaction = sql_fetsel('montant,devise','spip_transactions', "id_transaction=$id_transaction");
-    $query_evenement = sql_fetsel("titre,date_debut","spip_evenements", "id_evenement=".$query_activite['id_evenement']);
+	include_spip('inc/association_paiements_transactions');
+	$query_transaction = association_paiements_transaction_lire($id_transaction);
+	if (!$query_activite || !$query_transaction) {
+		association_log('notifications', 'Reçu participation ignoré : inscription ou transaction introuvable', 'erreur');
+		return false;
+	}
+    $query_evenement = sql_fetsel("titre,date_debut","spip_evenements", "id_evenement=".(int) $query_activite['id_evenement']);
+	if (!$query_evenement) {
+		association_log('notifications', 'Reçu participation ignoré : événement introuvable', 'erreur');
+		return false;
+	}
     // Collecte des infos de l'evenement
 
-    if($query_transaction['montant'] == 0){
+    if((float) ($query_transaction['montant'] ?? 0) == 0){
         return false;
     }
 
