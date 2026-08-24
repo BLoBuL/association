@@ -769,3 +769,20 @@ Communication depuis l'artefact SHA-256
 Dans le contexte SPIP servi, Adhésions expose exactement la liste historique
 `sorti, prospect, ok, echu, relance`. L'installation des dix plugins reste
 valide et Communication peut lire la liste sans notice.
+
+## Lot 61 — actifs front historiques autonomisés
+
+Les commits `1360b16` puis `6333560` intègrent les actifs historiques dans leur
+plugin propriétaire et rendent effectif leur usage public. Les 72 tests
+autonomes passent. Le test front parcourt désormais Paiements `modeles`,
+Communication `emails` et Événements `squelettes`, et refuse toute référence
+résiduelle à `blobul-BANK`, `blobul-CORE` ou `blobul-ASSO_FO`.
+
+Le correctif final a été déployé atomiquement dans Événements depuis l'artefact
+SHA-256
+`30122c91190c9f3bf3e18138a4b634975ed0b046f83df8f33d4587592fabaa19`.
+Le SPIP servi confirme 10 plugins actifs, 14 tables, 12 objets SQL et 7 schémas
+valides. La compilation réelle de la page de l'événement 230 produit 24 464
+octets et contient à la fois le portfolio et le formulaire d'inscription. La
+condition finale réserve le portfolio complet aux sessions dont
+`statut_interne=ok`; les autres visiteurs utilisent le squelette verrouillé.
