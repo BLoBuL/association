@@ -1423,3 +1423,26 @@ strictement confinée à l'adaptateur ; les seuls autres accès directs autoris�
 sont les deux migrations qui importent et normalisent les données existantes.
 Un test récursif empêche désormais la réintroduction d'un lecteur comptable
 dans le code métier d'Adhésions.
+
+## Lot 124 — email collectif événement sans lecture croisée
+
+Communication demande désormais par pipeline les inscriptions sélectionnables,
+leurs adresses au moment de l'envoi et le contexte éditorial de l'événement.
+Événements fournit ces données depuis ses propres tables et exclut toujours les
+désinscriptions. Sur l'événement 183, le contrôle serveur obtient trois
+inscriptions, un gabarit de rappel valide et n'expose aucune adresse dans la
+liste de sélection. Aucun email n'a été envoyé.
+
+## Lot 125 — exemples de notifications fournis par les métiers
+
+La page Notifications ne lit plus aucune table `spip_asso_*`, Agenda ou Bank.
+Sur la copie DEV servie par test-fiafe, les fournisseurs retournent six types
+d'adhérents, la cotisation métier 7 liée au compte comptable 955 et neuf
+exemples d'activités couvrant préinscription, inscription, liste d'attente et
+désinscription. Les 221 squelettes privés, douze pages publiques et 64
+composants front compilent après déploiement.
+
+Le premier rendu authentifié de l'onglet Adhésions affiche les six filtres et
+les onze scénarios d'audit conformes, sans adresse et sans envoi. La session
+navigateur a expiré lors du passage à l'onglet Activités ; ce second rendu doit
+être repris après reconnexion, tandis que sa preuve serveur est complète.
