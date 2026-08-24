@@ -14,6 +14,9 @@ if (preg_match('/<label>(?:<:association_adhesions:label_filtre|\[\(#VALEUR\{lab
 foreach (array('filtres_cotisations_explication', 'contexte_adherents', 'filtre_type_inscription_aria', 'periode_du') as $cle) {
 	if (strpos($cotisations . $adherents, 'association_adhesions:' . $cle) === false) $erreurs[] = 'Clé de filtre non utilisée : ' . $cle;
 }
+if (strpos($cotisations, '#SET{periode_contexte,#ENV{periode_contexte,adherent}') === false) {
+	$erreurs[] = 'Le contexte de période n’est pas initialisé depuis la requête.';
+}
 if (strpos($css, '.filtre-groupe > .label') === false) $erreurs[] = 'Le style des libellés sémantiques est absent.';
 if ($erreurs) {
 	fwrite(STDERR, implode("\n", $erreurs) . "\n");
