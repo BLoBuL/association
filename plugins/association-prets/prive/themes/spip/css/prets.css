@@ -1,0 +1,5 @@
+/* Présentation privée des formulaires de prêt. */
+#contenu .formulaire_pret .boutons {
+    margin-left: 0;
+    margin-right: 0;
+}

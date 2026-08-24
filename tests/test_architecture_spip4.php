@@ -344,6 +344,7 @@ $css_communication = file_get_contents($racine . '/plugins/association-communica
 $css_adhesions = file_get_contents($racine . '/plugins/association-adhesions/prive/themes/spip/css/adhesions.css');
 $css_evenements = file_get_contents($racine . '/plugins/association-evenements/prive/themes/spip/css/evenements.css');
 $css_paiements = file_get_contents($racine . '/plugins/association-paiements/prive/themes/spip/css/paiements.css');
+$css_prets = file_get_contents($racine . '/plugins/association-prets/prive/themes/spip/css/prets.css');
 $compta_icone = $racine . '/plugins/association-compta/prive/themes/spip/images/comptes-xx.svg';
 $pipelines_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_pipelines.php');
 $pipelines_evenements = file_get_contents($racine . '/plugins/association-evenements/association_evenements_pipelines.php');
@@ -441,6 +442,15 @@ $verifier(
 		&& strpos($css_paiements, '.miniature_transaction .statut_transaction') !== false
 		&& strpos($css_paiements, '.statut_transaction.rembourse') !== false,
 	'Les miniatures et statuts des transactions doivent appartenir à Paiements.'
+);
+$verifier(
+	strpos($css_socle, '.adherents .formulaire_spip.formulaire_recherche_rapide') === false
+		&& strpos($css_socle, '.bouton.page_cotisation') === false
+		&& strpos($css_socle, '.formulaire_pret') === false
+		&& strpos($css_adhesions, '.formulaire_recherche_rapide') !== false
+		&& strpos($css_adhesions, '.bouton.page_cotisation') !== false
+		&& strpos($css_prets, '.formulaire_pret') !== false,
+	'Les derniers styles métier Adhésions et Prêts doivent quitter le socle.'
 );
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');

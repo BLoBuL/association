@@ -13,4 +13,5 @@
 	<pipeline nom="declarer_tables_interfaces" inclure="base/association_prets.php" />
 	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
 	<necessite nom="intl" compatibilite="[1.3.0;[" />
+	<style source="prive/themes/spip/css/prets.css" type="prive" />
 </paquet>

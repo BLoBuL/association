@@ -1110,10 +1110,6 @@ MESSAGE DE RELANCE
 .formulaire_general input.fondo {
     width: 100%;
 }
-#contenu .formulaire_pret .boutons {
-    margin-left: 0;
-    margin-right: 0;
-}
 #contenu .formulaire_asso ul {
 /*    padding: 0;
     display: table;
@@ -1372,45 +1368,6 @@ form.formulaire_asso {
     padding: 5px 10px;
 }
 
-.adherents .formulaire_spip.formulaire_recherche_rapide {
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-}
-
-.adherents .formulaire_recherche_rapide .boutons {
-    gap: 0.5rem;
-    padding: 0.75rem 0 0;
-    background: transparent;
-    border: 0;
-}
-
-.adherents .formulaire_recherche_rapide .bouton.recherche_avancee {
-    float: none;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-}
-
-.adherents .formulaire_recherche_rapide .boutons a.bouton_editer,
-.adherents .formulaire_recherche_rapide .boutons a.bouton_editer:hover,
-.adherents .formulaire_recherche_rapide .boutons a.bouton_editer:focus-visible {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.625rem;
-    color: #1e3a8a;
-    background: #eff6ff;
-    border: 1px solid #93c5fd;
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-.adherents .formulaire_recherche_rapide .boutons a.bouton_editer:hover,
-.adherents .formulaire_recherche_rapide .boutons a.bouton_editer:focus-visible {
-    color: #172554;
-    background: #dbeafe;
-    border-color: #3b82f6;
-}
 .formulaire_asso input,
 .formulaire_asso input.text,
 .formulaire_asso input.email,
@@ -1530,14 +1487,6 @@ form.formulaire_asso {
     font-size: 1.1em;
 }
 /* allow space for check mark */
-.statut_mailsubscriber.tooltip .tooltiptext {
-    left: inherit;
-    right: 0;
-    font-size: .9em;
-    text-align: left;
-    min-width: 300px;
-}
-.statut_mailsubscriber.tooltip .tooltiptext li {}
 .filtre span {
     font-weight: 700;
 }
@@ -1570,24 +1519,6 @@ form.formulaire_asso {
     color: white;
 }
 
-.bouton.page_cotisation{
-    display: table;
-    margin: 2em;
-    border-radius: 10px;
-}
-.bouton.page_cotisation a{
-    display: table-row;
-    background-color: #9dba00;
-    color: white;
-}
-.bouton.page_cotisation a span{
-    display: table-cell;
-    padding: .5em;
-}
-.bouton.page_cotisation a span.icon{
-    border-right: 1px solid #e1e1e1;
-    color: white;
-}
 /*HACK ok mais pour quoi faire? ju desactive 19052025*/
 #contenu .formulaire_asso .markItUpContainer ul ul {
     /*display: none;*/
