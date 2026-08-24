@@ -511,8 +511,8 @@ $verifier(
 	strpos($fonctions_socle, "include_spip('inc/actions')") === false
 		&& strpos($fonctions_socle, "include_spip('inc/editer')") === false
 		&& strpos($fonctions_socle, "include_spip('inc/autoriser')") === false
-		&& substr_count($fonctions_socle, 'function ') === 7,
-	'Le fichier de fonctions du socle doit rester limite aux six fonctions transversales.'
+		&& substr_count($fonctions_socle, 'function ') === 5,
+	'Le fichier de fonctions du socle doit rester limite aux cinq fonctions transversales.'
 );
 $options_socle = file_get_contents($racine . '/association_options.php');
 $options_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_options.php');

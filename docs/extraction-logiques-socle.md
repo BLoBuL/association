@@ -1092,3 +1092,11 @@ construction invalide de nom dans le reçu de remboursement, qui tentait de
 passer le prénom comme argument de `strtoupper`, est supprimée puisqu'elle
 n'était jamais consommée. Un test interdit désormais ces deux syntaxes dans
 les notifications autonomes d'Événements.
+
+## Lot 96 : normalisation des filtres d'Adhésions
+
+Le filtre global `filtre_scalar_val`, uniquement consommé par les listes de
+périodes des adhérents et cotisations, quitte le socle. Adhésions fournit
+`association_adhesions_valeur_scalaire()` et l'appelle directement dans ses
+filtres publics et privés, sans branche de repli dépendant de l'ordre de
+chargement des plugins.

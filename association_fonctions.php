@@ -59,34 +59,6 @@ function association_is_serialized($value) {
 }
 
 /**
- * Ramener une valeur de squelette à une chaîne scalaire.
- */
-function filtre_scalar_val($val, $defaut = '') {
-	if (is_array($val)) {
-		foreach ($val as $value) {
-			if ($value === null || is_array($value)) {
-				continue;
-			}
-			$scalar = trim((string) $value);
-			if ($scalar !== '') {
-				return $scalar;
-			}
-		}
-		$valeurs = array();
-		array_walk_recursive($val, static function ($value) use (&$valeurs) {
-			if (!is_array($value)) {
-				$valeurs[] = (string) $value;
-			}
-		});
-		return $valeurs ? implode(',', $valeurs) : $defaut;
-	}
-	if ($val === null || $val === '') {
-		return $defaut;
-	}
-	return (string) $val;
-}
-
-/**
  * Construire la navigation de configuration fournie par les modules actifs.
  *
  * @param mixed $webmestre

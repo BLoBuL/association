@@ -32,9 +32,6 @@ $verifier(
 		=== array('liste' => array('a', 'b'), 'texte' => 'ok'),
 	'La désérialisation de configuration est incorrecte.'
 );
-$verifier(filtre_scalar_val(array('', array('ignore'), 'valeur'), 'defaut') === 'valeur', 'Le premier scalaire utile doit être retourné.');
-$verifier(filtre_scalar_val(array(array('a', 'b')), 'defaut') === 'a,b', 'Les tableaux imbriqués doivent être aplatis.');
-$verifier(filtre_scalar_val(null, 'defaut') === 'defaut', 'La valeur par défaut doit être conservée.');
 $navigation_admin = association_configuration_navigation(false);
 $navigation_webmestre = association_configuration_navigation('oui');
 $verifier(

@@ -315,23 +315,35 @@ function filtre_filtres_effectifs_cotisations(){
 	return $eff;
 }
 
+function association_adhesions_valeur_scalaire($valeur, $defaut = '') {
+	if (is_array($valeur)) {
+		foreach ($valeur as $element) {
+			if ($element === null || is_array($element)) {
+				continue;
+			}
+			$scalaire = trim((string) $element);
+			if ($scalaire !== '') {
+				return $scalaire;
+			}
+		}
+		$valeurs = array();
+		array_walk_recursive($valeur, static function ($element) use (&$valeurs) {
+			$valeurs[] = (string) $element;
+		});
+		return $valeurs ? implode(',', $valeurs) : $defaut;
+	}
+	return ($valeur === null || $valeur === '') ? $defaut : (string) $valeur;
+}
+
 function liste_periodes_cotisations($val = null) {
     // Priorité : paramètre explicite 'periode_contexte' > paramètre 'type_cotisation' > défaut 'adherent'
     $contexte = null;
     if (isset($_REQUEST['periode_contexte']) && $_REQUEST['periode_contexte']) {
         // Normaliser la valeur (éviter tableau)
-        if (function_exists('filtre_scalar_val')) {
-            $contexte = filtre_scalar_val($_REQUEST['periode_contexte'], null);
-        } else {
-            $contexte = is_array($_REQUEST['periode_contexte']) ? (string)reset($_REQUEST['periode_contexte']) : (string)$_REQUEST['periode_contexte'];
-        }
+		$contexte = association_adhesions_valeur_scalaire($_REQUEST['periode_contexte'], null);
     } elseif (isset($_REQUEST['type_cotisation']) && $_REQUEST['type_cotisation']) {
         $type_cot = null;
-        if (function_exists('filtre_scalar_val')) {
-            $type_cot = filtre_scalar_val($_REQUEST['type_cotisation'], null);
-        } else {
-            $type_cot = is_array($_REQUEST['type_cotisation']) ? (string)reset($_REQUEST['type_cotisation']) : (string)$_REQUEST['type_cotisation'];
-        }
+		$type_cot = association_adhesions_valeur_scalaire($_REQUEST['type_cotisation'], null);
         // Si type_cotisation est littéralement 'entreprise' on bascule
         if ($type_cot === 'entreprise') {
             $contexte = 'entreprise';

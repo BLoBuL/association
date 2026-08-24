@@ -288,11 +288,7 @@ function filtre_liste_periodes_adherents($limite = 6){
 
 	// Détecter contexte optionnel depuis la requête (toggle Adhérents/Entreprises)
 	if (isset($_REQUEST['periode_contexte'])) {
-		if (function_exists('filtre_scalar_val')) {
-			$contexte = filtre_scalar_val($_REQUEST['periode_contexte'], null);
-		} else {
-			$contexte = is_array($_REQUEST['periode_contexte']) ? (string)reset($_REQUEST['periode_contexte']) : (string)$_REQUEST['periode_contexte'];
-		}
+		$contexte = association_adhesions_valeur_scalaire($_REQUEST['periode_contexte'], null);
 	} else {
 		$contexte = null;
 	}
