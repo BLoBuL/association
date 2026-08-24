@@ -1238,3 +1238,32 @@ règlement. Aucun formulaire ni aucune action métier n'a été déclenché.
 Les 90 tests autonomes passent. Le serveur valide dix plugins, quatorze tables,
 douze objets SQL et sept schémas, puis compile 221 squelettes privés, douze
 pages publiques et 64 composants front.
+
+## Lot 113 — recette des actifs front historiques autonomisés
+
+La comparaison avec les sources confirme la reprise des quatre modèles de
+`blobul-BANK/modeles` dans Paiements, de la coque email et de ses fragments
+utiles depuis `blobul-CORE/emails` dans Communication, ainsi que des trois
+composants Événements de `blobul-ASSO_FO`. Les variantes autonomes utilisent
+les API de configuration et domaines de langue de la suite, sans référence à
+un plugin Blobul historique. Le test `test_squelettes_publics_modules.php`
+confirme ces contrats.
+
+La session publique authentifiée sert les pages Inscription, Profil/Fiche
+d'adhésion, Événement 183, Ressources et Newsletter depuis les squelettes SPIP
+standards des modules. Les formulaires de profil et newsletter, le message
+d'inscription déjà connecté, la fiche événement et l'état vide des ressources
+sont présents. Aucun formulaire n'a été soumis.
+
+## Lot 114 — retrait des reliquats CSS inactifs
+
+Le commit `4889a872` est déployé depuis l'artefact SHA-256
+`2feaf9ccafa3383bc6a9c84586f533fe640828fd98fa17838ebe4231bf1d06a3`.
+Les anciens blocs commentés ou vides liés aux pages Adhérents et Activités ont
+été supprimés du socle. Les deux dernières règles strictement Adhérents sont
+portées par Adhésions. La page Adhérents conserve ses filtres colorés et ses
+treize résultats ; la fiche de l'événement 183 conserve ses cinq inscriptions.
+
+Les 90 tests autonomes et le test des squelettes publics passent. Le serveur
+valide dix plugins, quatorze tables, douze objets SQL et sept schémas, puis
+compile 221 squelettes privés, douze pages publiques et 64 composants front.
