@@ -76,6 +76,22 @@ if (!is_file($hierarchie_comptes)
 	$erreurs[] = 'Hiérarchie absente : comptes';
 }
 
+$traductions_interdites = array(
+	"$racine/plugins/association-dons/prive/squelettes/hierarchie/editer_asso_dons.html",
+	"$racine/plugins/association-ventes/prive/squelettes/hierarchie/editer_asso_ventes.html",
+);
+foreach ($traductions_interdites as $fichier) {
+	if (str_contains(file_get_contents($fichier), '<:info_modifier:>')) {
+		$erreurs[] = 'Une clé générique inexistante subsiste dans ' . basename($fichier);
+	}
+}
+if (!str_contains(
+	file_get_contents("$racine/plugins/association-compta/prive/squelettes/contenu/migration_donnees_comptables.html"),
+	'<:association_compta:navigation_migration_donnees:>'
+)) {
+	$erreurs[] = 'La migration comptable reprend encore le titre de l’import des destinations';
+}
+
 if ($erreurs) {
 	fwrite(STDERR, implode("\n", $erreurs) . "\n");
 	exit(1);
