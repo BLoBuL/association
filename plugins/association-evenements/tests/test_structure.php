@@ -5,6 +5,7 @@ $paquet = file_get_contents($racine . '/paquet.xml');
 $base = file_get_contents($racine . '/base/association_evenements.php');
 $admin = file_get_contents($racine . '/association_evenements_administrations.php');
 $champs_extras = file_get_contents($racine . '/base/association_champs_extras.php');
+$fonctions = file_get_contents($racine . '/association_evenements_fonctions.php');
 $erreurs = array();
 foreach (array('prefix="association_evenements"', 'schema="1.2.0"', 'nom="agenda"', 'nom="saisies"', 'nom="verifier"') as $attendu) {
 	if (strpos($paquet, $attendu) === false) $erreurs[] = 'déclaration absente: ' . $attendu;
@@ -20,6 +21,11 @@ if (!str_contains($champs_extras, "include_spip('association_evenements_options'
 	|| str_contains($champs_extras, "include_spip('association_options')")
 	|| str_contains($champs_extras, '_DIR_PLUGIN_ASSOCIATION')) {
 	$erreurs[] = 'les champs extras doivent charger les options de leur propre plugin';
+}
+foreach (array('inc/actions', 'inc/editer', 'inc/autoriser') as $api) {
+	if (!str_contains($fonctions, "include_spip('$api')")) {
+		$erreurs[] = "la surcharge Agenda doit charger l’API SPIP $api";
+	}
 }
 if (!is_file($racine . '/squelettes/evenement.html')) $erreurs[] = 'page publique événement absente';
 if ($erreurs) {

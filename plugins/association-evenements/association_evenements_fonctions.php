@@ -2,6 +2,12 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 
+// Ces surcharges du formulaire Agenda sont chargées depuis les squelettes,
+// avant que le fichier CVT d'origine ait nécessairement inclus ses API.
+include_spip('inc/actions');
+include_spip('inc/editer');
+include_spip('inc/autoriser');
+
 
 function ie_message_erreur_texte($message) {
 	$message = html_entity_decode((string) $message, ENT_QUOTES | ENT_HTML5, 'UTF-8');
