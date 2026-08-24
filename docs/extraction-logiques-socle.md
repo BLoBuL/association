@@ -1154,3 +1154,9 @@ privée d'Adhésions, avec les règles d'accessibilité et de consultation mobil
 Le tableau, sa légende, les badges de justificatifs, les icônes de première
 inscription ou renouvellement et la transformation en cartes sous 640 pixels
 quittent le socle. Toute cette présentation appartient maintenant à Adhésions.
+
+## Lot 105 : listes privées des activités
+
+Les listes d'activités et leurs exports quittent la feuille transversale. Le
+plugin Événements déclare sa propre feuille privée et porte les titres, états
+d'ouverture, quotas, listes d'attente et séparateurs annuels ou mensuels.
