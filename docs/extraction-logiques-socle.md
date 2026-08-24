@@ -960,3 +960,11 @@ Le plugin Paiements ne lit plus `spip_asso_activites` ni
 `spip_asso_cotisations` dans le callback d'encaissement. Les textes de journal
 des inscriptions et l'implémentation de leur transition appartiennent désormais
 à Événements.
+
+## Lot 81 : redirection Bank distribuée
+
+Après un retour Bank privé, Paiements ne cherche plus directement une
+inscription et ne choisit plus la fiche d'un adhérent. Le pipeline
+`association_paiements_redirection_transaction` laisse Événements rediriger
+vers l'activité et Adhésions vers l'auteur de la cotisation. En absence de
+propriétaire métier, la fiche native de la transaction sert de repli.

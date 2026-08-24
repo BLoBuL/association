@@ -51,4 +51,5 @@
 	<pipeline nom="association_maintenance_bdd_configurer" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_maintenance_bdd_verifier_configuration" inclure="association_evenements_pipelines.php" />
 	<pipeline nom="association_paiements_reglement_traiter" inclure="association_evenements_pipelines.php" />
+	<pipeline nom="association_paiements_redirection_transaction" inclure="association_evenements_pipelines.php" />
 </paquet>

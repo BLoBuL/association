@@ -17,9 +17,13 @@ if (!str_contains($paquet, 'nom="association_paiements_reglement_traiter"')
 	|| !str_contains($evenements, 'function association_evenements_association_paiements_reglement_traiter(')
 	|| !str_contains($adhesions, 'function association_adhesions_association_paiements_reglement_traiter(')
 	|| !str_contains($compta, 'function association_compta_association_paiements_reglement_traiter(')
+	|| !str_contains($paquet, 'nom="association_paiements_redirection_transaction"')
+	|| !str_contains($paiements, "pipeline('association_paiements_redirection_transaction'")
+	|| !str_contains($evenements, 'function association_evenements_association_paiements_redirection_transaction(')
+	|| !str_contains($adhesions, 'function association_adhesions_association_paiements_redirection_transaction(')
 ) {
 	fwrite(STDERR, "Le callback Bank n'est pas distribué entre ses propriétaires métier.\n");
 	exit(1);
 }
 
-echo "OK: Paiements distribue les règlements sans lire les tables métier.\n";
+echo "OK: Paiements distribue les règlements et redirections sans lire les tables métier.\n";

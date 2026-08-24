@@ -238,6 +238,20 @@ function association_adhesions_association_paiements_reglement_traiter($flux) {
 	return $flux;
 }
 
+function association_adhesions_association_paiements_redirection_transaction($flux) {
+	if (is_string($flux['data']) && $flux['data'] !== '') {
+		return $flux;
+	}
+	$id_transaction = (int) ($flux['args']['id_transaction'] ?? 0);
+	$id_auteur = $id_transaction
+		? (int) sql_getfetsel('id_auteur', 'spip_asso_cotisations', 'id_transaction=' . $id_transaction)
+		: 0;
+	if ($id_auteur) {
+		$flux['data'] = generer_url_ecrire('voir_adherent', 'id_auteur=' . $id_auteur);
+	}
+	return $flux;
+}
+
 
 function association_i3_admin_peut_ignorer_obligatoires($id_auteur)
 {

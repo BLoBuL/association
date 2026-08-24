@@ -21,6 +21,20 @@ function association_evenements_association_paiements_reglement_traiter($flux) {
 	return $flux;
 }
 
+function association_evenements_association_paiements_redirection_transaction($flux) {
+	if (is_string($flux['data']) && $flux['data'] !== '') {
+		return $flux;
+	}
+	$id_transaction = (int) ($flux['args']['id_transaction'] ?? 0);
+	$id_evenement = $id_transaction
+		? (int) sql_getfetsel('id_evenement', 'spip_asso_activites', 'id_transaction=' . $id_transaction)
+		: 0;
+	if ($id_evenement) {
+		$flux['data'] = generer_url_ecrire('voir_activites', 'id=' . $id_evenement);
+	}
+	return $flux;
+}
+
 function association_evenements_association_config_cli_registre($flux) {
 	include_spip('inc/association_evenements_config_cli');
 	$flux['data'] = association_config_cli_ajouter_definitions($flux['data'], association_evenements_config_cli_definitions());

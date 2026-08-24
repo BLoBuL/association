@@ -58,15 +58,16 @@ function association_bank_redirige_apres_retour_transaction($flux)
         and test_espace_prive()
         and include_spip("inc/autoriser")
         and autoriser("regler", "transaction", $id_transaction)) {
-        if ($query_activite = sql_fetsel('*', 'spip_asso_activites', "id_transaction=".intval($id_transaction))) {
-            // Redirection vers la fiche de l'activité.
-            //$flux['data'] = generer_url_ecrire('editer_asso_activite', 'id='.$query_activite['id_activite']);
-            $flux['data'] = generer_url_ecrire('voir_activites', 'id='.$query_activite['id_evenement']);
-        } else {
-            // Redirection vers la fiche de l'auteur.
-            $id_auteur = $flux['args']['row']['id_auteur'];
-            $flux['data'] = generer_url_ecrire('voir_adherent', 'id_auteur='.$id_auteur);
-        }
+        $redirection = pipeline('association_paiements_redirection_transaction', array(
+            'args' => array(
+                'id_transaction' => (int) $id_transaction,
+                'transaction' => is_array($flux['args']['row'] ?? null) ? $flux['args']['row'] : array(),
+            ),
+            'data' => '',
+        ));
+        $flux['data'] = is_string($redirection) && $redirection !== ''
+            ? $redirection
+            : generer_url_ecrire('transaction', 'id_transaction=' . (int) $id_transaction);
     }
     return $flux;
 }

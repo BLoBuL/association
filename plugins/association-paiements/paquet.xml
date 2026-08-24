@@ -6,6 +6,7 @@
 	<necessite nom="association_compta" compatibilite="[4.0.0;4.*]" />
 	<pipeline nom="trig_bank_notifier_reglement" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_paiements_reglement_traiter" action="" />
+	<pipeline nom="association_paiements_redirection_transaction" action="" />
 	<pipeline nom="bank_redirige_apres_retour_transaction" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_maintenance_auteurs_encaisses" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_paiements_pipelines.php" />
