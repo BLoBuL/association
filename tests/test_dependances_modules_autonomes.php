@@ -11,6 +11,9 @@ $modules = array(
 	'association_paiements',
 	'association_prets',
 	'association_ventes',
+	'association_commerce',
+	'association_partenaires',
+	'association_bannieres',
 );
 $erreurs = array();
 $metiers = array_flip($modules);

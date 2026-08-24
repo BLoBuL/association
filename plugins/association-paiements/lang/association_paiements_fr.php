@@ -5,6 +5,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 $GLOBALS[$GLOBALS['idx_lang']] = array(
+	'titre_transactions' => 'Paiements',
 	'activite_bouton_modifier_inscription' => 'Modifier l’inscription',
 	'activite_content_cotisation_abandon' => 'Annulé',
 	'activite_content_cotisation_attente' => 'En attente de paiement',

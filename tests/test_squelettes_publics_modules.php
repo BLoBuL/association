@@ -7,6 +7,9 @@ $attendus = array(
 	'plugins/association-evenements/squelettes/evenement.html' => '#FORMULAIRE_INSCRIPTION_EVENEMENT_PUBLIC',
 	'plugins/association-prets/squelettes/ressources.html' => '#MODELE{asso_ressources',
 	'plugins/association-communication/squelettes/newsletter.html' => '#FORMULAIRE_NEWSLETTER_SUBSCRIBE',
+	'plugins/association-commerce/squelettes/boutique.html' => 'association-commerce-catalogue',
+	'plugins/association-partenaires/squelettes/partenaires.html' => 'asso_partenaires',
+	'plugins/association-bannieres/squelettes/bannieres.html' => 'asso_bannieres',
 );
 
 foreach ($attendus as $fichier => $usage) {

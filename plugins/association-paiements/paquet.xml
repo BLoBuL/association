@@ -7,6 +7,7 @@
 	<utilise nom="commandes" />
 	<utilise nom="formidable" />
 	<pipeline nom="autoriser" inclure="association_paiements_autoriser.php" />
+	<pipeline nom="association_menu_entrees" inclure="inc/association_paiements_menu.php" />
 	<pipeline nom="association_capacites" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="insert_head_css" inclure="association_paiements_pipelines.php" />
 	<pipeline nom="trig_bank_notifier_reglement" inclure="association_paiements_pipelines.php" />

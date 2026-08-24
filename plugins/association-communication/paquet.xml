@@ -8,6 +8,7 @@
 	<necessite nom="mailshot" compatibilite="[2.0.0;[" />
 	<pipeline nom="notifications_destinataires" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_capacites" inclure="association_communication_pipelines.php" />
+	<pipeline nom="association_menu_entrees" inclure="inc/association_communication_menu.php" />
 	<pipeline nom="association_notifier_metier" inclure="association_communication_pipelines.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="association_communication_pipelines.php" />
 	<pipeline nom="association_notifications_metiers" action="" />

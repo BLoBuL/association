@@ -1,0 +1,8 @@
+<B_partenaires>
+<div class="liste-objets asso_partenaires"><table class="spip liste"><thead><tr class="first_row">
+<th><:association_partenaires:titre:></th><th><:association_partenaires:organisation:></th><th><:association_partenaires:niveau:></th><th><:association_partenaires:statut:></th><th></th>
+</tr></thead><tbody>
+<BOUCLE_partenaires(ASSO_PARTENAIRES){par ordre,titre}{pagination 20}>
+<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]"><td>#TITRE</td><td><BOUCLE_org(ORGANISATIONS){id_organisation}>#NOM</BOUCLE_org></td><td>#NIVEAU</td><td>#STATUT</td><td><a href="#URL_ECRIRE{editer_asso_partenaire,id_partenaire=#ID_PARTENAIRE}"><:bouton_modifier:></a></td></tr>
+</BOUCLE_partenaires></tbody></table>[<nav class="pagination">(#PAGINATION{prive})</nav>]</div>
+</B_partenaires><p class="notice"><:association_partenaires:partenaire_aucun:></p><//B_partenaires>

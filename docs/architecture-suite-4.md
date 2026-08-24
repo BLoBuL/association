@@ -3,7 +3,7 @@
 ## Statut
 
 La branche `4.x` est distribuée depuis un monorepo sous la forme d’un socle et
-de neuf plugins métier. Les tables, dépendances externes et pages publiques ont été transférées
+de douze plugins métier. Les tables, dépendances externes et pages publiques ont été transférées
 à leur propriétaire. Le socle conserve encore les services de compatibilité du
 BO 6.8 afin que la première livraison 4.0 n’impose aucune perte fonctionnelle ;
 leur déplacement interne pourra ensuite se faire sans migration de données.
@@ -22,6 +22,9 @@ leur déplacement interne pourra ensuite se faire sans migration de données.
 | Dons | `association_dons` | dons et contreparties | reçus, comptabilité et paiement optionnel |
 | Ventes | `association_ventes` | ventes et expéditions | comptabilité et paiement optionnel |
 | Communication | `association_communication` | gabarits et préférences propres à la suite | Notifications, Mailshot et Mailsubscribers |
+| Commerce | `association_commerce` | orchestration du catalogue, du panier et de la commande | Prix, Paniers et Commandes ; Paiements facultatif |
+| Partenaires | `association_partenaires` | qualification et exposition des partenariats | Contacts et Organisations |
+| Bannières | `association_bannieres` | campagnes publicitaires, emplacements et périodes | modèles publics et logos SPIP |
 
 Le socle est à la racine du dépôt. Chaque module métier est un plugin autonome
 dans `plugins/<nom-du-plugin>`. Le dossier déployé porte le nom du plugin, sans
@@ -35,6 +38,12 @@ Ventes, Prêts, Comptabilité, Adhésions, Événements, Communication, Groupes 
 Paiements possèdent désormais leurs actions, CVT, pages, autorisations, options
 et pipelines métier. Le socle conserve les contrats transversaux, la
 configuration commune et la compatibilité de migration.
+
+Chaque module contribue lui-même ses entrées au pipeline
+`association_menu_entrees` et ses réglages aux pipelines
+`association_configuration_navigation` et `association_configuration_saisies`.
+Le socle ne connaît ni les pages ni les champs métier : désactiver un module
+retire donc naturellement son menu et son onglet de configuration.
 
 ## Règles SPIP
 
@@ -97,7 +106,11 @@ module.
 7. Communication porte Notifications et Mailsubscribers ;
 8. Groupes porte Champs Extras ;
 9. les pages publiques profil/adhésion/inscription sont dans Adhésions et la
-   page événement dans Événements.
+   page événement dans Événements ;
+10. Commerce expose la boutique et le mini-panier en s'appuyant sur Paniers,
+    Commandes et Prix ;
+11. Partenaires relie sa propre qualification aux organisations de Contacts ;
+12. Bannières fournit un objet éditorial autonome et un modèle par emplacement.
 
 Chaque extraction exige une matrice de traçabilité 2.1 / 2.2 / 6.8 / 4.x,
 des tests de caractérisation et une migration idempotente.

@@ -32,6 +32,7 @@ try {
 			'association-compta', 'association-dons', 'association-evenements',
 			'association-groupes', 'association-paiements', 'association-prets',
 			'association-ventes',
+			'association-commerce', 'association-partenaires', 'association-bannieres',
 		);
 		foreach ($plugins as $plugin) {
 			if (!is_file($stage . '/' . $plugin . '/paquet.xml')) {
@@ -42,13 +43,13 @@ try {
 			$erreurs[] = 'les modules ne doivent jamais etre imbriques dans association/plugins';
 		}
 		$packages = glob($stage . '/*/paquet.xml');
-		if (count($packages) !== 10) {
-			$erreurs[] = 'le staging doit contenir exactement dix paquet.xml de premier niveau';
+		if (count($packages) !== 13) {
+			$erreurs[] = 'le staging doit contenir exactement treize paquet.xml de premier niveau';
 		}
 
 		$manifestPath = $stage . '/association-suite-manifest.json';
 		$manifest = is_file($manifestPath) ? json_decode(file_get_contents($manifestPath), true) : null;
-		if (!is_array($manifest) || count($manifest['plugins'] ?? array()) !== 10) {
+		if (!is_array($manifest) || count($manifest['plugins'] ?? array()) !== 13) {
 			$erreurs[] = 'manifest JSON absent ou incomplet';
 		} else {
 			foreach ($manifest['plugins'] as $entry) {
@@ -69,4 +70,4 @@ if ($erreurs) {
 	exit(1);
 }
 
-echo "OK: staging du monorepo en dix plugins freres.\n";
+echo "OK: staging du monorepo en treize plugins freres.\n";

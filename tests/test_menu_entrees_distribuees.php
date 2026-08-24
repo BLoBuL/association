@@ -8,6 +8,9 @@ $modules = array(
 	'association-prets' => 'association_prets', 'association-dons' => 'association_dons',
 	'association-evenements' => 'association_evenements', 'association-groupes' => 'association_groupes',
 	'association-compta' => 'association_compta', 'association-adhesions' => 'association_adhesions',
+	'association-partenaires' => 'association_partenaires', 'association-commerce' => 'association_commerce',
+	'association-ventes' => 'association_ventes', 'association-paiements' => 'association_paiements',
+	'association-bannieres' => 'association_bannieres', 'association-communication' => 'association_communication',
 );
 foreach ($modules as $module => $prefixe) {
 	require_once $racine . '/plugins/' . $module . '/inc/' . $prefixe . '_menu.php';
@@ -29,13 +32,13 @@ $entrees = pipeline('association_menu_entrees', array(
 	'configurer_association' => array('ordre' => 99, 'label' => 'Paramètres', 'exec' => 'configurer_association', 'icone' => 'configurer_association'),
 ));
 uasort($entrees, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
-$attendues = array('adherents','cotisations','activites','benevoles','dons','comptes','prets','configurer_association');
-verifier_menu(array_keys($entrees) === $attendues, 'les huit entrées conservent leur ordre historique');
+$attendues = array('adherents','cotisations','activites','benevoles','partenaires','commerce','ventes','dons','comptes','transactions','prets','bannieres','notifications','configurer_association');
+verifier_menu(array_keys($entrees) === $attendues, 'les entrées sont fournies et ordonnées par leurs modules');
 foreach ($entrees as $cle => $definition) {
 	verifier_menu($definition['exec'] === $cle, "$cle conserve sa page privée");
 }
 $socle = file_get_contents($racine . '/association_pipelines.php');
-foreach (array('adherents','cotisations','activites','benevoles','dons','comptes','prets') as $cle) {
+foreach (array('adherents','cotisations','activites','benevoles','partenaires','commerce','ventes','dons','comptes','transactions','prets','bannieres','notifications') as $cle) {
 	verifier_menu(strpos($socle, "'$cle' =>") === false, "$cle n est plus déclaré par le socle");
 }
 echo "Toutes les entrées de menu distribuées sont identiques.\n";

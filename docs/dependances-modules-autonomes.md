@@ -29,6 +29,9 @@ SPIP ordonne aussi ces relations facultatives et recréerait un cycle. Leurs
 | Prêts | Intl | ressources et prêts | persiste sans Compta/Paiements; comptabilisation facultative |
 | Dons | aucune | dons et reçus | persiste sans Compta/Paiements/Communication |
 | Ventes | aucune | ventes et expéditions | persiste sans Compta/Paiements/Adhésions |
+| Commerce | Paniers, Commandes, Prix | catalogue, panier et passage en commande | sans Paiements, conserve le panier et la commande avec les moyens externes disponibles |
+| Partenaires | Contacts & Organisations | qualification, périodes et présentation publique des partenaires | autonome vis-à-vis des autres métiers de la suite |
+| Bannières | aucune | campagnes, emplacements et modèles publicitaires | autonome ; le logo SPIP porte le visuel de la bannière |
 
 ## Combinaisons supportées
 
@@ -45,6 +48,9 @@ SPIP ordonne aussi ces relations facultatives et recréerait un cycle. Leurs
 | Dons, Ventes ou Prêts sans Compta | objet métier complet avec lien comptable nul |
 | Dons, Ventes ou Prêts + Compta | création ou synchronisation facultative d'une écriture |
 | Suite complète | enrichissements cumulés, sans changement de propriétaire des données |
+| Commerce seul | catalogue, panier et commandes ; le règlement Association reste facultatif |
+| Partenaires seul | organisations Contacts qualifiées et publiées comme partenaires |
+| Bannières seul | diffusion des visuels publiés par emplacement |
 
 La désactivation puis la réactivation d'un complément ne supprime aucune donnée.
 Les wrappers historiques restent des adaptateurs dépréciés; tout nouveau code

@@ -7,6 +7,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 function association_paiements_autoriser() {
 }
 
+function autoriser_transactions_menu_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
+	return autoriser('menu', '_transactions', 0, $qui, $opt);
+}
+
 /**
  * Autoriser la suppression uniquement pour une transaction abandonnee et un
  * operateur deja habilite a gerer les transactions par Bank.

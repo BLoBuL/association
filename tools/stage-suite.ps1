@@ -32,7 +32,10 @@ $moduleNames = @(
 	'association-groupes',
 	'association-paiements',
 	'association-prets',
-	'association-ventes'
+	'association-ventes',
+	'association-commerce',
+	'association-partenaires',
+	'association-bannieres'
 )
 $pluginNames = @('association') + $moduleNames
 

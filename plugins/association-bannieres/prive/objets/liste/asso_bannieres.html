@@ -1,0 +1,3 @@
+<B_liste><div class="liste-objets asso_bannieres"><table class="spip liste"><thead><tr><th><:association_bannieres:titre:></th><th><:association_bannieres:emplacement:></th><th><:association_bannieres:statut:></th></tr></thead><tbody>
+<BOUCLE_liste(ASSO_BANNIERES){par emplacement,ordre,titre}{pagination 30}><tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]"><td><a href="[(#URL_ECRIRE{editer_asso_banniere,id_banniere=#ID_BANNIERE})]">#TITRE</a></td><td>#EMPLACEMENT</td><td>#STATUT</td></tr></BOUCLE_liste>
+</tbody></table>[<nav class="pagination">(#PAGINATION)</nav>]</div></B_liste><p class="notice"><:association_bannieres:banniere_aucune:></p><//B_liste>

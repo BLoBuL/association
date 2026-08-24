@@ -54,7 +54,7 @@ Avant de créer un tag ou une archive :
 1. choisir explicitement le canal `test` ou `stable` ;
 2. fixer l'état correspondant dans chacun des paquets livrés ;
 3. retirer le suffixe `-dev` de la version du socle pour une livraison ;
-4. rejouer les 141 tests, le staging des dix plugins et la compilation SPIP ;
+4. rejouer la suite de tests, le staging des treize plugins et la compilation SPIP ;
 5. produire l'archive depuis le tag qualifié, jamais depuis une tête de branche ;
 6. contrôler le manifeste de staging, les versions et les empreintes ;
 7. déployer d'abord sur un site de qualification et refaire les recettes BO et

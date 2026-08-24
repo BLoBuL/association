@@ -1,0 +1,6 @@
+#CACHE{0}
+<div class="mini-panier">
+	<h2><:association_commerce:panier_titre:></h2>
+	<p>[(#SESSION{id_panier}|paniers_nombre_produits|singulier_ou_pluriel{paniers:produit_un,paniers:produits_plusieurs})]</p>
+	<p><a href="#URL_PAGE{panier}"><:paniers:voir_mon_panier:></a></p>
+</div>

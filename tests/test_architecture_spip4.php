@@ -15,11 +15,12 @@ $modules_autonomes = array(
 	'association-adhesions', 'association-communication', 'association-compta',
 	'association-dons', 'association-evenements', 'association-groupes',
 	'association-paiements', 'association-prets', 'association-ventes',
+	'association-commerce', 'association-partenaires', 'association-bannieres',
 );
 foreach ($modules_autonomes as $module_autonome) {
 	$paquet_module = file_get_contents($racine . '/plugins/' . $module_autonome . '/paquet.xml');
 	$verifier(strpos($paquet_module, '<necessite nom="association"') !== false, "$module_autonome doit necessiter le socle.");
-	$verifier(!preg_match('/<necessite nom="association_(?:adhesions|communication|compta|dons|evenements|groupes|paiements|prets|ventes)"/', $paquet_module), "$module_autonome ne doit necessiter aucun autre module metier.");
+	$verifier(!preg_match('/<necessite nom="association_(?:adhesions|communication|compta|dons|evenements|groupes|paiements|prets|ventes|commerce|partenaires|bannieres)"/', $paquet_module), "$module_autonome ne doit necessiter aucun autre module metier.");
 }
 $communication_paquet = file_get_contents($racine . '/plugins/association-communication/paquet.xml');
 $paiements_paquet = file_get_contents($racine . '/plugins/association-paiements/paquet.xml');

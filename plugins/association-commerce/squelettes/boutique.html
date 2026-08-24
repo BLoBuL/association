@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html dir="#LANG_DIR" lang="#LANG" class="[(#LANG_DIR)][ (#LANG)] no-js">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title><:association_commerce:boutique_titre:> - [(#NOM_SITE_SPIP|textebrut)]</title>
+	<INCLURE{fond=inclure/head} />
+</head>
+<body class="pas_surlignable page_boutique">
+<div class="page">
+	<INCLURE{fond=inclure/header} />
+	<INCLURE{fond=inclure/nav,env} />
+	<main class="main" role="main"><div class="wrapper"><div class="content" id="content">
+		<p class="arbo"><a href="#URL_SITE_SPIP/"><:accueil_site:></a> &gt; <strong class="on"><:association_commerce:boutique_titre:></strong></p>
+		<h1><:association_commerce:boutique_titre:></h1>
+		<INCLURE{fond=inclure/association-commerce-catalogue,env,ajax} />
+	</div></div><aside class="aside" role="complementary"><INCLURE{fond=inclure/association-commerce-mini-panier,env} /></aside></main>
+	<INCLURE{fond=inclure/footer,self=#SELF} />
+</div>
+</body>
+</html>

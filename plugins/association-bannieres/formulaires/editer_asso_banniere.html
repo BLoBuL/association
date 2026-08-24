@@ -1,0 +1,15 @@
+<div class="formulaire_spip formulaire_editer formulaire_#FORM">
+[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+<form method="post" action="#ENV{action}"><div>#ACTION_FORMULAIRE{#ENV{action}}
+<div class="editer-groupe">
+[(#SAISIE{input,titre,label=<:association_bannieres:titre:>,obligatoire=oui})]
+[(#SAISIE{textarea,descriptif,label=<:association_bannieres:descriptif:>,rows=5})]
+[(#SAISIE{input,url,label=<:association_bannieres:url:>,type=url})]
+[(#SAISIE{input,emplacement,label=<:association_bannieres:emplacement:>,obligatoire=oui})]
+[(#SAISIE{input,ordre,label=<:association_bannieres:ordre:>,type=number})]
+[(#SAISIE{date,date_debut,label=<:association_bannieres:date_debut:>})]
+[(#SAISIE{date,date_fin,label=<:association_bannieres:date_fin:>})]
+[(#SAISIE{selection,statut,label=<:association_bannieres:statut:>,datas=#ARRAY{publie,<:texte_statut_publie:>,prepa,<:texte_statut_en_cours_redaction:>,poubelle,<:texte_statut_poubelle:>}})]
+</div><p class="boutons"><button type="submit" class="submit"><:bouton_enregistrer:></button></p>
+</div></form></div>

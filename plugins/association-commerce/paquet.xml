@@ -1,0 +1,16 @@
+<paquet prefix="association_commerce" categorie="activite" version="4.0.0" etat="dev" compatibilite="[4.0.0;4.*]">
+	<nom>Association - Commerce</nom>
+	<auteur>Julien Bellegueulle</auteur>
+	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
+	<necessite nom="association" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="paniers" />
+	<necessite nom="commandes" />
+	<necessite nom="prix" compatibilite="[1.4.0;[" />
+	<utilise nom="association_paiements" compatibilite="[4.0.0;4.*]" />
+	<pipeline nom="autoriser" inclure="association_commerce_autoriser.php" />
+	<pipeline nom="association_menu_entrees" inclure="inc/association_commerce_menu.php" />
+	<pipeline nom="association_configuration_navigation" inclure="association_commerce_pipelines.php" />
+	<pipeline nom="association_configuration_saisies" inclure="association_commerce_pipelines.php" />
+	<pipeline nom="association_capacites" inclure="association_commerce_pipelines.php" />
+	<pipeline nom="association_installation_inventaire" inclure="inc/association_commerce_installation.php" />
+</paquet>

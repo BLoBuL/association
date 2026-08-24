@@ -1,0 +1,18 @@
+<div class="formulaire_spip formulaire_editer formulaire_#FORM">
+[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+<form method="post" action="#ENV{action}"><div>
+#ACTION_FORMULAIRE{#ENV{action}}
+<div class="editer-groupe">
+	[(#SAISIE{selection,id_organisation,label=<:association_partenaires:organisation:>,obligatoire=oui,datas=#ENV{_organisations}})]
+	[(#SAISIE{input,titre,label=<:association_partenaires:titre:>})]
+	[(#SAISIE{input,niveau,label=<:association_partenaires:niveau:>})]
+	[(#SAISIE{textarea,descriptif,label=<:association_partenaires:descriptif:>,rows=6})]
+	[(#SAISIE{input,url,label=<:association_partenaires:url:>,type=url})]
+	[(#SAISIE{input,ordre,label=<:association_partenaires:ordre:>,type=number})]
+	[(#SAISIE{date,date_debut,label=<:association_partenaires:date_debut:>})]
+	[(#SAISIE{date,date_fin,label=<:association_partenaires:date_fin:>})]
+	[(#SAISIE{selection,statut,label=<:association_partenaires:statut:>,datas=#ARRAY{publie,<:texte_statut_publie:>,prepa,<:texte_statut_en_cours_redaction:>,poubelle,<:texte_statut_poubelle:>}})]
+</div>
+<p class="boutons"><button type="submit" class="submit"><:bouton_enregistrer:></button></p>
+</div></form></div>

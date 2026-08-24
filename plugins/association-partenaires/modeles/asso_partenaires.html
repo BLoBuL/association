@@ -1,0 +1,14 @@
+<B_partenaires>
+<div class="liste partenaires"><ul class="liste-items">
+<BOUCLE_partenaires(ASSO_PARTENAIRES){statut=publie}{par ordre,titre}{pagination #ENV{pagination,20}}>
+<li class="item partenaire">
+	<BOUCLE_organisation(ORGANISATIONS){id_organisation}>
+	[(#LOGO_ORGANISATION|image_reduire{240,140})]
+	<h2 class="h3">[(#_partenaires:TITRE|sinon{#NOM})]</h2>
+	</BOUCLE_organisation>
+	[<div class="descriptif">(#DESCRIPTIF|propre)</div>]
+	[<p><a href="(#URL)" rel="external"><:association_partenaires:voir_site:></a></p>]
+</li>
+</BOUCLE_partenaires>
+</ul>[<nav class="pagination">(#PAGINATION)</nav>]</div>
+</B_partenaires><p class="notice"><:association_partenaires:partenaire_aucun:></p><//B_partenaires>

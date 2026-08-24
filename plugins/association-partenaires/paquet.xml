@@ -1,0 +1,15 @@
+<paquet prefix="association_partenaires" categorie="activite" version="4.0.0" etat="dev" compatibilite="[4.0.0;4.*]" schema="1.0.0">
+	<nom>Association - Partenaires</nom>
+	<auteur>Julien Bellegueulle</auteur>
+	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
+	<necessite nom="association" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="contacts" compatibilite="[5.2.0;5.*]" />
+	<pipeline nom="autoriser" inclure="association_partenaires_autoriser.php" />
+	<pipeline nom="declarer_tables_objets_sql" inclure="base/association_partenaires.php" />
+	<pipeline nom="declarer_tables_interfaces" inclure="base/association_partenaires.php" />
+	<pipeline nom="association_menu_entrees" inclure="inc/association_partenaires_menu.php" />
+	<pipeline nom="association_configuration_navigation" inclure="association_partenaires_pipelines.php" />
+	<pipeline nom="association_configuration_saisies" inclure="association_partenaires_pipelines.php" />
+	<pipeline nom="association_capacites" inclure="association_partenaires_pipelines.php" />
+	<pipeline nom="association_installation_inventaire" inclure="inc/association_partenaires_installation.php" />
+</paquet>

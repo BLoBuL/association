@@ -1,0 +1,10 @@
+[(#AUTORISER{commerce_menu}|sinon_interdire_acces)]
+<h1 class="grostitre"><:association_commerce:titre_menu:></h1>
+[(#BOITE_OUVRIR{<:association_commerce:titre_menu:>,'simple'})]
+<ul class="liste_items">
+	<li class="item"><a href="#URL_ECRIRE{paniers}"><:association_commerce:panier_titre:></a></li>
+	<li class="item"><a href="#URL_ECRIRE{commandes}"><:association_commerce:commande_titre:></a></li>
+	<li class="item"><a href="#URL_ECRIRE{configurer_association,config=commerce}"><:association_commerce:configuration_titre:></a></li>
+	<li class="item"><a href="#URL_PAGE{boutique}"><:association_commerce:boutique_titre:></a></li>
+</ul>
+[(#BOITE_FERMER)]
