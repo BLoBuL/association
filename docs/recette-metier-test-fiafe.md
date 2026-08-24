@@ -2036,3 +2036,12 @@ recompilent. Dans Chrome authentifié, la liste des cotisations est saine et la
 page de suppression de la cotisation 957 affiche son titre, l'auteur lié et le
 formulaire sans erreur ni clé brute. Le formulaire n'a pas été soumis et aucune
 donnée n'a été supprimée.
+
+## Lot 168 - Comptes et remboursement Paiements
+
+La page Comptes réutilise les libellés traduits d'inclusion des écritures non
+validées. La page de remboursement traduit son titre et l'auteur lié, et impose
+une autorisation spécifique `rembourser` sur la transaction. Le formulaire CVT
+rejoue désormais cette autorisation et vérifie le statut encaissé aux étapes
+charger, vérifier et traiter ; ses retours sont traduits. La suite locale
+atteint 126 tests, tous valides.

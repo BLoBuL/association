@@ -25,8 +25,8 @@
     <!-- Statistiques compactes (inspiré de la comptabilité activités) -->
     <div class="boite_stats_compact" aria-label="<:association_compta:compta_activites_totaux_titre:>">
       <div style="text-align:right;margin-bottom:8px;">
-        [(#GET{inclure_non_validees}|=={1}|?{<a class="spip_button on inclure-toggle" data-value="0" href="[(#SELF|parametre_url{inclure_non_validees,0})]">Inclure non validées : ON</a>,})]
-        [(#GET{inclure_non_validees}|=={0}|?{<a class="spip_button inclure-toggle" data-value="1" href="[(#SELF|parametre_url{inclure_non_validees,1})]">Inclure non validées : OFF</a>,})]
+        [(#GET{inclure_non_validees}|=={1}|?{<a class="spip_button on inclure-toggle" data-value="0" href="[(#SELF|parametre_url{inclure_non_validees,0})]"><:association_compta:inclure_non_validees_oui:></a>,})]
+        [(#GET{inclure_non_validees}|=={0}|?{<a class="spip_button inclure-toggle" data-value="1" href="[(#SELF|parametre_url{inclure_non_validees,1})]"><:association_compta:inclure_non_validees_non:></a>,})]
       </div>
       <div class="stats-grid">
         <!-- DEBUG removed -->

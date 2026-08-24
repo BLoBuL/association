@@ -13,14 +13,20 @@
  */
 if (!defined('_ECRIRE_INC_VERSION')) return;
 
+function association_paiements_remboursement_autorise($id_transaction) {
+	$id_transaction = (int) $id_transaction;
+	if (!$id_transaction) {
+		return false;
+	}
+	$statut = sql_getfetsel('statut', 'spip_transactions', 'id_transaction=' . $id_transaction);
+	include_spip('inc/autoriser');
+	return $statut === 'ok' && autoriser('rembourser', 'transaction', $id_transaction);
+}
+
 function formulaires_rembourser_transaction_charger_dist($id_transaction){
 
 	$transaction = sql_fetsel("*","spip_transactions","id_transaction=".intval($id_transaction));
-	if ($transaction['statut']!=='ok')
-		return false;
-
-	include_spip('inc/autoriser');
-	if (!autoriser('rembourser','transaction',$id_transaction))
+	if (!$transaction || !association_paiements_remboursement_autorise($id_transaction))
 		return false;
 
 	$valeurs = array(
@@ -35,6 +41,10 @@ function formulaires_rembourser_transaction_charger_dist($id_transaction){
 
 function formulaires_rembourser_transaction_verifier_dist($id_transaction){
 	$erreurs = array();
+	if (!association_paiements_remboursement_autorise($id_transaction)) {
+		$erreurs['message_erreur'] = _T('info_interdit');
+		return $erreurs;
+	}
 	$raison = _request('raison');
 	if (!$raison){
 		$erreurs['raison'] = _T('info_obligatoire');
@@ -43,6 +53,9 @@ function formulaires_rembourser_transaction_verifier_dist($id_transaction){
 }
 
 function formulaires_rembourser_transaction_traiter_dist($id_transaction){
+	if (!association_paiements_remboursement_autorise($id_transaction)) {
+		return array('message_erreur' => _T('info_interdit'));
+	}
 
 	$raison = _request('raison');
     $notifier_inscrit = _request('notifier_inscrit');
@@ -59,13 +72,13 @@ function formulaires_rembourser_transaction_traiter_dist($id_transaction){
 			'data' => array('traite' => false, 'domaine' => ''),
 		));
 
-		$res['message_ok'] = _L('Transaction remboursée');
+		$res['message_ok'] = _T('association_paiements:transaction_remboursee');
         $page = 'transactions';
         $args = "id_transaction=".$id_transaction;
         $res['redirect'] = generer_url_ecrire($page,$args);
 	}
 	else {
-		$res['message_erreur'] = _L('Erreur Technique, remboursement impossible');
+		$res['message_erreur'] = _T('association_paiements:erreur_remboursement_impossible');
 	}
 
 	return $res;
