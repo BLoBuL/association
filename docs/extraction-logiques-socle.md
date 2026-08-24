@@ -903,3 +903,11 @@ Comme le modèle affiche les Champs Extras `sexe`, `prenom`, `nom_famille`,
 `telephone` et `mobile` portés par Adhésions, cette dépendance est désormais
 explicite dans `paquet.xml`. Le plugin ne peut plus être activé dans un état où
 son modèle compile mais ne dispose pas de son contrat de données.
+
+## Lot 75 : suppression du pseudo-objet membre
+
+Les générateurs `generer_url_asso_membre()` et `generer_url_membre()` ne
+correspondaient plus à aucun objet SQL déclaré et n'avaient aucun appelant. Ils
+sont supprimés avec `adherent_correction_statut()`, ancienne mutation globale
+jamais planifiée. Les parcours d'adhérent utilisent l'objet SPIP `auteur`, ses
+URLs natives et les transitions explicites du plugin Adhésions.

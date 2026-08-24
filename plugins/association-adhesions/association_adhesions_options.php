@@ -51,27 +51,3 @@ function association_adhesions_nombre_jours($debut, $fin, $absolu = true) {
 
 	return $absolu ? abs($jours) : $jours;
 }
-
-function generer_url_asso_membre($id, $param = '', $ancre = '') {
-	return generer_url_ecrire('voir_adherent', 'id_auteur=' . intval($id));
-}
-
-function generer_url_membre($id, $param = '', $ancre = '') {
-	return array('auteurs', $id);
-}
-
-
-function adherent_correction_statut(){
-    # Recherche et correction des status des adhérents (évite de se retrouver avec une liste vide lors de l'installation)
-    $auteurs_query = sql_select('statut_interne, id_auteur', 'spip_auteurs', "statut_interne=''");
-    if($auteurs_query){
-        while ($data = sql_fetch($auteurs_query)) {
-            $id_auteur = $data['id_auteur'];
-            //echo $id_auteur;
-            //print_r($data);
-            sql_updateq('spip_auteurs',array(
-                "statut_interne" => 'prospect'),
-                        "id_auteur=$id_auteur");
-        }
-    }
-}

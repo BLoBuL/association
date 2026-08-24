@@ -15,7 +15,10 @@ foreach ($iterateur as $fichier) {
 		continue;
 	}
 	$source = file_get_contents($fichier->getPathname());
-	if (str_contains($source, 'spip_asso_membres') || str_contains($source, 'update_spip_asso_membre')) {
+	if (str_contains($source, 'spip_asso_membres')
+		|| str_contains($source, 'update_spip_asso_membre')
+		|| preg_match('/function (?:generer_url_(?:asso_)?membre|adherent_correction_statut)\s*\(/', $source)
+	) {
 		$interdits[] = substr($chemin, strlen(str_replace('\\', '/', $racine)) + 1);
 	}
 }
@@ -25,4 +28,4 @@ if ($interdits) {
 	exit(1);
 }
 
-echo "OK: les adhérents utilisent exclusivement l'objet auteur SPIP.\n";
+echo "OK: les adhérents utilisent exclusivement l'objet auteur SPIP, sans alias membre.\n";
