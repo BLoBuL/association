@@ -23,6 +23,12 @@ if (file_exists($racine . '/plugins/association-compta/prive/objets/liste/table_
 	|| !file_exists($racine . '/plugins/association-evenements/prive/objets/liste/table_comptabilite_activites.html')) {
 	$erreurs[] = "La vue comptable d'un événement n'appartient pas à Événements.";
 }
+foreach (array('export_compta.xml.html', 'export_evenements_compta.xml.html') as $export) {
+	if (file_exists($racine . '/plugins/association-compta/' . $export)
+		|| !file_exists($racine . '/plugins/association-evenements/' . $export)) {
+		$erreurs[] = "L'export $export n'appartient pas à Événements.";
+	}
+}
 if (str_contains($migration, 'spip_asso_activites') || str_contains($migration, 'synchroniser_comptabilite_evenement(')) {
 	$erreurs[] = "La migration Comptabilité connaît encore l'implémentation Événements.";
 }

@@ -42,7 +42,7 @@ foreach ($consommateurs as $fichier) {
 	}
 }
 
-$export_compta = file_get_contents($racine . '/plugins/association-compta/export_compta.xml.html');
+$export_compta = file_get_contents($racine . '/plugins/association-evenements/export_compta.xml.html');
 if (!str_contains($export_compta, '#TARIFS_SELECTIONNES') || str_contains($export_compta, '#TRANSACTION|unserialize')) {
 	$erreurs[] = 'L’export comptable utilise encore la colonne réservée.';
 }

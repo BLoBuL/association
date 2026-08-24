@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/inc/association_evenements_statistiques_compta.php';
+require_once __DIR__ . '/inc/association_evenements_responsables.php';
 
 if (!defined('_ECRIRE_INC_VERSION')) { return; }
 

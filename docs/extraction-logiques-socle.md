@@ -1044,3 +1044,9 @@ Les fonctions globales `inserer_compte()` et `modifier_compte()`, leur pont de
 synchronisation des cotisations et l'ancien fichier `association_comptabilite`
 sans appelant sont supprimés. L'action historique d'édition corrige au passage
 son test de création, qui était rendu impossible par un `intval()` préalable.
+
+## Lot 91 : exports XML des événements
+
+Les deux classeurs XML historiques qui parcourent Agenda, les tarifs et les
+inscriptions rejoignent Événements. Leurs URL publiques restent identiques,
+mais Comptabilité ne fournit plus de squelette dépendant des tables métier.

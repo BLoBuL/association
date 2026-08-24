@@ -133,7 +133,7 @@
   </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s71"><Data ss:Type="String">Responsable(s) : </Data></Cell>
-    <Cell ss:MergeAcross="4" ss:StyleID="s75"><Data ss:Type="String">[(#SET{id_responsables,[(#ID_EVENEMENT|liste_responsables_evenement)]})]<BOUCLE_responsables(AUTEURS){id_auteur IN #GET{id_responsables}}{' & '}>[(#PRENOM)][ (#NOM_FAMILLE|strtoupper)] (#MOBILE)</BOUCLE_responsables></Data></Cell>
+    <Cell ss:MergeAcross="4" ss:StyleID="s75"><Data ss:Type="String">[(#SET{id_responsables,[(#ID_EVENEMENT|association_evenements_responsables_ids)]})]<BOUCLE_responsables(AUTEURS){id_auteur IN #GET{id_responsables}}{' & '}>[(#PRENOM)][ (#NOM_FAMILLE|strtoupper)] (#MOBILE)</BOUCLE_responsables></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s71"><Data ss:Type="String">Mode de paiement : </Data></Cell>
