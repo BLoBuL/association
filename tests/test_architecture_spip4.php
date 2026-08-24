@@ -389,6 +389,13 @@ $verifier(
 		&& strpos($css_adhesions, '.tableau_adherents .statut_mailsubscriber') !== false,
 	'Le tableau privé des adhérents doit être stylé par Adhésions.'
 );
+$verifier(
+	strpos($css_socle, '.tableau-cotisations-scroll') === false
+		&& strpos($css_socle, '.cotisations-legende') === false
+		&& strpos($css_adhesions, '.tableau-cotisations-scroll .tableau_cotisations_adherent') !== false
+		&& strpos($css_adhesions, '@media (max-width: 640px)') !== false,
+	'Le tableau responsive des cotisations doit être stylé par Adhésions.'
+);
 $navigation_configuration = file_get_contents($racine . '/prive/squelettes/navigation/configurer_association.html');
 $autorisation_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_autoriser.php');
 $migration_familles = file_get_contents($racine . '/plugins/association-adhesions/inc/association_familles.php');
