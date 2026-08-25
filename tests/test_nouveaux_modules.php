@@ -22,9 +22,16 @@ foreach ($modules as $dossier => [$prefixe, $dependances, $page]) {
 	}
 }
 if (!is_file("$racine/plugins/association-commerce/squelettes/boutique.html")) { $erreurs[] = 'page publique commerce absente'; }
+foreach (array('panier', 'commande') as $page_commerce) {
+	if (!is_file("$racine/plugins/association-commerce/squelettes/$page_commerce.html")) { $erreurs[] = "page publique commerce $page_commerce absente"; }
+}
 $catalogue_commerce = file_get_contents("$racine/plugins/association-commerce/inclure/association-commerce-catalogue.html");
 if (!str_contains($catalogue_commerce, '#FORMULAIRE_REMPLIR_PANIER{article,#ID_ARTICLE}')) { $erreurs[] = 'le catalogue commerce ne fournit pas le formulaire natif d ajout au panier'; }
 if (str_contains($catalogue_commerce, '#FORMULAIRE_PANIER{article,')) { $erreurs[] = 'le formulaire d affichage du panier est utilise a tort pour ajouter un produit'; }
+$page_panier = file_get_contents("$racine/plugins/association-commerce/squelettes/panier.html");
+$page_commande = file_get_contents("$racine/plugins/association-commerce/squelettes/commande.html");
+if (!str_contains($page_panier, '#FORMULAIRE_PANIER') || !str_contains($page_panier, 'commandes_paniers')) { $erreurs[] = 'la page panier ne permet pas de creer une commande native'; }
+if (!str_contains($page_commande, '(COMMANDES)') || !str_contains($page_commande, 'inclure/commande')) { $erreurs[] = 'la page commande ne fournit pas le recapitulatif natif'; }
 if (!is_file("$racine/plugins/association-partenaires/squelettes/partenaires.html")) { $erreurs[] = 'page publique partenaires absente'; }
 if (!is_file("$racine/plugins/association-bannieres/modeles/asso_bannieres.html")) { $erreurs[] = 'modèle public bannières absent'; }
 $modele_bannieres = file_get_contents("$racine/plugins/association-bannieres/modeles/asso_bannieres.html");

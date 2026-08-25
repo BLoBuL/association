@@ -1,0 +1,31 @@
+#CACHE{0}
+<!DOCTYPE html>
+<html lang="#LANG" dir="#LANG_DIR">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title><:association_commerce:panier_titre:> - [(#NOM_SITE_SPIP|textebrut)]</title>
+	<INCLURE{fond=inclure/head} />
+</head>
+<body class="page_panier">
+<div class="page">
+	<INCLURE{fond=inclure/header} />
+	<INCLURE{fond=inclure/nav,env} />
+	<main class="main" role="main"><div class="wrapper"><div class="content" id="content">
+		<p class="arbo"><a href="#URL_PAGE{boutique}"><:association_commerce:boutique_titre:></a> &gt; <strong><:association_commerce:panier_titre:></strong></p>
+		<h1><:association_commerce:panier_titre:></h1>
+		<div class="ajax">#FORMULAIRE_PANIER</div>
+		<div class="actions">
+			<a class="btn btn_secondaire" href="#URL_PAGE{boutique}"><:association_commerce:retour_boutique:></a>
+			<BOUCLE_panier(PANIERS){id_panier=#SESSION{id_panier}}>
+			[(#BOUTON_ACTION{
+				<:association_commerce:commander:>,
+				#URL_ACTION_AUTEUR{commandes_paniers,#ID_PANIER-1,#URL_PAGE{commande}},
+				btn btn_primary
+			})]
+			</BOUCLE_panier>
+		</div>
+	</div></div></main>
+	<INCLURE{fond=inclure/footer,self=#SELF} />
+</div>
+</body>
+</html>

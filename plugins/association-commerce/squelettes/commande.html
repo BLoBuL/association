@@ -1,0 +1,27 @@
+#CACHE{0}
+<!DOCTYPE html>
+<html lang="#LANG" dir="#LANG_DIR">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title><:association_commerce:commande_titre:> - [(#NOM_SITE_SPIP|textebrut)]</title>
+	<INCLURE{fond=inclure/head} />
+</head>
+<body class="page_commande">
+<div class="page">
+	<INCLURE{fond=inclure/header} />
+	<INCLURE{fond=inclure/nav,env} />
+	<main class="main" role="main"><div class="wrapper"><div class="content" id="content">
+		<p class="arbo"><a href="#URL_PAGE{boutique}"><:association_commerce:boutique_titre:></a> &gt; <a href="#URL_PAGE{panier}"><:association_commerce:panier_titre:></a> &gt; <strong><:association_commerce:commande_titre:></strong></p>
+		<BOUCLE_commande(COMMANDES){id_commande}{statut=encours}{0,1}>
+		<h1><:association_commerce:commande_reference{reference=#REFERENCE}:></h1>
+		<INCLURE{fond=inclure/commande,id_commande,_hash=#ID_COMMANDE|commandes_hash} />
+		<p class="actions"><a class="btn btn_secondaire" href="#URL_PAGE{panier}"><:association_commerce:modifier_panier:></a></p>
+		</BOUCLE_commande>
+		<h1><:association_commerce:commande_titre:></h1>
+		<p class="notice"><:association_commerce:commande_absente:></p>
+		<//B_commande>
+	</div></div></main>
+	<INCLURE{fond=inclure/footer,self=#SELF} />
+</div>
+</body>
+</html>
