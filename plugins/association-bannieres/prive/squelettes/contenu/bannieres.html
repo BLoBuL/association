@@ -1,4 +1,4 @@
 [(#AUTORISER{bannieres_menu}|sinon_interdire_acces)]
 <h1 class="grostitre"><:association_bannieres:bannieres:></h1>
-[(#AUTORISER{creer,banniere})<a class="btn btn_mini btn_secondaire" href="[(#URL_ECRIRE{editer_asso_banniere,new=oui})]"><:association_bannieres:banniere_creer:></a>]
+[(#AUTORISER{creer,asso_banniere}|oui)<a class="btn btn_mini btn_secondaire" href="[(#URL_ECRIRE{editer_asso_banniere,new=oui})]"><:association_bannieres:banniere_creer:></a>]
 <INCLURE{fond=prive/objets/liste/asso_bannieres,env,ajax} />

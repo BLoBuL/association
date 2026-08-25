@@ -12,3 +12,7 @@ function autoriser_partenaire_creer_dist($faire, $type, $id, $qui, $opt) { retur
 function autoriser_partenaire_modifier_dist($faire, $type, $id, $qui, $opt) { return autoriser('partenaires_menu', '', 0, $qui); }
 function autoriser_partenaire_supprimer_dist($faire, $type, $id, $qui, $opt) { return autoriser('partenaires_menu', '', 0, $qui); }
 function autoriser_partenaire_voir_dist($faire, $type, $id, $qui, $opt) { return true; }
+function autoriser_assopartenaire_creer_dist($faire, $type, $id, $qui, $opt) { return autoriser('partenaires_menu', '', 0, $qui); }
+function autoriser_assopartenaire_modifier_dist($faire, $type, $id, $qui, $opt) { return autoriser('partenaires_menu', '', 0, $qui); }
+function autoriser_assopartenaire_supprimer_dist($faire, $type, $id, $qui, $opt) { return autoriser('partenaires_menu', '', 0, $qui); }
+function autoriser_assopartenaire_voir_dist($faire, $type, $id, $qui, $opt) { return true; }

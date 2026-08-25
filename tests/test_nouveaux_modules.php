@@ -24,6 +24,10 @@ foreach ($modules as $dossier => [$prefixe, $dependances, $page]) {
 if (!is_file("$racine/plugins/association-commerce/squelettes/boutique.html")) { $erreurs[] = 'page publique commerce absente'; }
 if (!is_file("$racine/plugins/association-partenaires/squelettes/partenaires.html")) { $erreurs[] = 'page publique partenaires absente'; }
 if (!is_file("$racine/plugins/association-bannieres/modeles/asso_bannieres.html")) { $erreurs[] = 'modèle public bannières absent'; }
+$form_partenaire = file_get_contents("$racine/plugins/association-partenaires/formulaires/editer_asso_partenaire.php");
+$form_banniere = file_get_contents("$racine/plugins/association-bannieres/formulaires/editer_asso_banniere.php");
+if (!str_contains($form_partenaire, "formulaires_editer_objet_charger('asso_partenaire'")) { $erreurs[] = 'CVT partenaire relié au mauvais objet SPIP'; }
+if (!str_contains($form_banniere, "formulaires_editer_objet_charger('asso_banniere'")) { $erreurs[] = 'CVT bannière relié au mauvais objet SPIP'; }
 foreach (array('association-partenaires' => 'partenaires', 'association-bannieres' => 'bannieres') as $module => $objet) {
 	$administration = file_get_contents("$racine/plugins/$module/association_{$objet}_administrations.php");
 	if (!str_contains($administration, "'1.0.0' =>")) { $erreurs[] = "$module ne reprend pas une installation interrompue à init"; }

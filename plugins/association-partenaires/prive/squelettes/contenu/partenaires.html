@@ -1,4 +1,4 @@
 [(#AUTORISER{partenaires_menu}|sinon_interdire_acces)]
 <h1 class="grostitre"><:association_partenaires:partenaires:></h1>
 <INCLURE{fond=prive/objets/liste/asso_partenaires,env,ajax} />
-[(#AUTORISER{creer,partenaire}|oui)<a class="btn btn_primary" href="#URL_ECRIRE{editer_asso_partenaire,new=oui}"><:association_partenaires:partenaire_creer:></a>]
+[(#AUTORISER{creer,asso_partenaire}|oui)<a class="btn btn_primary" href="#URL_ECRIRE{editer_asso_partenaire,new=oui}"><:association_partenaires:partenaire_creer:></a>]

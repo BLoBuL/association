@@ -1,4 +1,4 @@
-[(#AUTORISER{modifier,banniere,#ENV{id_banniere}}|sinon_interdire_acces)]
+[(#AUTORISER{modifier,asso_banniere,#ENV{id_banniere}}|sinon_interdire_acces)]
 #SET{retour,#ENV{redirect}|sinon{#URL_ECRIRE{bannieres}}}
 <div class="cadre-formulaire-editer"><div class="entete-formulaire"><a href="#GET{retour}"><:retour:></a><h1><:association_bannieres:banniere_modifier:></h1></div>
 #FORMULAIRE_EDITER_ASSO_BANNIERE{#ENV{id_banniere,new},#GET{retour}}</div>
