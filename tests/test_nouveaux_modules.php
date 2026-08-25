@@ -32,6 +32,7 @@ $page_panier = file_get_contents("$racine/plugins/association-commerce/squelette
 $page_commande = file_get_contents("$racine/plugins/association-commerce/squelettes/commande.html");
 if (!str_contains($page_panier, '#FORMULAIRE_PANIER') || !str_contains($page_panier, 'commandes_paniers')) { $erreurs[] = 'la page panier ne permet pas de creer une commande native'; }
 if (!str_contains($page_commande, '(COMMANDES)') || !str_contains($page_commande, 'inclure/commande')) { $erreurs[] = 'la page commande ne fournit pas le recapitulatif natif'; }
+if (!str_contains($page_commande, '#ENV{id_commande,#SESSION{id_commande}}')) { $erreurs[] = 'la page commande ne relit pas la commande creee en session'; }
 if (!is_file("$racine/plugins/association-partenaires/squelettes/partenaires.html")) { $erreurs[] = 'page publique partenaires absente'; }
 if (!is_file("$racine/plugins/association-bannieres/modeles/asso_bannieres.html")) { $erreurs[] = 'modèle public bannières absent'; }
 $modele_bannieres = file_get_contents("$racine/plugins/association-bannieres/modeles/asso_bannieres.html");
