@@ -1,5 +1,6 @@
+#SET{ids_bannieres,#ENV{emplacement,principal}|association_bannieres_ids_actives}
 <B_bannieres><div class="association-bannieres association-bannieres--#ENV{emplacement,principal}">
-<BOUCLE_bannieres(ASSO_BANNIERES){statut=publie}{emplacement=#ENV{emplacement,principal}}{par ordre,titre}>
+<BOUCLE_bannieres(ASSO_BANNIERES){id_banniere IN #GET{ids_bannieres}}{par ordre,titre}>
 <article class="association-banniere">
 [(#URL|oui)<a href="#URL" rel="sponsored">][(#LOGO_BANNIERE|image_reduire{#ENV{largeur,1200},#ENV{hauteur,300}})][(#URL|oui)</a>]
 [<h2 class="h3">(#TITRE)</h2>][<div class="descriptif">(#DESCRIPTIF|propre)</div>]
