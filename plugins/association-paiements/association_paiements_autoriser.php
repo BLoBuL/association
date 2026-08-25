@@ -8,7 +8,8 @@ function association_paiements_autoriser() {
 }
 
 function autoriser_transactions_menu_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
-	return autoriser('menu', '_transactions', 0, $qui, $opt);
+	$qui = association_normalize_qui($qui);
+	return association_est_admin_complet($qui);
 }
 
 /**

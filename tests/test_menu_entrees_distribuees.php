@@ -41,4 +41,6 @@ $socle = file_get_contents($racine . '/association_pipelines.php');
 foreach (array('adherents','cotisations','activites','benevoles','partenaires','commerce','ventes','dons','comptes','transactions','prets','bannieres','notifications') as $cle) {
 	verifier_menu(strpos($socle, "'$cle' =>") === false, "$cle n est plus déclaré par le socle");
 }
+$autorisation_paiements = file_get_contents($racine . '/plugins/association-paiements/association_paiements_autoriser.php');
+verifier_menu(strpos($autorisation_paiements, "autoriser('menu', '_transactions'") === false, 'le menu Paiements ne reboucle pas sur l autorisation Bank');
 echo "Toutes les entrées de menu distribuées sont identiques.\n";
