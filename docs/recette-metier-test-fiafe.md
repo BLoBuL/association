@@ -2555,3 +2555,55 @@ La recette privée post-réinitialisation reste distincte : le contexte Chrome
 de cette campagne ne possède pas de session SPIP authentifiée. Les preuves BO
 antérieures, les tests CLI et la compilation sont valides, mais aucune nouvelle
 preuve visuelle BO authentifiée n'est revendiquée pour ce lot.
+
+## Lot 193 - menus distribués, Commerce, Partenaires et Bannières
+
+La suite contient désormais treize plugins dans le même monorepo. Les entrées
+de menu et les onglets de configuration sont fournis par leur module métier :
+Adhésions, Événements, Groupes, Partenaires, Commerce, Ventes, Dons,
+Comptabilité, Paiements, Prêts, Bannières et Communication. Le socle assemble
+ces contributions sans connaître les écrans des modules absents. Le test
+runtime valide les quatorze autorisations de menu, y compris la configuration
+commune.
+
+Trois modules autonomes ont été ajoutés :
+
+- Commerce exige Association, Paniers, Commandes et Prix. Il fournit le
+  catalogue par rubrique, l'ajout natif au panier, une page Panier autonome et
+  la création puis la lecture d'une commande. Paiements reste facultatif ;
+- Partenaires qualifie les organisations du plugin Contacts & Organisations
+  dans `spip_asso_partenaires`, avec BO CVT, niveau, période, ordre, publication
+  et rendu public ;
+- Bannières gère `spip_asso_bannieres`, les emplacements, périodes, ordre,
+  statut, lien sponsorisé et logo d'objet, avec BO CVT et modèles publics.
+
+Les dates ouvertes `0000-00-00` et les bornes de début/fin sont maintenant
+appliquées par une API commune à toutes les pages et modèles publics des
+Partenaires et Bannières. Les deux modules ont subi un cycle de désactivation et
+réactivation sans perte de schéma. Commerce déclare aussi le pipeline `taxes`
+que Prix 2.0.0 appelle sans le fournir lui-même ; cette compatibilité reste
+neutre tant qu'aucun fournisseur de taxes ne contribue.
+
+La recette Chrome authentifiée à 390 pixels a contrôlé le menu privé complet,
+les trois configurations, les formulaires de création Partenaire et Bannière,
+leurs listes publiques et l'absence de débordement horizontal. Pour Commerce,
+une rubrique existante a été branchée temporairement : la boutique a rendu
+trois articles et leurs formulaires `FORMULAIRE_REMPLIR_PANIER`. Le parcours a
+ajouté « Club lecture », affiché la ligne et sa quantité dans le panier, créé la
+commande temporaire `20260825000005`, puis affiché son récapitulatif natif.
+L'incarnation SPIP d'un auteur positif était nécessaire car le webmestre
+technique `id_auteur=-1` est volontairement refusé par l'autorisation de
+Commandes.
+
+La campagne a permis de corriger trois défauts que les contrôles statiques ne
+détectaient pas : mauvais formulaire d'ajout, absence de page Panier avec
+Zcore, puis absence de relecture de `id_commande` depuis la session. Les
+fixtures ont ensuite été supprimées avec contrôle à zéro : commande 5, panier
+1, partenaire 1, bannière 1 et `commerce_rubrique=97`. L'incarnation a été
+annulée, le webmestre provisoire supprimé et son contexte Chrome fermé.
+
+Après livraison intégrale, le vérificateur retrouve 13 contributeurs actifs,
+16 tables, 14 objets SQL et 9 schémas. Les 300 squelettes de la suite
+recompilent sous SPIP 4.4.21 et les 143 points d'entrée `tests/test_*.php`
+restent attendus au vert. L'empreinte du dernier artefact et les contrôles de
+journaux sont consignés après la livraison finale de ce lot.
