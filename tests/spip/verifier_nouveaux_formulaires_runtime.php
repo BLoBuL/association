@@ -6,7 +6,8 @@ foreach (array('partenaire', 'banniere') as $nom) {
 	$fonction = 'formulaires_editer_asso_' . $nom . '_charger_dist';
 	$valeurs = $fonction('new', '');
 	if (!is_array($valeurs) || empty($valeurs['editable'])) {
-		fwrite(STDERR, "ECHEC formulaire $nom non editable (type=" . objet_type('asso_' . $nom, false) . ")\n");
+		$autorise = autoriser('creer', $nom, 0, $GLOBALS['visiteur_session']);
+		fwrite(STDERR, "ECHEC formulaire $nom non editable (type=" . objet_type('asso_' . $nom, false) . ', autorise=' . ($autorise ? 'oui' : 'non') . ', valeurs=' . implode(',', array_keys((array) $valeurs)) . ")\n");
 		exit(1);
 	}
 	echo "OK formulaire $nom editable\n";
