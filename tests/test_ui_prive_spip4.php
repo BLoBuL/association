@@ -54,6 +54,7 @@ foreach ($formulaires as $fichier) {
 $actions = array(
 	'plugins/association-paiements/prive/objets/liste/transactions.html',
 	'plugins/association-evenements/prive/objets/liste/item_categorie_participation.html',
+	'plugins/association-evenements/prive/objets/liste/item_inscription_adherent.html',
 	'plugins/association-adhesions/prive/objets/liste/item_categorie_cotisation.html',
 	'plugins/association-adhesions/prive/objets/liste/item_cotisation_adherent.html',
 );

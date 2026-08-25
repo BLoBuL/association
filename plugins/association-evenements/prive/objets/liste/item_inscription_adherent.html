@@ -62,7 +62,7 @@
             [(#SET{email_obfusque,[(#EMAIL|md5)@example.org]})]
             <BOUCLE_mailsubscriber(MAILSUBSCRIBERS){email IN #EMAIL, #GET{email_obfusque}}{tout}>
                <div class="tooltip statut_mailsubscriber #STATUT">
-                   <a href="[(#URL_ECRIRE{mailsubscriber,id_mailsubscriber=#ID_MAILSUBSCRIBER})]"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                   <a href="[(#URL_ECRIRE{mailsubscriber,id_mailsubscriber=#ID_MAILSUBSCRIBER})]" title="<:association_evenements:email|attribut_html:>" aria-label="<:association_evenements:email|attribut_html:>"><i class="fa fa-envelope" aria-hidden="true"></i></a>
                    <span class="tooltiptext">
                     <B_mailsubscribinglist>
                     <ul class="liste_diffusion">
