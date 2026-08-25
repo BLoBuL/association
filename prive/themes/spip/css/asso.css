@@ -1877,12 +1877,21 @@ form.formulaire_asso,
 }
 
 .tableau-association-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
     border: 1px solid var(--association-prive-border);
     border-radius: .25rem;
 }
 
 .tableau-association-scroll > .tableau_asso {
     border: 0;
+}
+
+.tableau-association-scroll > table.spip.liste {
+    width: 100%;
+    min-width: 48rem;
+    margin: 0;
 }
 
 @media (max-width: 900px) {

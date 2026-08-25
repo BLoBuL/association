@@ -92,6 +92,7 @@
     ]
     <!-- Lien debug pour forcer l'affichage des notifications Activités -->
 
+    <div class="tableau-association-scroll" role="region" aria-label="<:association_communication:notifications_tableau_titre|attribut_html:>" tabindex="0">
     <table class="spip liste">
         <caption class="offscreen"><:association_communication:notifications_tableau_titre:></caption>
         <thead>
@@ -122,4 +123,5 @@
             [(#ENV{tab,adhesion}|=={metiers}|?{#INCLURE{fond=prive/squelettes/contenu/inc-notifications/inc-tableau_notif_metiers,env},''})]
         </tbody>
     </table>
+    </div>
 </div>

@@ -18,6 +18,10 @@ verifier_ui(str_contains($css, 'INTEGRATION AU PRIVE SPIP 4'), 'la couche d inte
 verifier_ui(str_contains($css, '.tableau_asso'), 'les tableaux historiques ont une presentation commune');
 verifier_ui(str_contains($css, 'input[type="checkbox"]'), 'les cases a cocher natives sont restaurees');
 verifier_ui(str_contains($css, ':focus-visible'), 'les actions au clavier conservent un focus visible');
+verifier_ui(str_contains($css, 'overflow-x: auto'), 'les grands tableaux defilent dans leur propre zone');
+
+$notifications = file_get_contents($racine . '/plugins/association-communication/prive/squelettes/contenu/notifications.html');
+verifier_ui(str_contains($notifications, 'tableau-association-scroll'), 'le tableau des notifications ne fait pas deborder la page privee');
 
 $formulaires = array(
 	'plugins/association-dons/formulaires/editer_asso_dons.html',
