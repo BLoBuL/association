@@ -2605,5 +2605,8 @@ annulée, le webmestre provisoire supprimé et son contexte Chrome fermé.
 Après livraison intégrale, le vérificateur retrouve 13 contributeurs actifs,
 16 tables, 14 objets SQL et 9 schémas. Les 300 squelettes de la suite
 recompilent sous SPIP 4.4.21 et les 143 points d'entrée `tests/test_*.php`
-restent attendus au vert. L'empreinte du dernier artefact et les contrôles de
-journaux sont consignés après la livraison finale de ce lot.
+restent au vert. Le test runtime utilise désormais le webmestre réel du site et
+échoue si une des quatorze autorisations de menu est refusée. `spip test:spip`
+confirme SPIP 4.4.21, PDO et l'unique webmestre permanent ; comme documenté sur
+cet hébergement, il retourne néanmoins le code 1. La lecture structurée des
+journaux sur la fenêtre finale ne retourne aucune erreur.
