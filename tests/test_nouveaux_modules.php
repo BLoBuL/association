@@ -28,6 +28,7 @@ foreach (array('panier', 'commande') as $page_commerce) {
 $catalogue_commerce = file_get_contents("$racine/plugins/association-commerce/inclure/association-commerce-catalogue.html");
 if (!str_contains($catalogue_commerce, '#FORMULAIRE_REMPLIR_PANIER{article,#ID_ARTICLE}')) { $erreurs[] = 'le catalogue commerce ne fournit pas le formulaire natif d ajout au panier'; }
 if (str_contains($catalogue_commerce, '#FORMULAIRE_PANIER{article,')) { $erreurs[] = 'le formulaire d affichage du panier est utilise a tort pour ajouter un produit'; }
+if (!str_contains(file_get_contents("$racine/plugins/association-commerce/paquet.xml"), '<pipeline nom="taxes" action=""')) { $erreurs[] = 'la compatibilite du pipeline taxes de Prix 2.0.0 est absente'; }
 $page_panier = file_get_contents("$racine/plugins/association-commerce/squelettes/panier.html");
 $page_commande = file_get_contents("$racine/plugins/association-commerce/squelettes/commande.html");
 if (!str_contains($page_panier, '#FORMULAIRE_PANIER') || !str_contains($page_panier, 'commandes_paniers')) { $erreurs[] = 'la page panier ne permet pas de creer une commande native'; }
