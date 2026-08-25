@@ -14,6 +14,10 @@ $attendus = array(
 
 foreach ($attendus as $fichier => $usage) {
 	$contenu = file_get_contents($racine . '/' . $fichier);
+	if (!str_contains($contenu, 'name="viewport"')) {
+		fwrite(STDERR, "Viewport responsive absent de $fichier.\n");
+		exit(1);
+	}
 	if (!str_contains($contenu, '<main class="main" role="main">') || !str_contains($contenu, '<h1>')) {
 		fwrite(STDERR, "Structure publique SPIP incomplète : $fichier.\n");
 		exit(1);
