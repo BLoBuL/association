@@ -5,6 +5,18 @@ ini_set('display_errors', '1');
 
 $racine = dirname(__DIR__);
 
+function fichier_suite(string $chemin): string {
+	global $racine;
+	$candidat_monorepo = $racine . '/' . $chemin;
+	if (is_file($candidat_monorepo)) {
+		return $candidat_monorepo;
+	}
+	if (preg_match('#^plugins/([^/]+)/(.*)$#', $chemin, $match)) {
+		return dirname($racine) . '/' . $match[1] . '/' . $match[2];
+	}
+	return $candidat_monorepo;
+}
+
 function verifier_ui(bool $condition, string $message): void {
 	if (!$condition) {
 		fwrite(STDERR, "ECHEC: {$message}\n");
@@ -20,7 +32,7 @@ verifier_ui(str_contains($css, 'input[type="checkbox"]'), 'les cases a cocher na
 verifier_ui(str_contains($css, ':focus-visible'), 'les actions au clavier conservent un focus visible');
 verifier_ui(str_contains($css, 'overflow-x: auto'), 'les grands tableaux defilent dans leur propre zone');
 
-$notifications = file_get_contents($racine . '/plugins/association-communication/prive/squelettes/contenu/notifications.html');
+$notifications = file_get_contents(fichier_suite('plugins/association-communication/prive/squelettes/contenu/notifications.html'));
 verifier_ui(str_contains($notifications, 'tableau-association-scroll'), 'le tableau des notifications ne fait pas deborder la page privee');
 
 $formulaires = array(
@@ -32,7 +44,7 @@ $formulaires = array(
 );
 
 foreach ($formulaires as $fichier) {
-	$contenu = file_get_contents($racine . '/' . $fichier);
+	$contenu = file_get_contents(fichier_suite($fichier));
 	verifier_ui(str_contains($contenu, 'formulaire_asso'), $fichier . ' utilise la classe formulaire commune');
 	verifier_ui(str_contains($contenu, '<fieldset'), $fichier . ' groupe ses champs avec fieldset');
 	verifier_ui(str_contains($contenu, '<legend'), $fichier . ' fournit une legende');
@@ -47,7 +59,7 @@ $actions = array(
 );
 
 foreach ($actions as $fichier) {
-	$contenu = file_get_contents($racine . '/' . $fichier);
+	$contenu = file_get_contents(fichier_suite($fichier));
 	verifier_ui(str_contains($contenu, 'aria-hidden="true"'), $fichier . ' masque les pictogrammes decoratifs');
 	verifier_ui(
 		str_contains($contenu, 'aria-label=') || str_contains($contenu, 'visually-hidden'),
