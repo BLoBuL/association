@@ -1894,6 +1894,13 @@ form.formulaire_asso,
     margin: 0;
 }
 
+/* Les audits injectés avant le tableau principal peuvent eux aussi être larges. */
+.notifications-content {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
 @media (max-width: 900px) {
     .table_page ul.bandeau_actions {
         grid-template-columns: repeat(4, minmax(6rem, 1fr));
