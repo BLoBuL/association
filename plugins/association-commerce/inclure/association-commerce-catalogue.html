@@ -6,8 +6,8 @@
 	<li class="item hentry">
 		<h2 class="h3 entry-title"><a href="#URL_ARTICLE">#TITRE</a></h2>
 		[<div class="introduction">(#INTRODUCTION{160})</div>]
-		[<div class="prix">(#PRIX*{article,#ID_ARTICLE}|association_commerce_afficher_prix{2,#VAL{commerce_devise}|association_commerce_config{EUR}})</div>]
-		<div class="panier">#FORMULAIRE_PANIER{article,#ID_ARTICLE}</div>
+		[<div class="prix">(#PRIX*|association_commerce_afficher_prix{2,#VAL{commerce_devise}|association_commerce_config{EUR}})</div>]
+		<div class="panier">#FORMULAIRE_REMPLIR_PANIER{article,#ID_ARTICLE}</div>
 	</li>
 	</BOUCLE_catalogue>
 	</ul>

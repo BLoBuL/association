@@ -22,6 +22,9 @@ foreach ($modules as $dossier => [$prefixe, $dependances, $page]) {
 	}
 }
 if (!is_file("$racine/plugins/association-commerce/squelettes/boutique.html")) { $erreurs[] = 'page publique commerce absente'; }
+$catalogue_commerce = file_get_contents("$racine/plugins/association-commerce/inclure/association-commerce-catalogue.html");
+if (!str_contains($catalogue_commerce, '#FORMULAIRE_REMPLIR_PANIER{article,#ID_ARTICLE}')) { $erreurs[] = 'le catalogue commerce ne fournit pas le formulaire natif d ajout au panier'; }
+if (str_contains($catalogue_commerce, '#FORMULAIRE_PANIER{article,')) { $erreurs[] = 'le formulaire d affichage du panier est utilise a tort pour ajouter un produit'; }
 if (!is_file("$racine/plugins/association-partenaires/squelettes/partenaires.html")) { $erreurs[] = 'page publique partenaires absente'; }
 if (!is_file("$racine/plugins/association-bannieres/modeles/asso_bannieres.html")) { $erreurs[] = 'modèle public bannières absent'; }
 $modele_bannieres = file_get_contents("$racine/plugins/association-bannieres/modeles/asso_bannieres.html");
