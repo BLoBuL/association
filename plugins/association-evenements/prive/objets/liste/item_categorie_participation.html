@@ -24,11 +24,11 @@
             [(#STATUT|=={desactive}|oui)Désactivé]
         </td>
         <td class="edit">
-            <a href="[(#URL_ECRIRE{editer_asso_categorie_activite,id_categorie=#ID_CATEGORIE})]"class="lien_fa"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
+            <a href="[(#URL_ECRIRE{editer_asso_categorie_activite,id_categorie=#ID_CATEGORIE})]" class="lien_fa" title="<:bouton_modifier|attribut_html:>" aria-label="<:bouton_modifier|attribut_html:>"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
         </td>
         <td class="delete">
             [(#BOUTON_ACTION{
-            <i class="fa-regular fa-trash-can" aria-hidden="true"></i>,
+            <i class="fa-regular fa-trash-can" aria-hidden="true"></i><span class="visually-hidden"><:bouton_supprimer:></span>,
             #URL_ACTION_AUTEUR{supprimer_categorie_activite, #ID_CATEGORIE, #SELF},
             'lien_fa ajax',
             <:association_evenements:confirmation_suppression_activite:>

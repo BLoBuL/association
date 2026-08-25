@@ -53,8 +53,8 @@
     <INCLURE{fond=prive/inclure/miniature_transaction,id_transaction,id_compte}/>
     <td class="actions">
         <div class="actions_wrap">
-            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="lien_fa action-editer"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
-            <a href="[(#URL_ECRIRE{cotisation_suppression,id_compte=#ID_COMPTE}|parametre_url{url_retour,#SELF})]" class="popin lien_fa action-supprimer"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></a>
+            <a href="[(#URL_ECRIRE{editer_asso_cotisation,id_compte=#ID_COMPTE})]" class="lien_fa action-editer" title="<:bouton_modifier|attribut_html:>" aria-label="<:bouton_modifier|attribut_html:>"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></a>
+            <a href="[(#URL_ECRIRE{cotisation_suppression,id_compte=#ID_COMPTE}|parametre_url{url_retour,#SELF})]" class="popin lien_fa action-supprimer" title="<:bouton_supprimer|attribut_html:>" aria-label="<:bouton_supprimer|attribut_html:>"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></a>
          </div>
     </td>
 </tr>

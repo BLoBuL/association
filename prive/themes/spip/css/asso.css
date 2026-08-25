@@ -1560,6 +1560,352 @@ form.formulaire_asso {
     background: #dcfce7;
 }
 
+/* ==================================================================
+   INTEGRATION AU PRIVE SPIP 4
+
+   La suite conserve ses informations metier et ses pictogrammes, mais reprend
+   la densite, les contrastes, les formulaires et les tableaux du prive SPIP.
+   Ces regles sont volontairement placees en fin de feuille pour neutraliser
+   progressivement les styles historiques sans imposer de surcharge au core.
+   ================================================================== */
+
+:root {
+    --statut-ok: #f1f8dd;
+    --statut-ok-hover: #718600;
+    --statut-prospect: #fff8d7;
+    --statut-prospect-hover: #9a7b00;
+    --statut-echu: #fff0f0;
+    --statut-echu-hover: #b42318;
+    --statut-relance: #fff3e8;
+    --statut-relance-hover: #b54708;
+    --statut-sorti: #f2f4f7;
+    --statut-sorti-hover: #667085;
+    --statut-attente: #fff3e8;
+    --association-prive-border: #d9d9d9;
+    --association-prive-muted: #666;
+    --association-prive-surface: #fff;
+    --association-prive-surface-alt: #f6f6f6;
+    --association-prive-accent: var(--spip-color-theme, #385b7b);
+}
+
+body.navigation_avec_icones #page {
+    font-family: inherit;
+    font-weight: normal;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* Le menu metier reste un raccourci utile, sous la forme d'onglets sobres. */
+.table_page ul.bandeau_actions {
+    grid-template-columns: repeat(7, minmax(6.5rem, 1fr));
+    width: 100%;
+    margin: 0 0 1.5rem;
+    border-color: var(--association-prive-border);
+    border-radius: .35rem;
+    box-shadow: none;
+    overflow-x: auto;
+}
+
+.table_page ul.bandeau_actions li a {
+    min-height: 4.6rem;
+    padding: 2.7rem .5rem .55rem;
+    background-position: center .55rem;
+    background-size: 1.55rem;
+    color: inherit;
+    font-weight: normal;
+}
+
+.table_page ul.bandeau_actions li.on a {
+    background-color: var(--association-prive-accent);
+    color: #fff;
+}
+
+.table_page ul.bandeau_actions li a:hover,
+.table_page ul.bandeau_actions li a:focus-visible {
+    background-color: var(--association-prive-surface-alt);
+    outline: 2px solid var(--association-prive-accent);
+}
+
+.table_page ul.bandeau_actions li.on a:hover,
+.table_page ul.bandeau_actions li.on a:focus-visible {
+    background-color: var(--association-prive-accent);
+}
+
+.table_page .bandeau_actions li a span.label {
+    font-size: .92em;
+}
+
+/* Tableaux historiques alignes sur `table.spip.liste`. */
+.tableau_asso {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--association-prive-border);
+    border-collapse: collapse;
+    background: var(--association-prive-surface);
+    color: inherit;
+    font-size: inherit;
+    font-weight: normal;
+    text-align: left;
+}
+
+.tableau_asso *,
+.tableau_asso *::before,
+.tableau_asso *::after {
+    box-sizing: border-box;
+}
+
+.tableau_asso tr {
+    border: 0;
+    border-bottom: 1px solid var(--association-prive-border);
+    background: var(--association-prive-surface);
+}
+
+.tableau_asso tbody tr:nth-child(even),
+.tableau_asso tbody tr.even {
+    background: var(--association-prive-surface-alt);
+}
+
+.tableau_asso th,
+.tableau_asso td {
+    padding: .55rem .6rem;
+    border: 0;
+    border-right: 1px solid #e9e9e9;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.tableau_asso th {
+    background: #eee;
+    color: inherit;
+    font-size: .95em;
+    font-weight: 600;
+}
+
+.tableau_asso th a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.tableau_asso th a:hover,
+.tableau_asso th a:focus-visible {
+    text-decoration: underline;
+}
+
+.tableau_asso tbody tr:hover {
+    box-shadow: inset .2rem 0 var(--association-prive-accent);
+}
+
+/* La couleur porte une information secondaire : teinte legere + liseré. */
+.tableau_asso tbody tr.ok,
+.tableau_asso tbody tr.prospect,
+.tableau_asso tbody tr.echu,
+.tableau_asso tbody tr.relance,
+.tableau_asso tbody tr.sorti,
+.tableau_asso tbody tr.echec {
+    background: var(--association-prive-surface);
+}
+
+.tableau_asso tbody tr.ok { box-shadow: inset .22rem 0 var(--statut-ok-hover); }
+.tableau_asso tbody tr.prospect { box-shadow: inset .22rem 0 var(--statut-prospect-hover); }
+.tableau_asso tbody tr.echu,
+.tableau_asso tbody tr.echec { box-shadow: inset .22rem 0 var(--statut-echu-hover); }
+.tableau_asso tbody tr.relance { box-shadow: inset .22rem 0 var(--statut-relance-hover); }
+.tableau_asso tbody tr.sorti { box-shadow: inset .22rem 0 var(--statut-sorti-hover); }
+
+.tableau_asso .nom a.bouton_editer {
+    display: inline-flex;
+    width: auto;
+    margin: 0;
+    padding: .25rem .4rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-transform: none;
+}
+
+.tableau_asso .nom > a > span,
+.tableau_asso .nom a .nom_prenom {
+    display: inline-flex;
+    padding: .2rem .35rem;
+    align-items: center;
+}
+
+/* Font Awesome est conserve comme langage d'action, dans un bouton SPIP. */
+.tableau_asso a.lien_fa,
+.tableau_asso a.bouton_editer,
+.tableau_asso .actions a.lien_fa,
+.tableau_asso .actions a.lien_fa:hover {
+    display: inline-flex;
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    margin: .12rem;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--association-prive-border);
+    border-radius: .25rem;
+    background: var(--association-prive-surface);
+    color: #444;
+    text-transform: none;
+}
+
+.tableau_asso a.lien_fa:hover,
+.tableau_asso a.lien_fa:focus-visible,
+.tableau_asso a.bouton_editer:hover,
+.tableau_asso a.bouton_editer:focus-visible {
+    border-color: var(--association-prive-accent);
+    background: var(--association-prive-surface-alt);
+    color: var(--association-prive-accent);
+    outline: 2px solid transparent;
+    text-decoration: none;
+}
+
+.tableau_asso .actions a.lien_fa i,
+.tableau_asso .actions .actions_wrap > a.lien_fa > i,
+.tableau_asso a.lien_fa i {
+    display: inline-flex;
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    background: transparent;
+    color: currentColor;
+}
+
+.tableau_asso .actions a:is(.action-supprimer,.action-desinscrire) {
+    color: #b42318;
+}
+
+.tableau_asso .actions a:is(.action-valider,.action-reactiver) {
+    color: #587000;
+}
+
+.tableau_asso .actions_wrap {
+    min-width: 0;
+    gap: .2rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+/* Les formulaires CVT gardent la structure et les interactions natives. */
+.formulaire_asso,
+form.formulaire_asso,
+#contenu .formulaire_asso {
+    max-width: 48rem;
+    margin: 1rem 0;
+    padding: 0;
+}
+
+.formulaire_asso > form > div,
+.formulaire_asso form > div {
+    padding: 0;
+}
+
+.formulaire_asso fieldset,
+#contenu .formulaire_asso fieldset {
+    width: auto;
+    margin: 0 0 1.25rem;
+    padding: 1rem;
+    border: 1px solid var(--association-prive-border);
+}
+
+.formulaire_asso fieldset > legend,
+.formulaire_asso h3.legend {
+    width: auto;
+    margin: 0;
+    padding: 0 .35rem;
+    background: transparent;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-transform: none;
+}
+
+.formulaire_asso .editer,
+.formulaire_asso li.editer {
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+.formulaire_asso :is(input.text,input.email,input[type="text"],input[type="email"],input[type="number"],input[type="date"],input[type="url"],select,textarea) {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: .3rem 0 0;
+    padding: .55rem .65rem;
+    box-sizing: border-box;
+}
+
+.formulaire_asso :is(input[type="radio"],input[type="checkbox"]),
+.tableau_asso .checkbox input[type="checkbox"],
+.formulaire_asso .checkbox input[type="checkbox"] {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin: 0 .35rem 0 0;
+    accent-color: var(--association-prive-accent);
+}
+
+.tableau_asso .checkbox input[type="checkbox"] + label::before,
+.formulaire_asso .checkbox input[type="checkbox"] + label::before {
+    content: none;
+}
+
+.formulaire_asso *:focus,
+.formulaire_asso *:focus-visible,
+.export_csv *:focus,
+.export_csv *:focus-visible {
+    outline: 2px solid var(--association-prive-accent) !important;
+    outline-offset: 1px;
+}
+
+.formulaire_asso .explication {
+    margin: .35rem 0;
+    padding: .5rem .65rem;
+    border-left: .2rem solid var(--association-prive-border);
+    background: var(--association-prive-surface-alt);
+    color: var(--association-prive-muted);
+}
+
+.formulaire_asso .boutons {
+    text-align: right;
+}
+
+.tableau-association-scroll {
+    border: 1px solid var(--association-prive-border);
+    border-radius: .25rem;
+}
+
+.tableau-association-scroll > .tableau_asso {
+    border: 0;
+}
+
+@media (max-width: 900px) {
+    .table_page ul.bandeau_actions {
+        grid-template-columns: repeat(4, minmax(6rem, 1fr));
+    }
+
+    .tableau-association-scroll > .tableau_asso {
+        min-width: var(--association-table-min-width, 44rem);
+    }
+}
+
+@media (max-width: 520px) {
+    .table_page ul.bandeau_actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .formulaire_asso fieldset,
+    #contenu .formulaire_asso fieldset {
+        padding: .75rem;
+    }
+}
+
 .filtre-groupe .options .option.encours .badge-encours {
     margin-left: 0.4em;
     color: #22c55e;

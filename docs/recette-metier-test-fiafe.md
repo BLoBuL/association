@@ -2610,3 +2610,35 @@ restent au vert. Le test runtime utilise désormais le webmestre réel du site e
 confirme SPIP 4.4.21, PDO et l'unique webmestre permanent ; comme documenté sur
 cet hébergement, il retourne néanmoins le code 1. La lecture structurée des
 journaux sur la fenêtre finale ne retourne aucune erreur.
+
+## Lot 194 - jeu de contenus transversal persistant
+
+Le script `tests/fixtures/injecter_contenu_recette_suite_spip.php` fournit un
+jeu de données idempotent repéré par `RECETTE-ASSO4`. Il peut être rejoué dans
+le contexte SPIP sans créer de doublons. Sur test-fiafe, il alimente les treize
+plugins de la suite avec un auteur fictif commun et les relations suivantes :
+
+- une catégorie d'adhérent, une cotisation valide et son écriture comptable ;
+- un article Agenda, un événement publié, un tarif générique et une inscription ;
+- un plan comptable, une destination analytique et trois écritures ;
+- une transaction Bank en attente, non réglée et sans mode de passerelle ;
+- un don, une vente, une ressource et un prêt en cours ;
+- un gabarit de communication en préparation et un abonné non actif utilisant
+  le domaine réservé `example.invalid` ;
+- une rubrique Boutique, un produit, un panier et une commande en cours ;
+- une organisation, un partenaire publié et une bannière publiée.
+
+Le module Groupes exploite le même auteur, doté d'une fonction bénévole de
+recette. Association porte le marqueur et les paramètres Commerce dans sa
+propre table de métas. L'injecteur n'appelle aucun formulaire d'envoi, aucun
+job de mail et aucune API de paiement. Les objets Paiements et Communication
+restent volontairement inactifs afin qu'une manipulation de recette ne puisse
+ni encaisser ni expédier un message.
+
+Le premier passage puis deux rejeux ont retourné les mêmes identifiants. Le
+contrôle relationnel retrouve un auteur, une cotisation, un événement, une
+inscription, trois écritures, une transaction sûre, un don, une vente, un prêt,
+un abonné inactif, un panier, une commande, un partenaire et une bannière. Les
+pages publiques Boutique, Partenaires, Bannières, Ressources, Événement et
+Profil répondent en HTTP 200 dans Chrome, affichent le marqueur et ne contiennent
+aucune erreur d'exécution SPIP.

@@ -114,20 +114,20 @@
                 [(#STATUT|match{echec|rembourse}|et{#MESSAGE|trim|strlen}|oui)[<abbr title="[(#MESSAGE|attribut_html)[ - (#ERREUR|attribut_html)]]">(#STATUT)</abbr>]]
 
                 [(#STATUT|in_array{#LISTE{commande,attente}}|et{#AUTORISER{regler,transaction,#ID_TRANSACTION}})
-                    <a href="[(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION}|parametre_url{transaction_hash,#TRANSACTION_HASH})]" class="lien_fa">
-                        <i class="fa-regular fa-square"></i>
+                    <a href="[(#URL_ECRIRE{payer,id_transaction=#ID_TRANSACTION}|parametre_url{transaction_hash,#TRANSACTION_HASH})]" class="lien_fa" title="<:association_paiements:bouton_regler_transaction|attribut_html:>" aria-label="<:association_paiements:bouton_regler_transaction|attribut_html:>">
+                        <i class="fa-regular fa-square" aria-hidden="true"></i>
                     </a>
                 ]
                 </td>
                 <td class="action">
                     [(#STATUT|match{ok}|oui)
-                        <a href="[(#URL_ECRIRE{transaction_remboursement,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer"><i class="fa fa-undo"></i></a>
+                        <a href="[(#URL_ECRIRE{transaction_remboursement,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer" title="<:association_paiements:bouton_rembourser_transaction|attribut_html:>" aria-label="<:association_paiements:bouton_rembourser_transaction|attribut_html:>"><i class="fa fa-undo" aria-hidden="true"></i></a>
                     ]
                     [(#STATUT|in_array{#LISTE{commande,attente}}|oui)
-                        <a href="[(#URL_ECRIRE{transaction_abandon,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer"><i class="fa fa-ban"></i></a>
+                        <a href="[(#URL_ECRIRE{transaction_abandon,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer" title="<:association_paiements:bouton_annuler_transaction|attribut_html:>" aria-label="<:association_paiements:bouton_annuler_transaction|attribut_html:>"><i class="fa fa-ban" aria-hidden="true"></i></a>
                     ]
                    [(#AUTORISER{supprimer,transaction,#ID_TRANSACTION}|oui)
-                        <a href="[(#URL_ECRIRE{transaction_suppression,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer"><i class="fa-regular fa-trash-can"></i></a>
+                        <a href="[(#URL_ECRIRE{transaction_suppression,id_transaction=#ID_TRANSACTION})]" class="popin bouton_editer" title="<:association_paiements:bouton_supprimer_transaction|attribut_html:>" aria-label="<:association_paiements:bouton_supprimer_transaction|attribut_html:>"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></a>
                     ]
                 </td>
 				</tr>
