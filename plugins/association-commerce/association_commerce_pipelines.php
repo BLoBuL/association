@@ -42,6 +42,35 @@ function association_commerce_association_capacites($flux) {
 		'panier' => true,
 		'commandes' => true,
 		'paiement' => association_plugin_actif('association_paiements'),
+		'contrats' => association_plugin_actif('contrats'),
 	);
 	return $flux;
+}
+
+function association_commerce_association_contrat_demander($demande) {
+	if (!association_plugin_actif('contrats')) {
+		return $demande;
+	}
+
+	include_spip('inc/contrats');
+	if (!function_exists('contrats_creer_ou_mettre_a_jour_depuis_flux')) {
+		return $demande;
+	}
+
+	$action = (string) ($demande['action'] ?? 'synchroniser');
+	if (!in_array($action, array('creer', 'synchroniser'), true)) {
+		return $demande;
+	}
+
+	try {
+		$id_contrat = contrats_creer_ou_mettre_a_jour_depuis_flux($demande);
+		$demande['id_contrat'] = (int) $id_contrat;
+		$demande['contrat_cree'] = $id_contrat > 0;
+	} catch (Throwable $e) {
+		$demande['erreur'] = $e->getMessage();
+		$demande['contrat_cree'] = false;
+		association_log('commerce', 'Création de contrat ignorée : ' . $e->getMessage(), 'erreur');
+	}
+
+	return $demande;
 }

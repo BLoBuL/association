@@ -12,8 +12,54 @@ function association_adhesions_association_capacites($capacites) {
 	$capacites['adhesions'] = array('plugin' => 'association_adhesions');
 	$capacites['cotisations'] = array('plugin' => 'association_adhesions');
 	$capacites['profil_membre'] = array('plugin' => 'association_adhesions');
+	if (association_plugin_actif('familles')) {
+		$capacites['familles'] = array('plugin' => 'familles', 'adaptateur' => 'association_adhesions');
+	}
 
 	return $capacites;
+}
+
+function association_adhesions_association_contexte_familial($contexte) {
+	if (!association_plugin_actif('familles')) {
+		return $contexte;
+	}
+
+	include_spip('inc/familles');
+	if (!function_exists('familles_objet_lister_familles')) {
+		return $contexte;
+	}
+
+	$objet = trim((string) ($contexte['objet'] ?? ''));
+	$id_objet = (int) ($contexte['id_objet'] ?? 0);
+	$id_auteur = (int) ($contexte['id_auteur'] ?? 0);
+	if (!$objet && $id_auteur) {
+		$objet = 'auteur';
+		$id_objet = $id_auteur;
+	}
+	if (!$objet || !$id_objet) {
+		return $contexte;
+	}
+
+	$ids = familles_objet_lister_familles($objet, $id_objet);
+	$contexte['disponible'] = true;
+	$contexte['familles'] = array_values(array_map('intval', $ids));
+	$contexte['id_famille'] = (int) ($contexte['familles'][0] ?? 0);
+	if (!$contexte['id_famille']) {
+		return $contexte;
+	}
+
+	$contexte['famille'] = function_exists('familles_lire')
+		? (array) familles_lire($contexte['id_famille'])
+		: array('id_famille' => $contexte['id_famille']);
+	$contexte['membres'] = function_exists('familles_lister_auteurs')
+		? familles_lister_auteurs($contexte['id_famille'])
+		: array();
+	if (function_exists('familles_lire_lien')) {
+		$lien = familles_lire_lien($contexte['id_famille'], $objet, $id_objet);
+		$contexte['role'] = (string) ($lien['role'] ?? '');
+	}
+
+	return $contexte;
 }
 
 function association_adhesions_association_profil_participant($participant) {
@@ -32,9 +78,8 @@ function association_adhesions_association_profil_participant($participant) {
 		? array('adherent', 'indifferent')
 		: array('non_adherent', 'indifferent');
 
-	if (function_exists('generer_famille_adherent')) {
-		$participant['famille'] = (array) generer_famille_adherent($id_auteur);
-	}
+	include_spip('inc/association_capacites');
+	$participant['famille'] = association_contexte_familial(array('id_auteur' => $id_auteur));
 
 	return $participant;
 }

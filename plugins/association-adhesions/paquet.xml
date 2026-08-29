@@ -29,6 +29,7 @@
 	<pipeline nom="association_rgpd_export_auteur" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_capacites" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_profil_participant" inclure="association_adhesions_pipelines.php" />
+	<pipeline nom="association_contexte_familial" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_configuration_categorie_entreprise" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_configuration_navigation" inclure="association_adhesions_pipelines.php" />
 	<pipeline nom="association_config_cli_registre" inclure="association_adhesions_pipelines.php" />

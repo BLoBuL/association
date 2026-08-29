@@ -57,6 +57,52 @@ function association_profil_participant(array $participant): array {
 }
 
 /**
+ * Retourne le contexte familial facultatif d'un auteur ou d'un objet métier.
+ *
+ * Sans Familles, la réponse reste exploitable et indique simplement que la
+ * capacité n'est pas disponible. Les consommateurs ne doivent jamais lire
+ * directement les tables du plugin maison.
+ */
+function association_contexte_familial(array $contexte): array {
+	$contexte += array(
+		'id_auteur' => 0,
+		'objet' => '',
+		'id_objet' => 0,
+		'disponible' => false,
+		'id_famille' => 0,
+		'famille' => array(),
+		'familles' => array(),
+		'membres' => array(),
+		'role' => '',
+	);
+	$resultat = pipeline('association_contexte_familial', $contexte);
+
+	return is_array($resultat) ? $resultat : $contexte;
+}
+
+/**
+ * Demande facultativement la création ou la synchronisation d'un contrat.
+ *
+ * L'objet métier et sa commande doivent exister avant cet appel. L'absence du
+ * plugin Contrats n'invalide jamais l'opération métier d'origine.
+ */
+function association_demander_contrat(array $demande): array {
+	$demande += array(
+		'action' => 'synchroniser',
+		'objet' => '',
+		'id_objet' => 0,
+		'id_contrat' => 0,
+		'id_contrat_type' => 0,
+		'id_commande' => 0,
+		'contrat_cree' => false,
+		'erreur' => '',
+	);
+	$resultat = pipeline('association_contrat_demander', $demande);
+
+	return is_array($resultat) ? $resultat : $demande;
+}
+
+/**
  * Demande facultativement la comptabilisation d'une opération métier.
  *
  * L'objet métier est toujours enregistré avant cet appel. En l'absence de

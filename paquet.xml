@@ -43,6 +43,8 @@
 	<pipeline nom="association_configuration_verifier" action="" />
 	<pipeline nom="association_capacites" action="" />
 	<pipeline nom="association_profil_participant" action="" />
+	<pipeline nom="association_contexte_familial" action="" />
+	<pipeline nom="association_contrat_demander" action="" />
 	<pipeline nom="association_comptabiliser_operation" action="" />
 	<pipeline nom="association_notifier_metier" action="" />
 

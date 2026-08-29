@@ -7,11 +7,13 @@
 	<necessite nom="commandes" />
 	<necessite nom="prix" compatibilite="[1.4.0;[" />
 	<utilise nom="association_paiements" compatibilite="[4.0.0;4.*]" />
+	<utilise nom="contrats" compatibilite="[6.8.24;[" />
 	<pipeline nom="autoriser" inclure="association_commerce_autoriser.php" />
 	<pipeline nom="association_menu_entrees" inclure="inc/association_commerce_menu.php" />
 	<pipeline nom="association_configuration_navigation" inclure="association_commerce_pipelines.php" />
 	<pipeline nom="association_configuration_saisies" inclure="association_commerce_pipelines.php" />
 	<pipeline nom="association_capacites" inclure="association_commerce_pipelines.php" />
+	<pipeline nom="association_contrat_demander" inclure="association_commerce_pipelines.php" />
 	<pipeline nom="association_installation_inventaire" inclure="inc/association_commerce_installation.php" />
 	<!-- Compatibilite Prix 2.0.0 : l'API appelle ce pipeline sans le declarer. -->
 	<pipeline nom="taxes" action="" />
