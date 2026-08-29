@@ -18,7 +18,11 @@ function association_partenaires_association_configuration_saisies($flux) {
 	return $flux;
 }
 
-function association_partenaires_association_capacites($flux) {
-	$flux['data']['partenaires'] = array('organisations' => true, 'contacts' => true);
-	return $flux;
+function association_partenaires_association_capacites($capacites) {
+	$capacites['partenaires'] = array(
+		'plugin' => 'association_partenaires',
+		'organisations' => true,
+		'contacts' => true,
+	);
+	return $capacites;
 }

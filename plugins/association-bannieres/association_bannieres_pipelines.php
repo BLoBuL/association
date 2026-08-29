@@ -11,7 +11,11 @@ function association_bannieres_association_configuration_saisies($flux) {
 	))));
 	return $flux;
 }
-function association_bannieres_association_capacites($flux) {
-	$flux['data']['bannieres'] = array('affichage_public' => true, 'emplacements' => true);
-	return $flux;
+function association_bannieres_association_capacites($capacites) {
+	$capacites['bannieres'] = array(
+		'plugin' => 'association_bannieres',
+		'affichage_public' => true,
+		'emplacements' => true,
+	);
+	return $capacites;
 }

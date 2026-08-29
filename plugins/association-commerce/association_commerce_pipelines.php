@@ -37,14 +37,15 @@ function association_commerce_association_configuration_saisies($flux) {
 	return $flux;
 }
 
-function association_commerce_association_capacites($flux) {
-	$flux['data']['commerce'] = array(
+function association_commerce_association_capacites($capacites) {
+	$capacites['commerce'] = array(
+		'plugin' => 'association_commerce',
 		'panier' => true,
 		'commandes' => true,
 		'paiement' => association_plugin_actif('association_paiements'),
 		'contrats' => association_plugin_actif('contrats'),
 	);
-	return $flux;
+	return $capacites;
 }
 
 function association_commerce_association_contrat_demander($demande) {
