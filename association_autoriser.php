@@ -31,6 +31,14 @@ function association_autoriser() {
 }
 
 /**
+ * Autoriser la configuration du socle et les imports qui réutilisent le type
+ * conventionnel `_association`.
+ */
+function autoriser_association_configurer_dist($faire, $type, $id, $qui, $opt) {
+	return association_est_admin_complet(association_normalize_qui($qui));
+}
+
+/**
  * Journaliser un message de diagnostic lorsque cette catégorie est active.
  *
  * @param mixed $message
