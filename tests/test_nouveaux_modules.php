@@ -1,7 +1,7 @@
 <?php
 $racine = dirname(__DIR__);
 $modules = array(
-	'association-commerce' => array('association_commerce', array('association', 'paniers', 'commandes', 'prix'), 'commerce'),
+	'association-commerce' => array('association_commerce', array('association', 'paniers', 'commandes', 'prix', 'produits'), 'commerce'),
 	'association-partenaires' => array('association_partenaires', array('association', 'contacts'), 'partenaires'),
 	'association-bannieres' => array('association_bannieres', array('association'), 'bannieres'),
 	'association-bons-plans' => array('association_bons_plans', array('association'), 'bons_plans'),
@@ -27,7 +27,8 @@ foreach (array('panier', 'commande') as $page_commerce) {
 	if (!is_file("$racine/plugins/association-commerce/squelettes/$page_commerce.html")) { $erreurs[] = "page publique commerce $page_commerce absente"; }
 }
 $catalogue_commerce = file_get_contents("$racine/plugins/association-commerce/inclure/association-commerce-catalogue.html");
-if (!str_contains($catalogue_commerce, '#FORMULAIRE_REMPLIR_PANIER{article,#ID_ARTICLE}')) { $erreurs[] = 'le catalogue commerce ne fournit pas le formulaire natif d ajout au panier'; }
+if (!str_contains($catalogue_commerce, '(PRODUITS)') || !str_contains($catalogue_commerce, '#FORMULAIRE_REMPLIR_PANIER{produit,#ID_PRODUIT}')) { $erreurs[] = 'le catalogue commerce ne fournit pas les produits au formulaire natif d ajout au panier'; }
+if (str_contains($catalogue_commerce, '(ARTICLES)') || str_contains($catalogue_commerce, '{article,#ID_ARTICLE}')) { $erreurs[] = 'le catalogue commerce utilise encore les articles SPIP'; }
 if (str_contains($catalogue_commerce, '#FORMULAIRE_PANIER{article,')) { $erreurs[] = 'le formulaire d affichage du panier est utilise a tort pour ajouter un produit'; }
 if (!str_contains(file_get_contents("$racine/plugins/association-commerce/paquet.xml"), '<pipeline nom="taxes" action=""')) { $erreurs[] = 'la compatibilite du pipeline taxes de Prix 2.0.0 est absente'; }
 $page_panier = file_get_contents("$racine/plugins/association-commerce/squelettes/panier.html");

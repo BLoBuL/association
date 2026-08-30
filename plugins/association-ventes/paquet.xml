@@ -1,4 +1,4 @@
-<paquet prefix="association_ventes" categorie="divers" version="4.0.0" etat="dev" compatibilite="[4.0.0;4.*]" schema="1.0.0">
+<paquet prefix="association_ventes" categorie="divers" version="4.1.0" etat="dev" compatibilite="[4.0.0;4.*]" schema="1.1.0">
 	<nom>Association - Ventes</nom>
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
@@ -6,6 +6,8 @@
 	<pipeline nom="autoriser" inclure="association_ventes_autoriser.php" />
 	<pipeline nom="association_menu_entrees" inclure="inc/association_ventes_menu.php" />
 	<pipeline nom="association_capacites" inclure="association_ventes_pipelines.php" />
+	<pipeline nom="association_enregistrer_vente" inclure="association_ventes_pipelines.php" />
+	<pipeline nom="post_edition" inclure="association_ventes_pipelines.php" />
 	<pipeline nom="association_rgpd_export_auteur" inclure="association_ventes_pipelines.php" />
 	<pipeline nom="association_rgpd_anonymiser_auteur" inclure="association_ventes_pipelines.php" />
 	<pipeline nom="association_compta_objets_declarer" inclure="association_ventes_pipelines.php" />
@@ -16,4 +18,7 @@
 	<utilise nom="association_compta" compatibilite="[4.0.0;4.*]" />
 	<utilise nom="association_paiements" compatibilite="[4.0.0;4.*]" />
 	<utilise nom="association_adhesions" compatibilite="[4.0.0;4.*]" />
+	<utilise nom="produits" compatibilite="[2.4.0;[" />
+	<utilise nom="prix" compatibilite="[1.4.0;[" />
+	<utilise nom="commandes" />
 </paquet>

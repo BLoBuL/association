@@ -13,6 +13,29 @@ function association_ventes_association_capacites($capacites) {
 	return $capacites;
 }
 
+function association_ventes_association_enregistrer_vente($vente) {
+	include_spip('inc/association_ventes_commandes');
+
+	return association_ventes_enregistrer($vente);
+}
+
+function association_ventes_post_edition($flux) {
+	if (($flux['args']['table'] ?? '') !== 'spip_commandes') {
+		return $flux;
+	}
+
+	$id_commande = (int) ($flux['args']['id_objet'] ?? 0);
+	$statut = (string) ($flux['data']['statut'] ?? '');
+	if (!$id_commande || ($statut && !in_array($statut, array('attente', 'partiel', 'attente_echeance', 'paye', 'envoye'), true))) {
+		return $flux;
+	}
+
+	include_spip('inc/association_ventes_commandes');
+	association_ventes_commande_synchroniser($id_commande);
+
+	return $flux;
+}
+
 function association_ventes_association_rgpd_anonymiser_auteur($flux) {
 	$id = intval($flux['args']['id_auteur'] ?? 0);
 	$flux['data']['ventes_anonymisees'] = association_rgpd_updateq('spip_asso_ventes', association_rgpd_filtrer_champs('spip_asso_ventes', array(

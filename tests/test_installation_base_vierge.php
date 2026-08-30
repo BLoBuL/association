@@ -34,7 +34,7 @@ $schemas = array(
 	'association_dons_base_version' => '1.0.0',
 	'association_evenements_base_version' => '1.2.0',
 	'association_prets_base_version' => '1.1.1',
-	'association_ventes_base_version' => '1.0.0',
+	'association_ventes_base_version' => '1.1.0',
 );
 foreach ($schemas as $meta => $version) {
 	if (strpos($inventaire, "'$meta' => '$version'") === false) {

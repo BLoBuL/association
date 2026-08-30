@@ -123,6 +123,25 @@ function association_comptabiliser_operation(array $operation): array {
 }
 
 /**
+ * Enregistre ou synchronise facultativement une vente.
+ *
+ * Le producteur transmet des instantanés métier suffisants pour que Ventes ne
+ * dépende ni du catalogue ni de la commande après l'enregistrement. Sans le
+ * plugin Ventes, l'opération source reste valide et aucun identifiant n'est
+ * créé.
+ */
+function association_enregistrer_vente(array $vente): array {
+	$vente += array(
+		'id_vente' => 0,
+		'enregistree' => false,
+		'erreur' => '',
+	);
+	$resultat = pipeline('association_enregistrer_vente', $vente);
+
+	return is_array($resultat) ? $resultat : $vente;
+}
+
+/**
  * Publie une notification métier sans imposer Communication.
  */
 function association_notifier_metier(array $notification): array {

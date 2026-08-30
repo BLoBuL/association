@@ -10,7 +10,8 @@ neutre et ne remet jamais en cause l'existence de l'objet métier.
 Les capacités communes sont publiées par les pipelines
 `association_capacites`, `association_profil_participant`,
 `association_contexte_familial`, `association_contrat_demander`,
-`association_comptabiliser_operation` et `association_notifier_metier`.
+`association_comptabiliser_operation`, `association_enregistrer_vente` et
+`association_notifier_metier`.
 Les identifiants `id_compte` et `id_transaction` sont facultatifs.
 Comptabilité et Paiements ne se déclarent pas mutuellement avec `utilise` :
 SPIP ordonne aussi ces relations facultatives et recréerait un cycle. Leurs
@@ -36,8 +37,8 @@ consommateur la lecture des tables d'un autre plugin.
 | Groupes | aucune | groupes, rôles et liens auteurs | sans Adhésions utilise les auteurs SPIP et leurs URLs privées natives |
 | Prêts | Intl | ressources et prêts | persiste sans Compta/Paiements; comptabilisation facultative |
 | Dons | aucune | dons et reçus | persiste sans Compta/Paiements/Communication |
-| Ventes | aucune | ventes et expéditions | persiste sans Compta/Paiements/Adhésions |
-| Commerce | Paniers, Commandes, Prix | catalogue, panier, commande et adaptateur Contrats | sans Paiements conserve la commande; sans Contrats conserve l'objet et retourne `id_contrat=0` |
+| Ventes | aucune | ventes et expéditions, réception idempotente des lignes de commande | persiste sans Compta/Paiements/Adhésions/Produits/Prix/Commandes ; conserve ses instantanés historiques |
+| Commerce | Paniers, Commandes, Prix, Produits | catalogue Produits, panier, commande et adaptateur Contrats | sans Paiements conserve la commande; sans Contrats conserve l'objet et retourne `id_contrat=0` |
 | Partenaires | Contacts & Organisations | qualification, périodes et présentation publique des partenaires | autonome vis-à-vis des autres métiers de la suite |
 | Bannières | aucune | campagnes, emplacements et modèles publicitaires | autonome ; le logo SPIP porte le visuel de la bannière |
 | Bons plans | Saisies | recommandations, modération, dépublication et proposition publique | sans Communication, la proposition est enregistrée sans envoi de notification |
@@ -57,7 +58,8 @@ consommateur la lecture des tables d'un autre plugin.
 | Dons, Ventes ou Prêts sans Compta | objet métier complet avec lien comptable nul |
 | Dons, Ventes ou Prêts + Compta | création ou synchronisation facultative d'une écriture |
 | Suite complète | enrichissements cumulés, sans changement de propriétaire des données |
-| Commerce seul | catalogue, panier et commandes ; le règlement Association reste facultatif |
+| Commerce avec ses dépendances | catalogue Produits, panier et commandes ; le règlement Association reste facultatif |
+| Ventes + Commandes | chaque ligne Produit d'une commande validée est synchronisée une seule fois dans Ventes |
 | Adhésions + Familles | profil familial, rôles et membres du foyer via l'API publique Familles |
 | Commerce + Contrats | création ou synchronisation facultative d'un contrat depuis une commande |
 | Partenaires seul | organisations Contacts qualifiées et publiées comme partenaires |

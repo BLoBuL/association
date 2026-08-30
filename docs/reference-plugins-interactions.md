@@ -247,27 +247,32 @@ prix appliqué, frais et expédition.
 
 **Dépendance obligatoire.** Aucune en dehors du socle.
 
-**Compléments actuellement déclarés.** Comptabilité, Paiements et Adhésions.
+**Compléments déclarés.** Comptabilité, Paiements, Adhésions, Produits, Prix et
+Commandes. Les trois derniers enrichissent ou alimentent Ventes mais ne sont
+jamais requis pour une saisie manuelle.
 
 **Frontière avec Commerce.** Ventes est un registre opérationnel manuel ;
 Commerce orchestre un achat en ligne. Aucun des deux ne doit devenir propriétaire
 d’un catalogue ou d’un tarif courant concurrents.
 
+Lorsqu'une commande validée contient une ligne `produit`, Ventes en conserve
+une photographie (libellé, référence, quantité, prix HT, taxe, réduction et
+prix TTC). La clé commande/détail garantit que les notifications SPIP peuvent
+être rejouées sans créer de doublon.
+
 ### 4.11 Commerce
 
 **Rôle.** Boutique, mini-panier, panier, création et consultation de commande.
 
-**Dépendances obligatoires actuelles.** Paniers, Commandes et Prix.
+**Dépendances obligatoires.** Produits, Paniers, Commandes et Prix. La version
+officielle Produits 2.4 impose de fait SPIP 4.1 minimum à Commerce, sans relever
+le plancher SPIP 4.0 du socle ni des autres modules.
 
 **Compléments facultatifs.** Paiements et Contrats.
 
-**Interactions.** Paniers possède le panier, Commandes la commande et ses lignes
-historiques, Prix calcule les montants. L’adaptateur Contrats implémente
+**Interactions.** Produits possède le catalogue, Paniers le panier, Commandes la
+commande et ses lignes historiques, Prix calcule les montants. L’adaptateur Contrats implémente
 `association_demander_contrat()` et retourne `id_contrat=0` si Contrats est absent.
-
-**Écart connu.** Le catalogue boucle encore sur les articles SPIP et ajoute
-l’objet `article` au panier. Le passage au plugin Produits est décidé mais pas
-encore implémenté.
 
 ### 4.12 Partenaires
 
@@ -337,6 +342,7 @@ insérée dans un squelette existant plutôt qu’exposée comme page autonome.
 | Dons | Compta/Paiements | objet et règlement | écriture ou transaction | don autonome |
 | Prêts | Compta/Paiements | objet et règlement | caution/frais suivis | prêt autonome |
 | Ventes | Compta/Paiements | objet et règlement | vente comptabilisée/réglée | vente autonome |
+| Commandes | Ventes | enregistrement de vente | instantané idempotent des lignes Produit | commande autonome |
 | Groupes | Adhésions | profil membre | informations d’adhésion | auteur SPIP seul |
 | Commerce | Paiements | règlement | paiement de commande | commande non réglée en ligne |
 | Commerce | Contrats | demande idempotente | création/synchronisation | `id_contrat=0` |
@@ -358,6 +364,7 @@ insérée dans un squelette existant plutôt qu’exposée comme page autonome.
 | Mailsubscribers | Communication | abonnés et listes |
 | Mailshot | Communication | campagnes et envois collectifs |
 | Paniers | Commerce | panier courant |
+| Produits | Commerce ; facultatif Ventes | catalogue, références et descriptions |
 | Commandes | Commerce ; facultatif Compta/Paiements | commandes et lignes historiques |
 | Prix | Commerce | prix courants et taxes |
 | Contacts & Organisations | Partenaires | organisations et coordonnées |
@@ -381,15 +388,10 @@ insérée dans un squelette existant plutôt qu’exposée comme page autonome.
 Une photographie du libellé et du prix dans une commande ou une vente prouve
 les conditions appliquées ; elle ne concurrence pas le catalogue ni Prix.
 
-### Travail restant
-
-1. ajouter Produits aux dépendances obligatoires de Commerce ;
-2. remplacer le catalogue d’articles par une boucle `PRODUITS` ;
-3. conserver Prix comme seule API du tarif courant ;
-4. ajouter à Ventes des liens facultatifs vers Produit et Commande, une origine
-   et des instantanés historiques ;
-5. publier un contrat idempotent Commande vers Vente ;
-6. tester Ventes seule, Commerce avec ses dépendances, puis la combinaison.
+Cette cible est implémentée : Commerce boucle sur `PRODUITS`, Prix reste l'API
+du tarif courant et Ventes reçoit les lignes Produit des commandes au moyen du
+contrat public `association_enregistrer_vente()`. Les colonnes de liaison sont
+nullables et n'affectent donc pas l'autonomie ni les ventes historiques.
 
 ## 9. Combinaisons garanties
 

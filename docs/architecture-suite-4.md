@@ -22,7 +22,7 @@ leur déplacement interne pourra ensuite se faire sans migration de données.
 | Dons | `association_dons` | dons et contreparties | reçus, comptabilité et paiement optionnel |
 | Ventes | `association_ventes` | ventes et expéditions | comptabilité et paiement optionnel |
 | Communication | `association_communication` | gabarits et préférences propres à la suite | Notifications, Mailshot et Mailsubscribers |
-| Commerce | `association_commerce` | orchestration du catalogue, du panier et de la commande | Prix, Paniers et Commandes ; Paiements facultatif |
+| Commerce | `association_commerce` | orchestration du catalogue, du panier et de la commande | Produits, Prix, Paniers et Commandes ; Paiements facultatif |
 | Partenaires | `association_partenaires` | qualification et exposition des partenariats | Contacts et Organisations |
 | Bannières | `association_bannieres` | campagnes publicitaires, emplacements et périodes | modèles publics et logos SPIP |
 | Bons plans | `association_bons_plans` | recommandations locales, proposition publique et modération | objet éditorial SPIP autonome ; Communication facultative |

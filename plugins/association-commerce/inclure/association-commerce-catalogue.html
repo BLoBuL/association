@@ -1,18 +1,18 @@
 #SET{id_rubrique,#VAL{commerce_rubrique}|association_commerce_config{0}}
 <B_catalogue>
-<div class="liste articles">
+<div class="liste produits">
 	<ul class="liste-items">
-	<BOUCLE_catalogue(ARTICLES){id_rubrique=#GET{id_rubrique}}{statut=publie}{par num titre,titre}{pagination 20}>
+	<BOUCLE_catalogue(PRODUITS){id_rubrique=#GET{id_rubrique}}{statut=publie}{par num titre,titre}{pagination 20}>
 	<li class="item hentry">
-		<h2 class="h3 entry-title"><a href="#URL_ARTICLE">#TITRE</a></h2>
-		[<div class="introduction">(#INTRODUCTION{160})</div>]
+		<h2 class="h3 entry-title"><a href="#URL_PRODUIT">#TITRE</a></h2>
+		[<div class="introduction">(#DESCRIPTIF|couper{160})</div>]
 		[<div class="prix">(#PRIX*|association_commerce_afficher_prix{2,#VAL{commerce_devise}|association_commerce_config{EUR}})</div>]
-		<div class="panier">#FORMULAIRE_REMPLIR_PANIER{article,#ID_ARTICLE}</div>
+		<div class="panier">#FORMULAIRE_REMPLIR_PANIER{produit,#ID_PRODUIT}</div>
 	</li>
 	</BOUCLE_catalogue>
 	</ul>
 	[<nav class="pagination" role="navigation">(#PAGINATION)</nav>]
 </div>
 </B_catalogue>
-<p class="notice"><:info_aucun_article:></p>
+<p class="notice"><:produit:info_aucun_produit:></p>
 <//B_catalogue>

@@ -6,6 +6,7 @@
 	<necessite nom="paniers" />
 	<necessite nom="commandes" />
 	<necessite nom="prix" compatibilite="[1.4.0;[" />
+	<necessite nom="produits" compatibilite="[2.4.0;[" />
 	<utilise nom="association_paiements" compatibilite="[4.0.0;4.*]" />
 	<utilise nom="contrats" compatibilite="[6.8.24;[" />
 	<pipeline nom="autoriser" inclure="association_commerce_autoriser.php" />
