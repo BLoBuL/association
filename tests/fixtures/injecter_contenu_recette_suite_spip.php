@@ -86,6 +86,14 @@ $id_article_boutique = $resultats['article_boutique'] = $upsert_champ('spip_arti
 	'texte' => 'Article testable dans le catalogue et le panier.', 'statut' => 'publie',
 	'date' => $maintenant, 'date_modif' => $maintenant, 'lang' => 'fr',
 ));
+$id_produit = $resultats['produit'] = $upsert_champ('spip_produits', 'reference', 'RECETTE-GUIDE-01', 'id_produit', array(
+	'id_rubrique' => $id_rubrique, 'id_secteur' => $id_rubrique,
+	'titre' => '[' . $marqueur . '] Guide associatif', 'reference' => 'RECETTE-GUIDE-01',
+	'descriptif' => 'Produit fictif pour tester le catalogue Produits.',
+	'texte' => 'Ce produit ne doit jamais être livré ni encaissé.',
+	'prix_ht' => '15.000000', 'taxe' => '0.0000', 'statut' => 'publie',
+	'lang' => 'fr', 'date' => $maintenant, 'date_com' => $maintenant, 'immateriel' => 0,
+));
 $resultats['article_email'] = $upsert_champ('spip_articles', 'page', 'email_collectif_recette_asso4', 'id_article', array(
 	'titre' => '[' . $marqueur . '] Gabarit communication', 'page' => 'email_collectif_recette_asso4',
 	'id_rubrique' => $id_rubrique, 'id_secteur' => $id_rubrique,
@@ -198,23 +206,26 @@ $resultats['abonne'] = $upsert_champ('spip_mailsubscribers', 'email', 'recette-a
 	'optin' => 'non', 'date' => $maintenant, 'statut' => 'prepa', 'lang' => 'fr',
 ));
 
-// Commerce : panier et commande en cours, sans transaction ni validation.
+// Commerce : panier Produit et commande fictive, sans transaction ni paiement.
 $id_panier = $resultats['panier'] = $upsert_champ('spip_paniers', 'cookie', $marqueur, 'id_panier', array(
 	'id_auteur' => $id_auteur, 'cookie' => $marqueur, 'statut' => 'encours', 'date' => $maintenant,
 ));
-if (sql_countsel('spip_paniers_liens', 'id_panier=' . $id_panier . " AND objet='article' AND id_objet=" . $id_article_boutique)) {
-	sql_updateq('spip_paniers_liens', array('quantite' => 2), 'id_panier=' . $id_panier . " AND objet='article' AND id_objet=" . $id_article_boutique);
+if (sql_countsel('spip_paniers_liens', 'id_panier=' . $id_panier . " AND objet='produit' AND id_objet=" . $id_produit)) {
+	sql_updateq('spip_paniers_liens', array('quantite' => 2), 'id_panier=' . $id_panier . " AND objet='produit' AND id_objet=" . $id_produit);
 } else {
-	sql_insertq('spip_paniers_liens', array('id_panier' => $id_panier, 'objet' => 'article', 'id_objet' => $id_article_boutique, 'quantite' => 2, 'reduction' => 0, 'rang' => 1));
+	sql_insertq('spip_paniers_liens', array('id_panier' => $id_panier, 'objet' => 'produit', 'id_objet' => $id_produit, 'quantite' => 2, 'reduction' => 0, 'rang' => 1));
 }
 $id_commande = $resultats['commande'] = $upsert_champ('spip_commandes', 'reference', 'RECETTE-ASSO4-CMD', 'id_commande', array(
 	'reference' => 'RECETTE-ASSO4-CMD', 'source' => 'association_recette', 'id_auteur' => $id_auteur,
-	'statut' => 'encours', 'date' => $maintenant, 'commentaire' => 'Commande fictive, ne pas encaisser.', 'accepter_conditions' => 'on',
+	'statut' => 'attente', 'date' => $maintenant,
 ));
 $resultats['detail_commande'] = $upsert_champ('spip_commandes_details', 'descriptif', '[' . $marqueur . '] Guide associatif', 'id_commandes_detail', array(
 	'id_commande' => $id_commande, 'descriptif' => '[' . $marqueur . '] Guide associatif', 'quantite' => 2,
-	'prix_unitaire_ht' => 15, 'taxe' => 0, 'reduction' => 0, 'statut' => 'attente', 'objet' => 'article', 'id_objet' => $id_article_boutique,
+	'prix_unitaire_ht' => 15, 'taxe' => 0, 'reduction' => 0, 'statut' => 'attente', 'objet' => 'produit', 'id_objet' => $id_produit,
 ));
+include_spip('inc/association_ventes_commandes');
+$ventes_commande = association_ventes_commande_synchroniser($id_commande);
+$resultats['vente_commande'] = (int) ($ventes_commande[0]['id_vente'] ?? 0);
 $ecrire_meta_association('commerce_rubrique', $id_rubrique);
 $ecrire_meta_association('commerce_devise', 'EUR');
 // Nettoie les deux cles d'une ancienne version du script, jamais utilisees par le formulaire Association.
@@ -236,6 +247,16 @@ $resultats['banniere'] = $upsert_champ('spip_asso_bannieres', 'titre', '[' . $ma
 	'titre' => '[' . $marqueur . '] Bienvenue sur la recette',
 	'descriptif' => 'Banniere fictive pour verifier le rendu frontal.', 'url' => 'https://example.invalid/recette-asso4',
 	'emplacement' => 'principal', 'ordre' => 10, 'date_debut' => $aujourdhui, 'date_fin' => $dans_un_an, 'statut' => 'publie',
+));
+
+// Bons plans : un objet publié et expirant dans un an pour les parcours BO/FO.
+$resultats['bon_plan'] = $upsert_champ('spip_bons_plans', 'titre', '[' . $marqueur . '] Atelier solidaire', 'id_bon_plan', array(
+	'id_rubrique' => $id_rubrique, 'id_secteur' => $id_rubrique,
+	'titre' => '[' . $marqueur . '] Atelier solidaire',
+	'texte' => 'Bon plan fictif réservé à la recette de la suite Association 4.',
+	'url_site_internet' => 'https://example.invalid/bon-plan', 'adresse' => '1 rue de la Recette',
+	'telephone' => '+33 1 00 00 00 00', 'email_contact' => 'bon-plan@example.invalid',
+	'date' => $maintenant, 'date_depublication' => $dans_un_an, 'statut' => 'publie', 'lang' => 'fr',
 ));
 
 ksort($resultats);
