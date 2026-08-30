@@ -40,6 +40,7 @@ consommateur la lecture des tables d'un autre plugin.
 | Commerce | Paniers, Commandes, Prix | catalogue, panier, commande et adaptateur Contrats | sans Paiements conserve la commande; sans Contrats conserve l'objet et retourne `id_contrat=0` |
 | Partenaires | Contacts & Organisations | qualification, périodes et présentation publique des partenaires | autonome vis-à-vis des autres métiers de la suite |
 | Bannières | aucune | campagnes, emplacements et modèles publicitaires | autonome ; le logo SPIP porte le visuel de la bannière |
+| Bons plans | Saisies | recommandations, modération, dépublication et proposition publique | sans Communication, la proposition est enregistrée sans envoi de notification |
 
 ## Combinaisons supportées
 
@@ -61,6 +62,7 @@ consommateur la lecture des tables d'un autre plugin.
 | Commerce + Contrats | création ou synchronisation facultative d'un contrat depuis une commande |
 | Partenaires seul | organisations Contacts qualifiées et publiées comme partenaires |
 | Bannières seul | diffusion des visuels publiés par emplacement |
+| Bons plans seul | catalogue public, fiche, proposition authentifiée et modération ; aucun appel direct à Facteur |
 
 La désactivation puis la réactivation d'un complément ne supprime aucune donnée.
 Les wrappers historiques restent des adaptateurs dépréciés; tout nouveau code

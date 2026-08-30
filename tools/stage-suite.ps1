@@ -35,7 +35,8 @@ $moduleNames = @(
 	'association-ventes',
 	'association-commerce',
 	'association-partenaires',
-	'association-bannieres'
+	'association-bannieres',
+	'association-bons-plans'
 )
 $pluginNames = @('association') + $moduleNames
 

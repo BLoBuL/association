@@ -1,0 +1,7 @@
+<BOUCLE_contenu(BONS_PLANS){id_bon_plan=#ENV{id}}{tout}>
+<div class="champ contenu_texte">[<div class="label"><:association_bons_plans:champ_texte:></div><div dir="#LANG_DIR" class="#EDIT{texte} texte">(#TEXTE)</div>]</div>
+<div class="champ contenu_url">[<div class="label"><:association_bons_plans:champ_url:></div><div class="#EDIT{url_site_internet} url"><a href="(#URL_SITE_INTERNET)" rel="external">#URL_SITE_INTERNET</a></div>]</div>
+<div class="champ contenu_adresse">[<div class="label"><:association_bons_plans:champ_adresse:></div><div class="#EDIT{adresse} adresse">(#ADRESSE|propre)</div>]</div>
+<div class="champ contenu_telephone">[<div class="label"><:association_bons_plans:champ_telephone:></div><div class="#EDIT{telephone} telephone">(#TELEPHONE)</div>]</div>
+<div class="champ contenu_email">[<div class="label"><:association_bons_plans:champ_email:></div><div class="#EDIT{email_contact} email">(#EMAIL_CONTACT)</div>]</div>
+</BOUCLE_contenu>

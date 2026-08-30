@@ -4,6 +4,7 @@ $modules = array(
 	'association-commerce' => array('association_commerce', array('association', 'paniers', 'commandes', 'prix'), 'commerce'),
 	'association-partenaires' => array('association_partenaires', array('association', 'contacts'), 'partenaires'),
 	'association-bannieres' => array('association_bannieres', array('association'), 'bannieres'),
+	'association-bons-plans' => array('association_bons_plans', array('association'), 'bons_plans'),
 );
 $erreurs = array();
 foreach ($modules as $dossier => [$prefixe, $dependances, $page]) {

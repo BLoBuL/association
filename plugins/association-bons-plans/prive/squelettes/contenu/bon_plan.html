@@ -1,0 +1,6 @@
+<BOUCLE_bon_plan(BONS_PLANS){id_bon_plan}{statut?}{si #AUTORISER{voir,bon_plan,#ID_BON_PLAN}}>
+[(#BOITE_OUVRIR{[(#CHEMIN_IMAGE{bon_plan-24.svg}|balise_img{'',cadre-icone})]<h1>#TITRE</h1>,simple fiche_objet})]
+<INCLURE{fond=prive/objets/contenu/bon_plan,id=#ID_BON_PLAN,id_bon_plan=#ID_BON_PLAN} />
+#BOITE_FERMER
+[(#AUTORISER{modifier,bon_plan,#ID_BON_PLAN}|oui)[(#URL_ECRIRE{bon_plan_edit,id_bon_plan=#ID_BON_PLAN}|icone_verticale{<:association_bons_plans:bon_plan_modifier:>,bon_plan,edit,right})]]
+</BOUCLE_bon_plan>

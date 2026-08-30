@@ -1,7 +1,7 @@
-# Préparer les treize plugins depuis le monorepo
+# Préparer les quatorze plugins depuis le monorepo
 
 Le dépôt conserve le socle à sa racine et les douze modules dans `plugins/`.
-SPIP doit cependant recevoir treize dossiers frères. Le script
+SPIP doit cependant recevoir quatorze dossiers frères. Le script
 `tools/stage-suite.ps1` construit cette disposition sans modifier le dépôt ni
 écraser une destination existante.
 
@@ -34,6 +34,7 @@ association-suite-stage/
   association-commerce/
   association-partenaires/
   association-bannieres/
+  association-bons-plans/
   association-suite-manifest.json
 ```
 
@@ -56,6 +57,6 @@ des plugins lorsque leurs fichiers sont identiques.
 php .\tests\test_staging_monorepo.php
 ```
 
-Le test construit un staging temporaire, exige exactement treize `paquet.xml` au
+Le test construit un staging temporaire, exige exactement quatorze `paquet.xml` au
 premier niveau, contrôle le manifeste puis vérifie qu’aucun module n’est
 imbriqué dans le socle.

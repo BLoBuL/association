@@ -1,0 +1,20 @@
+<B_liste>
+#ANCRE_PAGINATION
+<div class="liste-objets bons_plans">
+<table class="spip liste">
+	[<caption><strong class="caption">(#ENV*{titre,<:association_bons_plans:bons_plans:>})</strong></caption>]
+	<thead><tr class="first_row"><th><:info_titre:></th><th><:date:></th><th><:lien_trad_statut:></th><th class="id">ID</th></tr></thead>
+	<tbody>
+	<BOUCLE_liste(BONS_PLANS){id_rubrique?}{id_auteur?}{statut?}{recherche?}{tri #ENV{par,titre},#GET{defaut_tri}}{pagination #ENV{nb,20}}>
+	<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
+		<td class="principale"><a href="[(#ID_BON_PLAN|generer_objet_url{bon_plan})]">#TITRE</a></td>
+		<td>[(#DATE|affdate_jourcourt)]</td><td>[(#STATUT|puce_statut{bon_plan,#ID_BON_PLAN})]</td><td class="id">#ID_BON_PLAN</td>
+	</tr>
+	</BOUCLE_liste>
+	</tbody>
+</table>
+[<nav class="pagination">(#PAGINATION{prive})</nav>]
+</div>
+</B_liste>
+<div class="liste-objets bons_plans caption-wrap"><strong class="caption"><:association_bons_plans:bon_plan_aucun:></strong></div>
+<//B_liste>

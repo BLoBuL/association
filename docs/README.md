@@ -7,12 +7,19 @@ Elle privilegie les regles metier stables, l'architecture effective du code et l
 
 ## Parcours recommande
 
-1. Lire `inscriptions/README.md` avant toute modification des formulaires d'inscription.
-2. Consulter `notifications/` pour les flux d'emails et les impacts metier associes.
-3. Consulter `comptabilite_evenements.md` pour les effets comptables lies aux activites et transactions.
-4. Utiliser `todo/` et `archive/` uniquement comme references secondaires.
+1. Lire `reference-plugins-interactions.md` pour identifier le plugin propriétaire, ses dépendances et ses contrats publics.
+2. Lire `inscriptions/README.md` avant toute modification des formulaires d'inscription.
+3. Consulter `notifications/` pour les flux d'emails et les impacts metier associes.
+4. Consulter `comptabilite_evenements.md` pour les effets comptables lies aux activites et transactions.
+5. Utiliser `todo/` et `archive/` uniquement comme references secondaires.
 
 ## Sommaire
+
+### Architecture modulaire
+
+- [`reference-plugins-interactions.md`](./reference-plugins-interactions.md) : responsabilités, données, dépendances, capacités, pipelines, interactions et replis de toute la suite.
+- [`architecture-suite-4.md`](./architecture-suite-4.md) : principes de découpage du monorepo.
+- [`dependances-modules-autonomes.md`](./dependances-modules-autonomes.md) : matrice condensée des dépendances et combinaisons.
 
 ### Domaine adhésions et cotisations
 

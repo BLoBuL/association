@@ -10,6 +10,7 @@ $attendus = array(
 	'plugins/association-commerce/squelettes/boutique.html' => 'association-commerce-catalogue',
 	'plugins/association-partenaires/squelettes/partenaires.html' => 'asso_partenaires',
 	'plugins/association-bannieres/squelettes/bannieres.html' => 'asso_bannieres',
+	'plugins/association-bons-plans/squelettes/bons_plans.html' => '(BONS_PLANS)',
 );
 
 foreach ($attendus as $fichier => $usage) {

@@ -1,0 +1,4 @@
+[(#ID_BON_PLAN|intval|oui)[(#AUTORISER{modifier,bon_plan,#ID_BON_PLAN}|sinon_interdire_acces)]]
+[(#ID_BON_PLAN|intval|non)[(#AUTORISER{creer,bon_plan}|sinon_interdire_acces)]]
+<h1 class="grostitre">[(#ID_BON_PLAN|intval|?{<:association_bons_plans:bon_plan_modifier:>,<:association_bons_plans:bon_plan_creer:>})]</h1>
+#FORMULAIRE_EDITER_BON_PLAN{#ENV{id_bon_plan,new},#ENV{id_rubrique},#ENV{redirect}}

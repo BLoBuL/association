@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="#LANG" dir="#LANG_DIR">
+<head><INCLURE{fond=inclure/head} /><meta name="viewport" content="width=device-width, initial-scale=1"><title><:association_bons_plans:bons_plans:> - [(#NOM_SITE_SPIP|textebrut)]</title></head>
+<body><div class="page"><INCLURE{fond=inclure/header} />
+<main class="main" role="main"><div class="wrapper"><div class="content" id="content">
+<h1><:association_bons_plans:bons_plans:></h1>
+<B_bons_plans><div class="liste long bons_plans"><BOUCLE_bons_plans(BONS_PLANS){statut=publie}{where (date_depublication IS NULL OR date_depublication = '0000-00-00' OR date_depublication >= NOW())}{par titre}>
+<article class="entry bon_plan"><strong class="h3-like entry-title"><a href="#URL_BON_PLAN">#TITRE</a></strong>[<div class="introduction entry-content">(#INTRODUCTION{180})</div>]</article>
+</BOUCLE_bons_plans></div></B_bons_plans><p><:association_bons_plans:bon_plan_aucun:></p><//B_bons_plans>
+[(#SESSION{id_auteur}|oui)<p><a class="btn" href="[(#URL_PAGE{proposer_bon_plan})]"><:association_bons_plans:proposer_un_bon_plan:></a></p>]
+</div></div></main><INCLURE{fond=inclure/footer} /></div></body></html>

@@ -7,7 +7,7 @@ $modules = array(
 	'association-adhesions', 'association-communication', 'association-compta',
 	'association-dons', 'association-evenements', 'association-groupes',
 	'association-paiements', 'association-prets', 'association-ventes',
-	'association-commerce', 'association-partenaires', 'association-bannieres',
+	'association-commerce', 'association-partenaires', 'association-bannieres', 'association-bons-plans',
 );
 
 require_once $racine . '/inc/association_installation.php';
@@ -38,10 +38,10 @@ function verifier($condition, $message) {
 
 $inventaire = association_installation_inventaire();
 verifier($inventaire['plugins_requis'] === array('association'), 'la topologie exige uniquement le socle');
-verifier(count($inventaire['plugins']) === 13, 'les treize plugins fournissent leur inventaire');
-verifier(count($inventaire['tables']) === 16, 'les modules déclarent seize tables');
-verifier(count($inventaire['objets']) === 14, 'les modules déclarent quatorze objets SQL');
-verifier(count($inventaire['schemas']) === 9, 'les modules déclarent neuf schémas');
+verifier(count($inventaire['plugins']) === 14, 'les quatorze plugins fournissent leur inventaire');
+verifier(count($inventaire['tables']) === 18, 'les modules déclarent dix-huit tables');
+verifier(count($inventaire['objets']) === 15, 'les modules déclarent quinze objets SQL');
+verifier(count($inventaire['schemas']) === 10, 'les modules déclarent dix schémas');
 verifier(empty($inventaire['erreurs']), 'aucune contribution ne se contredit');
 
 $attendus = array(

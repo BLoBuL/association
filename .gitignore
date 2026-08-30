@@ -23,3 +23,4 @@
 /.idea/modules.xml
 /.idea/vcs.xml
 !/.github/
+/vendor/

@@ -23,6 +23,7 @@ $prefixes = array(
 	'association_commerce',
 	'association_partenaires',
 	'association_bannieres',
+	'association_bons_plans',
 );
 $surfaces = array('prive', 'squelettes', 'modeles', 'notifications');
 $fonds = array();

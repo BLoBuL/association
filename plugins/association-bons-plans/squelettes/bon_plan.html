@@ -1,0 +1,8 @@
+<BOUCLE_principale(BONS_PLANS){id_bon_plan}{statut=publie}>
+<!doctype html><html lang="#LANG" dir="#LANG_DIR"><head><INCLURE{fond=inclure/head} /><meta name="viewport" content="width=device-width, initial-scale=1"><title>[(#TITRE|textebrut)] - [(#NOM_SITE_SPIP|textebrut)]</title></head>
+<body><div class="page"><INCLURE{fond=inclure/header} /><main class="main" role="main"><div class="wrapper"><div class="content" id="content">
+<article class="cartouche"><h1>#TITRE</h1>[<p class="publication"><:association_bons_plans:date_fin{date=(#DATE_DEPUBLICATION|affdate)}:></p>]</article>
+<div class="texte">#TEXTE</div>
+<section class="coordonnees"><h2><:association_bons_plans:coordonnees:></h2>[<div class="adresse">(#ADRESSE|propre)</div>][<p><a href="tel:(#TELEPHONE|attribut_html)">#TELEPHONE</a></p>][<p><a href="mailto:(#EMAIL_CONTACT|attribut_html)">#EMAIL_CONTACT</a></p>][<p><a href="(#URL_SITE_INTERNET)" rel="external"><:association_bons_plans:voir_le_site:></a></p>]</section>
+</div></div></main><INCLURE{fond=inclure/footer} /></div></body></html>
+</BOUCLE_principale>

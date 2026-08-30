@@ -1,0 +1,6 @@
+[(#AUTORISER{menu,bonsplans}|sinon_interdire_acces)]
+<h1 class="grostitre"><:association_bons_plans:bons_plans:></h1>
+<INCLURE{fond=prive/objets/liste/bons_plans,env,ajax} />
+[(#AUTORISER{creer,bon_plan}|oui)
+	[(#URL_ECRIRE{bon_plan_edit,new=oui}|icone_verticale{<:association_bons_plans:bon_plan_creer:>,bon_plan,new,right})]
+]

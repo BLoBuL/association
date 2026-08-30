@@ -14,6 +14,7 @@ $modules = array(
 	'association_commerce',
 	'association_partenaires',
 	'association_bannieres',
+	'association_bons_plans',
 );
 $erreurs = array();
 $metiers = array_flip($modules);

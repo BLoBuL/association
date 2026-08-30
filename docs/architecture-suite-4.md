@@ -25,6 +25,7 @@ leur déplacement interne pourra ensuite se faire sans migration de données.
 | Commerce | `association_commerce` | orchestration du catalogue, du panier et de la commande | Prix, Paniers et Commandes ; Paiements facultatif |
 | Partenaires | `association_partenaires` | qualification et exposition des partenariats | Contacts et Organisations |
 | Bannières | `association_bannieres` | campagnes publicitaires, emplacements et périodes | modèles publics et logos SPIP |
+| Bons plans | `association_bons_plans` | recommandations locales, proposition publique et modération | objet éditorial SPIP autonome ; Communication facultative |
 
 Le socle est à la racine du dépôt. Chaque module métier est un plugin autonome
 dans `plugins/<nom-du-plugin>`. Le dossier déployé porte le nom du plugin, sans
@@ -111,6 +112,7 @@ module.
     Commandes et Prix ;
 11. Partenaires relie sa propre qualification aux organisations de Contacts ;
 12. Bannières fournit un objet éditorial autonome et un modèle par emplacement.
+13. Bons plans reprend les tables historiques, la modération, la dépublication et les propositions publiques ; Communication ne fait qu'enrichir l'envoi des notifications.
 
 Chaque extraction exige une matrice de traçabilité 2.1 / 2.2 / 6.8 / 4.x,
 des tests de caractérisation et une migration idempotente.

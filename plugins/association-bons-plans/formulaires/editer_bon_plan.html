@@ -1,0 +1,18 @@
+<div class="formulaire_spip formulaire_editer formulaire_#FORM formulaire_#FORM-#ENV{id_bon_plan,nouveau}">
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[(#ENV{editable})
+	<form method="post" action="#ENV{action}"><div>
+		#ACTION_FORMULAIRE
+		<div class="editer-groupe">
+			[(#SAISIE{input,titre,label=<:association_bons_plans:champ_titre:>,obligatoire=oui})]
+			[(#SAISIE{textarea,texte,label=<:association_bons_plans:champ_texte:>,rows=8,class=inserer_barre_edition})]
+			[(#SAISIE{input,url_site_internet,label=<:association_bons_plans:champ_url:>,type=url})]
+			[(#SAISIE{textarea,adresse,label=<:association_bons_plans:champ_adresse:>,rows=3})]
+			[(#SAISIE{input,telephone,label=<:association_bons_plans:champ_telephone:>,type=tel})]
+			[(#SAISIE{input,email_contact,label=<:association_bons_plans:champ_email:>,type=email})]
+			[(#SAISIE{date,date_depublication,label=<:association_bons_plans:champ_date_depublication:>})]
+		</div>
+		<p class="boutons"><button type="submit" class="btn btn-primary">[(#ENV{id_bon_plan}|intval|?{<:bouton_enregistrer:>,<:association_bons_plans:proposer:>})]</button></p>
+	</div></form>]
+</div>
