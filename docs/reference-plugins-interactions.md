@@ -298,8 +298,9 @@ auteurs, proposition publique, modération, refus, corbeille et dépublication.
 **Dépendance obligatoire.** Saisies.
 
 **Complément facultatif.** Communication. Sans lui, la proposition reste au
-statut `prop`. Les tables historiques sont adoptées sans copie et l’ancien
-plugin `spip_bon_plan` est incompatible pour éviter une double déclaration.
+statut `prop`. Les tables historiques sont adoptées sans copie et la procédure
+d'installation refuse l’ancien plugin `spip_bon_plan` s'il est encore actif,
+afin d'éviter une double déclaration.
 
 ## 5. Points d’entrée BO et FO
 

@@ -13,4 +13,8 @@ Le module `association_bons_plans` est la reprise SPIP 4 du plugin historique Bo
 
 Le plugin dépend seulement d'Association et de Saisies. La notification est publiée au moyen de `association_notifier_metier()`. Si Communication n'est pas actif, la proposition reste enregistrée avec le statut `prop` et peut être modérée normalement.
 
-L'ancien plugin `spip_bon_plan` est déclaré incompatible, car les deux plugins décrivent les mêmes tables et le même objet éditorial. La désactivation du nouveau module conserve volontairement les tables.
+L'ancien plugin `spip_bon_plan` doit être désactivé avant l'installation, car
+les deux plugins décrivent les mêmes tables et le même objet éditorial. SPIP 4
+ne reconnaît pas de balise `incompatible` dans `paquet.xml` : le contrôle est
+donc assuré par la procédure d'installation. La désactivation du nouveau module
+conserve volontairement les tables.

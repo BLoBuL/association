@@ -10,7 +10,8 @@ $administration = file_get_contents($module . '/association_bons_plans_administr
 $proposition = file_get_contents($module . '/formulaires/proposer_bon_plan.php');
 
 $verifier(str_contains($paquet, '<necessite nom="association"') && str_contains($paquet, '<necessite nom="saisies"'), 'Bons plans doit déclarer uniquement ses dépendances techniques directes.');
-$verifier(str_contains($paquet, '<incompatible nom="spip_bon_plan"'), 'Le plugin historique concurrent doit être déclaré incompatible.');
+$verifier(!str_contains($paquet, '<incompatible'), 'Le manifeste SPIP 4 ne doit contenir aucune balise incompatible inconnue.');
+$verifier(str_contains($administration, "test_plugin_actif('spip_bon_plan')"), 'L installation doit refuser le plugin historique concurrent.');
 $verifier(str_contains($base, "\$tables['spip_bons_plans']") && str_contains($base, "\$tables['spip_bons_plans_liens']"), 'Les tables historiques doivent être reprises sans copie de données.');
 $verifier(!str_contains($administration, 'sql_drop_table'), 'La désactivation ne doit pas supprimer les bons plans historiques.');
 $verifier(str_contains($proposition, "'statut' => 'prop'") && str_contains($proposition, 'association_notifier_metier'), 'La proposition publique doit rester modérable et notifier par le contrat facultatif.');
