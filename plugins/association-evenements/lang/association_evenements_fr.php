@@ -5,6 +5,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 $traductions = [
+	'inscription_visiteur_titre' => 'Votre inscription à l’événement',
+	'inscription_visiteur_ok' => 'Votre inscription à cet événement est confirmée.',
+	'inscription_visiteur_preinscrit' => 'Votre préinscription à cet événement est enregistrée. Elle reste en attente de validation.',
+	'inscription_visiteur_liste_attente' => 'Votre inscription à cet événement est enregistrée sur liste d’attente. Votre place n’est pas encore confirmée.',
 	'pdf_nombre' => 'Nombre de participants',
 	'pdf_statut' => 'Statut',
 	'chargement' => 'Chargement…',

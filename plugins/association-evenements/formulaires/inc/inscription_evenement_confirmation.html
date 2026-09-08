@@ -1,0 +1,12 @@
+#CACHE{0}
+[(#ENV{statut_inscription_visiteur}|in_array{#LISTE{ok,preinscrit,liste_attente}}|oui)
+<div class="formulaire_spip inscription-evenement-confirmation" role="status">
+    <h2 class="titre-section-petit"><:association_evenements:inscription_visiteur_titre:></h2>
+    [(#ENV{statut_inscription_visiteur}|=={ok}|oui)
+    <p class="reponse_formulaire reponse_formulaire_ok"><:association_evenements:inscription_visiteur_ok:></p>]
+    [(#ENV{statut_inscription_visiteur}|=={preinscrit}|oui)
+    <p class="reponse_formulaire notice"><:association_evenements:inscription_visiteur_preinscrit:></p>]
+    [(#ENV{statut_inscription_visiteur}|=={liste_attente}|oui)
+    <p class="reponse_formulaire notice"><:association_evenements:inscription_visiteur_liste_attente:></p>]
+</div>
+]

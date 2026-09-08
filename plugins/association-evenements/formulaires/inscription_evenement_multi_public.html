@@ -1,4 +1,5 @@
 #CACHE{0}
+<INCLURE{fond=formulaires/inc/inscription_evenement_confirmation,statut_inscription_visiteur=#ENV{statut_inscription_visiteur}}>
 <B_CONDITION>
     <BOUCLE_CONDITION(CONDITION){si #ENV{creation_inscription}|=={oui}|ou{#ENV{modification_inscription}|=={oui}}}>
     <h2 class="titre-section-petit"><:association_evenements:titre_inscription_en_ligne:></h2>
