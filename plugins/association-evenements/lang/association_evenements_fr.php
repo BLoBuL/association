@@ -5,6 +5,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 $traductions = [
+	'formulaire_inscription_simple_connecte_texte' => 'Ce formulaire permet de vous inscrire à l’événement avec votre compte. Complétez les informations demandées, s’il y en a, puis validez votre inscription.',
 	'inscription_visiteur_titre' => 'Votre inscription à l’événement',
 	'inscription_visiteur_ok' => 'Votre inscription à cet événement est confirmée.',
 	'inscription_visiteur_preinscrit' => 'Votre préinscription à cet événement est enregistrée. Elle reste en attente de validation.',
