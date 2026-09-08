@@ -7,6 +7,17 @@ include_spip('formulaires/inscription_evenement_multi.php');
 include_spip('formulaires/inscription_evenement_public.php');
 include_spip('formulaires/inscription_evenement_multi_public.php');
 
+function association_test_confirmation_activite($id_evenement, $statut) {
+    return array(
+        'id_activite' => 42, 'id_evenement' => $id_evenement, 'statut' => $statut,
+        'id_auteur' => 0, 'id_transaction' => 1, 'nombre_inscrits' => 1,
+        'participants_json' => '{}', 'tarifs_selectionnes' => serialize(array()),
+        'nom_participants' => '', 'commentaire' => '', 'annotation' => '',
+        'association' => '', 'email_inscrit' => 'recette@example.test',
+        'tel_inscrit' => '', 'prenom_inscrit' => 'Recette', 'nom_inscrit' => 'Test',
+    );
+}
+
 function association_test_collect_saisies_by_name($saisies) {
     $resultat = array();
     $collecter = function ($liste) use (&$collecter, &$resultat) {
@@ -421,6 +432,40 @@ function association_test_run_charger_suite() {
             ));
             $res_non_webmestre = formulaires_inscription_evenement_charger_dist(1);
             association_test_assert_true(!isset($res_non_webmestre['diagnostic_inscription']), 'Le diagnostic ne doit pas etre expose aux non webmestres');
+        },
+        'public_confirmation_etats_persistants' => function () {
+            foreach (array('public', 'multi_public') as $mode) {
+                foreach (array('ok', 'preinscrit', 'liste_attente', 'desinscrit', 'inconnu') as $statut) {
+                    association_test_reset_env(array(
+                        'eligibilites' => array(1 => array('id_activite' => 42)),
+                        'db' => array(
+                            'spip_asso_activites' => array(42 => association_test_confirmation_activite(1, $statut)),
+                            'spip_transactions' => array(1 => array('id_transaction' => 1, 'statut' => 'commande')),
+                        ),
+                    ));
+                    $res = ie_charger_commons($mode, 1, null);
+                    $attendu = in_array($statut, array('ok', 'preinscrit', 'liste_attente'), true) ? $statut : '';
+                    association_test_assert_same($attendu, $res['statut_inscription_visiteur'], $mode . ' : statut ' . $statut);
+                }
+            }
+        },
+        'public_confirmation_ignore_id_fourni_et_autre_evenement' => function () {
+            association_test_reset_env(array(
+                'events' => array(2 => association_test_default_scenario()['events'][1]),
+                'db' => array(
+                    'spip_asso_activites' => array(42 => association_test_confirmation_activite(1, 'ok')),
+                    'spip_transactions' => array(1 => array('id_transaction' => 1, 'statut' => 'commande')),
+                ),
+            ));
+            association_test_set_request(array('id_activite' => 42, 'statut_inscription_visiteur' => 'ok'));
+            $res = ie_charger_commons('public', 1, 42);
+            association_test_assert_same('', $res['statut_inscription_visiteur'], 'Un identifiant fourni ne doit pas produire de confirmation');
+            $GLOBALS['association_test_scenario']['eligibilites'][1]['id_activite'] = 42;
+            $GLOBALS['association_test_scenario']['db']['spip_asso_activites'][42]['id_evenement'] = 2;
+            $res = ie_charger_commons('public', 1, null);
+            association_test_assert_same('', $res['statut_inscription_visiteur'], 'Une inscription sur un autre evenement ne doit pas produire de confirmation');
+            $res = ie_charger_commons('prive', 1, null);
+            association_test_assert_same('', $res['statut_inscription_visiteur'], 'Le BO ne doit pas afficher une confirmation personnelle');
         },
         'public_simple_anonyme_payant' => function () {
             association_test_reset_env();

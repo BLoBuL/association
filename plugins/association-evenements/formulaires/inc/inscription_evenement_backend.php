@@ -865,6 +865,18 @@ function ie_charger_commons($mode, $id_evenement = 0, $id_activite = null, $opts
         'modification_inscription' => $modification_inscription,
         'alerte' => alerte_inscription_evenement($id_evenement, $id_activite),
     ));
+    // Etat persistant apres la redirection, uniquement pour l'inscription
+    // reconnue par le controle d'eligibilite (jamais un id fourni dans l'URL).
+    $res['statut_inscription_visiteur'] = '';
+    if (!$est_mode_bo && !empty($eligibilite_inscription_evenement['id_activite'])) {
+        $statut_inscription = sql_getfetsel('statut', 'spip_asso_activites', array(
+            'id_activite=' . intval($eligibilite_inscription_evenement['id_activite']),
+            'id_evenement=' . intval($id_evenement),
+        ));
+        if (in_array($statut_inscription, array('ok', 'preinscrit', 'liste_attente'), true)) {
+            $res['statut_inscription_visiteur'] = $statut_inscription;
+        }
+    }
     if (association_diagnostic_inscription_webmestre()) {
         $regles_diagnostic = association_inscription_regles_effectives(
             $mode,

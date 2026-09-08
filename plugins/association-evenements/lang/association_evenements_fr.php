@@ -5,6 +5,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 $GLOBALS[$GLOBALS['idx_lang']] = array (
+  'inscription_visiteur_titre' => 'Votre inscription à l’événement',
+  'inscription_visiteur_ok' => 'Votre inscription à cet événement est confirmée.',
+  'inscription_visiteur_preinscrit' => 'Votre préinscription à cet événement est enregistrée. Elle reste en attente de validation.',
+  'inscription_visiteur_liste_attente' => 'Votre inscription à cet événement est enregistrée sur liste d’attente. Votre place n’est pas encore confirmée.',
   'accompagnant_active' => 'Vous pouvez venir accompagné(e) à ce rendez-vous. ',
   'accompagnant_desactive' => 'Vous ne pouvez pas venir accompagné(e) à ce rendez-vous. ',
   'accompagnant_fieldset' => 'Inscription avec accompagnant',
