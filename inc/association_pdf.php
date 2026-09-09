@@ -31,4 +31,7 @@ function association_pdf_envoyer(string $fond, array $contexte, string $nom): vo
 	header('Cache-Control: private, no-store');
 	header('X-Content-Type-Options: nosniff');
 	echo $contenu;
+	// Une action binaire termine la réponse : l'aiguilleur SPIP ne doit plus
+	// appliquer sa redirection ou son statut 204 après l'envoi du document.
+	exit;
 }

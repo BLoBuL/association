@@ -25,8 +25,11 @@ if (str_contains($nettoye_spipdf, '<img') || html_entity_decode($nettoye_spipdf,
 	throw new RuntimeException('Le nettoyage SpiPDF réactive le HTML des données');
 }
 $GLOBALS['html'] = true;
-ob_start();
+ob_start(static function ($contenu) {
+	if ($contenu !== '%PDF-test<?' || $GLOBALS['html'] !== true) {
+		throw new RuntimeException('Flux corrompu ou contexte non restauré');
+	}
+	return "OK : adaptateur SpiPDF binaire, contexte restauré et réponse terminée.\n";
+});
 association_pdf_envoyer('prive/pdf/association_evenements', [], 'inscriptions-42');
-$contenu = ob_get_clean();
-if ($contenu !== '%PDF-test<?' || $GLOBALS['html'] !== true) { throw new RuntimeException('Flux corrompu ou contexte non restauré'); }
-echo "OK : adaptateur SpiPDF sans stockage, déséchappement du flux et restauration du contexte.\n";
+throw new RuntimeException('La réponse PDF doit terminer l’action avant le retour dans l’aiguilleur SPIP');
