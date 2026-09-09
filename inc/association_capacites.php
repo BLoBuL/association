@@ -29,9 +29,9 @@ function association_plugin_actif(string $prefixe): bool {
  * le préfixe du plugin fournisseur.
  */
 function association_capacites_lister(): array {
-	$capacites = pipeline('association_capacites', array());
+	$capacites = pipeline('association_capacites', []);
 
-	return is_array($capacites) ? $capacites : array();
+	return is_array($capacites) ? $capacites : [];
 }
 
 function association_capacite_disponible(string $capacite): bool {
@@ -44,13 +44,13 @@ function association_capacite_disponible(string $capacite): bool {
  * Enrichit un participant. Sans Adhésions, le profil reste universel.
  */
 function association_profil_participant(array $participant): array {
-	$participant += array(
+	$participant += [
 		'id_auteur' => 0,
 		'profil' => 'public',
 		'est_membre' => false,
-		'famille' => array(),
-		'tarifs' => array('indifferent', 'non_adherent'),
-	);
+		'famille' => [],
+		'tarifs' => ['indifferent', 'non_adherent'],
+	];
 	$resultat = pipeline('association_profil_participant', $participant);
 
 	return is_array($resultat) ? $resultat : $participant;
@@ -64,17 +64,17 @@ function association_profil_participant(array $participant): array {
  * directement les tables du plugin maison.
  */
 function association_contexte_familial(array $contexte): array {
-	$contexte += array(
+	$contexte += [
 		'id_auteur' => 0,
 		'objet' => '',
 		'id_objet' => 0,
 		'disponible' => false,
 		'id_famille' => 0,
-		'famille' => array(),
-		'familles' => array(),
-		'membres' => array(),
+		'famille' => [],
+		'familles' => [],
+		'membres' => [],
 		'role' => '',
-	);
+	];
 	$resultat = pipeline('association_contexte_familial', $contexte);
 
 	return is_array($resultat) ? $resultat : $contexte;
@@ -87,7 +87,7 @@ function association_contexte_familial(array $contexte): array {
  * plugin Contrats n'invalide jamais l'opération métier d'origine.
  */
 function association_demander_contrat(array $demande): array {
-	$demande += array(
+	$demande += [
 		'action' => 'synchroniser',
 		'objet' => '',
 		'id_objet' => 0,
@@ -96,7 +96,7 @@ function association_demander_contrat(array $demande): array {
 		'id_commande' => 0,
 		'contrat_cree' => false,
 		'erreur' => '',
-	);
+	];
 	$resultat = pipeline('association_contrat_demander', $demande);
 
 	return is_array($resultat) ? $resultat : $demande;
@@ -109,14 +109,14 @@ function association_demander_contrat(array $demande): array {
  * Comptabilité, le résultat est valide avec id_compte=0.
  */
 function association_comptabiliser_operation(array $operation): array {
-	$operation += array(
+	$operation += [
 		'action' => 'synchroniser',
 		'objet' => '',
 		'id_objet' => 0,
 		'id_compte' => 0,
 		'comptabilisee' => false,
 		'erreur' => '',
-	);
+	];
 	$resultat = pipeline('association_comptabiliser_operation', $operation);
 
 	return is_array($resultat) ? $resultat : $operation;
@@ -131,11 +131,11 @@ function association_comptabiliser_operation(array $operation): array {
  * créé.
  */
 function association_enregistrer_vente(array $vente): array {
-	$vente += array(
+	$vente += [
 		'id_vente' => 0,
 		'enregistree' => false,
 		'erreur' => '',
-	);
+	];
 	$resultat = pipeline('association_enregistrer_vente', $vente);
 
 	return is_array($resultat) ? $resultat : $vente;
@@ -145,8 +145,17 @@ function association_enregistrer_vente(array $vente): array {
  * Publie une notification métier sans imposer Communication.
  */
 function association_notifier_metier(array $notification): array {
-	$notification += array('envoyee' => false, 'erreur' => '');
+	$notification += ['envoyee' => false, 'erreur' => ''];
 	$resultat = pipeline('association_notifier_metier', $notification);
 
 	return is_array($resultat) ? $resultat : $notification;
+}
+
+/**
+ * Programme un envoi collectif facultatif, sans abonner ses destinataires.
+ */
+function association_programmer_campagne(array $campagne): array {
+	$campagne += ['sujet' => '', 'html' => '', 'destinataires' => [], 'options' => [], 'id_mailshot' => 0];
+	$resultat = pipeline('association_programmer_campagne', $campagne);
+	return is_array($resultat) ? $resultat : $campagne;
 }

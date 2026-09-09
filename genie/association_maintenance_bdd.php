@@ -1,15 +1,15 @@
 <?php
+
 /*
 * GESTION DES TÂCHES CRON
 * VERSION = 0.1b
 */
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 include_spip('base/abstract_sql');
-
-
-
 
 /**
  * Exécute les tâches de maintenance planifiées pour l'association.
@@ -38,108 +38,107 @@ include_spip('base/abstract_sql');
  * @return array
  */
 function genie_association_maintenance_bdd($tache) {
-    association_log('cron', 'Associaspip: Tâche CRON maintenance - début', 'info');
+	association_log('cron', 'Associaspip: Tâche CRON maintenance - début', 'info');
 
-    $metas = isset($GLOBALS['association_metas']) ? (array) $GLOBALS['association_metas'] : array();
-    $options = association_maintenance_options_depuis_source($metas);
+	$metas = isset($GLOBALS['association_metas']) ? (array) $GLOBALS['association_metas'] : [];
+	$options = association_maintenance_options_depuis_source($metas);
 
-    association_log('cron', 'Associaspip: Options maintenance construites depuis metas: ' . json_encode($options), 'info');
+	association_log('cron', 'Associaspip: Options maintenance construites depuis metas: ' . json_encode($options), 'info');
 
-    // Exécution et journalisation du résumé
-    $resume = association_maintenance_bdd_run(time(), $options);
-    // Générer le rapport dans le cache
-    $date = date('Y-m-d H:i');
-    $dir_rapports = _DIR_TMP . 'rapports/';
-    if (!is_dir($dir_rapports)) {
-        mkdir($dir_rapports, 0755, true);
-    }
-    $chemin = $dir_rapports . 'maintenance_asso_' . $date .'.json';
-    ecrire_fichier($chemin, json_encode($resume, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+	// Exécution et journalisation du résumé
+	$resume = association_maintenance_bdd_run(time(), $options);
+	// Générer le rapport dans le cache
+	$date = date('Y-m-d H:i');
+	$dir_rapports = _DIR_TMP . 'rapports/';
+	if (!is_dir($dir_rapports)) {
+		mkdir($dir_rapports, 0755, true);
+	}
+	$chemin = $dir_rapports . 'maintenance_asso_' . $date . '.json';
+	ecrire_fichier($chemin, json_encode($resume, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-    return $resume;
+	return $resume;
 }
 
 /**
  * Lit une valeur de maintenance depuis un tableau ou depuis la requête CVT.
  */
 function association_maintenance_lire_source($source, $nom, $defaut = null) {
-    if (is_array($source)) {
-        return array_key_exists($nom, $source) ? $source[$nom] : $defaut;
-    }
-    $valeur = _request($nom);
-    return $valeur === null ? $defaut : $valeur;
+	if (is_array($source)) {
+		return array_key_exists($nom, $source) ? $source[$nom] : $defaut;
+	}
+	$valeur = _request($nom);
+	return $valeur === null ? $defaut : $valeur;
 }
 
 /**
  * Normalise les valeurs booléennes historiques des métas Association.
  */
 function association_maintenance_valeur_booleenne($valeur) {
-    if (is_bool($valeur)) {
-        return $valeur;
-    }
-    return in_array(strtolower((string) $valeur), array('1', 'on', 'oui', 'true'), true);
+	if (is_bool($valeur)) {
+		return $valeur;
+	}
+	return in_array(strtolower((string) $valeur), ['1', 'on', 'oui', 'true'], true);
 }
 
 /**
  * Construit les options transversales puis laisse chaque module ajouter ses
  * seuils et actions via le pipeline dédié.
  */
-function association_maintenance_options_depuis_source($source = array(), $forcer_dry_run = false) {
-    $options = array(
-        'enabled' => association_maintenance_valeur_booleenne(
-            association_maintenance_lire_source($source, 'meta_cfg_maintenance_bdd_enable', true)
-        ),
-        'dry_run' => $forcer_dry_run ? true : association_maintenance_valeur_booleenne(
-            association_maintenance_lire_source($source, 'meta_cfg_maintenance_dry_run', true)
-        ),
-        'lot' => intval(association_maintenance_lire_source($source, 'meta_cfg_maintenance_lot', 1000)),
-        'actions' => array(),
-    );
+function association_maintenance_options_depuis_source($source = [], $forcer_dry_run = false) {
+	$options = [
+		'enabled' => association_maintenance_valeur_booleenne(
+			association_maintenance_lire_source($source, 'meta_cfg_maintenance_bdd_enable', true)
+		),
+		'dry_run' => $forcer_dry_run ? true : association_maintenance_valeur_booleenne(
+			association_maintenance_lire_source($source, 'meta_cfg_maintenance_dry_run', true)
+		),
+		'lot' => intval(association_maintenance_lire_source($source, 'meta_cfg_maintenance_lot', 1000)),
+		'actions' => [],
+	];
 
-    $options = pipeline('association_maintenance_bdd_configurer', array(
-        'args' => array('source' => $source),
-        'data' => $options,
-    ));
-    return is_array($options) ? $options : array();
+	$options = pipeline('association_maintenance_bdd_configurer', [
+		'args' => ['source' => $source],
+		'data' => $options,
+	]);
+	return is_array($options) ? $options : [];
 }
 
 /**
  * Exécuter la maintenance BDD.
  *
  * @param int|null $maintenant Timestamp courant (injecté pour tests)
- * @param array $options Options listées ci\-dessus
  * @return array Résumé détaillé des actions
  */
 function association_maintenance_bdd_run($maintenant = null, array $opt = []) {
-    $maintenant = $maintenant ?: time();
-    $resume = [];
+	$maintenant = $maintenant ?: time();
+	$resume = [];
 
-    // Respecter l'activation globale
-    if (isset($opt['enabled']) && !$opt['enabled']) {
-        association_log('cron', 'Associaspip: Maintenance BDD SKIPPED (désactivée via configuration).', 'info');
-        return array('skipped' => true);
-    }
+	// Respecter l'activation globale
+	if (isset($opt['enabled']) && !$opt['enabled']) {
+		association_log('cron', 'Associaspip: Maintenance BDD SKIPPED (désactivée via configuration).', 'info');
+		return ['skipped' => true];
+	}
 
-    $preparation = pipeline('association_maintenance_bdd_preparer', array(
-		'args' => array('maintenant' => $maintenant, 'options' => $opt),
-		'data' => array('resume' => $resume, 'inactifs' => array()),
-	));
-	$preparation = is_array($preparation) ? $preparation : array();
+	$preparation = pipeline('association_maintenance_bdd_preparer', [
+		'args' => ['maintenant' => $maintenant, 'options' => $opt],
+		'data' => ['resume' => $resume, 'inactifs' => []],
+	]);
+	$preparation = is_array($preparation) ? $preparation : [];
 	$resume = is_array($preparation['resume'] ?? null) ? $preparation['resume'] : $resume;
-	$inactifs = is_array($preparation['inactifs'] ?? null) ? $preparation['inactifs'] : array();
+	$inactifs = is_array($preparation['inactifs'] ?? null) ? $preparation['inactifs'] : [];
 
-    $resume = pipeline('association_maintenance_bdd_executer', array(
-        'args' => array(
-            'maintenant' => $maintenant,
-            'options' => $opt,
-            'inactifs' => $inactifs,
-        ),
-        'data' => $resume,
-    ));
-    $resume = is_array($resume) ? $resume : array();
+	$resume = pipeline('association_maintenance_bdd_executer', [
+		'args' => [
+			'maintenant' => $maintenant,
+			'options' => $opt,
+			'inactifs' => $inactifs,
+		],
+		'data' => $resume,
+	]);
+	$resume = is_array($resume) ? $resume : [];
 
-    association_log('cron', 'Associaspip: Maintenance - résumé: ' . json_encode($resume), 'info');
-    return $resume;
+	association_log('cron', 'Associaspip: Maintenance - résumé: ' . json_encode($resume), 'info');
+	return $resume;
 }
 
 /**
@@ -149,23 +148,22 @@ function association_maintenance_bdd_run($maintenant = null, array $opt = []) {
  * @return bool
  */
 function association_maintenance_resultat_en_echec($resultat) {
-    if ($resultat === false) {
-        return true;
-    }
-    if (!is_array($resultat)) {
-        return false;
-    }
-    foreach ($resultat as $cle => $valeur) {
-        if ($cle === 'erreur' && $valeur) {
-            return true;
-        }
-        if (is_array($valeur) && association_maintenance_resultat_en_echec($valeur)) {
-            return true;
-        }
-        if ($valeur === false) {
-            return true;
-        }
-    }
-    return false;
+	if ($resultat === false) {
+		return true;
+	}
+	if (!is_array($resultat)) {
+		return false;
+	}
+	foreach ($resultat as $cle => $valeur) {
+		if ($cle === 'erreur' && $valeur) {
+			return true;
+		}
+		if (is_array($valeur) && association_maintenance_resultat_en_echec($valeur)) {
+			return true;
+		}
+		if ($valeur === false) {
+			return true;
+		}
+	}
+	return false;
 }
-

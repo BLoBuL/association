@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('_ECRIRE_INC_VERSION')) { return; }
-
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 function filtre_roles_association($fonctions_benevole = []) {
 	include_spip('inc/fonctions/roles_association');
@@ -9,7 +10,7 @@ function filtre_roles_association($fonctions_benevole = []) {
 
 	foreach ($roles as $nom_champ => $role) {
 		// Filtrer par fonctions autorisées si liste fournie
-		if (!empty($fonctions_benevole) AND !in_array($nom_champ, $fonctions_benevole)) {
+		if (!empty($fonctions_benevole) and !in_array($nom_champ, $fonctions_benevole)) {
 			unset($roles[$nom_champ]);
 			continue;
 		}
@@ -24,11 +25,11 @@ function filtre_roles_association($fonctions_benevole = []) {
 }
 
 function association_groupes_nom_membre($civilite, $prenom, $nom_famille) {
-	return trim(implode(' ', array_filter(array(
+	return trim(implode(' ', array_filter([
 		trim((string) $civilite),
 		trim((string) $prenom),
 		trim((string) $nom_famille),
-	), 'strlen')));
+	], 'strlen')));
 }
 
 function association_groupes_telephone($numero) {
@@ -43,14 +44,14 @@ function association_groupes_telephone($numero) {
 function association_groupes_auteur_resume($id_auteur) {
 	$id_auteur = (int) $id_auteur;
 	$description = sql_showtable('spip_auteurs', true);
-	$champs = array_keys((array) ($description['field'] ?? array()));
+	$champs = array_keys((array) ($description['field'] ?? []));
 	$selection = array_values(array_intersect(
-		array('id_auteur', 'nom', 'email', 'statut', 'prenom', 'nom_famille', 'telephone', 'mobile', 'inscription', 'validite'),
+		['id_auteur', 'nom', 'email', 'statut', 'prenom', 'nom_famille', 'telephone', 'mobile', 'inscription', 'validite'],
 		$champs
 	));
 	$auteur = $id_auteur && $selection
-		? (sql_fetsel(implode(',', $selection), 'spip_auteurs', 'id_auteur=' . $id_auteur) ?: array())
-		: array();
+		? (sql_fetsel(implode(',', $selection), 'spip_auteurs', 'id_auteur=' . $id_auteur) ?: [])
+		: [];
 	$nom = trim((string) ($auteur['nom'] ?? ''));
 	if (!empty($auteur['prenom']) || !empty($auteur['nom_famille'])) {
 		$nom = trim(($auteur['prenom'] ?? '') . ' ' . ($auteur['nom_famille'] ?? ''));

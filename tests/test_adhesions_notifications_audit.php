@@ -75,7 +75,7 @@ test_assert(!str_contains($source_cotisations, "bank_paiement/email_ticket_admin
 test_assert(str_contains($source_cotisations, "'documents_recus'") && str_contains($source_cotisations, "'justificatifs_controles'"), 'le contexte email expose l etat documentaire');
 test_assert(str_contains($source_action, "'justificatifs-a-revoir'") && !str_contains($source_action, "'justificatifs-valides'"), 'seul le retour A revoir programme une notification adherent');
 test_assert(str_contains($source_action, "str_replace('&amp;', '&', \$retour)"), 'la redirection de validation restaure les separateurs HTML');
-test_assert(str_contains($source_action, "\$resultat['message'],\n        '&'"), 'la redirection impose un separateur HTTP');
+test_assert((bool) preg_match('/\$resultat\[\x27message\x27\],\s*\x27&\x27/', $source_action), 'la redirection impose un separateur HTTP');
 foreach (array('cotisation-attente_admin', 'cotisation-demande_admin', 'cotisation-encaissement_admin') as $template_admin) {
     $source_template = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/notifications/' . $template_admin . '.html');
     test_assert(str_contains($source_template, 'justificatifs_cotisation_admin'), "le template $template_admin affiche l etat documentaire conditionnel");

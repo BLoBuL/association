@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fonctions pour la liste de comptabilité des activités
  *
@@ -18,7 +19,7 @@
  */
 
 if (!defined('_ECRIRE_INC_VERSION')) {
-    return;
+	return;
 }
 
 /**
@@ -30,19 +31,19 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * @return string 'toutes', 'recette' ou 'depense'
  */
 function table_comptabilite_activites_get_filtre_sens() {
-    $sens = _request('type');
+	$sens = _request('type');
 
-    // Normaliser les variantes et traiter les valeurs nulles/vides
-    if (is_null($sens) || $sens === '' || $sens === 'tout') {
-        $sens = 'toutes';
-    }
+	// Normaliser les variantes et traiter les valeurs nulles/vides
+	if ($sens === null || $sens === '' || $sens === 'tout') {
+		$sens = 'toutes';
+	}
 
-    // Valider la valeur
-    if (!in_array($sens, ['recette', 'depense', 'toutes'], true)) {
-        $sens = 'toutes';
-    }
+	// Valider la valeur
+	if (!in_array($sens, ['recette', 'depense', 'toutes'], true)) {
+		$sens = 'toutes';
+	}
 
-    return $sens;
+	return $sens;
 }
 
 /**
@@ -57,15 +58,15 @@ function table_comptabilite_activites_get_filtre_sens() {
  */
 function table_comptabilite_activites_compter_operations($id_evenement, $sens = 'toutes', $vu = '1') {
 	include_spip('inc/association_compta_ecritures');
-	$criteres = array(
+	$criteres = [
 		'objet' => 'evenement',
 		'id_objet' => (int) $id_evenement,
 		'vu' => table_comptabilite_activites_normaliser_vu($vu),
-	);
-	if (in_array($sens, array('recette', 'depense'), true)) {
+	];
+	if (in_array($sens, ['recette', 'depense'], true)) {
 		$criteres['sens'] = $sens;
 	}
-	return count(association_compta_ecritures_lister($criteres, array('champs' => 'id_compte')));
+	return count(association_compta_ecritures_lister($criteres, ['champs' => 'id_compte']));
 }
 
 function table_comptabilite_activites_normaliser_vu($vu) {
@@ -82,14 +83,14 @@ function table_comptabilite_activites_normaliser_vu($vu) {
  * @return string Critères de boucle SPIP (ex: '{recette>0}')
  */
 function table_comptabilite_activites_criteres_sens($sens = 'toutes') {
-    switch ($sens) {
-        case 'recette':
-            return '{recette>0}';
-        case 'depense':
-            return '{depense>0}';
-        default:
-            return '';
-    }
+	switch ($sens) {
+		case 'recette':
+			return '{recette>0}';
+		case 'depense':
+			return '{depense>0}';
+		default:
+			return '';
+	}
 }
 
 /**
@@ -109,38 +110,38 @@ function table_comptabilite_activites_criteres_sens($sens = 'toutes') {
  *               - 'solde' : total_recettes - total_depenses (float)
  */
 function table_comptabilite_activites_stats($id_evenement, $vu = '1') {
-    // Comptages
-    $counts = [
-        'nb_recettes' => table_comptabilite_activites_compter_operations($id_evenement, 'recette', $vu),
-        'nb_depenses' => table_comptabilite_activites_compter_operations($id_evenement, 'depense', $vu),
-        'nb_toutes' => table_comptabilite_activites_compter_operations($id_evenement, 'toutes', $vu),
-    ];
+	// Comptages
+	$counts = [
+		'nb_recettes' => table_comptabilite_activites_compter_operations($id_evenement, 'recette', $vu),
+		'nb_depenses' => table_comptabilite_activites_compter_operations($id_evenement, 'depense', $vu),
+		'nb_toutes' => table_comptabilite_activites_compter_operations($id_evenement, 'toutes', $vu),
+	];
 
-    // Montants
-    $montants = table_comptabilite_activites_montants($id_evenement, $vu);
+	// Montants
+	$montants = table_comptabilite_activites_montants($id_evenement, $vu);
 
-    // Moyennes (éviter division par zéro)
-    $avg_recette = 0.0;
-    $avg_depense = 0.0;
-    $avg_operation = 0.0;
+	// Moyennes (éviter division par zéro)
+	$avg_recette = 0.0;
+	$avg_depense = 0.0;
+	$avg_operation = 0.0;
 
-    if (!empty($counts['nb_recettes'])) {
-        $avg_recette = ($montants['total_recettes'] / $counts['nb_recettes']);
-    }
-    if (!empty($counts['nb_depenses'])) {
-        $avg_depense = ($montants['total_depenses'] / $counts['nb_depenses']);
-    }
-    if (!empty($counts['nb_toutes'])) {
-        $avg_operation = (($montants['total_recettes'] + $montants['total_depenses']) / $counts['nb_toutes']);
-    }
+	if (!empty($counts['nb_recettes'])) {
+		$avg_recette = ($montants['total_recettes'] / $counts['nb_recettes']);
+	}
+	if (!empty($counts['nb_depenses'])) {
+		$avg_depense = ($montants['total_depenses'] / $counts['nb_depenses']);
+	}
+	if (!empty($counts['nb_toutes'])) {
+		$avg_operation = (($montants['total_recettes'] + $montants['total_depenses']) / $counts['nb_toutes']);
+	}
 
-    $extras = [
-        'avg_recette' => $avg_recette,
-        'avg_depense' => $avg_depense,
-        'avg_operation' => $avg_operation,
-    ];
+	$extras = [
+		'avg_recette' => $avg_recette,
+		'avg_depense' => $avg_depense,
+		'avg_operation' => $avg_operation,
+	];
 
-    return array_merge($counts, $montants, $extras);
+	return array_merge($counts, $montants, $extras);
 }
 
 /**
@@ -154,11 +155,11 @@ function table_comptabilite_activites_stats($id_evenement, $vu = '1') {
  */
 function table_comptabilite_activites_montants($id_evenement, $vu = '1') {
 	include_spip('inc/association_compta_ecritures');
-	$ecritures = association_compta_ecritures_lister(array(
+	$ecritures = association_compta_ecritures_lister([
 		'objet' => 'evenement',
 		'id_objet' => (int) $id_evenement,
 		'vu' => table_comptabilite_activites_normaliser_vu($vu),
-	), array('champs' => 'recette,depense'));
+	], ['champs' => 'recette,depense']);
 	$total_recettes = 0.0;
 	$total_depenses = 0.0;
 	foreach ($ecritures as $ecriture) {
@@ -166,13 +167,13 @@ function table_comptabilite_activites_montants($id_evenement, $vu = '1') {
 		$total_depenses += (float) ($ecriture['depense'] ?? 0);
 	}
 
-    $solde = $total_recettes - $total_depenses;
+	$solde = $total_recettes - $total_depenses;
 
-    return [
-        'total_recettes' => $total_recettes,
-        'total_depenses' => $total_depenses,
-        'solde' => $solde,
-        // backward-compatible key attendu par le template
-        'total_solde' => $solde,
-    ];
+	return [
+		'total_recettes' => $total_recettes,
+		'total_depenses' => $total_depenses,
+		'solde' => $solde,
+		// backward-compatible key attendu par le template
+		'total_solde' => $solde,
+	];
 }

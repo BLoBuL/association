@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Paiement Bancaire
  * module de paiement bancaire multi prestataires
@@ -9,7 +10,9 @@
  * (c) 2012-2015 - Distribue sous licence GNU/GPL
  *
  */
-if (!defined('_ECRIRE_INC_VERSION')) return;
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 function action_supprimer_commande_dist($id_transaction = null) {
 	if ($id_transaction === null) {

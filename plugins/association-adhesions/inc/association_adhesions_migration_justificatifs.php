@@ -15,7 +15,7 @@ function association_adhesions_migrer_justificatifs_cotisations() {
 		'id_compte>0',
 		'',
 		'id_cotisation'
-	) ?: array();
+	) ?: [];
 	foreach ($cotisations as $cotisation) {
 		$id_cotisation = (int) $cotisation['id_cotisation'];
 		$id_compte = (int) $cotisation['id_compte'];
@@ -23,7 +23,7 @@ function association_adhesions_migrer_justificatifs_cotisations() {
 			'id_document,vu',
 			'spip_documents_liens',
 			"objet='compte' AND id_objet=" . $id_compte
-		) ?: array();
+		) ?: [];
 		foreach ($liens as $lien) {
 			$id_document = (int) $lien['id_document'];
 			$canonique = "objet='cotisation' AND id_objet=" . $id_cotisation . ' AND id_document=' . $id_document;
@@ -33,7 +33,7 @@ function association_adhesions_migrer_justificatifs_cotisations() {
 			} else {
 				sql_updateq(
 					'spip_documents_liens',
-					array('objet' => 'cotisation', 'id_objet' => $id_cotisation),
+					['objet' => 'cotisation', 'id_objet' => $id_cotisation],
 					$historique
 				);
 			}

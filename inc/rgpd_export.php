@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Orchestrateur transversal de l'export RGPD Association.
  *
@@ -21,24 +22,24 @@ function association_rgpd_export_donnees_auteur($id_auteur) {
 
 	$id_auteur = intval($id_auteur);
 	if ($id_auteur <= 0) {
-		return array();
+		return [];
 	}
 
 	$auteur = sql_fetsel('id_auteur,email', 'spip_auteurs', 'id_auteur=' . $id_auteur);
 	if (!$auteur) {
-		return array();
+		return [];
 	}
 
-	$data = pipeline('association_rgpd_export_auteur', array(
-		'args' => array(
+	$data = pipeline('association_rgpd_export_auteur', [
+		'args' => [
 			'id_auteur' => $id_auteur,
-			'email' => trim((string)($auteur['email'] ?? '')),
-		),
-		'data' => array(),
-	));
-	$data = is_array($data) ? $data : array();
+			'email' => trim((string) ($auteur['email'] ?? '')),
+		],
+		'data' => [],
+	]);
+	$data = is_array($data) ? $data : [];
 
-	return array('date_export_association' => date('c')) + $data;
+	return ['date_export_association' => date('c')] + $data;
 }
 
 /**
@@ -57,7 +58,7 @@ function association_rgpd_decoder_structure($valeur) {
 		return $decode;
 	}
 
-	$unserialize = @unserialize($valeur, array('allowed_classes' => false));
+	$unserialize = @unserialize($valeur, ['allowed_classes' => false]);
 	if ($unserialize !== false || $valeur === serialize(false)) {
 		return $unserialize;
 	}
@@ -72,7 +73,7 @@ function association_rgpd_decoder_structure($valeur) {
  * @return string
  */
 function association_rgpd_export_date($date) {
-	$date = trim((string)$date);
+	$date = trim((string) $date);
 	if ($date === '' || $date === '0000-00-00' || $date === '0000-00-00 00:00:00') {
 		return '';
 	}

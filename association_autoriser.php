@@ -24,8 +24,6 @@ include_spip('inc/association_autorisations');
 
 /**
  * Déclarer le pipeline d'autorisations du socle.
- *
- * @return void
  */
 function association_autoriser() {
 }

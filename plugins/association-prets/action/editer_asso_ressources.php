@@ -1,5 +1,6 @@
 <?php
-/***************************************************************************\
+
+/*\
  *  Associaspip, extension de SPIP pour gestion d'associations             *
  *                                                                         *
  *  Copyright (c) 2007 Bernard Blazin & François de Montlivault (V1)       *
@@ -7,12 +8,20 @@
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
-\***************************************************************************/
+\*/
 
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
-if (!defined("_ECRIRE_INC_VERSION")) return;
-
+/**
+ * @deprecated Utiliser charger_fonction() pour cette action.
+ */
 function action_editer_asso_ressources($id_ressource = null) {
+	return action_editer_asso_ressources_dist($id_ressource);
+}
+
+function action_editer_asso_ressources_dist($id_ressource = null) {
 	// CVT transmet directement l'identifiant. securiser_action() reste réservé
 	// à l'ancien appel direct de l'action, sans argument PHP.
 	if ($id_ressource === null) {
@@ -20,35 +29,41 @@ function action_editer_asso_ressources($id_ressource = null) {
 		$id_ressource = $securiser_action();
 	}
 	$id_ressource = (int) $id_ressource;
+	include_spip('inc/autoriser');
+	if (!autoriser('modifier', 'ressource', $id_ressource)) {
+		return [$id_ressource, _T('info_acces_interdit')];
+	}
 
-	$code= _request('code');
+	$code = _request('code');
 	$date = _request('date_acquisition');
 	$intitule = _request('intitule');
 	$pu = association_recupere_montant(_request('pu'));
 	$statut = _request('statut');
 	$commentaire = _request('commentaire');
 
-	//include_spip('base/association');
+	// include_spip('base/association');
 
 	if ($id_ressource) {/* c'est une modification */
-		sql_updateq('spip_asso_ressources', array(
+		sql_updateq(
+			'spip_asso_ressources',
+			[
+				'date_acquisition' => $date,
+				'code' => $code,
+				'intitule' => $intitule,
+				'pu' => $pu,
+				'statut' => $statut,
+				'commentaire' => $commentaire],
+			"id_ressource=$id_ressource"
+		);
+	} else { /* c'est un ajout */
+		$id_ressource = sql_insertq('spip_asso_ressources', [
 			'date_acquisition' => $date,
 			'code' => $code,
+			'statut' => $statut,
 			'intitule' => $intitule,
 			'pu' => $pu,
-			'statut' => $statut,
-			'commentaire' => $commentaire),
-		    "id_ressource=$id_ressource");
-	} else { /* c'est un ajout */
-		$id_ressource = sql_insertq('spip_asso_ressources', array(
-		    'date_acquisition' => $date,
-		    'code' => $code,
-		    'statut' => $statut,
-		    'intitule' => $intitule,
-		    'pu' => $pu,
-		    'commentaire' => $commentaire));
+			'commentaire' => $commentaire]);
 	}
 
-	return array($id_ressource, '');
+	return [$id_ressource, ''];
 }
-

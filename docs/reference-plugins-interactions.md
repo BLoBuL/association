@@ -129,7 +129,14 @@ cotisation, transaction, activité, écriture ni campagne.
 **Rôle.** Catégories d’adhérents, périodes et états d’adhésion, cotisations,
 inscription et profil membre.
 
-**Dépendances obligatoires.** Inscription4, Intl et Médias.
+**Dépendances obligatoires.** Inscription4, Intl, Médias, Saisies et SpiPDF
+(`spipdf` >= 2.2.1, < 3.0.0).
+
+L'export PDF partage la sélection de colonnes du formulaire d'export CSV.
+L'action signée contrôle le droit de gestion, les identifiants et une liste
+blanche de champs réellement présents. Aucun secret d'authentification auteur
+n'est exportable. Le gabarit appartient au module :
+`prive/pdf/association_adherents.html`.
 
 **Compléments facultatifs.** Comptabilité, Paiements, Communication, Familles,
 Accès restreint et GIS.
@@ -151,8 +158,17 @@ Accès restreint et GIS.
 **Rôle.** Compléter Agenda avec catégories, participants, inscriptions, quotas,
 tarifs, règlements et statistiques.
 
-**Dépendances obligatoires.** Agenda, Saisies, Vérifier, Inscription4 et Champs
-Extras.
+**Dépendances obligatoires.** Agenda, Saisies, Vérifier, Inscription4, Champs
+Extras et SpiPDF (`spipdf` >= 2.2.1, < 3.0.0).
+
+L'export PDF des inscriptions passe par l'API SpiPDF avec le moteur `mpdf8`.
+Son gabarit est `prive/pdf/association_evenements.html`, dans le module Événements.
+L'action contrôle le jeton et les droits sur l'événement avant de lire les participants.
+Le flux est servi sans fichier nominatif persistant et avec un cache HTTP privé désactivé.
+Le socle mutualise seulement l'adaptateur : il n'impose pas SpiPDF à son activation.
+Les exports Adhésions et Événements utilisent cet adaptateur. Dons propose
+uniquement un aperçu explicitement non valable fiscalement. L'installation
+sur le site de test et la qualification distante restent à établir.
 
 **Compléments facultatifs.** Adhésions, Comptabilité, Paiements et Communication.
 
@@ -235,7 +251,21 @@ avant toute demande facultative d’écriture ou de règlement.
 **Rôle.** Enregistrer les dons indépendamment de leur mode de règlement ou de
 comptabilisation.
 
-**Dépendance obligatoire.** Aucune en dehors du socle.
+**Dépendances obligatoires.** Socle, Saisies et SpiPDF (`spipdf` >= 2.2.1, < 3.0.0).
+
+**Organisme émetteur.** L'identité, l'adresse, le pays et le numéro
+d'enregistrement sont mutualisés dans les informations communes. Dons ajoute,
+par `association_configuration_saisies`, l'objet, la qualité fiscale et
+le nom et la fonction du signataire. L'API
+`association_dons_recu_fiscal_emetteur()` indique les informations manquantes.
+
+**PDF.** La liste BO propose un aperçu réservé aux gestionnaires de Dons,
+sans dépendre d'Adhésions. Une configuration incomplète est refusée.
+Le document porte toujours « SPÉCIMEN — NON VALABLE FISCALEMENT ».
+L'émission définitive n'est pas restaurée : elle exige encore la qualification
+des versements éligibles, les coordonnées complètes du donateur, un registre
+de numérotation et la signature. Renseigner l'organisme ne prouve pas son
+éligibilité fiscale. Aucun reçu réel n'est émis par cette implémentation.
 
 **Compléments facultatifs.** Comptabilité, Paiements et Communication. Le don
 reste valide lorsque ces modules sont absents.

@@ -10,8 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AssociationConfigRestaurer extends Command
 {
-	protected function configure()
-	{
+	protected function configure() {
 		$this->setName('association:config:restaurer')
 			->setDescription('Restaure un instantane JSON complet de la configuration Association autorisee.')
 			->addArgument('fichier', InputArgument::REQUIRED, 'Chemin du fichier JSON cree par association:config:lire --snapshot')
@@ -19,25 +18,24 @@ class AssociationConfigRestaurer extends Command
 			->addOption('pretty', null, InputOption::VALUE_NONE, 'Indente la sortie JSON');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$format = strtolower((string) $input->getOption('format'));
-		if (!in_array($format, array('human', 'json'), true)) {
+		if (!in_array($format, ['human', 'json'], true)) {
 			$output->writeln('Format invalide : utiliser human ou json.');
 			return self::INVALID;
 		}
 		$fichier = (string) $input->getArgument('fichier');
 		if (!is_file($fichier) || !is_readable($fichier)) {
-			$this->afficherResultat($output, $format, (bool) $input->getOption('pretty'), array('ok' => false, 'reason' => 'snapshot_unreadable'));
+			$this->afficherResultat($output, $format, (bool) $input->getOption('pretty'), ['ok' => false, 'reason' => 'snapshot_unreadable']);
 			return self::FAILURE;
 		}
 		$contenu = file_get_contents($fichier);
 		$payload = json_decode($contenu, true);
 		if (!is_array($payload)) {
-			$this->afficherResultat($output, $format, (bool) $input->getOption('pretty'), array('ok' => false, 'reason' => 'invalid_snapshot'));
+			$this->afficherResultat($output, $format, (bool) $input->getOption('pretty'), ['ok' => false, 'reason' => 'invalid_snapshot']);
 			return self::INVALID;
 		}
-		$snapshot = isset($payload['snapshot']) ? $payload['snapshot'] : $payload;
+		$snapshot = $payload['snapshot'] ?? $payload;
 		$this->demarrerSpip();
 		include_spip('inc/association_config_cli');
 		$resultat = association_config_cli_restaurer($snapshot);
@@ -45,14 +43,13 @@ class AssociationConfigRestaurer extends Command
 		return association_config_cli_code_sortie($resultat);
 	}
 
-	private function afficherResultat(OutputInterface $output, $format, $pretty, array $resultat)
-	{
-		$payload = array('status' => !empty($resultat['ok']) ? 'ok' : 'error', 'command' => 'association:config:restaurer');
+	private function afficherResultat(OutputInterface $output, $format, $pretty, array $resultat) {
+		$payload = ['status' => !empty($resultat['ok']) ? 'ok' : 'error', 'command' => 'association:config:restaurer'];
 		if (!empty($resultat['ok'])) {
 			$payload['restored'] = $resultat['restored'];
 			$payload['verified'] = $resultat['verified'];
 		} else {
-			$payload['reason'] = isset($resultat['reason']) ? $resultat['reason'] : 'unknown_error';
+			$payload['reason'] = $resultat['reason'] ?? 'unknown_error';
 			if (isset($resultat['option'])) {
 				$payload['option'] = $resultat['option'];
 			}

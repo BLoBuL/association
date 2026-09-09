@@ -4,7 +4,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+$traductions = [
 	'activite_entete_nom' => 'Nom',
 	'activite_entete_voir' => 'Infos',
 	'adherent_label_gerer_membre' => 'Gérer les cotisations de l’adhérent',
@@ -23,4 +23,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'autres_administrateurs_redacteurs' => 'Autres administrateurs et rédacteurs',
 	'titre_onglet_benevoles' => 'Bénévoles',
 	'titre_page_benevoles' => 'Bénévoles',
-);
+];
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

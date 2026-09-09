@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Anonymisation RGPD des donnees metier association.
  *
@@ -16,26 +17,26 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * @param array $auteur
  * @return array
  */
-function association_rgpd_anonymiser_auteur($id_auteur, $auteur = array()) {
+function association_rgpd_anonymiser_auteur($id_auteur, $auteur = []) {
 	include_spip('base/abstract_sql');
 
 	$id_auteur = intval($id_auteur);
 	if ($id_auteur <= 0) {
-		return array('ok' => false, 'erreur' => _T('association:erreur_auteur_inexistant'));
+		return ['ok' => false, 'erreur' => _T('association:erreur_auteur_inexistant')];
 	}
 
-	$email = trim((string)($auteur['email'] ?? ''));
+	$email = trim((string) ($auteur['email'] ?? ''));
 	$anon = 'anonyme_' . $id_auteur;
-	$resume = pipeline('association_rgpd_anonymiser_auteur', array(
-		'args' => array('id_auteur' => $id_auteur, 'email' => $email, 'anon' => $anon),
-		'data' => array(),
-	));
-	$resume = is_array($resume) ? $resume : array();
+	$resume = pipeline('association_rgpd_anonymiser_auteur', [
+		'args' => ['id_auteur' => $id_auteur, 'email' => $email, 'anon' => $anon],
+		'data' => [],
+	]);
+	$resume = is_array($resume) ? $resume : [];
 
-	return array(
+	return [
 		'ok' => true,
 		'resume' => $resume,
-	);
+	];
 }
 
 /**
@@ -48,7 +49,7 @@ function association_rgpd_anonymiser_auteur($id_auteur, $auteur = array()) {
 function association_rgpd_filtrer_champs($table, $champs) {
 	$desc = sql_showtable($table, true);
 	if (!isset($desc['field']) || !is_array($desc['field'])) {
-		return array();
+		return [];
 	}
 
 	return array_intersect_key($champs, $desc['field']);

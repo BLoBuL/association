@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('_ECRIRE_INC_VERSION')) {
-    return;
+	return;
 }
 
 /**
@@ -9,11 +9,16 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  */
 
 function asso_supprimer_transactions_auteurs(array $ids_auteurs, $dry_run = true) {
-    if (!$ids_auteurs) return ['supprimes' => 0, 'ignore' => true];
-    $in = sql_in('id_auteur', $ids_auteurs);
+	if (!$ids_auteurs) {
+		return [
+			'supprimes' => 0,
+			'ignore' => true,
+		];
+	}
+	$in = sql_in('id_auteur', $ids_auteurs);
 
-    $nb = $dry_run ? sql_countsel('spip_transactions', $in) : sql_delete('spip_transactions', $in);
-    return ['supprimes' => intval($nb)];
+	$nb = $dry_run ? sql_countsel('spip_transactions', $in) : sql_delete('spip_transactions', $in);
+	return ['supprimes' => intval($nb)];
 }
 
 /**
@@ -21,68 +26,70 @@ function asso_supprimer_transactions_auteurs(array $ids_auteurs, $dry_run = true
  */
 
 function asso_supprimer_transactions_orphelines($dry_run = true, $lot = 1000) {
-    // Préparer une limite temporelle (1 an)
-    $limite = date('Y-m-d H:i:s', time() - 365 * 86400);
+	// Préparer une limite temporelle (1 an)
+	$limite = date('Y-m-d H:i:s', time() - 365 * 86400);
 
-    // WHERE par type / condition (chacun dans sa variable)
-    // Colonnes supposées présentes
-    $where_date = 't.date_transaction<=' . sql_quote($limite);
+	// WHERE par type / condition (chacun dans sa variable)
+	// Colonnes supposées présentes
+	$where_date = 't.date_transaction<=' . sql_quote($limite);
 
-    $where_commandes = '';
-    if (test_plugin_actif('commandes')) {
-        $where_commandes = '(t.id_commande IS NULL OR t.id_commande=0 OR (t.id_commande>0 AND NOT EXISTS (SELECT 1 FROM spip_commandes AS cmd WHERE cmd.id_commande = t.id_commande)))';
-    } else {
-        $where_commandes = '(t.id_commande IS NULL OR t.id_commande=0)';
-    }
+	$where_commandes = '';
+	if (test_plugin_actif('commandes')) {
+		$where_commandes = '(t.id_commande IS NULL OR t.id_commande=0 OR (t.id_commande>0 AND NOT EXISTS (SELECT 1 FROM spip_commandes AS cmd WHERE cmd.id_commande = t.id_commande)))';
+	} else {
+		$where_commandes = '(t.id_commande IS NULL OR t.id_commande=0)';
+	}
 
-    $where_formidable = '';
-    if (test_plugin_actif('formidable')) {
-        $where_formidable = 'NOT (t.tracking_id>0 AND t.parrain LIKE ' . sql_quote('formidable:%') . ' AND EXISTS (SELECT 1 FROM spip_formulaires_reponses AS r WHERE r.id_formulaires_reponse = t.tracking_id))';
-    } else {
-        $where_formidable = 'NOT (t.tracking_id>0 AND t.parrain LIKE ' . sql_quote('formidable:%') . ')';
-    }
+	$where_formidable = '';
+	if (test_plugin_actif('formidable')) {
+		$where_formidable = 'NOT (t.tracking_id>0 AND t.parrain LIKE ' . sql_quote('formidable:%') . ' AND EXISTS (SELECT 1 FROM spip_formulaires_reponses AS r WHERE r.id_formulaires_reponse = t.tracking_id))';
+	} else {
+		$where_formidable = 'NOT (t.tracking_id>0 AND t.parrain LIKE ' . sql_quote('formidable:%') . ')';
+	}
 
-    // Statut de la transaction
-    $where_statut = 't.statut<>' . sql_quote('ok');
+	// Statut de la transaction
+	$where_statut = 't.statut<>' . sql_quote('ok');
 
-    // Composer la clause WHERE finale depuis les morceaux non vides
-    $where_parts = array_filter([
-        $where_statut,
-        $where_date,
-        $where_commandes,
-        $where_formidable
-    ]);
+	// Composer la clause WHERE finale depuis les morceaux non vides
+	$where_parts = array_filter([
+		$where_statut,
+		$where_date,
+		$where_commandes,
+		$where_formidable,
+	]);
 
-    $where = $where_parts ? implode(' AND ', $where_parts) : '0'; // '0' pour sécurité
+	$where = $where_parts ? implode(' AND ', $where_parts) : '0'; // '0' pour sécurité
 
-    $ids = [];
-    // On sélectionne uniquement la table des transactions et on laisse le WHERE tester l'existence dans les tables liées
-    $res = sql_select(
-        't.id_transaction',
-        'spip_transactions AS t',
-        $where,
-        '',
-        '',
-        intval($lot)
-    );
-    while ($row = sql_fetch($res)) {
-        $ids[] = intval($row['id_transaction']);
-    }
-    $references = pipeline('association_paiements_transactions_references', array(
-        'args' => array('ids_transactions' => $ids),
-        'data' => array(),
-    ));
-    $ids = array_values(array_diff($ids, array_unique(array_map('intval', (array) $references))));
-    if (!$ids) return ['supprimees' => 0];
+	$ids = [];
+	// On sélectionne uniquement la table des transactions et on laisse le WHERE tester l'existence dans les tables liées
+	$res = sql_select(
+		't.id_transaction',
+		'spip_transactions AS t',
+		$where,
+		'',
+		'',
+		intval($lot)
+	);
+	while ($row = sql_fetch($res)) {
+		$ids[] = intval($row['id_transaction']);
+	}
+	$references = pipeline('association_paiements_transactions_references', [
+		'args' => ['ids_transactions' => $ids],
+		'data' => [],
+	]);
+	$ids = array_values(array_diff($ids, array_unique(array_map('intval', (array) $references))));
+	if (!$ids) {
+		return ['supprimees' => 0];
+	}
 
-    $in = sql_in('id_transaction', $ids);
-    $nb = $dry_run ? sql_countsel('spip_transactions', $in) : sql_delete('spip_transactions', $in);
+	$in = sql_in('id_transaction', $ids);
+	$nb = $dry_run ? sql_countsel('spip_transactions', $in) : sql_delete('spip_transactions', $in);
 
-    if ($nb === false) {
-        association_log('cron', 'Erreur suppression transactions orphelines (' . $where . ')', 'erreur');
-    }
+	if ($nb === false) {
+		association_log('cron', 'Erreur suppression transactions orphelines (' . $where . ')', 'erreur');
+	}
 
-    return ['supprimees' => intval($nb), 'ids' => $ids, 'limite' => ($where_date ? $limite : null)];
+	return ['supprimees' => intval($nb), 'ids' => $ids, 'limite' => ($where_date ? $limite : null)];
 }
 
 /**
@@ -109,4 +116,3 @@ function asso_supprimer_transactions_orphelines($dry_run = true, $lot = 1000) {
  * @param int $lot
  * @return array
  */
-

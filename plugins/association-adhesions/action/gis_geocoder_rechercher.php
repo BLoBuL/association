@@ -13,6 +13,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * Seuls les arguments spécifiques au service sont transmis.
  */
 function action_gis_geocoder_rechercher_dist() {
+	include_spip('inc/association_capacites');
+	if (!association_plugin_actif('gis')) {
+		return;
+	}
 	include_spip('inc/modifier');
 	/* On filtre les arguments à renvoyer à Nomatim (liste blanche) */
 	$arguments = collecter_requests(['format', 'q', 'limit', 'addressdetails', 'accept-language', 'lat', 'lon'], []);
@@ -28,27 +32,27 @@ function action_gis_geocoder_rechercher_dist() {
 	// initialisation des valeurs de config
 	include_spip('inc/config');
 	$config = lire_config('gis', []);
-    $api_key_google = $config['api_key_google'];
+	$api_key_google = $config['api_key_google'];
 
 	include_spip('inc/modifier');
 	 //On filtre les arguments à renvoyer à Nomatim (liste blanche)
 	$arguments = collecter_requests(['format', 'q', 'limit', 'addressdetails', 'accept-language', 'lat', 'lon'], []);
 
-    if($api_key_google){
+	if($api_key_google){
 
-        $url = 'https://maps.googleapis.com/maps/api/geocode/';
-        $format= 'json';
+		$url = 'https://maps.googleapis.com/maps/api/geocode/';
+		$format= 'json';
 
-        $arguments_googleapis = array();
-        $arguments_googleapis['address']  = $arguments['q'];
-        $arguments_googleapis['key']  = $api_key_google;
-        $request_googleapis = "{$url}{$format}?" . http_build_query($arguments_googleapis);
-        include_spip('inc/distant');
-        $data = recuperer_url($request_googleapis);
-        $data = $data['page'];
+		$arguments_googleapis = array();
+		$arguments_googleapis['address']  = $arguments['q'];
+		$arguments_googleapis['key']  = $api_key_google;
+		$request_googleapis = "{$url}{$format}?" . http_build_query($arguments_googleapis);
+		include_spip('inc/distant');
+		$data = recuperer_url($request_googleapis);
+		$data = $data['page'];
 
-    }else{
-       include_spip('inc/gis_geocode');
+	}else{
+	   include_spip('inc/gis_geocode');
 	   $data = gis_geocode_request(_request('mode'), $arguments);
    }
 

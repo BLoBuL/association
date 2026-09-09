@@ -6,20 +6,20 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 function association_evenements_upgrade($nom_meta_base_version, $version_cible) {
 	include_spip('base/upgrade');
-	$maj = array(
-		'create' => array(
-			array('maj_tables', array(
+	$maj = [
+		'create' => [
+			['maj_tables', [
 				'spip_asso_categories_activites',
 				'spip_asso_activites',
 				'spip_asso_categories_activites_liens',
-			)),
-			array('association_evenements_migrer_tarifs_selectionnes'),
-		),
-	);
+			]],
+			['association_evenements_migrer_tarifs_selectionnes'],
+		],
+	];
 	$maj['1.1.0'] = $maj['create'];
-	$maj['1.2.0'] = array(
-		array('association_evenements_migrer_tarifs_selectionnes'),
-	);
+	$maj['1.2.0'] = [
+		['association_evenements_migrer_tarifs_selectionnes'],
+	];
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
 
@@ -33,14 +33,14 @@ function association_evenements_upgrade($nom_meta_base_version, $version_cible) 
 function association_evenements_migrer_tarifs_selectionnes() {
 	$description = sql_showtable('spip_asso_activites', true);
 	if (!$description) {
-		maj_tables(array('spip_asso_activites'));
+		maj_tables(['spip_asso_activites']);
 		return;
 	}
 
-	$champs = array_keys($description['field'] ?? array());
+	$champs = array_keys($description['field'] ?? []);
 	if (!in_array('transaction', $champs, true)) {
 		if (!in_array('tarifs_selectionnes', $champs, true)) {
-			maj_tables(array('spip_asso_activites'));
+			maj_tables(['spip_asso_activites']);
 		}
 		return;
 	}
@@ -77,7 +77,7 @@ function association_evenements_migrer_tarifs_selectionnes_sqlite() {
 			throw new RuntimeException('Impossible de préserver la table historique.');
 		}
 
-		maj_tables(array($table));
+		maj_tables([$table]);
 		$description_nouvelle = sql_showtable($table, true);
 		if (!$description_nouvelle || !isset($description_nouvelle['field']['tarifs_selectionnes'])) {
 			throw new RuntimeException('La nouvelle table des inscriptions est invalide.');

@@ -4,7 +4,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+$traductions = [
 	'acheteur' => 'Acheteur',
 	'action' => 'Action',
 	'ajouter_une_vente' => 'Ajouter une vente',
@@ -39,4 +39,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'vente_aucune' => 'Aucune vente pour cette année.',
 	'vente_compteur_plusieurs' => '@nb@ ventes',
 	'vente_compteur_un' => 'Une vente',
-);
+];
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

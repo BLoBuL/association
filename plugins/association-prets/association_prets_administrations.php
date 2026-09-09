@@ -1,12 +1,15 @@
 <?php
-if (!defined('_ECRIRE_INC_VERSION')) return;
+
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 function association_prets_upgrade($meta, $cible) {
 	include_spip('base/upgrade');
-	maj_plugin($meta, $cible, array(
-		'create' => array(array('maj_tables', array('spip_asso_ressources', 'spip_asso_prets'))),
-		'1.1.0' => array(array('maj_tables', array('spip_asso_prets'))),
-		'1.1.1' => array(array('association_prets_migrer_identifiants_relationnels')),
-	));
+	maj_plugin($meta, $cible, [
+		'create' => [['maj_tables', ['spip_asso_ressources', 'spip_asso_prets']]],
+		'1.1.0' => [['maj_tables', ['spip_asso_prets']]],
+		'1.1.1' => [['association_prets_migrer_identifiants_relationnels']],
+	]);
 }
 
 /**
@@ -17,7 +20,7 @@ function association_prets_upgrade($meta, $cible) {
  */
 function association_prets_migrer_identifiants_relationnels() {
 	$lignes = sql_allfetsel('id_pret, id_ressource, id_emprunteur', 'spip_asso_prets');
-	foreach ($lignes ?: array() as $ligne) {
+	foreach ($lignes ?: [] as $ligne) {
 		$id_ressource = trim((string) ($ligne['id_ressource'] ?? ''));
 		$id_emprunteur = trim((string) ($ligne['id_emprunteur'] ?? ''));
 		if (!ctype_digit($id_ressource) || intval($id_ressource) <= 0
@@ -34,6 +37,8 @@ function association_prets_migrer_identifiants_relationnels() {
 			throw new RuntimeException('Impossible de convertir les identifiants de prêts en BIGINT.');
 		}
 	}
-	maj_tables(array('spip_asso_prets'));
+	maj_tables(['spip_asso_prets']);
 }
-function association_prets_vider_tables($meta) { effacer_meta($meta); }
+function association_prets_vider_tables($meta) {
+	effacer_meta($meta);
+}

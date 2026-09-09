@@ -1,4 +1,5 @@
 <?php
+
 include_spip('inc/destinations');
 
 /**
@@ -17,25 +18,25 @@ include_spip('inc/destinations');
  *                      - Un tableau associatif brut sinon.
  */
 function preparer_liste_asso_plan_classe($format = 'data_saisies') {
-    // Récupère toutes les classes de la table `spip_asso_plan`.
-    $asso_plans = sql_allfetsel('classe', 'spip_asso_plan', '');
+	// Récupère toutes les classes de la table `spip_asso_plan`.
+	$asso_plans = sql_allfetsel('classe', 'spip_asso_plan', '');
 
-    // Initialise un tableau vide pour stocker les données reformattées.
-    $asso_plans_array = array();
+	// Initialise un tableau vide pour stocker les données reformattées.
+	$asso_plans_array = [];
 
-    // Parcourt les données récupérées et les reformate en tableau associatif.
-    foreach ($asso_plans as $asso_plan) {
-        $asso_plans_array[$asso_plan['classe']] = $asso_plan['classe'];
-    }
+	// Parcourt les données récupérées et les reformate en tableau associatif.
+	foreach ($asso_plans as $asso_plan) {
+		$asso_plans_array[$asso_plan['classe']] = $asso_plan['classe'];
+	}
 
-    // Retourne les données dans le format demandé.
-    if ($format == 'data_saisies') {
-        // Convertit le tableau en chaîne formatée pour les saisies.
-        return saisies_tableau2chaine($asso_plans_array);
-    } else {
-        // Retourne le tableau associatif brut.
-        return $asso_plans_array;
-    }
+	// Retourne les données dans le format demandé.
+	if ($format == 'data_saisies') {
+		// Convertit le tableau en chaîne formatée pour les saisies.
+		return saisies_tableau2chaine($asso_plans_array);
+	} else {
+		// Retourne le tableau associatif brut.
+		return $asso_plans_array;
+	}
 }
 /**
  * Prépare une liste des comptes du plan associatif.
@@ -54,32 +55,32 @@ function preparer_liste_asso_plan_classe($format = 'data_saisies') {
  *                      - Un tableau associatif brut sinon.
  */
 function preparer_liste_asso_plan_compte($format = 'data_saisies', $classe = '') {
-    // Si une classe est spécifiée, ajoute une condition WHERE pour la requête SQL.
-    if ($classe) {
-        $where = "classe='$classe'";
-    } else {
-        $where = '';
-    }
+	// Si une classe est spécifiée, ajoute une condition WHERE pour la requête SQL.
+	if ($classe) {
+		$where = "classe='$classe'";
+	} else {
+		$where = '';
+	}
 
-    // Récupère les données de la table `spip_asso_plan` en fonction de la condition WHERE.
-    $asso_plans = sql_allfetsel('classe,code,intitule', 'spip_asso_plan', $where, '', 'code');
+	// Récupère les données de la table `spip_asso_plan` en fonction de la condition WHERE.
+	$asso_plans = sql_allfetsel('classe,code,intitule', 'spip_asso_plan', $where, '', 'code');
 
-    // Initialise un tableau vide pour stocker les données reformattées.
-    $asso_plans_array = array();
+	// Initialise un tableau vide pour stocker les données reformattées.
+	$asso_plans_array = [];
 
-    // Parcourt les données récupérées et les reformate en tableau associatif.
-    foreach ($asso_plans as $asso_plan) {
-        $asso_plans_array[$asso_plan['code']] = $asso_plan['classe'] . ' - ' . $asso_plan['code'] . ' - ' . $asso_plan['intitule'];
-    }
+	// Parcourt les données récupérées et les reformate en tableau associatif.
+	foreach ($asso_plans as $asso_plan) {
+		$asso_plans_array[$asso_plan['code']] = $asso_plan['classe'] . ' - ' . $asso_plan['code'] . ' - ' . $asso_plan['intitule'];
+	}
 
-    // Retourne les données dans le format demandé.
-    if ($format == 'data_saisies') {
-        // Convertit le tableau en chaîne formatée pour les saisies.
-        return saisies_tableau2chaine($asso_plans_array);
-    } else {
-        // Retourne le tableau associatif brut.
-        return $asso_plans_array;
-    }
+	// Retourne les données dans le format demandé.
+	if ($format == 'data_saisies') {
+		// Convertit le tableau en chaîne formatée pour les saisies.
+		return saisies_tableau2chaine($asso_plans_array);
+	} else {
+		// Retourne le tableau associatif brut.
+		return $asso_plans_array;
+	}
 }
 /**
  * Indique si une table dispose d'un champ donne.
@@ -89,8 +90,8 @@ function preparer_liste_asso_plan_compte($format = 'data_saisies', $classe = '')
  * @return bool
  */
 function association_comptes_table_a_champ($table, $champ) {
-    $desc = sql_showtable($table, true);
-    return !empty($desc['field']) && isset($desc['field'][$champ]);
+	$desc = sql_showtable($table, true);
+	return !empty($desc['field']) && isset($desc['field'][$champ]);
 }
 
 /**
@@ -100,17 +101,17 @@ function association_comptes_table_a_champ($table, $champ) {
  * @return string
  */
 function association_comptes_date_normalisee($date) {
-    $date = trim((string)$date);
-    if (
-        $date === ''
-        || $date === '0000-00-00'
-        || $date === '0000-00-00 00:00:00'
-    ) {
-        return '';
-    }
+	$date = trim((string) $date);
+	if (
+		$date === ''
+		|| $date === '0000-00-00'
+		|| $date === '0000-00-00 00:00:00'
+	) {
+		return '';
+	}
 
-    $timestamp = strtotime($date);
-    return $timestamp ? date('Y-m-d', $timestamp) : '';
+	$timestamp = strtotime($date);
+	return $timestamp ? date('Y-m-d', $timestamp) : '';
 }
 
 /**
@@ -121,13 +122,13 @@ function association_comptes_date_normalisee($date) {
  * @return array
  */
 function association_commande_comptable_transaction($id_commande, $id_transaction = 0) {
-    $id_commande = intval($id_commande);
-    $id_transaction = intval($id_transaction);
-    $transactions = pipeline('association_paiements_transactions_informations', array(
-		'args' => array('id_transaction' => $id_transaction, 'id_commande' => $id_commande),
-		'data' => array(),
-	));
-    return $transactions ? reset($transactions) : array();
+	$id_commande = intval($id_commande);
+	$id_transaction = intval($id_transaction);
+	$transactions = pipeline('association_paiements_transactions_informations', [
+		'args' => ['id_transaction' => $id_transaction, 'id_commande' => $id_commande],
+		'data' => [],
+	]);
+	return $transactions ? reset($transactions) : [];
 }
 
 /**
@@ -137,40 +138,40 @@ function association_commande_comptable_transaction($id_commande, $id_transactio
  * @param array $transaction
  * @return float
  */
-function association_commande_comptable_montant($commande, $transaction = array()) {
-    if (!empty($transaction['montant'])) {
-        return round(floatval($transaction['montant']), 2);
-    }
+function association_commande_comptable_montant($commande, $transaction = []) {
+	if (!empty($transaction['montant'])) {
+		return round(floatval($transaction['montant']), 2);
+	}
 
-    foreach (array('montant', 'montant_ttc', 'total', 'total_ttc', 'prix') as $champ) {
-        if (isset($commande[$champ]) && floatval($commande[$champ]) > 0) {
-            return round(floatval($commande[$champ]), 2);
-        }
-    }
+	foreach (['montant', 'montant_ttc', 'total', 'total_ttc', 'prix'] as $champ) {
+		if (isset($commande[$champ]) && floatval($commande[$champ]) > 0) {
+			return round(floatval($commande[$champ]), 2);
+		}
+	}
 
-    $id_commande = intval($commande['id_commande'] ?? 0);
-    if (
-        $id_commande <= 0
-        || !sql_showtable('spip_commandes_details', true)
-        || !association_comptes_table_a_champ('spip_commandes_details', 'id_commande')
-    ) {
-        return 0.0;
-    }
+	$id_commande = intval($commande['id_commande'] ?? 0);
+	if (
+		$id_commande <= 0
+		|| !sql_showtable('spip_commandes_details', true)
+		|| !association_comptes_table_a_champ('spip_commandes_details', 'id_commande')
+	) {
+		return 0.0;
+	}
 
-    $lignes = sql_allfetsel('*', 'spip_commandes_details', 'id_commande=' . $id_commande);
-    $total = 0.0;
-    foreach ($lignes as $ligne) {
-        $quantite = isset($ligne['quantite']) ? max(1, floatval($ligne['quantite'])) : 1;
-        if (isset($ligne['montant']) && floatval($ligne['montant']) > 0) {
-            $total += floatval($ligne['montant']);
-        } elseif (isset($ligne['prix_unitaire']) && floatval($ligne['prix_unitaire']) > 0) {
-            $total += floatval($ligne['prix_unitaire']) * $quantite;
-        } elseif (isset($ligne['prix']) && floatval($ligne['prix']) > 0) {
-            $total += floatval($ligne['prix']) * $quantite;
-        }
-    }
+	$lignes = sql_allfetsel('*', 'spip_commandes_details', 'id_commande=' . $id_commande);
+	$total = 0.0;
+	foreach ($lignes as $ligne) {
+		$quantite = isset($ligne['quantite']) ? max(1, floatval($ligne['quantite'])) : 1;
+		if (isset($ligne['montant']) && floatval($ligne['montant']) > 0) {
+			$total += floatval($ligne['montant']);
+		} elseif (isset($ligne['prix_unitaire']) && floatval($ligne['prix_unitaire']) > 0) {
+			$total += floatval($ligne['prix_unitaire']) * $quantite;
+		} elseif (isset($ligne['prix']) && floatval($ligne['prix']) > 0) {
+			$total += floatval($ligne['prix']) * $quantite;
+		}
+	}
 
-    return round($total, 2);
+	return round($total, 2);
 }
 
 /**
@@ -180,22 +181,22 @@ function association_commande_comptable_montant($commande, $transaction = array(
  * @return string
  */
 function association_commande_comptable_justification($commande) {
-    $reference = trim((string)($commande['reference'] ?? ''));
-    $id_commande = intval($commande['id_commande'] ?? 0);
-    $libelle = $reference !== '' ? $reference : '#' . $id_commande;
-    $client = '';
+	$reference = trim((string) ($commande['reference'] ?? ''));
+	$id_commande = intval($commande['id_commande'] ?? 0);
+	$libelle = $reference !== '' ? $reference : '#' . $id_commande;
+	$client = '';
 
-    if (!empty($commande['commentaire'])) {
-        $commentaire = json_decode((string)$commande['commentaire'], true);
-        if (is_array($commentaire)) {
-            $client = trim((string)($commentaire['client'] ?? ''));
-        }
-    }
-    if ($client === '' && !empty($commande['id_auteur'])) {
-        $client = trim((string)sql_getfetsel('nom', 'spip_auteurs', 'id_auteur=' . intval($commande['id_auteur'])));
-    }
+	if (!empty($commande['commentaire'])) {
+		$commentaire = json_decode((string) $commande['commentaire'], true);
+		if (is_array($commentaire)) {
+			$client = trim((string) ($commentaire['client'] ?? ''));
+		}
+	}
+	if ($client === '' && !empty($commande['id_auteur'])) {
+		$client = trim((string) sql_getfetsel('nom', 'spip_auteurs', 'id_auteur=' . intval($commande['id_auteur'])));
+	}
 
-    return trim('Commande ' . $libelle . ($client !== '' ? ' - ' . $client : ''));
+	return trim('Commande ' . $libelle . ($client !== '' ? ' - ' . $client : ''));
 }
 
 /**
@@ -209,96 +210,96 @@ function association_commande_comptable_justification($commande) {
  * @param array $options
  * @return int Identifiant de l'ecriture comptable creee ou mise a jour.
  */
-function association_commande_comptable_synchroniser($id_commande, $options = array()) {
-    $id_commande = intval($id_commande);
-    if ($id_commande <= 0 || empty($GLOBALS['association_metas']['comptes'])) {
-        return 0;
-    }
-    if (!sql_showtable('spip_commandes', true) || !sql_showtable('spip_asso_comptes', true)) {
-        return 0;
-    }
+function association_commande_comptable_synchroniser($id_commande, $options = []) {
+	$id_commande = intval($id_commande);
+	if ($id_commande <= 0 || empty($GLOBALS['association_metas']['comptes'])) {
+		return 0;
+	}
+	if (!sql_showtable('spip_commandes', true) || !sql_showtable('spip_asso_comptes', true)) {
+		return 0;
+	}
 
-    $commande = sql_fetsel('*', 'spip_commandes', 'id_commande=' . $id_commande);
-    if (!$commande) {
-        return 0;
-    }
+	$commande = sql_fetsel('*', 'spip_commandes', 'id_commande=' . $id_commande);
+	if (!$commande) {
+		return 0;
+	}
 
-    $transaction = association_commande_comptable_transaction($id_commande, intval($options['id_transaction'] ?? 0));
-    $force_paiement = !empty($options['forcer_paiement']);
-    $statut_transaction = strtolower(trim((string)($transaction['statut'] ?? '')));
-    $statut_commande = strtolower(trim((string)($commande['statut'] ?? '')));
-    $est_paye = $force_paiement
-        || in_array($statut_transaction, array('ok', 'paye', 'paid'), true)
-        || in_array($statut_commande, array('paye', 'paid'), true);
+	$transaction = association_commande_comptable_transaction($id_commande, intval($options['id_transaction'] ?? 0));
+	$force_paiement = !empty($options['forcer_paiement']);
+	$statut_transaction = strtolower(trim((string) ($transaction['statut'] ?? '')));
+	$statut_commande = strtolower(trim((string) ($commande['statut'] ?? '')));
+	$est_paye = $force_paiement
+		|| in_array($statut_transaction, ['ok', 'paye', 'paid'], true)
+		|| in_array($statut_commande, ['paye', 'paid'], true);
 
-    $date_envoi = association_comptes_date_normalisee($commande['date_envoi'] ?? '');
-    $date_paiement = association_comptes_date_normalisee($transaction['date_paiement'] ?? ($commande['date_paiement'] ?? ''));
-    if ($date_envoi === '' && !$est_paye) {
-        return 0;
-    }
+	$date_envoi = association_comptes_date_normalisee($commande['date_envoi'] ?? '');
+	$date_paiement = association_comptes_date_normalisee($transaction['date_paiement'] ?? ($commande['date_paiement'] ?? ''));
+	if ($date_envoi === '' && !$est_paye) {
+		return 0;
+	}
 
-    $date_compte = $est_paye
-        ? ($date_paiement ?: association_comptes_date_normalisee($commande['date'] ?? '') ?: date('Y-m-d'))
-        : $date_envoi;
-    $montant = association_commande_comptable_montant($commande, $transaction);
-    if ($montant <= 0) {
-        association_log('comptabilite', 'Commande comptable ignoree: montant nul id_commande=' . $id_commande, 'info');
-        return 0;
-    }
+	$date_compte = $est_paye
+		? ($date_paiement ?: association_comptes_date_normalisee($commande['date'] ?? '') ?: date('Y-m-d'))
+		: $date_envoi;
+	$montant = association_commande_comptable_montant($commande, $transaction);
+	if ($montant <= 0) {
+		association_log('comptabilite', 'Commande comptable ignoree: montant nul id_commande=' . $id_commande, 'info');
+		return 0;
+	}
 
-    $id_transaction = intval($transaction['id_transaction'] ?? 0);
-    $imputation_creance = $GLOBALS['association_metas']['pc_commandes_creance']
-        ?? $GLOBALS['association_metas']['pc_activites_creance']
-        ?? '101';
-    $imputation_paiement = $GLOBALS['association_metas']['pc_commandes_paiement']
-        ?? $GLOBALS['association_metas']['pc_ventes']
-        ?? $GLOBALS['association_metas']['pc_activites_paiement']
-        ?? '701';
-    $imputation = $est_paye ? $imputation_paiement : $imputation_creance;
-    $vu = $est_paye ? 1 : 0;
-    $justification = association_commande_comptable_justification($commande);
-    $journal = 'commande|' . $id_commande;
-    $id_auteur = intval($commande['id_auteur'] ?? ($transaction['id_auteur'] ?? 0));
+	$id_transaction = intval($transaction['id_transaction'] ?? 0);
+	$imputation_creance = $GLOBALS['association_metas']['pc_commandes_creance']
+		?? $GLOBALS['association_metas']['pc_activites_creance']
+		?? '101';
+	$imputation_paiement = $GLOBALS['association_metas']['pc_commandes_paiement']
+		?? $GLOBALS['association_metas']['pc_ventes']
+		?? $GLOBALS['association_metas']['pc_activites_paiement']
+		?? '701';
+	$imputation = $est_paye ? $imputation_paiement : $imputation_creance;
+	$vu = $est_paye ? 1 : 0;
+	$justification = association_commande_comptable_justification($commande);
+	$journal = 'commande|' . $id_commande;
+	$id_auteur = intval($commande['id_auteur'] ?? ($transaction['id_auteur'] ?? 0));
 
 	include_spip('inc/association_compta_ecritures');
 	$comptes = association_compta_ecritures_lister(
-		array('objet' => 'commande', 'id_objet' => $id_commande),
-		array('champs' => 'id_compte', 'ordre' => 'id_compte DESC', 'limite' => 1)
+		['objet' => 'commande', 'id_objet' => $id_commande],
+		['champs' => 'id_compte', 'ordre' => 'id_compte DESC', 'limite' => 1]
 	);
-	$compte = $comptes ? reset($comptes) : array();
-    if (!$compte && $id_transaction > 0) {
+	$compte = $comptes ? reset($comptes) : [];
+	if (!$compte && $id_transaction > 0) {
 		$comptes = association_compta_ecritures_lister(
-			array('objet' => 'commande', 'id_transaction' => $id_transaction),
-			array('champs' => 'id_compte', 'ordre' => 'id_compte DESC', 'limite' => 1)
+			['objet' => 'commande', 'id_transaction' => $id_transaction],
+			['champs' => 'id_compte', 'ordre' => 'id_compte DESC', 'limite' => 1]
 		);
-		$compte = $comptes ? reset($comptes) : array();
-    }
+		$compte = $comptes ? reset($comptes) : [];
+	}
 
-    if ($compte && !empty($compte['id_compte'])) {
-        $id_compte = intval($compte['id_compte']);
+	if ($compte && !empty($compte['id_compte'])) {
+		$id_compte = intval($compte['id_compte']);
 		association_compta_ecriture_modifier(
 			$id_compte,
-			array(
-                'date' => $date_compte,
-                'recette' => $montant,
-                'depense' => 0,
-                'justification' => $justification,
-                'imputation' => $imputation,
-                'journal' => $journal,
-                'id_auteur' => $id_auteur,
-                'id_objet' => $id_commande,
-                'objet' => 'commande',
-                'id_transaction' => $id_transaction,
-                'vu' => $vu,
-			)
-        );
-        return $id_compte;
-    }
+			[
+				'date' => $date_compte,
+				'recette' => $montant,
+				'depense' => 0,
+				'justification' => $justification,
+				'imputation' => $imputation,
+				'journal' => $journal,
+				'id_auteur' => $id_auteur,
+				'id_objet' => $id_commande,
+				'objet' => 'commande',
+				'id_transaction' => $id_transaction,
+				'vu' => $vu,
+			]
+		);
+		return $id_compte;
+	}
 
-	return association_compta_ecriture_creer(array(
+	return association_compta_ecriture_creer([
 		'date' => $date_compte, 'recette' => $montant, 'depense' => 0,
 		'justification' => $justification, 'imputation' => $imputation, 'journal' => $journal,
 		'id_auteur' => $id_auteur, 'id_objet' => $id_commande, 'objet' => 'commande',
 		'id_transaction' => $id_transaction, 'vu' => $vu,
-	));
+	]);
 }

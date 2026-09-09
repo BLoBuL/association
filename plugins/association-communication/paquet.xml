@@ -3,6 +3,7 @@
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
 	<necessite nom="association" compatibilite="[4.0.0;4.*]" />
+	<pipeline nom="association_programmer_campagne" inclure="association_communication_pipelines.php" />
 	<necessite nom="mailsubscribers" compatibilite="[3.7.0;[" />
 	<necessite nom="notifications" compatibilite="[3.7.0;[" />
 	<necessite nom="mailshot" compatibilite="[2.0.0;[" />

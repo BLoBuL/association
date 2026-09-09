@@ -8,26 +8,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AssociationInstallationVerifier extends Command
 {
-	protected function configure()
-	{
+	protected function configure() {
 		$this->setName('association:installation:verifier')
 			->setDescription('Vérifie les plugins, tables, objets SQL et versions de schéma de la suite Association.');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->demarrerSpip();
 		include_spip('base/abstract_sql');
 		include_spip('base/objets');
 		include_spip('inc/association_installation');
 		$inventaire = association_installation_inventaire();
-		$plugins = (array) ($inventaire['plugins_requis'] ?? array());
-		$schemas = (array) ($inventaire['schemas'] ?? array());
-		$objetsAttendus = (array) ($inventaire['objets'] ?? array());
-		$tablesAttendues = (array) ($inventaire['tables'] ?? array());
+		$plugins = (array) ($inventaire['plugins_requis'] ?? []);
+		$schemas = (array) ($inventaire['schemas'] ?? []);
+		$objetsAttendus = (array) ($inventaire['objets'] ?? []);
+		$tablesAttendues = (array) ($inventaire['tables'] ?? []);
 
-		$erreurs = (array) ($inventaire['erreurs'] ?? array());
-		$inventairesFournis = (array) ($inventaire['plugins'] ?? array());
+		$erreurs = (array) ($inventaire['erreurs'] ?? []);
+		$inventairesFournis = (array) ($inventaire['plugins'] ?? []);
 		foreach ($plugins as $prefixe) {
 			if (!test_plugin_actif($prefixe)) {
 				$erreurs[] = "Plugin inactif : $prefixe";
@@ -69,7 +67,11 @@ class AssociationInstallationVerifier extends Command
 		$output->writeln('<info>Installation Association valide.</info>');
 		$output->writeln(sprintf(
 			'%d plugins contributeurs actifs (%d obligatoire), %d tables présentes, %d objets SQL SPIP et %d schémas à jour.',
-			count($inventairesFournis), count($plugins), count($tablesAttendues), count($objetsAttendus), count($schemas)
+			count($inventairesFournis),
+			count($plugins),
+			count($tablesAttendues),
+			count($objetsAttendus),
+			count($schemas)
 		));
 		return self::SUCCESS;
 	}

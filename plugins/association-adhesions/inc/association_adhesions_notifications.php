@@ -10,14 +10,14 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 function association_adhesions_association_notification_exemple($flux) {
 	$operation = (string) ($flux['args']['operation'] ?? '');
 	if ($operation === 'types_adherents') {
-		$types = array();
-		foreach ((array) lire_config('champs_extras_spip_auteurs', array()) as $saisie) {
+		$types = [];
+		foreach ((array) lire_config('champs_extras_spip_auteurs', []) as $saisie) {
 			if (($saisie['options']['nom'] ?? '') === 'radio_type_adherent') {
-				$types = saisies_chaine2tableau($saisie['options']['datas'] ?? array());
+				$types = saisies_chaine2tableau($saisie['options']['datas'] ?? []);
 				break;
 			}
 		}
-		$flux['data'] = $types ?: array('adherent' => _T('association_adhesions:cotisation_adherent'));
+		$flux['data'] = $types ?: ['adherent' => _T('association_adhesions:cotisation_adherent')];
 		return $flux;
 	}
 
@@ -30,11 +30,11 @@ function association_adhesions_association_notification_exemple($flux) {
 		: (int) sql_getfetsel('id_auteur', 'spip_auteurs', "statut='6forum'", '', 'id_auteur DESC');
 	$cotisation = $id_auteur
 		? sql_fetsel('*', 'spip_asso_cotisations', 'id_auteur=' . $id_auteur, '', 'id_cotisation DESC')
-		: array();
+		: [];
 	if ($cotisation && !empty($cotisation['id_compte'])) {
 		include_spip('inc/cotisations_stockage');
 		$cotisation = association_cotisation_lire_par_compte((int) $cotisation['id_compte']) ?: $cotisation;
 	}
-	$flux['data'] = $cotisation ?: array();
+	$flux['data'] = $cotisation ?: [];
 	return $flux;
 }

@@ -8,7 +8,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * Crée ou adopte la table séparée avant d'y recopier l'historique comptable.
  */
 function association_adhesions_migration_cotisations_creer() {
-	maj_tables(array('spip_asso_cotisations'));
+	maj_tables(['spip_asso_cotisations']);
 	association_migrer_cotisations_depuis_comptes();
 }
 
@@ -21,8 +21,8 @@ function association_adhesions_migration_cotisations_creer() {
 function association_migrer_cotisations_depuis_comptes() {
 	$champ_objet = sql_showtable('spip_asso_comptes', true)['field']['objet'] ?? false;
 	$where = $champ_objet
-		? array("objet='cotisation' OR reinscription<>'' OR statut_cotisation<>''")
-		: array("reinscription<>'' OR statut_cotisation<>''");
+		? ["objet='cotisation' OR reinscription<>'' OR statut_cotisation<>''"]
+		: ["reinscription<>'' OR statut_cotisation<>''"];
 	foreach (sql_allfetsel('*', 'spip_asso_comptes', $where, '', 'id_compte') as $compte) {
 		$id_compte = (int) $compte['id_compte'];
 		if (!$id_compte) {
@@ -31,7 +31,7 @@ function association_migrer_cotisations_depuis_comptes() {
 
 		$id_cotisation = (int) sql_getfetsel('id_cotisation', 'spip_asso_cotisations', 'id_compte=' . $id_compte);
 		if (!$id_cotisation) {
-			$id_cotisation = (int) sql_insertq('spip_asso_cotisations', array(
+			$id_cotisation = (int) sql_insertq('spip_asso_cotisations', [
 				'id_compte' => $id_compte,
 				'id_auteur' => (int) ($compte['id_auteur'] ?? 0),
 				'id_categorie' => (int) ($compte['id_categorie'] ?? 0),
@@ -43,7 +43,7 @@ function association_migrer_cotisations_depuis_comptes() {
 				// schéma historique. Elles restent NULL plutôt que d'être déduites.
 				'montant' => (float) ($compte['recette'] ?? 0),
 				'devise' => association_cotisation_devise_historique($compte),
-			));
+			]);
 		}
 
 		association_cotisation_lier_compte($compte, $id_cotisation);
@@ -88,7 +88,7 @@ function association_cotisation_lier_compte($compte, $id_cotisation) {
 	if (!$id_compte || !$id_cotisation || !isset($compte['objet']) || $compte['objet'] !== 'cotisation') {
 		return;
 	}
-	sql_updateq('spip_asso_comptes', array('id_objet' => (int) $id_cotisation), 'id_compte=' . $id_compte);
+	sql_updateq('spip_asso_comptes', ['id_objet' => (int) $id_cotisation], 'id_compte=' . $id_compte);
 }
 
 /**
@@ -98,13 +98,13 @@ function association_completer_migration_cotisations() {
 	association_migrer_cotisations_depuis_comptes();
 	foreach (sql_allfetsel('*', 'spip_asso_cotisations', "devise='' OR devise IS NULL") as $cotisation) {
 		$id_compte = (int) ($cotisation['id_compte'] ?? 0);
-		$compte = $id_compte ? sql_fetsel('*', 'spip_asso_comptes', 'id_compte=' . $id_compte) : array();
+		$compte = $id_compte ? sql_fetsel('*', 'spip_asso_comptes', 'id_compte=' . $id_compte) : [];
 		if (!$compte) {
 			continue;
 		}
 		sql_updateq(
 			'spip_asso_cotisations',
-			array('devise' => association_cotisation_devise_historique($compte)),
+			['devise' => association_cotisation_devise_historique($compte)],
 			'id_cotisation=' . (int) $cotisation['id_cotisation']
 		);
 		association_cotisation_lier_compte($compte, (int) $cotisation['id_cotisation']);

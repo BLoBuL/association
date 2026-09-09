@@ -5,10 +5,10 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 function association_evenements_declarer_tables_objets_sql($tables) {
-	$tables['spip_asso_categories_activites'] = array(
+	$tables['spip_asso_categories_activites'] = [
 		'principale' => 'oui',
 		'titre' => 'valeur AS titre, "" AS lang',
-		'field' => array(
+		'field' => [
 			'id_categorie' => 'INT NOT NULL',
 			'valeur' => 'TINYTEXT NOT NULL',
 			'statut' => 'TINYTEXT NOT NULL',
@@ -18,13 +18,15 @@ function association_evenements_declarer_tables_objets_sql($tables) {
 			'deleted' => 'BOOLEAN default 0',
 			'type_inscrit' => 'VARCHAR(255) DEFAULT NULL',
 			'maj' => 'TIMESTAMP NOT NULL',
-		),
-		'key' => array('PRIMARY KEY' => 'id_categorie'),
-	);
-	$tables['spip_asso_activites'] = array(
+		],
+		'key' => [
+			'PRIMARY KEY' => 'id_categorie',
+		],
+	];
+	$tables['spip_asso_activites'] = [
 		'principale' => 'oui',
 		'titre' => 'CONCAT(prenom_inscrit, " ", nom_inscrit) AS titre, "" AS lang',
-		'field' => array(
+		'field' => [
 			'id_activite' => 'BIGINT NOT NULL',
 			'id_evenement' => 'BIGINT NOT NULL',
 			'id_auteur' => 'BIGINT NOT NULL',
@@ -50,24 +52,26 @@ function association_evenements_declarer_tables_objets_sql($tables) {
 			'condition_inscription' => 'VARCHAR(3) DEFAULT NULL',
 			'date' => 'DATETIME NOT NULL',
 			'maj' => 'DATETIME NOT NULL',
-		),
-		'key' => array('PRIMARY KEY' => 'id_activite'),
-	);
+		],
+		'key' => [
+			'PRIMARY KEY' => 'id_activite',
+		],
+	];
 	return $tables;
 }
 
 function association_evenements_declarer_tables_auxiliaires($tables) {
-	$tables['spip_asso_categories_activites_liens'] = array(
-		'field' => array(
+	$tables['spip_asso_categories_activites_liens'] = [
+		'field' => [
 			'id_evenement' => 'BIGINT NOT NULL',
 			'id_categorie' => 'BIGINT NOT NULL',
 			'montant' => 'TEXT NOT NULL',
-		),
-		'key' => array(
+		],
+		'key' => [
 			'PRIMARY KEY' => 'id_evenement,id_categorie',
 			'KEY id_evenement' => 'id_evenement',
-		),
-	);
+		],
+	];
 	return $tables;
 }
 

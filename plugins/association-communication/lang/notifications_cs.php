@@ -1,5 +1,8 @@
 <?php
-if (!defined('_ECRIRE_INC_VERSION')) return;
+
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 /*
  * Fichier de langue Tchèque (cs)
@@ -10,8 +13,7 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
  *  - À compléter itérativement
  */
 
-$GLOBALS[$GLOBALS['idx_lang']] = array(
-
+$traductions = [
 	'email_formule_politesse' => 'S pozdravem,',
 	'email_signature' => 'Tým @nom_site_spip@.',
 	'notification_lien_profil' => 'Sledujte stav své registrace na stránce profilu:',
@@ -23,7 +25,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'votre_nom' => 'Vaše jméno:',
 	'montant_a_regler' => 'Částka k úhradě:',
 
-# ČEKÁNÍ NA PLATBU
+	# ČEKÁNÍ NA PLATBU
 	'attente_paiement_sujet' => 'Vaše nová členská platba čeká na úhradu',
 	'attente_paiement_title' => 'Máte platbu čekající na úhradu',
 	'attente_paiement_intro' => 'Informace o platbě',
@@ -33,7 +35,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'attente_paiement_rappel' => 'Shrnutí:',
 	'attente_paiement_message_lien_profil' => 'Podrobnosti a sledování na stránce Vašeho profilu:',
 
-		// firemní varianta
+	// firemní varianta
 	'attente_paiement_entreprise_sujet' => 'Vaše nová firemní registrace čeká na úhradu',
 	'attente_paiement_entreprise_title' => 'Máte platbu čekající na úhradu',
 	'attente_paiement_entreprise_intro' => 'Informace o platbě',
@@ -41,17 +43,16 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'attente_paiement_reinscription_entreprise_titre' => 'Obdrželi jsme Vaši žádost o obnovení',
 	'attente_paiement_entreprise_chapo' => 'Prosíme, proveďte platbu dle níže uvedených pokynů.',
 
-		// aliasy
+	// aliasy
 	'attente_paiement_adherent_sujet' => 'Pro dokončení členství je vyžadována platba',
 	'attente_paiement_adherent_title' => 'Dokončete své členství',
 	'attente_paiement_adherent_intro' => 'Žádost zaznamenána. Prosím zaplaťte.',
 	'attente_paiement_adherent_titre' => 'Zaplaťte a staňte se členem naší asociace',
 	'attente_paiement_adherent_chapo' => 'Vaše platba čeká na uhrazení. Můžete provést platbu pomocí odkazu v dolní části zprávy nebo přes svůj profil.',
-
 	'attente_paiement_mail_sujet' => 'Vaše nová členská platba čeká na úhradu',
 	'attente_paiement_mail_entreprise_sujet' => 'Vaše nová firemní registrace čeká na úhradu',
 
-# AKTIVACE ÚČTU (nebo obnovení)
+	# AKTIVACE ÚČTU (nebo obnovení)
 	'activation_cotisation_inscription_sujet' => 'Vaše registrace v naší asociaci je dokončena',
 	'activation_cotisation_reinscription_sujet' => 'Vaše obnovení členství v naší asociaci je dokončeno',
 	'activation_cotisation_title' => 'Potvrzení členství',
@@ -72,7 +73,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'activation_cotisation_reinscription_entreprise_titre' => 'Děkujeme @nom_entreprise@, Vaše firemní členství bylo obnoveno!',
 	'activation_cotisation_entreprise_chapo' => 'Vaše členství bylo potvrzeno. Firemní účet je aktivní a má přidružená oprávnění.',
 
-# PO PLATBĚ
+	# PO PLATBĚ
 	'validation_post_paiement_sujet' => 'Potvrzujeme přijetí Vaší platby.',
 	'validation_post_paiement_mail_sujet' => 'Potvrzujeme přijetí Vaší platby.',
 	'validation_post_paiement_title' => 'Potvrzení přijetí platby',
@@ -89,7 +90,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'validation_post_paiement_entreprise_chapo' => 'Odpovědná osoba prověří registraci Vaší společnosti a dokončí validaci.',
 	'validation_post_paiement_entreprise_explication' => 'Obdržíte e-mail, jakmile bude validace dokončena. Sledujte stav na stránce profilu Vaší společnosti.',
 
-# PŘED PLATBOU
+	# PŘED PLATBOU
 	'validation_pre_paiement_sujet' => 'Vaše žádost o členství čeká na validaci',
 	'validation_pre_paiement_mail_sujet' => 'Vaše žádost o členství čeká na validaci',
 	'validation_pre_paiement_title' => 'Čeká na validaci',
@@ -106,7 +107,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'validation_pre_paiement_entreprise_chapo' => 'Odpovědná osoba zkontroluje dokumentaci firmy. Budete informováni, kdy můžete provést platbu.',
 	'validation_pre_paiement_entreprise_explication' => 'Po validaci obdržíte e-mail s pokyny k platbě. Sledujte stav na stránce profilu firmy.',
 
-		// Klíč pro dary používaný v šablonách
+	// Klíč pro dary používaný v šablonách
 	'validation_compte_donation' => 'Děkujeme za Váš dar.',
 
 	// Klíče pro oznámení administrátorům o přijetí platby
@@ -196,6 +197,11 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'preinscription_automatique_activite_mail_sujet_responsable_p' => '[Automatické potvrzení] @adherents@ jsou nyní předběžně zaregistrováni na akci „@evenement@“ dne @datev@.',
 	'expiration_automatique_activite_mail_sujet_responsable' => '[Automatické zrušení] @adherents@ byl(a) odhlášen(a) z akce „@evenement@“ dne @datev@.',
 	'expiration_automatique_activite_mail_sujet_responsable_p' => '[Automatické zrušení] @adherents@ byli odhlášeni z akce „@evenement@“ dne @datev@.',
-
 	'evenement_non_presentiel_lien' => 'Úkaz pro připojení:',
-);
+];
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

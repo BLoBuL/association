@@ -26,6 +26,11 @@ $id = association_communication_mailshot_creer(
 );
 
 $erreurs = array();
+if (association_communication_mailshot_creer('Sujet', '<p>Test</p>', array('invalide')) !== 0
+	|| association_communication_mailshot_creer('', '<p>Test</p>', array('test@example.org')) !== 0
+	|| association_communication_mailshot_creer('Sujet', '', array('test@example.org')) !== 0) {
+	$erreurs[] = 'Une campagne vide ne doit pas être créée.';
+}
 if ($id !== 42) $erreurs[] = 'Identifiant de mailshot incorrect.';
 if (count($GLOBALS['insertions_mailshot']) !== 3) $erreurs[] = 'La liste des destinataires n est pas dedupliquee.';
 $mailshot = $GLOBALS['insertions_mailshot'][0][1] ?? array();

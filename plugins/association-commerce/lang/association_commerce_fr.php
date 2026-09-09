@@ -1,5 +1,6 @@
 <?php
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+
+$traductions = [
 	'boutique_titre' => 'Boutique associative',
 	'commande_titre' => 'Commandes',
 	'commande_absente' => 'Aucune commande en cours.',
@@ -12,4 +13,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'modifier_panier' => 'Modifier le panier',
 	'retour_boutique' => 'Continuer mes achats',
 	'titre_menu' => 'Commerce',
-);
+];
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

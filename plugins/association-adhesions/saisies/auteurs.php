@@ -4,13 +4,12 @@
  * Fonctions spécifiques à une saisie
  *
  * @package SPIP\Saisies\auteurs
- **/
+ */
 
 // Sécurité
 if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
-
 
 /**
  * Vérifie que la valeur postée
@@ -18,7 +17,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * @param string $valeur la valeur postée
  * @param array $description la description de la saisie
  * @return bool true si valeur ok, false sinon,
- **/
+ */
 function auteurs_valeurs_acceptables($valeur, $description) {
 	$type_saisie = (empty($description['multiple']) ? 'selection' : 'selection_multiple');
 	include_spip("saisies/$type_saisie");

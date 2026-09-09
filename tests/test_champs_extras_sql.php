@@ -8,8 +8,8 @@ if (preg_match('/["\']sql["\'][^\r\n]*\bDEFAUT\b/', $source)) {
 }
 
 foreach (array(
-	'"sql" => "int(11) DEFAULT \'0\' NOT NULL"',
-	'"sql" => "varchar(3) DEFAULT \'non\' NULL"',
+	'\'sql\' => "int(11) DEFAULT \'0\' NOT NULL"',
+	'\'sql\' => "varchar(3) DEFAULT \'non\' NULL"',
 ) as $declaration) {
 	if (strpos($source, $declaration) === false) {
 		$erreurs[] = 'declaration SQL normalisee absente: ' . $declaration;

@@ -6,7 +6,7 @@
     <div class="onglets_simple email_collectif_filtre_statut">
         <ul>
             <li data-statut="">
-                <strong class="on" aria-current="page">Tous statuts</strong>
+                <strong class="on" aria-current="page"><:association_evenements:tous_statuts:></strong>
             </li>
         <BOUCLE_filtre(ASSO_ACTIVITES){tout}{id_activite IN #ENV{id_activites_evenement}}{fusion statut}>
             <li data-statut="#STATUT">

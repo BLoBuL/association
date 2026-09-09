@@ -17,7 +17,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 include_spip('inc/association_adhesions_migration');
 
-$erreurs = array();
+$erreurs = [];
 $table_cotisations = sql_showtable('spip_asso_cotisations', true);
 $table_comptes = sql_showtable('spip_asso_comptes', true);
 
@@ -31,9 +31,9 @@ $where_historique = isset($table_comptes['field']['objet'])
 	: "reinscription<>'' OR statut_cotisation<>''";
 
 $canonique = function () use ($where_historique) {
-	$historique = array();
+	$historique = [];
 	foreach (sql_allfetsel('*', 'spip_asso_comptes', $where_historique, '', 'id_compte') as $ligne) {
-		$historique[] = array(
+		$historique[] = [
 			(int) $ligne['id_compte'],
 			(int) ($ligne['id_auteur'] ?? 0),
 			(int) ($ligne['id_categorie'] ?? 0),
@@ -43,12 +43,12 @@ $canonique = function () use ($where_historique) {
 			(string) ($ligne['date'] ?? ''),
 			number_format((float) ($ligne['recette'] ?? 0), 2, '.', ''),
 			association_cotisation_devise_historique($ligne),
-		);
+		];
 	}
 
-	$cotisations = array();
+	$cotisations = [];
 	foreach (sql_allfetsel('*', 'spip_asso_cotisations', '', '', 'id_compte') as $ligne) {
-		$cotisations[] = array(
+		$cotisations[] = [
 			(int) $ligne['id_compte'],
 			(int) $ligne['id_auteur'],
 			(int) $ligne['id_categorie'],
@@ -58,15 +58,15 @@ $canonique = function () use ($where_historique) {
 			(string) $ligne['date_creation'],
 			number_format((float) $ligne['montant'], 2, '.', ''),
 			(string) $ligne['devise'],
-		);
+		];
 	}
 
-	return array(
+	return [
 		'historique' => $historique,
 		'cotisations' => $cotisations,
 		'hash_historique' => hash('sha256', json_encode($historique)),
 		'hash_cotisations' => hash('sha256', json_encode($cotisations)),
-	);
+	];
 };
 
 $avant = $canonique();
@@ -86,7 +86,7 @@ if ($avant['hash_cotisations'] !== $apres['hash_cotisations']) {
 if (sql_countsel('spip_asso_cotisations AS c LEFT JOIN spip_asso_comptes AS a ON a.id_compte=c.id_compte', 'a.id_compte IS NULL')) {
 	$erreurs[] = 'Au moins une cotisation ne possède pas son écriture comptable.';
 }
-if (sql_countsel('spip_asso_cotisations', "date_debut_validite IS NOT NULL OR date_fin_validite IS NOT NULL")) {
+if (sql_countsel('spip_asso_cotisations', 'date_debut_validite IS NOT NULL OR date_fin_validite IS NOT NULL')) {
 	$erreurs[] = 'Une validité absente du schéma historique a été inventée.';
 }
 if (sql_countsel('spip_asso_cotisations', "devise='' OR devise IS NULL")) {
@@ -104,7 +104,7 @@ if ($erreurs) {
 	exit(1);
 }
 
-echo json_encode(array(
+echo json_encode([
 	'ok' => true,
 	'historiques' => count($apres['historique']),
 	'cotisations' => count($apres['cotisations']),
@@ -112,4 +112,4 @@ echo json_encode(array(
 	'idempotente' => true,
 	'sans_transaction' => (int) sql_countsel('spip_asso_cotisations', 'id_transaction=0'),
 	'gratuites' => (int) sql_countsel('spip_asso_cotisations', 'montant=0'),
-), JSON_UNESCAPED_SLASHES) . "\n";
+], JSON_UNESCAPED_SLASHES) . "\n";

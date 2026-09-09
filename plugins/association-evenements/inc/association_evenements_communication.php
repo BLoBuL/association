@@ -16,7 +16,7 @@ function association_evenements_association_communication_email_collectif_evenem
 	}
 
 	if ($operation === 'inscriptions') {
-		$inscriptions = array();
+		$inscriptions = [];
 		$res = sql_select(
 			'id_activite,id_auteur,nom_inscrit,prenom_inscrit,statut,nombre_inscrits',
 			'spip_asso_activites',
@@ -30,8 +30,8 @@ function association_evenements_association_communication_email_collectif_evenem
 		}
 		$flux['data'] = $inscriptions;
 	} elseif ($operation === 'emails') {
-		$ids = array_values(array_filter(array_unique(array_map('intval', (array) ($flux['args']['id_activites'] ?? array())))));
-		$emails = array();
+		$ids = array_values(array_filter(array_unique(array_map('intval', (array) ($flux['args']['id_activites'] ?? [])))));
+		$emails = [];
 		if ($ids) {
 			$where = sql_in('id_activite', $ids)
 				. ' AND id_evenement=' . $id_evenement
@@ -47,7 +47,7 @@ function association_evenements_association_communication_email_collectif_evenem
 			'id_evenement,titre,date_debut,lieu,adresse',
 			'spip_evenements',
 			'id_evenement=' . $id_evenement
-		) ?: array();
+		) ?: [];
 	}
 
 	return $flux;

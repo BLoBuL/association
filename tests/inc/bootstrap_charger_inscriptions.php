@@ -62,6 +62,12 @@ function association_test_charger_fixture_par_defaut() {
     );
 
     return array(
+        'plugins' => array(
+            'association_adhesions' => true,
+            'association_compta' => true,
+            'association_paiements' => true,
+            'association_communication' => true,
+        ),
         'affichage' => array(
             'payant' => false,
             'accompagnants' => false,
@@ -235,6 +241,10 @@ function association_test_charger_bootstrap() {
     include_spip('formulaires/inscription_evenement_multi_public');
 
     $bootstrapped = true;
+}
+
+function test_plugin_actif($prefixe) {
+    return !empty($GLOBALS['association_test_charger_fixture']['plugins'][$prefixe]);
 }
 
 function association_test_charger_fixture($key, $default = null) {

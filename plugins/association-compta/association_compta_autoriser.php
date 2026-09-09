@@ -23,10 +23,19 @@ function autoriser_destination_supprimer_dist($faire, $type = '', $id = 0, $qui 
 }
 
 function autoriser_asso_plan_modifier_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
+	return autoriser_assoplan_modifier_dist($faire, $type, $id, $qui, $opt);
+}
+
+// SPIP retire les soulignés du type avant de chercher l'autorisation.
+function autoriser_assoplan_modifier_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	return autoriser_comptes_menu_dist($faire, $type, $id, $qui, $opt);
 }
 
 function autoriser_asso_plan_supprimer_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
+	return autoriser_assoplan_supprimer_dist($faire, $type, $id, $qui, $opt);
+}
+
+function autoriser_assoplan_supprimer_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	return autoriser_comptes_menu_dist($faire, $type, $id, $qui, $opt);
 }
 
@@ -59,29 +68,28 @@ function autoriser_asso_comptes_creer_dist($faire, $type, $id, $qui, $opt) {
 	return false;
 }
 
-
-function association_compta_autoriser_ecriture_deleguer($faire, $id_compte, $qui, $opt = array()) {
+function association_compta_autoriser_ecriture_deleguer($faire, $id_compte, $qui, $opt = []) {
 	$compte = $id_compte > 0
 		? sql_fetsel('objet,id_objet', 'spip_asso_comptes', 'id_compte=' . (int) $id_compte)
-		: array();
-	$decision = pipeline('association_compta_autoriser_ecriture', array(
-		'args' => array(
+		: [];
+	$decision = pipeline('association_compta_autoriser_ecriture', [
+		'args' => [
 			'faire' => $faire,
 			'id_compte' => (int) $id_compte,
 			'objet' => (string) ($compte['objet'] ?? ''),
 			'id_objet' => (int) ($compte['id_objet'] ?? 0),
 			'qui' => $qui,
-			'opt' => is_array($opt) ? $opt : array(),
-		),
+			'opt' => is_array($opt) ? $opt : [],
+		],
 		'data' => null,
-	));
+	]);
 	return $decision === true;
 }
 
-function autoriser_modifier_asso_compte_dist($faire, $type='', $id=0, $qui = NULL, $opt = NULL){
+function autoriser_modifier_asso_compte_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	// Normaliser $qui
 	$qui = association_normalize_qui($qui);
-	association_debug_log('autoriser_modifier_asso_compte entry id=' . intval($id) . ' qui=' . var_export(array('id' => $qui['id_auteur'], 'statut' => $qui['statut']), true), 'association_autorisation');
+	association_debug_log('autoriser_modifier_asso_compte entry id=' . intval($id) . ' qui=' . var_export(['id' => $qui['id_auteur'], 'statut' => $qui['statut']], true), 'association_autorisation');
 
 	// Admins can always modify
 	if ($qui['statut'] === '0minirezo') {
@@ -112,10 +120,10 @@ function autoriser_modifier_asso_compte_dist($faire, $type='', $id=0, $qui = NUL
 	return false;
 }
 
-function autoriser_creer_asso_compte_dist($faire, $type='', $id=0, $qui = NULL, $opt = NULL){
+function autoriser_creer_asso_compte_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	// Normaliser $qui
 	$qui = association_normalize_qui($qui);
-	association_debug_log('autoriser_creer_asso_compte entry qui=' . var_export(array('id' => $qui['id_auteur'], 'statut' => $qui['statut']), true) . ' opt=' . var_export($opt, true), 'association_autorisation');
+	association_debug_log('autoriser_creer_asso_compte entry qui=' . var_export(['id' => $qui['id_auteur'], 'statut' => $qui['statut']], true) . ' opt=' . var_export($opt, true), 'association_autorisation');
 
 	// Admins can always create
 	if ($qui['statut'] === '0minirezo') {
@@ -131,16 +139,16 @@ function autoriser_creer_asso_compte_dist($faire, $type='', $id=0, $qui = NULL, 
 	return false;
 }
 
-function autoriser_assocompte_modifier_dist($faire, $type='', $id=0, $qui = NULL, $opt = NULL){
+function autoriser_assocompte_modifier_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	association_debug_log('autoriser_assocompte_modifier_dist wrapper for id=' . intval($id), 'association_autorisation');
 	$res = autoriser_modifier_asso_compte_dist($faire, $type, $id, $qui, $opt);
-	association_debug_log('autoriser_assocompte_modifier_dist result=' . (int)$res, 'association_autorisation');
+	association_debug_log('autoriser_assocompte_modifier_dist result=' . (int) $res, 'association_autorisation');
 	return $res;
 }
 
-function autoriser_assocompte_creer_dist($faire, $type='', $id=0, $qui = NULL, $opt = NULL){
+function autoriser_assocompte_creer_dist($faire, $type = '', $id = 0, $qui = null, $opt = null) {
 	association_debug_log('autoriser_assocompte_creer_dist wrapper for id=' . intval($id), 'association_autorisation');
 	$res = autoriser_creer_asso_compte_dist($faire, $type, $id, $qui, $opt);
-	association_debug_log('autoriser_assocompte_creer_dist result=' . (int)$res, 'association_autorisation');
+	association_debug_log('autoriser_assocompte_creer_dist result=' . (int) $res, 'association_autorisation');
 	return $res;
 }

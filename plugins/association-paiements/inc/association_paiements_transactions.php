@@ -10,15 +10,15 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 function association_paiements_transactions_lire(array $ids_transactions) {
 	$ids_transactions = array_values(array_filter(array_unique(array_map('intval', $ids_transactions))));
 	if (!$ids_transactions) {
-		return array();
+		return [];
 	}
 	$rows = sql_allfetsel(
 		'id_transaction,id_auteur,id_commande,statut,mode,montant_ht,montant,devise,montant_regle,reglee,finie,date_transaction,date_paiement,transaction_hash',
 		'spip_transactions',
 		sql_in('id_transaction', $ids_transactions)
 	);
-	$index = array();
-	foreach ($rows ?: array() as $row) {
+	$index = [];
+	foreach ($rows ?: [] as $row) {
 		$index[(int) $row['id_transaction']] = $row;
 	}
 	return $index;
@@ -26,28 +26,34 @@ function association_paiements_transactions_lire(array $ids_transactions) {
 
 function association_paiements_transaction_commande_lire($id_commande) {
 	$id_commande = (int) $id_commande;
-	if ($id_commande <= 0) return array();
+	if ($id_commande <= 0) {
+		return [];
+	}
 	$id_transaction = (int) sql_getfetsel('id_transaction', 'spip_transactions', 'id_commande=' . $id_commande, '', 'id_transaction DESC');
 	return association_paiements_transaction_lire($id_transaction);
 }
 
-function association_paiements_transactions_auteur_lire($id_auteur, array $statuts = array()) {
+function association_paiements_transactions_auteur_lire($id_auteur, array $statuts = []) {
 	$id_auteur = (int) $id_auteur;
-	if ($id_auteur <= 0) return array();
-	$where = array('id_auteur=' . $id_auteur);
+	if ($id_auteur <= 0) {
+		return [];
+	}
+	$where = ['id_auteur=' . $id_auteur];
 	$statuts = array_values(array_unique(array_filter(array_map('strval', $statuts), 'strlen')));
-	if ($statuts) $where[] = sql_in('statut', $statuts);
-	$ids = array_column(sql_allfetsel('id_transaction', 'spip_transactions', $where) ?: array(), 'id_transaction');
+	if ($statuts) {
+		$where[] = sql_in('statut', $statuts);
+	}
+	$ids = array_column(sql_allfetsel('id_transaction', 'spip_transactions', $where) ?: [], 'id_transaction');
 	return association_paiements_transactions_lire($ids);
 }
 
 function association_paiements_transaction_lire($id_transaction) {
 	$id_transaction = (int) $id_transaction;
 	if ($id_transaction <= 0) {
-		return array();
+		return [];
 	}
-	$transactions = association_paiements_transactions_lire(array($id_transaction));
-	return $transactions[$id_transaction] ?? array();
+	$transactions = association_paiements_transactions_lire([$id_transaction]);
+	return $transactions[$id_transaction] ?? [];
 }
 
 function association_paiements_transaction_modifier($id_transaction, array $donnees) {
@@ -55,7 +61,7 @@ function association_paiements_transaction_modifier($id_transaction, array $donn
 	if ($id_transaction <= 0) {
 		return false;
 	}
-	$autorises = array('statut', 'mode', 'montant_ht', 'montant', 'devise', 'montant_regle', 'reglee', 'finie', 'date_paiement', 'message');
+	$autorises = ['statut', 'mode', 'montant_ht', 'montant', 'devise', 'montant_regle', 'reglee', 'finie', 'date_paiement', 'message'];
 	$donnees = array_intersect_key($donnees, array_flip($autorises));
 	if (!$donnees) {
 		return true;
@@ -64,7 +70,7 @@ function association_paiements_transaction_modifier($id_transaction, array $donn
 }
 
 function association_paiements_transaction_supprimer_non_encaissee($id_transaction) {
-	$resultat = association_paiements_transactions_supprimer_non_encaissees(array($id_transaction), false);
+	$resultat = association_paiements_transactions_supprimer_non_encaissees([$id_transaction], false);
 	return $resultat['supprimes'] === 1;
 }
 
@@ -76,8 +82,8 @@ function association_paiements_transaction_supprimer_non_encaissee($id_transacti
  */
 function association_paiements_transactions_supprimer_non_encaissees(array $ids_transactions, $dry_run = true) {
 	$transactions = association_paiements_transactions_lire($ids_transactions);
-	$eligibles = array();
-	$protegees = array();
+	$eligibles = [];
+	$protegees = [];
 	foreach ($transactions as $id_transaction => $transaction) {
 		if (($transaction['statut'] ?? '') === 'ok') {
 			$protegees[] = (int) $id_transaction;
@@ -92,18 +98,18 @@ function association_paiements_transactions_supprimer_non_encaissees(array $ids_
 			sql_in('id_transaction', $eligibles) . " AND statut<>'ok'"
 		);
 		if ($supprimees === false) {
-			return array(
+			return [
 				'supprimes' => 0,
 				'ids' => $eligibles,
 				'protegees' => $protegees,
 				'erreur' => 'suppression_transactions_echouee',
-			);
+			];
 		}
 		$nb = (int) $supprimees;
 	}
-	return array(
+	return [
 		'supprimes' => $nb,
 		'ids' => $eligibles,
 		'protegees' => $protegees,
-	);
+	];
 }

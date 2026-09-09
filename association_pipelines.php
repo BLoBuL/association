@@ -61,14 +61,14 @@ function association_taches_generales_cron($taches) {
  * @return array
  */
 function association_ajouter_menus($menus) {
-	$entrees = pipeline('association_menu_entrees', array(
-		'configurer_association' => array(
+	$entrees = pipeline('association_menu_entrees', [
+		'configurer_association' => [
 			'ordre' => 99,
 			'label' => _T('association:titre_onglet_configurer_association'),
 			'exec' => 'configurer_association',
 			'icone' => 'configurer_association',
-		),
-	));
+		],
+	]);
 	uasort($entrees, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
 	foreach ($entrees as $cle => $definition) {
 		if (!autoriser($cle . '_menu', '', 0, $GLOBALS['visiteur_session'])) {

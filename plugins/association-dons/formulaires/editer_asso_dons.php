@@ -1,12 +1,14 @@
 <?php
 
-if (!defined("_ECRIRE_INC_VERSION")) return;
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 include_spip('inc/actions');
 include_spip('inc/editer');
 include_spip('formulaires/inc/destinations');
 include_spip('inc/association_dons_comptabilite');
 
-/***************************************************************************\
+/*\
  *  Associaspip, extension de SPIP pour gestion d'associations             *
  *                                                                         *
  *  Copyright (c) 2007 Bernard Blazin & Francois de Montlivault (V1)       *
@@ -14,10 +16,10 @@ include_spip('inc/association_dons_comptabilite');
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
-\***************************************************************************/
-function formulaires_editer_asso_dons_charger_dist($id_don='') {
+\*/
+function formulaires_editer_asso_dons_charger_dist($id_don = '') {
 	/* cet appel va charger dans $contexte tous les champs de la table spip_asso_dons associes a l'id_don passe en param */
-	$contexte = formulaires_editer_objet_charger('asso_dons', $id_don, '', '',  generer_url_ecrire('dons'), '');
+	$contexte = formulaires_editer_objet_charger('asso_dons', $id_don, '', '', generer_url_ecrire('dons'), '');
 
 	/* si c'est une nouvelle operation, on charge la date d'aujourd'hui et charge un id_compte et journal null */
 	if (!$id_don) {
@@ -38,10 +40,10 @@ function formulaires_editer_asso_dons_charger_dist($id_don='') {
 
 	/* si id_adherent est egal a 0, c'est que le champ est vide, on ne prerempli rien */
 	if (!$contexte['id_adherent']) {
-		$contexte['id_adherent']='';
+		$contexte['id_adherent'] = '';
 	}
-	
-	/* paufiner la presentation des valeurs  */
+
+	/* paufiner la presentation des valeurs */
 	if ($contexte['argent']) {
 		$contexte['argent'] = association_nbrefr($contexte['argent']);
 	}
@@ -59,27 +61,31 @@ function formulaires_editer_asso_dons_charger_dist($id_don='') {
 	} else {
 		$contexte['destinations_on'] = false;
 	}
-	
+
 	return $contexte;
 }
 
 function formulaires_editer_asso_dons_verifier_dist($id_don) {
-	$erreurs = array();
+	$erreurs = [];
 	/* on verifie que argent et valeur ne soient pas negatifs */
 	$argent = association_recupere_montant(_request('argent'));
 	$valeur = association_recupere_montant(_request('valeur'));
 
-	if ($argent<0) $erreurs['argent'] = _T('association_dons:erreur_montant');
-	if ($valeur<0) $erreurs['valeur'] = _T('association_dons:erreur_montant');
+	if ($argent < 0) {
+		$erreurs['argent'] = _T('association_dons:erreur_montant');
+	}
+	if ($valeur < 0) {
+		$erreurs['valeur'] = _T('association_dons:erreur_montant');
+	}
 
 	/* verifier si on a un numero d'adherent qu'il existe dans la base */
 	$id_adherent = _request('id_adherent');
 	if ($id_adherent != '') {
 		$id_adherent = intval($id_adherent);
-		if (sql_countsel('spip_auteurs', "id_auteur=$id_adherent")==0) {
+		if (sql_countsel('spip_auteurs', "id_auteur=$id_adherent") == 0) {
 			$erreurs['id_adherent'] = _T('association_dons:erreur_id_adherent');
 		}
-		
+
 	}
 
 	if (function_exists('verifier_destination_comptable')) {
@@ -88,35 +94,34 @@ function formulaires_editer_asso_dons_verifier_dist($id_don) {
 
 	/* verifier la date */
 	if ($erreur_date = association_verifier_date(_request('date_don'))) {
-		$erreurs['date_don'] = _request('date_don')."&nbsp;:&nbsp;".$erreur_date; /* on ajoute la date eronee entree au debut du message d'erreur car le filtre affdate corrige de lui meme et ne reaffiche plus les valeurs eronees */
+		$erreurs['date_don'] = _request('date_don') . '&nbsp;:&nbsp;' . $erreur_date; /* on ajoute la date eronee entree au debut du message d'erreur car le filtre affdate corrige de lui meme et ne reaffiche plus les valeurs eronees */
 	}
 
 	if (count($erreurs)) {
-	$erreurs['message_erreur'] = _T('association_dons:erreur_titre');
+		$erreurs['message_erreur'] = _T('association_dons:erreur_titre');
 	}
 
-	
 	return $erreurs;
 }
 
 function formulaires_editer_asso_dons_traiter($id_don) {
-	//convertir les date au format timedate
+	// convertir les date au format timedate
 	foreach ($_POST as $champ => $mot) {
 		if (!is_string($mot)) {
 			continue;
 		}
 
-		//verification champs vide ou null
-		if ($_POST[$champ] == ''){ 
-		}else{
-				//convertir les date au format timedate
-				if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $mot)) {
-		  		$otherDateMod = str_replace('/', '-', $mot);
-		  		$dateFinale = date("Y-m-d H:i:s", strtotime($otherDateMod));
-		  		$_POST[$champ] = $dateFinale;
-			  	}
+		// verification champs vide ou null
+		if ($_POST[$champ] == '') {
+		} else {
+			// convertir les date au format timedate
+			if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $mot)) {
+				$otherDateMod = str_replace('/', '-', $mot);
+				$dateFinale = date('Y-m-d H:i:s', strtotime($otherDateMod));
+				$_POST[$champ] = $dateFinale;
+			}
 		}
-			
+
 	}
-	return formulaires_editer_objet_traiter('asso_dons', $id_don, '', '',  generer_url_ecrire('dons'), '');
+	return formulaires_editer_objet_traiter('asso_dons', $id_don, '', '', generer_url_ecrire('dons'), '');
 }

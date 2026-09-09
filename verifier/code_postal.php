@@ -1,4 +1,5 @@
 <?php
+
 /**
  * API de vérification : vérification de la validité d'un code postal
  *
@@ -31,7 +32,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * @return string
  *   Retourne une chaine vide si c'est valide, sinon une chaine expliquant l'erreur.
  */
-function verifier_code_postal_dist($valeur, $options = array()) {
+function verifier_code_postal_dist($valeur, $options = []) {
 	$erreur = _T('verifier:erreur_code_postal');
 	if (!is_string($valeur)) {
 		return $erreur;
@@ -39,13 +40,13 @@ function verifier_code_postal_dist($valeur, $options = array()) {
 
 	$ok = '';
 
-	$pays = isset($options['pays']) ? $options['pays'] : '';
+	$pays = $options['pays'] ?? '';
 	switch ($pays) {
 		case 'FR':
 			if (!preg_match(',^((0[1-9])|([1-8][0-9])|(9[0-8]))[0-9]{3}$,', $valeur)) {
 				return $erreur;
-               
-			} break;/*
+
+			} break; /*
 		case 'DZ':// Algérie
 		case 'DE':// Allemagne
 		case 'BY':// Bielorussie

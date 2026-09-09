@@ -1,0 +1,27 @@
+#CACHE{0}
+<page lib_pdf="mpdf8" format="A4">
+<style>
+body { font-family: dejavusans; font-size: 11pt; color: #222; }
+h1 { font-size: 20pt; }
+h2 { font-size: 14pt; margin-top: 24pt; }
+.avertissement { border: 2px solid #a00; padding: 12pt; color: #a00; }
+dt { font-weight: bold; }
+dd { margin-bottom: 8pt; }
+</style>
+<h1><:association_dons:recu_fiscal_apercu:></h1>
+<p class="avertissement"><strong><:association_dons:recu_fiscal_specimen:></strong><br /><:association_dons:recu_fiscal_emission_indisponible:></p>
+<h2><:association_dons:recu_fiscal_emetteur:></h2>
+<p>[(#ENV**{emetteur/nom}|association_pdf_texte)]<br />
+[(#ENV**{emetteur/adresse}|association_pdf_texte)]<br />
+[(#ENV**{emetteur/code_postal}|association_pdf_texte)] [(#ENV**{emetteur/ville}|association_pdf_texte)] — [(#ENV**{emetteur/pays}|association_pdf_texte)]<br />
+[(#ENV**{emetteur/identifiant}|association_pdf_texte)]</p>
+<dl><dt><:association_dons:recu_fiscal_objet:></dt><dd>[(#ENV**{emetteur/objet}|association_pdf_texte)]</dd>
+<dt><:association_dons:recu_fiscal_qualite:></dt><dd>[(#ENV**{emetteur/qualite}|association_pdf_texte)]</dd></dl>
+<h2><:association_dons:recu_fiscal_donateur:></h2>
+<p>[(#ENV**{nom_donateur}|association_pdf_texte)]</p>
+<p><:association_dons:annee:> : [(#ENV**{annee}|intval)]</p>
+<p><:association_dons:recu_fiscal_montant_apercu:> : <strong>[(#ENV**{montant}|association_pdf_texte)] EUR</strong></p>
+<h2><:association_dons:recu_fiscal_signataire_nom:></h2>
+<p>[(#ENV**{emetteur/signataire_nom}|association_pdf_texte)] — [(#ENV**{emetteur/signataire_fonction}|association_pdf_texte)]</p>
+<p><:association_dons:recu_fiscal_signature_absente:></p>
+</page>

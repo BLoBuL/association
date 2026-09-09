@@ -1,5 +1,6 @@
 <?php
-/***************************************************************************\
+
+/*\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
  *  Copyright (c) 2001-2014                                                *
@@ -7,9 +8,9 @@
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
-\***************************************************************************/
+\*/
 if (!defined('_ECRIRE_INC_VERSION')) {
-    return;
+	return;
 }
 include_spip('inc/actions');
 include_spip('inc/editer');
@@ -19,22 +20,20 @@ include_spip('inc/fonctions/activite_enregistrement_calculator');
 include_spip('formulaires/inc/inscription_evenement_backend');
 
 function ie_inscription_simple_ids($id_evenement = '', $id_activite = '') {
-    return ie_resoudre_ids_inscription($id_evenement, $id_activite);
+	return ie_resoudre_ids_inscription($id_evenement, $id_activite);
 }
 
-function formulaires_inscription_evenement_charger_dist($id_evenement = '', $id_activite = ''){
-    list($id_evenement, $id_activite) = ie_inscription_simple_ids($id_evenement, $id_activite);
-    return ie_charger_commons('prive', $id_evenement, $id_activite);
+function formulaires_inscription_evenement_charger_dist($id_evenement = '', $id_activite = '') {
+	[$id_evenement, $id_activite] = ie_inscription_simple_ids($id_evenement, $id_activite);
+	return ie_charger_commons('prive', $id_evenement, $id_activite);
 }
 
-function formulaires_inscription_evenement_verifier_dist($id_evenement = '', $id_activite = '')
-{
-    list($id_evenement, $id_activite) = ie_inscription_simple_ids($id_evenement, $id_activite);
-    return ie_verifier_commons('prive', $id_evenement, $id_activite, null);
+function formulaires_inscription_evenement_verifier_dist($id_evenement = '', $id_activite = '') {
+	[$id_evenement, $id_activite] = ie_inscription_simple_ids($id_evenement, $id_activite);
+	return ie_verifier_commons('prive', $id_evenement, $id_activite, null);
 }
 
-function formulaires_inscription_evenement_traiter_dist($id_evenement = '', $id_activite = '')
-{
-    list($id_evenement, $id_activite) = ie_inscription_simple_ids($id_evenement, $id_activite);
-    return ie_traiter_commons('prive', $id_evenement, $id_activite, null);
+function formulaires_inscription_evenement_traiter_dist($id_evenement = '', $id_activite = '') {
+	[$id_evenement, $id_activite] = ie_inscription_simple_ids($id_evenement, $id_activite);
+	return ie_traiter_commons('prive', $id_evenement, $id_activite, null);
 }

@@ -11,11 +11,11 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * @return array
  */
 function association_adhesions_declarer_tables_objets_sql($tables) {
-	$tables['spip_asso_categories_adherents'] = array(
+	$tables['spip_asso_categories_adherents'] = [
 		'principale' => 'oui',
 		'titre' => 'valeur AS titre, "" AS lang',
-		'field' => array(
-			'id_categorie' => "INT NOT NULL",
+		'field' => [
+			'id_categorie' => 'INT NOT NULL',
 			'valeur' => 'TINYTEXT NOT NULL',
 			'statut' => 'TINYTEXT NOT NULL',
 			'cotisation' => "FLOAT NOT NULL DEFAULT '0'",
@@ -31,14 +31,16 @@ function association_adhesions_declarer_tables_objets_sql($tables) {
 			'mode_paiement' => "VARCHAR(32) DEFAULT ''",
 			'eligibilite' => "VARCHAR(32) DEFAULT ''",
 			'maj' => 'TIMESTAMP NOT NULL',
-		),
-		'key' => array('PRIMARY KEY' => 'id_categorie'),
-	);
+		],
+		'key' => [
+			'PRIMARY KEY' => 'id_categorie',
+		],
+	];
 
-	$tables['spip_asso_cotisations'] = array(
+	$tables['spip_asso_cotisations'] = [
 		'principale' => 'oui',
 		'titre' => 'CONCAT("Cotisation ", id_cotisation) AS titre, "" AS lang',
-		'field' => array(
+		'field' => [
 			'id_cotisation' => 'BIGINT NOT NULL',
 			'id_compte' => 'BIGINT NULL DEFAULT NULL',
 			'id_auteur' => "BIGINT NOT NULL DEFAULT '0'",
@@ -52,14 +54,14 @@ function association_adhesions_declarer_tables_objets_sql($tables) {
 			'montant' => "DECIMAL(20,6) NOT NULL DEFAULT '0'",
 			'devise' => "VARCHAR(3) NOT NULL DEFAULT ''",
 			'maj' => 'TIMESTAMP NOT NULL',
-		),
-		'key' => array(
+		],
+		'key' => [
 			'PRIMARY KEY' => 'id_cotisation',
 			'KEY id_compte' => 'id_compte',
 			'KEY id_auteur' => 'id_auteur',
 			'KEY id_transaction' => 'id_transaction',
-		),
-	);
+		],
+	];
 
 	return $tables;
 }

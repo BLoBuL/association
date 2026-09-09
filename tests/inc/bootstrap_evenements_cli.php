@@ -221,6 +221,10 @@ function association_test_default_scenario() {
         'plugins' => array(
             'agenda' => true,
             'gis' => true,
+            'association_adhesions' => true,
+            'association_compta' => true,
+            'association_paiements' => true,
+            'association_communication' => true,
         ),
         'modification_autorisee' => array(),
         'families' => array(

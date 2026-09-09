@@ -6,7 +6,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 function association_zones_adherent_normaliser($zones) {
 	if (!is_array($zones)) {
-		$zones = array($zones);
+		$zones = [$zones];
 	}
 	return array_values(array_unique(array_filter(array_map('intval', $zones))));
 }
@@ -23,7 +23,7 @@ function association_privileges_auteur_lire($id_auteur) {
 		'id_auteur,prenom,nom_famille,statut,statut_interne,email',
 		'spip_auteurs',
 		'id_auteur=' . $id_auteur
-	) ?: array()) : array();
+	) ?: []) : [];
 }
 
 function association_privileges_zones_lier($id_auteur, array $zones) {
@@ -55,7 +55,7 @@ function activer_privileges_adherent($id_auteur, $reinscription = null) {
 	if (!$auteur) {
 		return false;
 	}
-	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', array()));
+	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', []));
 	association_privileges_zones_lier((int) $id_auteur, $zones);
 	if (!association_adhesions_module_actif('association_communication')) {
 		return true;
@@ -63,7 +63,7 @@ function activer_privileges_adherent($id_auteur, $reinscription = null) {
 	include_spip('inc/association_communication_privileges');
 	return association_communication_privileges_activer(
 		$auteur,
-		lire_config('/association_metas/liste_diffusion', array())
+		lire_config('/association_metas/liste_diffusion', [])
 	);
 }
 
@@ -72,7 +72,7 @@ function desactiver_privileges_adherent($id_auteur) {
 	if (!$auteur) {
 		return false;
 	}
-	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', array()));
+	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', []));
 	$zones_liees = association_auteur_zones_adherent_liees($zones, $id_auteur);
 	association_privileges_zones_delier((int) $id_auteur, $zones_liees);
 	if (association_adhesions_module_actif('association_communication')) {
@@ -97,13 +97,13 @@ function verifier_privileges_adherent($id_auteur, $reinscription = null) {
 	if (!$auteur || empty($auteur['email']) || !email_valide($auteur['email'])) {
 		return true;
 	}
-	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', array()));
+	$zones = association_zones_adherent_normaliser(lire_config('/association_metas/zone_adherent', []));
 	$zones_liees = association_auteur_zones_adherent_liees($zones, $id_auteur);
 	if (association_adhesions_module_actif('association_communication')) {
 		include_spip('inc/association_communication_privileges');
 		association_communication_privileges_verifier(
 			$auteur,
-			lire_config('/association_metas/liste_diffusion', array())
+			lire_config('/association_metas/liste_diffusion', [])
 		);
 	}
 
@@ -111,7 +111,7 @@ function verifier_privileges_adherent($id_auteur, $reinscription = null) {
 	$statut_spip = (string) ($auteur['statut'] ?? '');
 	if ($statut_interne === 'ok' && $statut_spip !== '5poubelle') {
 		association_privileges_zones_lier((int) $id_auteur, array_values(array_diff($zones, $zones_liees)));
-	} elseif (in_array($statut_interne, array('prospect', 'echu', 'relance', 'sorti'), true) || $statut_spip === '5poubelle') {
+	} elseif (in_array($statut_interne, ['prospect', 'echu', 'relance', 'sorti'], true) || $statut_spip === '5poubelle') {
 		association_privileges_zones_delier((int) $id_auteur, $zones_liees);
 	}
 

@@ -14,24 +14,24 @@ function association_adhesions_upgrade($nom_meta_base_version, $version_cible) {
 	include_spip('base/upgrade');
 	include_spip('inc/association_adhesions_migration');
 	include_spip('inc/association_adhesions_migration_justificatifs');
-	$maj = array();
-	$maj['create'] = array(
-		array('maj_tables', array(
+	$maj = [];
+	$maj['create'] = [
+		['maj_tables', [
 			'spip_asso_categories_adherents',
 			'spip_asso_cotisations',
-		)),
-	);
+		]],
+	];
 	$maj['1.1.0'] = $maj['create'];
-	$maj['1.2.0'] = array(
-		array('maj_tables', array('spip_asso_cotisations')),
-		array('association_completer_migration_cotisations'),
-	);
-	$maj['1.3.0'] = array(
-		array('association_adhesions_migrer_justificatifs_cotisations'),
-	);
-	$maj['1.4.0'] = array(
-		array('association_adhesions_autonomiser_id_compte'),
-	);
+	$maj['1.2.0'] = [
+		['maj_tables', ['spip_asso_cotisations']],
+		['association_completer_migration_cotisations'],
+	];
+	$maj['1.3.0'] = [
+		['association_adhesions_migrer_justificatifs_cotisations'],
+	];
+	$maj['1.4.0'] = [
+		['association_adhesions_autonomiser_id_compte'],
+	];
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
 
@@ -50,7 +50,7 @@ function association_adhesions_autonomiser_id_compte() {
 		return;
 	}
 
-	sql_updateq($table, array('id_compte' => null), 'id_compte=0');
+	sql_updateq($table, ['id_compte' => null], 'id_compte=0');
 	// MySQL/MariaDB : l'index historique est unique et porte le même nom.
 	@sql_alter("TABLE $table DROP INDEX id_compte");
 	sql_alter("TABLE $table MODIFY id_compte BIGINT NULL DEFAULT NULL");
@@ -68,7 +68,7 @@ function association_adhesions_reconstruire_cotisations_sqlite() {
 		if (sql_alter("TABLE $table RENAME TO $historique") === false) {
 			throw new RuntimeException('Impossible de préserver les cotisations historiques.');
 		}
-		maj_tables(array($table));
+		maj_tables([$table]);
 		$description = sql_showtable($table, true);
 		if (!$description || empty($description['field']['id_cotisation'])) {
 			throw new RuntimeException('La nouvelle table des cotisations est invalide.');

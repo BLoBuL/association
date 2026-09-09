@@ -3,6 +3,9 @@
 	<auteur>Julien Bellegueulle</auteur>
 	<licence lien="https://spdx.org/licenses/GPL-3.0-or-later.html">GPL-3.0-or-later</licence>
 	<necessite nom="association" compatibilite="[4.0.0;4.*]" />
+	<necessite nom="saisies" />
+	<necessite nom="spipdf" compatibilite="[2.2.1;3.0.0[" />
+	<pipeline nom="association_configuration_saisies" inclure="association_dons_pipelines.php" />
 	<pipeline nom="autoriser" inclure="association_dons_autoriser.php" />
 	<pipeline nom="association_capacites" inclure="association_dons_pipelines.php" />
 	<pipeline nom="association_rgpd_export_auteur" inclure="association_dons_pipelines.php" />

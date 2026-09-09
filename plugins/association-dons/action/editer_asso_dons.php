@@ -1,5 +1,6 @@
 <?php
-/***************************************************************************\
+
+/*\
  *  Associaspip, extension de SPIP pour gestion d'associations             *
  *                                                                         *
  *  Copyright (c) 2007 Bernard Blazin & François de Montlivault (V1)       *
@@ -7,28 +8,40 @@
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
-\***************************************************************************/
+\*/
 
-
-if (!defined("_ECRIRE_INC_VERSION")) return;
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 include_spip('inc/association_dons_comptabilite');
 include_spip('inc/destinations');
 
+/**
+ * @deprecated Utiliser charger_fonction() pour cette action.
+ */
 function action_editer_asso_dons($id_don = null) {
+	return action_editer_asso_dons_dist($id_don);
+}
+
+function action_editer_asso_dons_dist($id_don = null) {
 	if ($id_don === null) {
 		$securiser_action = charger_fonction('securiser_action', 'inc');
 		$id_don = $securiser_action();
 	}
 	$id_don = (int) $id_don;
+	include_spip('inc/autoriser');
+	if (!autoriser('modifier', 'don', $id_don)) {
+		return [$id_don, _T('info_acces_interdit')];
+	}
 
-	$journal= _request('journal');
+	$journal = _request('journal');
 	$date_don = _request('date_don');
 
 	$bienfaiteur = _request('bienfaiteur');
 	$id_adherent = intval(_request('id_adherent'));
 
-	if (!$bienfaiteur AND $id_adherent) {
+	if (!$bienfaiteur and $id_adherent) {
 		$bienfaiteur = generer_info_entite($id_adherent, 'auteur', 'titre');
 	}
 
@@ -47,13 +60,21 @@ function action_editer_asso_dons($id_don = null) {
 
 		// on modifie l'operation comptable associe au don
 		association_dons_compte_modifier(
-			$id_compte, $date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent
+			$id_compte,
+			$date_don,
+			$argent,
+			$journal,
+			$bienfaiteur,
+			$id_don,
+			$id_adherent
 		);
 		if ((int) $id_compte && function_exists('ajouter_destinations')) {
 			ajouter_destinations((int) $id_compte, (float) $argent, 0);
 		}
 
-		sql_updateq('spip_asso_dons', array(
+		sql_updateq(
+			'spip_asso_dons',
+			[
 				'date_don' => $date_don,
 				'bienfaiteur' => $bienfaiteur,
 				'id_adherent' => $id_adherent,
@@ -61,10 +82,11 @@ function action_editer_asso_dons($id_don = null) {
 				'colis' => $colis,
 				'valeur' => $valeur,
 				'contrepartie' => $contrepartie,
-				'commentaire' => $commentaire),
-			    "id_don=$id_don");
+				'commentaire' => $commentaire],
+			"id_don=$id_don"
+		);
 	} else { /* c'est un ajout */
-		$id_don = sql_insertq('spip_asso_dons', array(
+		$id_don = sql_insertq('spip_asso_dons', [
 			'date_don' => $date_don,
 			'bienfaiteur' => $bienfaiteur,
 			'id_adherent' => $id_adherent,
@@ -72,7 +94,7 @@ function action_editer_asso_dons($id_don = null) {
 			'colis' => $colis,
 			'valeur' => $valeur,
 			'contrepartie' => $contrepartie,
-		 	'commentaire' => $commentaire));
+			'commentaire' => $commentaire]);
 
 		$id_compte = association_dons_compte_creer($date_don, $argent, $journal, $bienfaiteur, $id_don, $id_adherent);
 		if ((int) $id_compte && function_exists('ajouter_destinations')) {
@@ -80,6 +102,5 @@ function action_editer_asso_dons($id_don = null) {
 		}
 	}
 
-	return array($id_don, '');
+	return [$id_don, ''];
 }
-

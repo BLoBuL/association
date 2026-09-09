@@ -10,8 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AssociationConfigEcrire extends Command
 {
-	protected function configure()
-	{
+	protected function configure() {
 		$this->setName('association:config:ecrire')
 			->setDescription('Modifie une option de configuration autorisee du plugin Association.')
 			->addArgument('option', InputArgument::REQUIRED, 'Option autorisee, par exemple debug ou debug.inscriptions')
@@ -20,10 +19,9 @@ class AssociationConfigEcrire extends Command
 			->addOption('pretty', null, InputOption::VALUE_NONE, 'Indente la sortie JSON');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$format = strtolower((string) $input->getOption('format'));
-		if (!in_array($format, array('human', 'json'), true)) {
+		if (!in_array($format, ['human', 'json'], true)) {
 			$output->writeln('Format invalide : utiliser human ou json.');
 			return self::INVALID;
 		}
@@ -41,21 +39,20 @@ class AssociationConfigEcrire extends Command
 		return $code;
 	}
 
-	private function afficherResultat(OutputInterface $output, $format, $pretty, array $resultat)
-	{
-		$payload = array('status' => !empty($resultat['ok']) ? 'ok' : 'error', 'command' => 'association:config:ecrire');
+	private function afficherResultat(OutputInterface $output, $format, $pretty, array $resultat) {
+		$payload = ['status' => !empty($resultat['ok']) ? 'ok' : 'error', 'command' => 'association:config:ecrire'];
 		if (!empty($resultat['ok'])) {
-			$payload += array(
+			$payload += [
 				'option' => $resultat['option'],
 				'previous' => $resultat['previous'],
 				'value' => $resultat['value'],
 				'verified' => $resultat['verified'],
 				'changed' => $resultat['changed'],
 				'affected_options' => $resultat['affected_options'],
-			);
+			];
 		} else {
-			$payload['reason'] = isset($resultat['reason']) ? $resultat['reason'] : 'unknown_error';
-			$payload['option'] = isset($resultat['option']) ? $resultat['option'] : null;
+			$payload['reason'] = $resultat['reason'] ?? 'unknown_error';
+			$payload['option'] = $resultat['option'] ?? null;
 			if (isset($resultat['rollback_restored'])) {
 				$payload['rollback_restored'] = $resultat['rollback_restored'];
 			}
@@ -78,8 +75,7 @@ class AssociationConfigEcrire extends Command
 		$output->writeln($resultat['changed'] ? 'Configuration modifiee.' : 'Configuration deja conforme.');
 	}
 
-	private function formaterValeur($valeur)
-	{
+	private function formaterValeur($valeur) {
 		return is_array($valeur)
 			? json_encode($valeur, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
 			: (string) $valeur;

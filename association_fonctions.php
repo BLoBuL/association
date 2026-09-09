@@ -61,9 +61,16 @@ function association_is_serialized($value) {
 /**
  * Construire la navigation de configuration fournie par les modules actifs.
  *
- * @param mixed $webmestre
  * @return array
  */
+/**
+ * Échappement adapté au nettoyage HTML de SpiPDF, chargé à la demande.
+ */
+function filtre_association_pdf_texte_dist($valeur) {
+	include_spip('inc/association_pdf');
+	return association_pdf_texte($valeur);
+}
+
 function association_configuration_navigation($webmestre = false) {
 	$webmestre = in_array($webmestre, [true, 1, '1', 'oui', 'on'], true);
 	$flux = [

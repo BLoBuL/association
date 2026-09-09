@@ -1,10 +1,12 @@
 <?php
 
-if (!defined("_ECRIRE_INC_VERSION")) return;
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 include_spip('inc/actions');
 include_spip('inc/editer');
 
-/***************************************************************************\
+/*\
  *  Associaspip, extension de SPIP pour gestion d'associations             *
  *                                                                         *
  *  Copyright (c) 2007 Bernard Blazin & Francois de Montlivault (V1)       *
@@ -12,21 +14,21 @@ include_spip('inc/editer');
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
-\***************************************************************************/
-function formulaires_editer_asso_ressources_charger_dist($id_ressource='') {
+\*/
+function formulaires_editer_asso_ressources_charger_dist($id_ressource = '') {
 	include_spip('intl_fonctions');
 
 	$id_ressource = intval($id_ressource);
 	/* Charger les champs de la ressource demandée avec l'API CVT objet de SPIP. */
-	$contexte = formulaires_editer_objet_charger('asso_ressources', $id_ressource, '', '',  generer_url_ecrire('ressources'), '');
+	$contexte = formulaires_editer_objet_charger('asso_ressources', $id_ressource, '', '', generer_url_ecrire('ressources'), '');
 
 	/* si c'est une nouvelle operation, on charge la date d'aujourd'hui */
 	if (!$id_ressource) {
 		$contexte['date_acquisition'] = date('Y-m-d');
 		$contexte['statut'] = 'ok';
 	}
-	
-	/* paufiner la presentation des valeurs  */
+
+	/* paufiner la presentation des valeurs */
 	if ($contexte['pu']) {
 		$contexte['pu'] = association_nbrefr($contexte['pu']);
 	}
@@ -37,45 +39,45 @@ function formulaires_editer_asso_ressources_charger_dist($id_ressource='') {
 	return $contexte;
 }
 
-function formulaires_editer_asso_ressources_verifier_dist($id_ressource='') {
+function formulaires_editer_asso_ressources_verifier_dist($id_ressource = '') {
 	$erreurs = [];
 	/* on verifie que prix de location ne soit pas negatifs */
 	$pu = association_recupere_montant(_request('pu'));
 
-	if ($pu<0) {
+	if ($pu < 0) {
 		$erreurs['pu'] = _T('association_prets:erreur_montant');
 	}
 
 	/* verifier la date */
 	if ($erreur_date = association_verifier_date(_request('date_acquisition'))) {
-		$erreurs['date_acquisition'] = _request('date_acquisition')."&nbsp;:&nbsp;".$erreur_date; /* on ajoute la date eronee entree au debut du message d'erreur car le filtre affdate corrige de lui meme et ne reaffiche plus les valeurs eronees */
+		$erreurs['date_acquisition'] = _request('date_acquisition') . '&nbsp;:&nbsp;' . $erreur_date; /* on ajoute la date eronee entree au debut du message d'erreur car le filtre affdate corrige de lui meme et ne reaffiche plus les valeurs eronees */
 	}
 
 	if (count($erreurs)) {
 		$erreurs['message_erreur'] = _T('association_prets:erreur_titre');
 	}
-	
+
 	return $erreurs;
 }
 
-function formulaires_editer_asso_ressources_traiter_dist($id_ressource='') {
-		//convertir les date au format timedate
+function formulaires_editer_asso_ressources_traiter_dist($id_ressource = '') {
+	// convertir les date au format timedate
 	foreach ($_POST as $champ => $mot) {
 		if (!is_string($mot)) {
 			continue;
 		}
 
-		//verification champs vide ou null
-		if ($_POST[$champ] == ''){ 
-		}else{
-				//convertir les date au format timedate
-				if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $mot)) {
-		  		$otherDateMod = str_replace('/', '-', $mot);
-		  		$dateFinale = date("Y-m-d H:i:s", strtotime($otherDateMod));
-		  		$_POST[$champ] = $dateFinale;
-			  	}
+		// verification champs vide ou null
+		if ($_POST[$champ] == '') {
+		} else {
+			// convertir les date au format timedate
+			if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $mot)) {
+				$otherDateMod = str_replace('/', '-', $mot);
+				$dateFinale = date('Y-m-d H:i:s', strtotime($otherDateMod));
+				$_POST[$champ] = $dateFinale;
+			}
 		}
-			
+
 	}
-	return formulaires_editer_objet_traiter('asso_ressources', $id_ressource, '', '',  generer_url_ecrire('ressources'), '');
+	return formulaires_editer_objet_traiter('asso_ressources', $id_ressource, '', '', generer_url_ecrire('ressources'), '');
 }

@@ -1,0 +1,21 @@
+parameters:
+    level: 0
+    phpVersion: 80000
+    paths:
+        - association_administrations.php
+        - association_autoriser.php
+        - association_fonctions.php
+        - association_options.php
+        - association_pipelines.php
+        - base
+        - formulaires
+        - genie
+        - inc
+        - plugins
+        - spip-cli
+    excludePaths:
+        analyse:
+            - plugins/*/tests/*
+            - plugins/*/lang/*
+    scanFiles:
+        - vendor/spip-league/sdk/src/Stub/functions.php

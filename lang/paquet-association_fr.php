@@ -10,7 +10,7 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
 
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+$traductions = array(
 
     'association_slogan' => 'Module de gestion associative - Backoffice',
 	'association_description' => 'Ce plugin permet de gérer les associations et les adhérents.',
@@ -19,3 +19,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 
 );
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

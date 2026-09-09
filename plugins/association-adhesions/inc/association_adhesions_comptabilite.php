@@ -18,7 +18,7 @@ function association_adhesions_compte_cotisation_creer(
 	$date_fin_validite = null
 ) {
 	if (!association_adhesions_module_actif('association_compta')) {
-		return (int) sql_insertq('spip_asso_cotisations', array(
+		return (int) sql_insertq('spip_asso_cotisations', [
 			'id_compte' => null,
 			'id_auteur' => (int) $id_auteur,
 			'id_categorie' => (int) $id_categorie,
@@ -29,10 +29,10 @@ function association_adhesions_compte_cotisation_creer(
 			'date_fin_validite' => $date_fin_validite ?: null,
 			'montant' => (float) $montant,
 			'devise' => function_exists('association_cotisation_devise_defaut') ? association_cotisation_devise_defaut() : '',
-		));
+		]);
 	}
 	include_spip('inc/association_compta_ecritures');
-	$id_compte = association_compta_ecriture_creer(array(
+	$id_compte = association_compta_ecriture_creer([
 		'date' => $date,
 		'date_fin_validite' => $date_fin_validite,
 		'recette' => $montant,
@@ -44,15 +44,15 @@ function association_adhesions_compte_cotisation_creer(
 		'objet' => 'cotisation',
 		'id_transaction' => (int) $id_transaction,
 		'vu' => $statut === 'ok' ? 1 : 0,
-	));
-	association_adhesions_compte_cotisation_synchroniser($id_compte, array(
+	]);
+	association_adhesions_compte_cotisation_synchroniser($id_compte, [
 		'reinscription' => $inscription,
 		'statut_cotisation' => $statut,
 		'id_categorie' => (int) $id_categorie,
 		'id_transaction' => (int) $id_transaction,
 		'montant' => (float) $montant,
 		'date' => $date,
-	));
+	]);
 	return $id_compte;
 }
 
@@ -74,7 +74,7 @@ function association_adhesions_compte_cotisation_modifier(
 		if (!$cotisation) {
 			return false;
 		}
-		return sql_updateq('spip_asso_cotisations', array(
+		return sql_updateq('spip_asso_cotisations', [
 			'id_categorie' => (int) $id_categorie,
 			'id_transaction' => (int) $id_transaction,
 			'inscription' => (string) $inscription,
@@ -82,10 +82,10 @@ function association_adhesions_compte_cotisation_modifier(
 			'date_creation' => (string) $date,
 			'date_fin_validite' => $date_fin_validite ?: null,
 			'montant' => (float) $montant,
-		), 'id_cotisation=' . (int) $cotisation['id_cotisation']) !== false;
+		], 'id_cotisation=' . (int) $cotisation['id_cotisation']) !== false;
 	}
 	include_spip('inc/association_compta_ecritures');
-	$id_compte = association_compta_ecriture_modifier($id_compte, array(
+	$id_compte = association_compta_ecriture_modifier($id_compte, [
 		'date' => $date,
 		'date_fin_validite' => $date_fin_validite,
 		'recette' => $montant,
@@ -96,15 +96,15 @@ function association_adhesions_compte_cotisation_modifier(
 		'objet' => 'cotisation',
 		'id_transaction' => (int) $id_transaction,
 		'vu' => $statut === 'ok' ? 1 : 0,
-	));
-	association_adhesions_compte_cotisation_synchroniser($id_compte, array(
+	]);
+	association_adhesions_compte_cotisation_synchroniser($id_compte, [
 		'inscription' => $inscription,
 		'statut' => $statut,
 		'id_categorie' => (int) $id_categorie,
 		'id_transaction' => (int) $id_transaction,
 		'montant' => (float) $montant,
 		'date' => $date,
-	));
+	]);
 	return $id_compte;
 }
 

@@ -12,7 +12,7 @@ $erreurs = array();
 
 $debut_historique = strpos($administration, '#V1.1.0');
 $branche_create = $debut_historique === false ? $administration : substr($administration, 0, $debut_historique);
-if (strpos($administration . $migrations_socle, "array('maj_tables', array('spip_association_metas'))") === false) {
+if (strpos($administration . $migrations_socle, "['maj_tables', ['spip_association_metas']]") === false) {
 	$erreurs[] = 'la création du socle doit installer sa table de configuration';
 }
 if (preg_match('/spip_asso_(?!ciation_metas)/', $branche_create)) {

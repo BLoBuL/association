@@ -4,7 +4,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+$traductions = array(
 	'erreur_auteur_inexistant' => 'No se ha encontrado la cuenta de usuario.',
 	'erreur_configurer_association_titre' => '¡Los datos introducidos contienen errores!',
 	'erreur_date' => 'Esta fecha no existe',
@@ -16,3 +16,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'titre_menu_association' => 'Vida asociativa',
 	'titre_onglet_configurer_association' => 'Configuración',
 );
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

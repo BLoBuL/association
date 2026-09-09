@@ -1,12 +1,14 @@
 <?php
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 function association_compta_declarer_tables_objets_sql($tables) {
-	$tables['spip_asso_comptes'] = array(
+	$tables['spip_asso_comptes'] = [
 		'principale' => 'oui',
 		'titre' => 'justification AS titre, "" AS lang',
-		'field' => array(
+		'field' => [
 			'id_compte' => 'BIGINT NOT NULL',
 			'id_auteur' => 'BIGINT NOT NULL',
 			'date' => 'DATE DEFAULT NULL',
@@ -21,17 +23,17 @@ function association_compta_declarer_tables_objets_sql($tables) {
 			'id_journal' => "INT NOT NULL default '0'",
 			'vu' => 'BOOLEAN default 0',
 			'maj' => 'TIMESTAMP NOT NULL',
-		),
-		'key' => array(
+		],
+		'key' => [
 			'PRIMARY KEY' => 'id_compte',
 			'KEY id_transaction' => 'id_transaction',
 			'KEY objet' => 'objet,id_objet',
-		),
-	);
-	$tables['spip_asso_plan'] = array(
+		],
+	];
+	$tables['spip_asso_plan'] = [
 		'principale' => 'oui',
 		'titre' => 'intitule AS titre, "" AS lang',
-		'field' => array(
+		'field' => [
 			'id_plan' => 'INT NOT NULL',
 			'code' => 'TEXT NOT NULL',
 			'intitule' => 'TEXT NOT NULL',
@@ -42,36 +44,42 @@ function association_compta_declarer_tables_objets_sql($tables) {
 			'commentaire' => 'TEXT NOT NULL',
 			'active' => 'BOOLEAN DEFAULT 1',
 			'maj' => 'TIMESTAMP NOT NULL',
-		),
-		'key' => array('PRIMARY KEY' => 'id_plan'),
-	);
-	$tables['spip_asso_destination'] = array(
+		],
+		'key' => [
+			'PRIMARY KEY' => 'id_plan',
+		],
+	];
+	$tables['spip_asso_destination'] = [
 		'principale' => 'oui',
 		'titre' => 'intitule AS titre, "" AS lang',
-		'field' => array(
+		'field' => [
 			'id_destination' => 'INT NOT NULL',
 			'intitule' => 'TEXT NOT NULL',
 			'commentaire' => 'TEXT NOT NULL',
-		),
-		'key' => array('PRIMARY KEY' => 'id_destination'),
-	);
-	$tables['spip_asso_destination_op'] = array(
+		],
+		'key' => [
+			'PRIMARY KEY' => 'id_destination',
+		],
+	];
+	$tables['spip_asso_destination_op'] = [
 		'principale' => 'oui',
 		'titre' => 'CONCAT("Affectation ", id_dest_op) AS titre, "" AS lang',
-		'field' => array(
+		'field' => [
 			'id_dest_op' => 'INT NOT NULL',
 			'id_compte' => 'INT NOT NULL',
 			'id_destination' => 'INT NOT NULL',
 			'recette' => "FLOAT NOT NULL DEFAULT '0'",
 			'depense' => "FLOAT NOT NULL DEFAULT '0'",
-		),
-		'key' => array('PRIMARY KEY' => 'id_dest_op'),
-	);
+		],
+		'key' => [
+			'PRIMARY KEY' => 'id_dest_op',
+		],
+	];
 	return $tables;
 }
 
 function association_compta_declarer_tables_interfaces($interfaces) {
-	foreach (array('asso_comptes', 'asso_plan', 'asso_destination', 'asso_destination_op') as $table) {
+	foreach (['asso_comptes', 'asso_plan', 'asso_destination', 'asso_destination_op'] as $table) {
 		$interfaces['table_des_tables'][$table] = $table;
 	}
 	return $interfaces;

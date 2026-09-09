@@ -12,10 +12,10 @@ $normaliser = function ($lignes, $champ) {
 	return $ids;
 };
 
-$erreurs = array();
+$erreurs = [];
 $types_verifies = 0;
 $categories = sql_allfetsel('id_categorie,type_adherent', 'spip_asso_categories_adherents', "statut='ok'");
-$par_type = array();
+$par_type = [];
 foreach ($categories as $categorie) {
 	$type = (string) ($categorie['type_adherent'] ?? '');
 	$par_type[$type][] = (int) $categorie['id_categorie'];
@@ -72,9 +72,9 @@ if ($erreurs) {
 	exit(1);
 }
 
-echo json_encode(array(
+echo json_encode([
 	'ok' => true,
 	'types_verifies' => $types_verifies,
 	'transactions_en_cours' => count($nouvelles_transactions),
 	'empreinte_dates' => $nouveau_hash,
-), JSON_UNESCAPED_SLASHES) . "\n";
+], JSON_UNESCAPED_SLASHES) . "\n";

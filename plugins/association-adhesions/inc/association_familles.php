@@ -30,14 +30,14 @@ function association_familles_lister_groupes() {
 		"webmestre!='oui'",
 		'',
 		'id_auteur'
-	) ?: array();
+	) ?: [];
 
-	$par_id = array();
+	$par_id = [];
 	foreach ($auteurs as $auteur) {
 		$par_id[intval($auteur['id_auteur'])] = $auteur;
 	}
 
-	$groupes = array();
+	$groupes = [];
 	foreach ($par_id as $id_auteur => $auteur) {
 		$id_principal = intval($auteur['auteur_compte_principal'] ?? 0);
 		if ($id_principal <= 0 || $id_principal === $id_auteur) {
@@ -45,12 +45,12 @@ function association_familles_lister_groupes() {
 		}
 
 		if (!isset($groupes[$id_principal])) {
-			$groupes[$id_principal] = array(
+			$groupes[$id_principal] = [
 				'id_principal' => $id_principal,
-				'principal' => $par_id[$id_principal] ?? array(),
-				'secondaires' => array(),
-				'alertes' => array(),
-			);
+				'principal' => $par_id[$id_principal] ?? [],
+				'secondaires' => [],
+				'alertes' => [],
+			];
 		}
 
 		if ($id_auteur !== $id_principal) {
@@ -69,11 +69,11 @@ function association_familles_lister_groupes() {
  * Prévisualiser la migration sans modifier les données.
  */
 function association_familles_previsualiser_migration() {
-	$rapport = array(
+	$rapport = [
 		'disponible' => false,
-		'groupes' => array(),
-		'totaux' => array('familles' => 0, 'principaux' => 0, 'secondaires' => 0, 'alertes' => 0),
-	);
+		'groupes' => [],
+		'totaux' => ['familles' => 0, 'principaux' => 0, 'secondaires' => 0, 'alertes' => 0],
+	];
 	if (!association_familles_integration_disponible()) {
 		return $rapport;
 	}
@@ -85,7 +85,7 @@ function association_familles_previsualiser_migration() {
 
 	foreach (association_familles_lister_groupes() as $groupe) {
 		$id_principal = intval($groupe['id_principal']);
-		$familles = familles_objet_lister_familles('auteur', $id_principal, array('inclure_inactifs' => true));
+		$familles = familles_objet_lister_familles('auteur', $id_principal, ['inclure_inactifs' => true]);
 		if (count($familles) > 1) {
 			$groupe['alertes'][] = _T('association_adhesions:migration_familles_plusieurs_familles');
 		}
@@ -105,16 +105,16 @@ function association_familles_previsualiser_migration() {
  */
 function association_familles_executer_migration() {
 	$rapport = association_familles_previsualiser_migration();
-	$resultat = array('familles_creees' => 0, 'liens_crees' => 0, 'erreurs' => array());
+	$resultat = ['familles_creees' => 0, 'liens_crees' => 0, 'erreurs' => []];
 	if (empty($rapport['disponible'])) {
 		$resultat['erreurs'][] = 'plugin/familles';
 		return $resultat;
 	}
 	$options_principal = array_fill_keys(
-		array('peut_voir', 'peut_modifier', 'peut_gerer_liens', 'peut_payer', 'recoit_emails', 'recoit_factures', 'contact_principal'),
+		['peut_voir', 'peut_modifier', 'peut_gerer_liens', 'peut_payer', 'recoit_emails', 'recoit_factures', 'contact_principal'],
 		'oui'
 	);
-	$options_secondaire = array_fill_keys(array('peut_voir', 'recoit_emails'), 'oui');
+	$options_secondaire = array_fill_keys(['peut_voir', 'recoit_emails'], 'oui');
 
 	foreach ($rapport['groupes'] as $groupe) {
 		$id_principal = intval($groupe['id_principal']);
@@ -126,10 +126,10 @@ function association_familles_executer_migration() {
 		$id_famille = intval($groupe['familles'][0] ?? 0);
 		if (!$id_famille) {
 			$nom = trim((string) ($groupe['principal']['nom'] ?? ''));
-			$id_famille = familles_creer(array(
-				'titre' => _T('association_adhesions:migration_familles_titre_genere', array('nom' => $nom, 'id' => $id_principal)),
+			$id_famille = familles_creer([
+				'titre' => _T('association_adhesions:migration_familles_titre_genere', ['nom' => $nom, 'id' => $id_principal]),
 				'statut' => 'publie',
-			));
+			]);
 			$resultat['familles_creees'] += $id_famille ? 1 : 0;
 		}
 		if (!$id_famille) {
@@ -137,13 +137,13 @@ function association_familles_executer_migration() {
 			continue;
 		}
 
-		$liens = array(array($id_principal, 'administrateur_famille', $options_principal));
+		$liens = [[$id_principal, 'administrateur_famille', $options_principal]];
 		foreach ($groupe['secondaires'] as $secondaire) {
-			$liens[] = array(intval($secondaire['id_auteur']), 'contact_secondaire', $options_secondaire);
+			$liens[] = [intval($secondaire['id_auteur']), 'contact_secondaire', $options_secondaire];
 		}
 
 		foreach ($liens as $lien) {
-			list($id_auteur, $role, $options) = $lien;
+			[$id_auteur, $role, $options] = $lien;
 			$existait = familles_objet_est_lie($id_famille, 'auteur', $id_auteur, $role);
 			if (familles_associer_objet($id_famille, 'auteur', $id_auteur, $role, $options) && !$existait) {
 				$resultat['liens_crees']++;

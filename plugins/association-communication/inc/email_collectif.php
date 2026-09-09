@@ -7,16 +7,19 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 /**
  * Cree un envoi Mailshot a partir d'adresses deja resolues.
  */
-function association_communication_mailshot_creer($sujet, $html, array $emails, array $options = array()) {
-	$destinataires = array();
+function association_communication_mailshot_creer($sujet, $html, array $emails, array $options = []) {
+	$destinataires = [];
 	foreach ($emails as $email) {
 		$email = strtolower(trim((string) $email));
 		if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$destinataires[$email] = $email;
 		}
 	}
+	if (!$destinataires || trim((string) $sujet) === '' || trim((string) $html) === '') {
+		return 0;
+	}
 	$date = (string) ($options['date'] ?? date('Y-m-d H:i:s'));
-	$donnees = array(
+	$donnees = [
 		'sujet' => (string) $sujet,
 		'html' => (string) $html,
 		'listes' => (string) ($options['listes'] ?? 'Temporaire'),
@@ -25,8 +28,8 @@ function association_communication_mailshot_creer($sujet, $html, array $emails, 
 		'date_start' => (string) ($options['date_start'] ?? $date),
 		'statut' => 'init',
 		'composition_lock' => 0,
-	);
-	foreach (array('id_evenement', 'from_name', 'from_email') as $champ) {
+	];
+	foreach (['id_evenement', 'from_name', 'from_email'] as $champ) {
 		if (array_key_exists($champ, $options)) {
 			$donnees[$champ] = $options[$champ];
 		}
@@ -37,17 +40,17 @@ function association_communication_mailshot_creer($sujet, $html, array $emails, 
 	}
 	$inserees = 0;
 	foreach ($destinataires as $email) {
-		if (sql_insertq('spip_mailshots_destinataires', array(
+		if (sql_insertq('spip_mailshots_destinataires', [
 			'id_mailshot' => $id_mailshot,
 			'email' => $email,
 			'date' => $date,
 			'statut' => 'todo',
-		))) {
+		])) {
 			$inserees++;
 		}
 	}
 	if ($inserees !== count($destinataires)) {
-		sql_updateq('spip_mailshots', array('total' => $inserees), 'id_mailshot=' . $id_mailshot);
+		sql_updateq('spip_mailshots', ['total' => $inserees], 'id_mailshot=' . $id_mailshot);
 	}
 	ecrire_meta('mailshot_processing', 'oui');
 	include_spip('inc/genie');
@@ -61,15 +64,15 @@ function association_communication_mailshot_creer($sujet, $html, array $emails, 
 function association_email_collectif_inscriptions_evenement($id_evenement) {
 	$id_evenement = intval($id_evenement);
 	if (!$id_evenement) {
-		return array();
+		return [];
 	}
 
-	$flux = pipeline('association_communication_email_collectif_evenement', array(
-		'args' => array('operation' => 'inscriptions', 'id_evenement' => $id_evenement),
-		'data' => array(),
-	));
+	$flux = pipeline('association_communication_email_collectif_evenement', [
+		'args' => ['operation' => 'inscriptions', 'id_evenement' => $id_evenement],
+		'data' => [],
+	]);
 	$inscriptions = is_array($flux) && array_key_exists('args', $flux)
-		? (array) ($flux['data'] ?? array())
+		? (array) ($flux['data'] ?? [])
 		: (array) $flux;
 	foreach ($inscriptions as $row) {
 		$id_activite = intval($row['id_activite'] ?? 0);
@@ -81,7 +84,7 @@ function association_email_collectif_inscriptions_evenement($id_evenement) {
 			if ($nombre_inscrits > 1) {
 				$row['libelle'] .= ' — ' . _T(
 					'association_communication:email_collectif_inscription_participants',
-					array('nombre' => $nombre_inscrits)
+					['nombre' => $nombre_inscrits]
 				);
 			}
 			$inscriptions[$id_activite] = $row;
@@ -107,7 +110,7 @@ function association_email_collectif_selection_activites_initiale(array $inscrip
  * Resout les emails au dernier moment depuis les IDs selectionnes.
  */
 function association_email_collectif_resoudre_destinataires(array $id_auteurs, array $id_activites, $id_evenement = 0) {
-	$emails = array();
+	$emails = [];
 	$id_auteurs = array_values(array_filter(array_unique(array_map('intval', $id_auteurs))));
 	$id_activites = array_values(array_filter(array_unique(array_map('intval', $id_activites))));
 
@@ -119,21 +122,21 @@ function association_email_collectif_resoudre_destinataires(array $id_auteurs, a
 	}
 
 	if ($id_activites && intval($id_evenement)) {
-		$flux = pipeline('association_communication_email_collectif_evenement', array(
-			'args' => array(
+		$flux = pipeline('association_communication_email_collectif_evenement', [
+			'args' => [
 				'operation' => 'emails',
 				'id_evenement' => intval($id_evenement),
 				'id_activites' => $id_activites,
-			),
-			'data' => array(),
-		));
+			],
+			'data' => [],
+		]);
 		$emails_evenement = is_array($flux) && array_key_exists('args', $flux)
-			? (array) ($flux['data'] ?? array())
+			? (array) ($flux['data'] ?? [])
 			: (array) $flux;
 		$emails = array_merge($emails, $emails_evenement);
 	}
 
-	$destinataires = array();
+	$destinataires = [];
 	foreach ($emails as $email) {
 		$email = strtolower(trim((string) $email));
 		if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -153,31 +156,31 @@ function association_email_collectif_verifier_selection($mode, $etape, $id_evene
 		? 4
 		: 5;
 	if (intval($etape) < $etape_validation) {
-		return array();
+		return [];
 	}
 
 	$id_auteurs = _request('selecteur_adherent');
-	$id_auteurs = is_array($id_auteurs) ? $id_auteurs : array_filter(array($id_auteurs));
-	$id_activites = array();
+	$id_auteurs = is_array($id_auteurs) ? $id_auteurs : array_filter([$id_auteurs]);
+	$id_activites = [];
 
 	if ($mode === 'evenement') {
 		$id_activites = _request('selecteur_activite_evenement');
-		$id_activites = is_array($id_activites) ? $id_activites : array_filter(array($id_activites));
+		$id_activites = is_array($id_activites) ? $id_activites : array_filter([$id_activites]);
 		if ($type_destinataires_evenement === 'adherents_association') {
-			$id_activites = array();
+			$id_activites = [];
 		} else {
-			$id_auteurs = array();
+			$id_auteurs = [];
 		}
 	}
 
 	if (!association_email_collectif_resoudre_destinataires($id_auteurs, $id_activites, $id_evenement)) {
-		return array(
+		return [
 			'selecteur_adherent' => _T('association_communication:email_collectif_aucun_destinataire'),
 			'message_erreur' => _T('association_communication:email_collectif_aucun_destinataire'),
-		);
+		];
 	}
 
-	return array();
+	return [];
 }
 
 /**
@@ -185,28 +188,28 @@ function association_email_collectif_verifier_selection($mode, $etape, $id_evene
  */
 function association_email_collectif_gabarit_evenement($id_evenement, $type = 'libre') {
 	$id_evenement = intval($id_evenement);
-	$types = array('libre', 'rappel', 'annulation', 'report', 'modification');
+	$types = ['libre', 'rappel', 'annulation', 'report', 'modification'];
 	$type = in_array($type, $types, true) ? $type : 'libre';
-	$flux = $id_evenement ? pipeline('association_communication_email_collectif_evenement', array(
-		'args' => array('operation' => 'evenement', 'id_evenement' => $id_evenement),
-		'data' => array(),
-	)) : array();
+	$flux = $id_evenement ? pipeline('association_communication_email_collectif_evenement', [
+		'args' => ['operation' => 'evenement', 'id_evenement' => $id_evenement],
+		'data' => [],
+	]) : [];
 	$evenement = is_array($flux) && array_key_exists('args', $flux)
-		? (array) ($flux['data'] ?? array())
+		? (array) ($flux['data'] ?? [])
 		: (array) $flux;
 	if (!$evenement) {
-		return array();
+		return [];
 	}
 
 	if ($type === 'libre') {
-		return array(
+		return [
 			'id_evenement' => $id_evenement,
 			'gabarit_evenement' => 'libre',
 			'sujet' => '',
 			'titre' => '',
 			'chapeau' => '',
 			'texte' => '',
-		);
+		];
 	}
 
 	$titre = extraire_multi((string) ($evenement['titre'] ?? ''));
@@ -214,17 +217,17 @@ function association_email_collectif_gabarit_evenement($id_evenement, $type = 'l
 	$date = !empty($evenement['date_debut']) ? affdate($evenement['date_debut'], 'd/m/Y H:i') : '';
 	$lieu = trim((string) ($evenement['lieu'] ?? ''));
 
-	$details = array_filter(array($date, $lieu));
-	$variables = array('titre' => $titre);
+	$details = array_filter([$date, $lieu]);
+	$variables = ['titre' => $titre];
 
-	return array(
+	return [
 		'id_evenement' => $id_evenement,
 		'gabarit_evenement' => $type,
 		'sujet' => _T('association_communication:email_collectif_evenement_' . $type . '_sujet', $variables),
 		'titre' => $titre,
 		'chapeau' => implode(' - ', $details),
 		'texte' => '',
-	);
+	];
 }
 
 function association_email_collectif_rappel_evenement($id_evenement) {

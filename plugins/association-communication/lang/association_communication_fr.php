@@ -4,7 +4,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+$traductions = [
 	'ajouter_information_paiement_explication' => 'Permet d\'afficher automatiquement les tarifs d\'adhésion et les modes de paiement.',
 	'ajouter_information_paiement_label' => 'Ajouter les tarifs de cotisations et les modes paiements.',
 	'documents_joints' => 'Documents joints',
@@ -106,4 +106,10 @@ Suite à la validation de ce formulaire vous serez redirigé vers la page vous p
 	'maintenance_titre' => 'Maintenance des abonnements et redirections',
 	'titre_newsletter' => 'Inscription à la newsletter',
 	'titre_notifications' => 'Visualisation des notifications',
-);
+];
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

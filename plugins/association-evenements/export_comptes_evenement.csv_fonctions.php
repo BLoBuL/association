@@ -1,10 +1,11 @@
 <?php
+
 // PHP
 /**
  * Fonctions pour l'export CSV de la comptabilité d'un évènement.
  */
 if (!defined('_ECRIRE_INC_VERSION')) {
-    return;
+	return;
 }
 
 include_spip('base/abstract_sql');
@@ -23,15 +24,15 @@ include_spip('base/abstract_sql');
  * @return float|int
  */
 function montant_signe($recette, $depense) {
-    $r = floatval($recette);
-    $d = floatval($depense);
-    if ($r > 0) {
-        return $r;
-    }
-    if ($d > 0) {
-        return -$d;
-    }
-    return 0;
+	$r = floatval($recette);
+	$d = floatval($depense);
+	if ($r > 0) {
+		return $r;
+	}
+	if ($d > 0) {
+		return -$d;
+	}
+	return 0;
 }
 
 /**
@@ -58,11 +59,11 @@ function total_depenses_evenement($id_evenement) {
 
 function association_evenements_totaux_comptables($id_evenement) {
 	include_spip('inc/association_compta_ecritures');
-	$ecritures = association_compta_ecritures_lister(array(
+	$ecritures = association_compta_ecritures_lister([
 		'objet' => 'evenement',
 		'id_objet' => (int) $id_evenement,
-	), array('champs' => 'recette,depense'));
-	$totaux = array('recettes' => 0.0, 'depenses' => 0.0);
+	], ['champs' => 'recette,depense']);
+	$totaux = ['recettes' => 0.0, 'depenses' => 0.0];
 	foreach ($ecritures as $ecriture) {
 		$totaux['recettes'] += (float) ($ecriture['recette'] ?? 0);
 		$totaux['depenses'] += (float) ($ecriture['depense'] ?? 0);
@@ -77,7 +78,7 @@ function association_evenements_totaux_comptables($id_evenement) {
  * @return float
  */
 function solde_evenement($id_evenement) {
-    return total_recettes_evenement($id_evenement) - total_depenses_evenement($id_evenement);
+	return total_recettes_evenement($id_evenement) - total_depenses_evenement($id_evenement);
 }
 
 /**
@@ -93,31 +94,31 @@ function solde_evenement($id_evenement) {
  * @return string
  */
 function filtre_justification_compte_dist($justification, $journal = '') {
-    $journal = (string)$journal;
+	$journal = (string) $journal;
 
-    // Uniquement le format "activite|<ID>"
-    if ($journal !== '' && preg_match('/^\s*activite\|([0-9]+)\s*$/i', $journal, $m)) {
-        $id_activite = intval($m[1]);
+	// Uniquement le format "activite|<ID>"
+	if ($journal !== '' && preg_match('/^\s*activite\|([0-9]+)\s*$/i', $journal, $m)) {
+		$id_activite = intval($m[1]);
 
-        if ($id_activite > 0) {
-            $row = sql_fetsel(
-                'nom_inscrit, prenom_inscrit',
-                'spip_asso_activites',
-                'id_activite=' . $id_activite
-            );
+		if ($id_activite > 0) {
+			$row = sql_fetsel(
+				'nom_inscrit, prenom_inscrit',
+				'spip_asso_activites',
+				'id_activite=' . $id_activite
+			);
 
-            if ($row) {
-                $nom = trim((string)$row['nom_inscrit']);
-                $prenom = trim((string)$row['prenom_inscrit']);
+			if ($row) {
+				$nom = trim((string) $row['nom_inscrit']);
+				$prenom = trim((string) $row['prenom_inscrit']);
 
-                if ($nom !== '' || $prenom !== '') {
-                    $identite = trim($nom . ' ' . $prenom);
-                    return 'Participation de ' . $identite;
-                }
-            }
-        }
-    }
+				if ($nom !== '' || $prenom !== '') {
+					$identite = trim($nom . ' ' . $prenom);
+					return 'Participation de ' . $identite;
+				}
+			}
+		}
+	}
 
-    // Par défaut, conserver la justification d'origine
-    return (string)$justification;
+	// Par défaut, conserver la justification d'origine
+	return (string) $justification;
 }

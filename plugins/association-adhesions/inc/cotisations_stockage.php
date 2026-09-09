@@ -6,7 +6,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 if (!function_exists('association_adhesions_module_actif')) {
 	function association_adhesions_module_actif($prefixe) {
-		return function_exists('association_plugin_actif') ? association_plugin_actif($prefixe) : true;
+		include_spip('inc/association_capacites');
+		return association_plugin_actif($prefixe);
 	}
 }
 
@@ -19,22 +20,24 @@ function association_cotisation_lire_par_compte($id_compte) {
 	if (!$cotisation) {
 		$cotisation = sql_fetsel('*', 'spip_asso_cotisations', 'id_cotisation=' . $id_compte);
 	}
-	if (!$cotisation) return array();
-	$compte = array();
+	if (!$cotisation) {
+		return [];
+	}
+	$compte = [];
 	if (!empty($cotisation['id_compte']) && association_adhesions_module_actif('association_compta')) {
 		include_spip('inc/association_compta_ecritures');
 		$compte = association_compta_ecriture_lire((int) $cotisation['id_compte']);
 	}
-	return array_merge((array) $compte, $cotisation, array(
+	return array_merge((array) $compte, $cotisation, [
 		'reinscription' => $cotisation['inscription'],
 		'statut_cotisation' => $cotisation['statut'],
-	));
+	]);
 }
 
 /**
  * Crée ou actualise la ligne métier associée à une écriture de cotisation.
  */
-function association_cotisation_synchroniser_depuis_compte($id_compte, $donnees = array()) {
+function association_cotisation_synchroniser_depuis_compte($id_compte, $donnees = []) {
 	$id_compte = (int) $id_compte;
 	include_spip('inc/association_compta_ecritures');
 	$compte = association_compta_ecriture_lire($id_compte);
@@ -55,7 +58,7 @@ function association_cotisation_synchroniser_depuis_compte($id_compte, $donnees 
 		$devise = association_cotisation_devise_defaut();
 	}
 
-	$valeurs = array(
+	$valeurs = [
 		'id_compte' => $id_compte,
 		'id_auteur' => (int) ($donnees['id_auteur'] ?? $compte['id_auteur'] ?? 0),
 		'id_categorie' => $id_categorie,
@@ -65,7 +68,7 @@ function association_cotisation_synchroniser_depuis_compte($id_compte, $donnees 
 		'date_creation' => (string) ($donnees['date'] ?? $compte['date'] ?? date('Y-m-d H:i:s')),
 		'montant' => (float) ($donnees['recette'] ?? $donnees['montant'] ?? $compte['recette'] ?? 0),
 		'devise' => $devise,
-	);
+	];
 	if (array_key_exists('date_debut_validite', $donnees)) {
 		$valeurs['date_debut_validite'] = $donnees['date_debut_validite'] ?: null;
 	}
@@ -91,7 +94,7 @@ function association_cotisation_rattacher_compte($id_compte, $id_cotisation) {
 	$id_cotisation = (int) $id_cotisation;
 	if ($id_compte && $id_cotisation) {
 		include_spip('inc/association_compta_ecritures');
-		association_compta_ecriture_modifier($id_compte, array('objet' => 'cotisation', 'id_objet' => $id_cotisation));
+		association_compta_ecriture_modifier($id_compte, ['objet' => 'cotisation', 'id_objet' => $id_cotisation]);
 	}
 }
 
@@ -110,16 +113,16 @@ function association_cotisation_statut_modifier($id_compte, $statut) {
 	if (!$id_cotisation) {
 		return false;
 	}
-	if (sql_updateq('spip_asso_cotisations', array('statut' => $statut), 'id_cotisation=' . $id_cotisation) === false) {
+	if (sql_updateq('spip_asso_cotisations', ['statut' => $statut], 'id_cotisation=' . $id_cotisation) === false) {
 		return false;
 	}
 
 	// Compatibilité 4.0 : cette colonne sera retirée après validation de tous les
 	// sites historiques. Aucun lecteur métier de la suite ne l'utilise plus.
-	$table_compte = association_adhesions_module_actif('association_compta') ? sql_showtable('spip_asso_comptes', true) : array();
+	$table_compte = association_adhesions_module_actif('association_compta') ? sql_showtable('spip_asso_comptes', true) : [];
 	if (!empty($table_compte['field']['statut_cotisation'])) {
 		// Colonne transitoire hors du contrat normalisé de Comptabilité.
-		sql_updateq('spip_asso_comptes', array('statut_cotisation' => $statut), 'id_compte=' . $id_compte);
+		sql_updateq('spip_asso_comptes', ['statut_cotisation' => $statut], 'id_compte=' . $id_compte);
 	}
 	return true;
 }

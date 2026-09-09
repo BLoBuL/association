@@ -12,7 +12,7 @@
 \***************************************************************************/
 if (!defined("_ECRIRE_INC_VERSION")) return;
 // This is a SPIP language file  --  Ceci est un fichier langue de SPIP
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+$traductions = array(
 
 'oui' => 'Oui',
 'non' => 'Non',
@@ -512,3 +512,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 'config_debug_cat_sync_explication'         => 'Journalise la synchronisation des répétitions et tarifs.',
 
 );
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

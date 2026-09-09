@@ -12,13 +12,13 @@ function association_activites_contexte($id_auteur, $orientation = 'futur', $ann
 	$id_auteur = (int) $id_auteur;
 	$orientation = $orientation === 'passe' ? 'passe' : 'futur';
 	$droit = droit_auteur_evenements($id_auteur);
-	$autorise = in_array($droit[1] ?? '', array('restreint', 'complet', 'restreint_wrong'), true)
+	$autorise = in_array($droit[1] ?? '', ['restreint', 'complet', 'restreint_wrong'], true)
 		&& test_plugin_actif('agenda');
 	if (!$autorise) {
-		return array('autorise' => false);
+		return ['autorise' => false];
 	}
 
-	$where = array("statut='publie'", "inscription='1'");
+	$where = ["statut='publie'", "inscription='1'"];
 	if (($GLOBALS['association_metas']['meta_cfg_event_inscription_sur_repetition'] ?? '') !== 'source_et_repetition') {
 		$where[] = "id_evenement_source='0'";
 	}
@@ -39,14 +39,14 @@ function association_activites_contexte($id_auteur, $orientation = 'futur', $ann
 		$date_fin = '2040-01-01 00:00:00';
 	}
 
-	return array(
+	return [
 		'autorise' => true,
 		'affichage' => !empty($droit[2]['affichage']),
-		'selection_id_evenements' => $ids ?: array(0),
+		'selection_id_evenements' => $ids ?: [0],
 		'orientation' => $orientation,
 		'annee' => $annee,
 		'date_debut' => $date_debut,
 		'date_fin' => $date_fin,
 		'tripayant' => $tripayant,
-	);
+	];
 }

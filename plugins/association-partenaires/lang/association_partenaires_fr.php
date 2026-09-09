@@ -1,5 +1,6 @@
 <?php
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+
+$traductions = [
 	'configuration_titre' => 'Partenaires',
 	'configuration_titre_public' => 'Titre de la page publique',
 	'date_debut' => 'Début du partenariat',
@@ -19,4 +20,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'titre' => 'Titre public',
 	'url' => 'Adresse web',
 	'voir_site' => 'Voir le site',
-);
+];
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

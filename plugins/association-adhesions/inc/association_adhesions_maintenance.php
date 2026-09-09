@@ -5,7 +5,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 function asso_recuperer_auteurs_inactifs($limite_inactifs, $lot = 1000) {
-	$ids = array();
+	$ids = [];
 	$where = "((statut='5poubelle')"
 		. " OR (statut_interne='sorti')"
 		. " OR (statut='6forum' AND validite='' AND inscription < " . sql_quote($limite_inactifs) . " AND statut_interne='prospect')"
@@ -19,30 +19,30 @@ function asso_recuperer_auteurs_inactifs($limite_inactifs, $lot = 1000) {
 
 function asso_separer_auteurs_par_encaissements(array $ids_auteurs) {
 	if (!$ids_auteurs) {
-		return array(array(), array());
+		return [[], []];
 	}
-	$avec = pipeline('association_maintenance_auteurs_encaisses', array(
-		'args' => array('ids_auteurs' => array_values(array_map('intval', $ids_auteurs))),
-		'data' => array(),
-	));
-	$avec = is_array($avec) ? array_values(array_unique($avec)) : array();
+	$avec = pipeline('association_maintenance_auteurs_encaisses', [
+		'args' => ['ids_auteurs' => array_values(array_map('intval', $ids_auteurs))],
+		'data' => [],
+	]);
+	$avec = is_array($avec) ? array_values(array_unique($avec)) : [];
 	$sans = array_values(array_diff($ids_auteurs, $avec));
-	return array($sans, $avec);
+	return [$sans, $avec];
 }
 
 function asso_supprimer_auteurs(array $ids_auteurs, $dry_run = true) {
 	if (!$ids_auteurs) {
-		return array('supprimes' => 0);
+		return ['supprimes' => 0];
 	}
 	$in = sql_in('id_auteur', $ids_auteurs);
-	$resultat = pipeline('association_maintenance_supprimer_donnees_auteurs', array(
-		'args' => array(
+	$resultat = pipeline('association_maintenance_supprimer_donnees_auteurs', [
+		'args' => [
 			'ids_auteurs' => array_values(array_map('intval', $ids_auteurs)),
 			'dry_run' => (bool) $dry_run,
-		),
-		'data' => array(),
-	));
-	$resultat = is_array($resultat) ? $resultat : array();
+		],
+		'data' => [],
+	]);
+	$resultat = is_array($resultat) ? $resultat : [];
 	if (association_maintenance_resultat_en_echec($resultat)) {
 		$resultat['supprimes'] = 0;
 		$resultat['erreur'] = 'suppression_associee_echouee';
@@ -59,19 +59,19 @@ function asso_supprimer_auteurs(array $ids_auteurs, $dry_run = true) {
 
 function asso_anonymiser_auteurs(array $ids_auteurs, $dry_run = true) {
 	if (!$ids_auteurs) {
-		return array('anonymises' => 0);
+		return ['anonymises' => 0];
 	}
 	include_spip('inc/rgpd_anonymisation');
 	if ($dry_run) {
-		return array(
+		return [
 			'anonymises' => count($ids_auteurs),
 			'dry_run' => true,
 			'ids' => array_values(array_map('intval', $ids_auteurs)),
-		);
+		];
 	}
 	$ok = 0;
-	$erreurs = array();
-	$details = array();
+	$erreurs = [];
+	$details = [];
 	foreach ($ids_auteurs as $id) {
 		$id = intval($id);
 		if ($id <= 0) {
@@ -82,11 +82,11 @@ function asso_anonymiser_auteurs(array $ids_auteurs, $dry_run = true) {
 			$erreurs[$id] = 'auteur introuvable';
 			continue;
 		}
-		$n = sql_updateq('spip_auteurs', array(
+		$n = sql_updateq('spip_auteurs', [
 			'nom' => 'Anonyme ' . $id,
 			'email' => 'anon+' . $id . '@example.invalid',
 			'login' => 'anon_' . $id,
-		), 'id_auteur=' . $id);
+		], 'id_auteur=' . $id);
 		if ($n === false) {
 			$erreurs[$id] = 'echec anonymisation auteur';
 			continue;
@@ -96,8 +96,8 @@ function asso_anonymiser_auteurs(array $ids_auteurs, $dry_run = true) {
 			$erreurs[$id] = $resultat['erreur'] ?? 'echec anonymisation donnees association';
 			continue;
 		}
-		$details[$id] = $resultat['resume'] ?? array();
+		$details[$id] = $resultat['resume'] ?? [];
 		$ok++;
 	}
-	return array('anonymises' => $ok, 'dry_run' => false, 'details' => $details, 'erreurs' => $erreurs);
+	return ['anonymises' => $ok, 'dry_run' => false, 'details' => $details, 'erreurs' => $erreurs];
 }

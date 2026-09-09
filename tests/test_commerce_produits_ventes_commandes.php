@@ -58,6 +58,16 @@ function sql_updateq($table, $champs, $where) {
 	return true;
 }
 require_once $racine . '/plugins/association-ventes/inc/association_ventes_commandes.php';
+function include_spip($fichier) {}
+function objet_inserer($objet, $parent, $champs) {
+	if ($objet !== 'asso_vente') { throw new RuntimeException('Objet incorrect'); }
+	return sql_insertq('spip_asso_ventes', $champs);
+}
+function objet_modifier($objet, $id, $champs) {
+	if (!empty($GLOBALS['test_echec_vente'])) { return 'echec_simule'; }
+	sql_updateq('spip_asso_ventes', $champs, 'id_vente=' . $id);
+	return '';
+}
 $instantane = array(
 	'id_commande' => 42,
 	'id_commandes_detail' => 7,
@@ -65,9 +75,13 @@ $instantane = array(
 	'article' => 'Produit de recette',
 );
 $premier = association_ventes_enregistrer($instantane);
-$second = association_ventes_enregistrer($instantane + array('article' => 'Produit rejoué'));
+$second = association_ventes_enregistrer(array_replace($instantane, array('article' => 'Produit rejoué')));
 $verifier($premier['id_vente'] === 1 && $second['id_vente'] === 1, 'Le rejeu doit conserver le même id_vente.');
 $verifier(count($GLOBALS['test_ventes_lignes']) === 1, 'Le rejeu ne doit créer aucune vente supplémentaire.');
+$verifier($GLOBALS['test_ventes_lignes'][1]['article'] === 'Produit rejoué', 'Le rejeu doit réellement modifier la vente.');
+$GLOBALS['test_echec_vente'] = true;
+$echec = association_ventes_enregistrer($instantane);
+$verifier(!$echec['enregistree'] && $echec['erreur'] === 'echec_simule', 'Un échec de modification ne doit pas être déclaré réussi.');
 
 if ($erreurs) {
 	fwrite(STDERR, implode("\n", $erreurs) . "\n");

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Paiement Bancaire
  * module de paiement bancaire multi prestataires
@@ -11,7 +12,9 @@
  * (c) 2012-2018 - Distribue sous licence GNU/GPL
  *
  */
-if (!defined('_ECRIRE_INC_VERSION')) return;
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 function association_paiements_remboursement_autorise($id_transaction) {
 	$id_transaction = (int) $id_transaction;
@@ -23,67 +26,67 @@ function association_paiements_remboursement_autorise($id_transaction) {
 	return $statut === 'ok' && autoriser('rembourser', 'transaction', $id_transaction);
 }
 
-function formulaires_rembourser_transaction_charger_dist($id_transaction){
+function formulaires_rembourser_transaction_charger_dist($id_transaction) {
 
-	$transaction = sql_fetsel("*","spip_transactions","id_transaction=".intval($id_transaction));
-	if (!$transaction || !association_paiements_remboursement_autorise($id_transaction))
+	$transaction = sql_fetsel('*', 'spip_transactions', 'id_transaction=' . intval($id_transaction));
+	if (!$transaction || !association_paiements_remboursement_autorise($id_transaction)) {
 		return false;
+	}
 
-	$valeurs = array(
+	$valeurs = [
 		'_id_transaction' => $id_transaction,
 		'_mode' => $transaction['mode'],
-		'raison'=>'',
+		'raison' => '',
 		'_autorisation_id_prefixe' => remboursement_prefixe(),
-	);
-	
+	];
+
 	return $valeurs;
 }
 
-function formulaires_rembourser_transaction_verifier_dist($id_transaction){
-	$erreurs = array();
+function formulaires_rembourser_transaction_verifier_dist($id_transaction) {
+	$erreurs = [];
 	if (!association_paiements_remboursement_autorise($id_transaction)) {
 		$erreurs['message_erreur'] = _T('info_interdit');
 		return $erreurs;
 	}
 	$raison = _request('raison');
-	if (!$raison){
+	if (!$raison) {
 		$erreurs['raison'] = _T('info_obligatoire');
 	}
 	return $erreurs;
 }
 
-function formulaires_rembourser_transaction_traiter_dist($id_transaction){
+function formulaires_rembourser_transaction_traiter_dist($id_transaction) {
 	if (!association_paiements_remboursement_autorise($id_transaction)) {
-		return array('message_erreur' => _T('info_interdit'));
+		return ['message_erreur' => _T('info_interdit')];
 	}
 
 	$raison = _request('raison');
-    $notifier_inscrit = _request('notifier_inscrit');
-	$raison_remboursement = "<hr />\n".date('Y-m-d H:i:s').' REMBOURSEMENT '.remboursement_prefixe()." : ".$raison;
-    $res = array();
-	$rembourser_transaction = charger_fonction('rembourser_transaction','bank');
-	if($rembourser_transaction($id_transaction,array('message'=>$raison_remboursement))){
-		pipeline('association_paiements_remboursement_traiter', array(
-			'args' => array(
+	$notifier_inscrit = _request('notifier_inscrit');
+	$raison_remboursement = "<hr />\n" . date('Y-m-d H:i:s') . ' REMBOURSEMENT ' . remboursement_prefixe() . ' : ' . $raison;
+	$res = [];
+	$rembourser_transaction = charger_fonction('rembourser_transaction', 'bank');
+	if ($rembourser_transaction($id_transaction, ['message' => $raison_remboursement])) {
+		pipeline('association_paiements_remboursement_traiter', [
+			'args' => [
 				'id_transaction' => (int) $id_transaction,
 				'raison' => (string) $raison,
 				'notifier' => !empty($notifier_inscrit),
-			),
-			'data' => array('traite' => false, 'domaine' => ''),
-		));
+			],
+			'data' => ['traite' => false, 'domaine' => ''],
+		]);
 
 		$res['message_ok'] = _T('association_paiements:transaction_remboursee');
-        $page = 'transactions';
-        $args = "id_transaction=".$id_transaction;
-        $res['redirect'] = generer_url_ecrire($page,$args);
-	}
-	else {
+		$page = 'transactions';
+		$args = 'id_transaction=' . $id_transaction;
+		$res['redirect'] = generer_url_ecrire($page, $args);
+	} else {
 		$res['message_erreur'] = _T('association_paiements:erreur_remboursement_impossible');
 	}
 
 	return $res;
 }
 
-function remboursement_prefixe(){
-	return "#".$GLOBALS['visiteur_session']['id_auteur']."-".$GLOBALS['visiteur_session']['nom'];
+function remboursement_prefixe() {
+	return '#' . $GLOBALS['visiteur_session']['id_auteur'] . '-' . $GLOBALS['visiteur_session']['nom'];
 }

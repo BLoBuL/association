@@ -5,7 +5,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 function association_adhesions_module_actif($prefixe) {
-	return function_exists('association_plugin_actif') ? association_plugin_actif($prefixe) : true;
+	include_spip('inc/association_capacites');
+	return association_plugin_actif($prefixe);
 }
 
 include_spip('inc/fonctions/priviliges_adherent');

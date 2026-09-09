@@ -37,6 +37,7 @@
         "sort-packages": true
     },
     "scripts": {
+        "test": "@php tests/run.php",
         "analyse": "phpstan --memory-limit=1G",
         "baseline": "phpstan --memory-limit=1G --generate-baseline --allow-empty-baseline",
         "check-cs": "ecs check --ansi",

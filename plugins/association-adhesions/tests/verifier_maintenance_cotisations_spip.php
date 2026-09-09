@@ -8,11 +8,11 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 include_spip('inc/association_adhesions_maintenance_cotisations');
 
 $empreinte = function () {
-	return hash('sha256', json_encode(array(
+	return hash('sha256', json_encode([
 		'cotisations' => sql_allfetsel('*', 'spip_asso_cotisations', '', '', 'id_cotisation'),
 		'comptes' => sql_allfetsel('*', 'spip_asso_comptes', '', '', 'id_compte'),
 		'transactions' => sql_allfetsel('id_transaction,statut,montant', 'spip_transactions', '', '', 'id_transaction'),
-	)));
+	]));
 };
 
 $avant = $empreinte();
@@ -33,11 +33,11 @@ if (empty($anciennes['ids']) !== ((int) ($anciennes['supprimees'] ?? 0) === 0)) 
 	exit(1);
 }
 
-echo json_encode(array(
+echo json_encode([
 	'ok' => true,
 	'orphelines_supprimables' => (int) ($orphelines['supprimees'] ?? 0),
 	'orphelines_protegees' => (int) ($orphelines['protegees'] ?? 0),
 	'anciennes_non_encaissees' => (int) ($anciennes['supprimees'] ?? 0),
 	'dry_run' => true,
 	'empreinte' => $apres,
-), JSON_UNESCAPED_SLASHES) . "\n";
+], JSON_UNESCAPED_SLASHES) . "\n";

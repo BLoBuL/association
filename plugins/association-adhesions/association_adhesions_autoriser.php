@@ -28,15 +28,20 @@ function autoriser_voiradherent_associer_dist($faire, $type = '', $id = 0, $qui 
 	return autoriser_adherents_menu_dist($faire, $type, $id, $qui, $opt);
 }
 
-
-function autorite_autoriser_auteurs_menu($faire,$quoi,$id,$qui,$options){
+function autorite_autoriser_auteurs_menu($faire, $quoi, $id, $qui, $options) {
 	$qui = association_normalize_qui($qui);
-	association_debug_log('autorite_autoriser_auteurs_menu entry qui=' . var_export(array('id' => $qui['id_auteur'], 'statut' => $qui['statut']), true), 'association_autorisation');
-	return ($qui['statut'] === '0minirezo');
+	association_debug_log('autorite_autoriser_auteurs_menu entry qui=' . var_export([
+		'id' => $qui['id_auteur'],
+		'statut' => $qui['statut'],
+	], true), 'association_autorisation');
+	return $qui['statut'] === '0minirezo';
 }
 
-function autorite_autoriser_auteur_voir($faire,$quoi,$id,$qui,$options){
+function autorite_autoriser_auteur_voir($faire, $quoi, $id, $qui, $options) {
 	$qui = association_normalize_qui($qui);
-	association_debug_log('autorite_autoriser_auteur_voir entry qui=' . var_export(array('id' => $qui['id_auteur'], 'statut' => $qui['statut']), true), 'association_autorisation');
-	return ($qui['statut'] === '0minirezo');
+	association_debug_log('autorite_autoriser_auteur_voir entry qui=' . var_export([
+		'id' => $qui['id_auteur'],
+		'statut' => $qui['statut'],
+	], true), 'association_autorisation');
+	return $qui['statut'] === '0minirezo';
 }

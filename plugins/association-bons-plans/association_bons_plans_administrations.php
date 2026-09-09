@@ -1,5 +1,8 @@
 <?php
-if (!defined('_ECRIRE_INC_VERSION')) { return; }
+
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 function association_bons_plans_upgrade($meta, $cible) {
 	include_spip('inc/plugin');
@@ -7,8 +10,8 @@ function association_bons_plans_upgrade($meta, $cible) {
 		throw new RuntimeException('Désactiver le plugin historique spip_bon_plan avant Association - Bons plans.');
 	}
 	include_spip('base/upgrade');
-	$creer = array(array('maj_tables', array('spip_bons_plans', 'spip_bons_plans_liens')));
-	maj_plugin($meta, $cible, array('create' => $creer, '1.0.0' => $creer));
+	$creer = [['maj_tables', ['spip_bons_plans', 'spip_bons_plans_liens']]];
+	maj_plugin($meta, $cible, ['create' => $creer, '1.0.0' => $creer]);
 }
 
 function association_bons_plans_vider_tables($meta) {

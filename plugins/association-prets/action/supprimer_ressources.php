@@ -1,5 +1,6 @@
 <?php
-/***************************************************************************\
+
+/*\
  *  Associaspip, extension de SPIP pour gestion d'associations             *
  *                                                                         *
  *  Copyright (c) 2007 Bernard Blazin & François de Montlivault (V1)       *
@@ -7,10 +8,11 @@
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
-\***************************************************************************/
+\*/
 
-
-if (!defined("_ECRIRE_INC_VERSION")) return;
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 function action_supprimer_ressources_dist() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
@@ -22,5 +24,3 @@ function action_supprimer_ressources_dist() {
 	}
 	sql_delete('spip_asso_ressources', 'id_ressource=' . $id_ressource);
 }
-
-

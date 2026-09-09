@@ -12,12 +12,12 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  */
 function association_migrations_ajouter($flux, $module, $etapes) {
 	foreach ($etapes as $etape) {
-		$flux[] = array(
+		$flux[] = [
 			'version' => (string) $etape[0],
 			'operation' => $etape[1],
 			'priorite' => (int) ($etape[2] ?? 100),
 			'module' => $module,
-		);
+		];
 	}
 	return $flux;
 }
@@ -26,33 +26,33 @@ function association_migrations_ajouter($flux, $module, $etapes) {
  * Assemble le tableau maj_plugin() historique de façon déterministe.
  */
 function association_migrations_construire() {
-	$contributions = array(
-		array(
+	$contributions = [
+		[
 			'version' => '1.1.0',
-			'operation' => array('maj_tables', array('spip_association_metas')),
+			'operation' => ['maj_tables', ['spip_association_metas']],
 			'priorite' => 0,
 			'module' => 'association',
-		),
-		array('version' => '1.2.7', 'operation' => null, 'priorite' => 0, 'module' => 'association'),
-	);
+		],
+		['version' => '1.2.7', 'operation' => null, 'priorite' => 0, 'module' => 'association'],
+	];
 	$contributions = pipeline('association_migrations_historiques', $contributions);
 
-	$par_version = array();
+	$par_version = [];
 	foreach ($contributions as $contribution) {
 		$version = $contribution['version'];
 		$par_version[$version][] = $contribution;
 	}
 	uksort($par_version, 'version_compare');
 
-	$maj = array(
-		'create' => array(array('maj_tables', array('spip_association_metas'))),
-	);
+	$maj = [
+		'create' => [['maj_tables', ['spip_association_metas']]],
+	];
 	foreach ($par_version as $version => $operations) {
 		usort($operations, function ($a, $b) {
 			$ordre = $a['priorite'] <=> $b['priorite'];
 			return $ordre ?: strcmp($a['module'], $b['module']);
 		});
-		$maj[$version] = array();
+		$maj[$version] = [];
 		foreach ($operations as $operation) {
 			if ($operation['operation'] !== null) {
 				$maj[$version][] = $operation['operation'];

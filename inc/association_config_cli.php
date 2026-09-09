@@ -1,4 +1,5 @@
 <?php
+
 /**
  * API de configuration exposee aux commandes SPIP CLI du plugin Association.
  *
@@ -19,47 +20,46 @@ function association_config_cli_registre() {
 	include_spip('inc/association_log');
 	include_spip('inc/association_config_cli_registre');
 
-	$registre = array(
-		'debug' => array(
+	$registre = [
+		'debug' => [
 			'type' => 'aggregate_boolean',
 			'writable' => true,
 			'description' => 'Activation de toutes les categories de debug du plugin Association.',
-		),
-	);
+		],
+	];
 
 	foreach (array_keys(association_log_categories_defaut()) as $categorie) {
-		$registre['debug.' . $categorie] = array(
+		$registre['debug.' . $categorie] = [
 			'type' => 'boolean',
 			'writable' => true,
 			'path' => 'association/debug/categories/' . $categorie,
 			'default' => 'off',
 			'description' => 'Activation du debug pour la categorie ' . $categorie . '.',
-		);
+		];
 	}
 
-
 	$registre = association_config_cli_ajouter_definitions($registre, association_config_cli_definitions_socle());
-	$registre = pipeline('association_config_cli_registre', array(
-		'args' => array(),
+	$registre = pipeline('association_config_cli_registre', [
+		'args' => [],
 		'data' => $registre,
-	));
+	]);
 
-	return is_array($registre) ? $registre : array();
+	return is_array($registre) ? $registre : [];
 }
 
 function association_config_cli_definition_enum($path, $allowed, $default, $description) {
-	return array(
+	return [
 		'type' => 'enum',
 		'writable' => true,
 		'path' => $path,
 		'allowed' => $allowed,
 		'default' => $default,
 		'description' => $description,
-	);
+	];
 }
 
 function association_config_cli_definition_entier($path, $default, $min, $max, $description) {
-	return array(
+	return [
 		'type' => 'integer',
 		'writable' => true,
 		'path' => $path,
@@ -67,7 +67,7 @@ function association_config_cli_definition_entier($path, $default, $min, $max, $
 		'min' => $min,
 		'max' => $max,
 		'description' => $description,
-	);
+	];
 }
 
 /**
@@ -76,134 +76,134 @@ function association_config_cli_definition_entier($path, $default, $min, $max, $
  * @return array<string, mixed>
  */
 function association_config_cli_normaliser($valeur, $definition) {
-	$type = isset($definition['type']) ? $definition['type'] : '';
+	$type = $definition['type'] ?? '';
 	if ($type === 'list') {
 		return association_config_cli_normaliser_liste($valeur, $definition);
 	}
 	if (is_array($valeur) || is_object($valeur)) {
-		return array('ok' => false);
+		return ['ok' => false];
 	}
 	$valeur = trim((string) $valeur);
 	if ($definition['type'] === 'boolean' || $definition['type'] === 'aggregate_boolean') {
 		$normalisee = association_config_cli_normaliser_booleen($valeur);
 		return $normalisee === null
-			? array('ok' => false)
-			: array('ok' => true, 'value' => $normalisee);
+			? ['ok' => false]
+			: ['ok' => true, 'value' => $normalisee];
 	}
 	if ($definition['type'] === 'enum') {
-		return in_array($valeur, $definition['allowed'], true) ? array('ok' => true, 'value' => $valeur) : array('ok' => false);
+		return in_array($valeur, $definition['allowed'], true) ? ['ok' => true, 'value' => $valeur] : ['ok' => false];
 	}
 	if ($definition['type'] === 'integer') {
 		if ($valeur === '' && (!empty($definition['optional']) || !empty($definition['allow_empty']))) {
-			return array('ok' => true, 'value' => '');
+			return ['ok' => true, 'value' => ''];
 		}
 		if (!preg_match('/^\d+$/', $valeur)) {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 		$entier = (int) $valeur;
 		return ($entier >= $definition['min'] && $entier <= $definition['max'])
-			? array('ok' => true, 'value' => (string) $entier)
-			: array('ok' => false);
+			? ['ok' => true, 'value' => (string) $entier]
+			: ['ok' => false];
 	}
 	if ($type === 'decimal') {
 		if ($valeur === '' && (!empty($definition['optional']) || !empty($definition['allow_empty']))) {
-			return array('ok' => true, 'value' => '');
+			return ['ok' => true, 'value' => ''];
 		}
 		$valeur = str_replace(',', '.', $valeur);
 		if (!preg_match('/^\d+(?:\.\d+)?$/', $valeur)) {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 		$nombre = (float) $valeur;
 		return ($nombre >= $definition['min'] && $nombre <= $definition['max'])
-			? array('ok' => true, 'value' => rtrim(rtrim(sprintf('%.8F', $nombre), '0'), '.'))
-			: array('ok' => false);
+			? ['ok' => true, 'value' => rtrim(rtrim(sprintf('%.8F', $nombre), '0'), '.')]
+			: ['ok' => false];
 	}
 	if ($type === 'string') {
 		$longueur = function_exists('mb_strlen') ? mb_strlen($valeur) : strlen($valeur);
 		return strpos($valeur, "\0") === false && $longueur <= $definition['max_length']
-			? array('ok' => true, 'value' => $valeur)
-			: array('ok' => false);
+			? ['ok' => true, 'value' => $valeur]
+			: ['ok' => false];
 	}
 	if ($type === 'identifier') {
 		$longueur = function_exists('mb_strlen') ? mb_strlen($valeur) : strlen($valeur);
 		return $longueur <= $definition['max_length'] && preg_match('/^[A-Za-z0-9_.:-]*$/', $valeur)
-			? array('ok' => true, 'value' => $valeur)
-			: array('ok' => false);
+			? ['ok' => true, 'value' => $valeur]
+			: ['ok' => false];
 	}
 	if ($type === 'email_list') {
 		$longueur = function_exists('mb_strlen') ? mb_strlen($valeur) : strlen($valeur);
 		if (isset($definition['max_length']) && $longueur > $definition['max_length']) {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 		if ($valeur === '') {
-			return array('ok' => true, 'value' => '');
+			return ['ok' => true, 'value' => ''];
 		}
 		$emails = preg_split('/[;,\s]+/', $valeur, -1, PREG_SPLIT_NO_EMPTY);
 		foreach ($emails as $email) {
 			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				return array('ok' => false);
+				return ['ok' => false];
 			}
 		}
-		return array('ok' => true, 'value' => implode(', ', $emails));
+		return ['ok' => true, 'value' => implode(', ', $emails)];
 	}
 	if ($type === 'day_month') {
 		if (!preg_match('/^(\d{2})\/(\d{2})$/', $valeur, $match)) {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 		$jour = (int) $match[1];
 		$mois = (int) $match[2];
 		return checkdate($mois, $jour, 2000)
-			? array('ok' => true, 'value' => $valeur)
-			: array('ok' => false);
+			? ['ok' => true, 'value' => $valeur]
+			: ['ok' => false];
 	}
-	return array('ok' => false);
+	return ['ok' => false];
 }
 
 function association_config_cli_normaliser_liste($valeur, $definition) {
 	if ($valeur === '' || $valeur === null) {
-		$liste = array();
+		$liste = [];
 	} elseif (is_array($valeur)) {
 		$liste = array_values($valeur);
 	} elseif (is_string($valeur)) {
 		$json = trim($valeur);
 		if ($json === '' || $json[0] !== '[' || substr($json, -1) !== ']') {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 		$liste = json_decode($json, true);
 		if (!is_array($liste) || json_last_error() !== JSON_ERROR_NONE) {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 	} else {
-		return array('ok' => false);
+		return ['ok' => false];
 	}
 	if (count($liste) > 1000) {
-		return array('ok' => false);
+		return ['ok' => false];
 	}
-	$normalisee = array();
+	$normalisee = [];
 	foreach ($liste as $element) {
 		if (!is_scalar($element) || is_bool($element)) {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 		$element = trim((string) $element);
 		if ($element === '' || strlen($element) > 255 || preg_match('/[\x00-\x1F\x7F]/', $element)) {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 		if (isset($definition['allowed']) && is_array($definition['allowed']) && !in_array($element, $definition['allowed'], true)) {
-			return array('ok' => false);
+			return ['ok' => false];
 		}
 		if (!in_array($element, $normalisee, true)) {
 			$normalisee[] = $element;
 		}
 	}
-	return array('ok' => true, 'value' => $normalisee);
+	return ['ok' => true, 'value' => $normalisee];
 }
 
 function association_config_cli_normaliser_booleen($valeur) {
 	$valeur = strtolower(trim((string) $valeur));
-	if (in_array($valeur, array('1', 'on', 'oui', 'true'), true)) {
+	if (in_array($valeur, ['1', 'on', 'oui', 'true'], true)) {
 		return 'on';
 	}
-	if (in_array($valeur, array('0', 'off', 'non', 'false'), true)) {
+	if (in_array($valeur, ['0', 'off', 'non', 'false'], true)) {
 		return 'off';
 	}
 	if ($valeur === '') {
@@ -227,20 +227,20 @@ function association_config_cli_configuration_disponible($ecriture = false) {
  */
 function association_config_cli_lire($nom = null) {
 	if (!association_config_cli_configuration_disponible()) {
-		return array('ok' => false, 'reason' => 'configuration_unavailable');
+		return ['ok' => false, 'reason' => 'configuration_unavailable'];
 	}
 	$registre = association_config_cli_registre();
 	$nom = $nom === null ? '' : strtolower(trim((string) $nom));
 	if ($nom !== '' && !isset($registre[$nom])) {
-		return array('ok' => false, 'reason' => 'unknown_option', 'option' => $nom);
+		return ['ok' => false, 'reason' => 'unknown_option', 'option' => $nom];
 	}
 
-	$noms = $nom === '' ? array_keys($registre) : array($nom);
-	$options = array();
+	$noms = $nom === '' ? array_keys($registre) : [$nom];
+	$options = [];
 	foreach ($noms as $option) {
 		$options[$option] = association_config_cli_valeur_effective($option, $registre);
 	}
-	return array('ok' => true, 'options' => $options);
+	return ['ok' => true, 'options' => $options];
 }
 
 function association_config_cli_valeur_effective($nom, $registre = null) {
@@ -282,33 +282,33 @@ function association_config_cli_lire_debug_agrege($registre = null) {
  */
 function association_config_cli_capturer() {
 	if (!association_config_cli_configuration_disponible()) {
-		return array('ok' => false, 'reason' => 'configuration_unavailable');
+		return ['ok' => false, 'reason' => 'configuration_unavailable'];
 	}
 	$registre = association_config_cli_registre();
-	$options = array();
+	$options = [];
 	foreach ($registre as $nom => $definition) {
 		if (empty($definition['path'])) {
 			continue;
 		}
-		$sentinelle = array('__association_config_cli_absent__' => $nom);
+		$sentinelle = ['__association_config_cli_absent__' => $nom];
 		$brute = lire_config($definition['path'], $sentinelle);
 		$existe = $brute !== $sentinelle;
-		$options[$nom] = array(
+		$options[$nom] = [
 			'exists' => $existe,
 			'value' => $existe ? $brute : null,
 			'effective' => association_config_cli_valeur_effective($nom, $registre),
-		);
+		];
 	}
-	return array(
+	return [
 		'ok' => true,
-		'snapshot' => array(
+		'snapshot' => [
 			'format' => 'association-config-snapshot-v2',
 			'plugin' => 'association',
 			'registry_options' => count($options),
 			'captured_at' => gmdate('c'),
 			'options' => $options,
-		),
-	);
+		],
+	];
 }
 
 /**
@@ -320,14 +320,14 @@ function association_config_cli_ecrire($nom, $valeur) {
 	$nom = strtolower(trim((string) $nom));
 	$registre = association_config_cli_registre();
 	if (!isset($registre[$nom]) || empty($registre[$nom]['writable'])) {
-		return array('ok' => false, 'reason' => 'unknown_option', 'option' => $nom);
+		return ['ok' => false, 'reason' => 'unknown_option', 'option' => $nom];
 	}
 	$normalisee = association_config_cli_normaliser($valeur, $registre[$nom]);
 	if (!$normalisee['ok']) {
-		return array('ok' => false, 'reason' => 'invalid_value', 'option' => $nom);
+		return ['ok' => false, 'reason' => 'invalid_value', 'option' => $nom];
 	}
 	if (!association_config_cli_configuration_disponible(true)) {
-		return array('ok' => false, 'reason' => 'configuration_unavailable', 'option' => $nom);
+		return ['ok' => false, 'reason' => 'configuration_unavailable', 'option' => $nom];
 	}
 
 	$precedente = association_config_cli_valeur_effective($nom, $registre);
@@ -346,16 +346,16 @@ function association_config_cli_ecrire($nom, $valeur) {
 	}
 	if (!$verification) {
 		$restauree = association_config_cli_appliquer_etat($etat_initial, $registre);
-		return array(
+		return [
 			'ok' => false,
 			'reason' => 'write_failed',
 			'option' => $nom,
 			'rollback_restored' => $restauree,
-		);
+		];
 	}
 
 	$effective = association_config_cli_valeur_effective($nom, $registre);
-	return array(
+	return [
 		'ok' => true,
 		'option' => $nom,
 		'previous' => $precedente,
@@ -363,14 +363,14 @@ function association_config_cli_ecrire($nom, $valeur) {
 		'verified' => true,
 		'changed' => $precedente !== $effective,
 		'affected_options' => $affectees,
-	);
+	];
 }
 
 function association_config_cli_options_affectees($nom, $registre) {
 	if ($registre[$nom]['type'] !== 'aggregate_boolean') {
-		return array($nom);
+		return [$nom];
 	}
-	$options = array();
+	$options = [];
 	foreach ($registre as $option => $definition) {
 		if (strpos($option, 'debug.') === 0 && $definition['type'] === 'boolean') {
 			$options[] = $option;
@@ -380,11 +380,11 @@ function association_config_cli_options_affectees($nom, $registre) {
 }
 
 function association_config_cli_capturer_options($options, $registre) {
-	$etat = array();
+	$etat = [];
 	foreach ($options as $nom) {
-		$sentinelle = array('__association_config_cli_absent__' => $nom);
+		$sentinelle = ['__association_config_cli_absent__' => $nom];
 		$valeur = lire_config($registre[$nom]['path'], $sentinelle);
-		$etat[$nom] = array('exists' => $valeur !== $sentinelle, 'value' => $valeur !== $sentinelle ? $valeur : null);
+		$etat[$nom] = ['exists' => $valeur !== $sentinelle, 'value' => $valeur !== $sentinelle ? $valeur : null];
 	}
 	return $etat;
 }
@@ -410,7 +410,7 @@ function association_config_cli_etat_identique($etat, $registre) {
  */
 function association_config_cli_restaurer($snapshot) {
 	if (!association_config_cli_configuration_disponible(true)) {
-		return array('ok' => false, 'reason' => 'configuration_unavailable');
+		return ['ok' => false, 'reason' => 'configuration_unavailable'];
 	}
 	$validation = association_config_cli_valider_snapshot($snapshot);
 	if (!$validation['ok']) {
@@ -420,23 +420,23 @@ function association_config_cli_restaurer($snapshot) {
 	$etat_initial = association_config_cli_capturer_options(array_keys($validation['state']), $registre);
 	if (!association_config_cli_appliquer_etat($validation['state'], $registre)) {
 		$rollback = association_config_cli_appliquer_etat($etat_initial, $registre);
-		return array('ok' => false, 'reason' => 'restore_failed', 'rollback_restored' => $rollback);
+		return ['ok' => false, 'reason' => 'restore_failed', 'rollback_restored' => $rollback];
 	}
-	return array('ok' => true, 'restored' => count($validation['state']), 'verified' => true);
+	return ['ok' => true, 'restored' => count($validation['state']), 'verified' => true];
 }
 
 function association_config_cli_valider_snapshot($snapshot) {
 	if (!is_array($snapshot)
 		|| !isset($snapshot['format'])
-		|| !in_array($snapshot['format'], array('association-config-snapshot-v1', 'association-config-snapshot-v2'), true)
+		|| !in_array($snapshot['format'], ['association-config-snapshot-v1', 'association-config-snapshot-v2'], true)
 		|| !isset($snapshot['plugin'])
 		|| $snapshot['plugin'] !== 'association'
 		|| !isset($snapshot['options'])
 		|| !is_array($snapshot['options'])) {
-		return array('ok' => false, 'reason' => 'invalid_snapshot');
+		return ['ok' => false, 'reason' => 'invalid_snapshot'];
 	}
 	$registre = association_config_cli_registre();
-	$attendues = array();
+	$attendues = [];
 	foreach ($registre as $nom => $definition) {
 		if (!empty($definition['path'])) {
 			$attendues[] = $nom;
@@ -446,36 +446,36 @@ function association_config_cli_valider_snapshot($snapshot) {
 	sort($attendues);
 	sort($noms);
 	if ($snapshot['format'] === 'association-config-snapshot-v2' && $noms !== $attendues) {
-		return array('ok' => false, 'reason' => 'snapshot_options_mismatch');
+		return ['ok' => false, 'reason' => 'snapshot_options_mismatch'];
 	}
 	if ($snapshot['format'] === 'association-config-snapshot-v1') {
 		$legacy = association_config_cli_snapshot_v1_options($registre);
 		sort($legacy);
 		if ($noms !== $legacy) {
-			return array('ok' => false, 'reason' => 'snapshot_options_mismatch');
+			return ['ok' => false, 'reason' => 'snapshot_options_mismatch'];
 		}
 	}
-	$etat = array();
+	$etat = [];
 	foreach ($snapshot['options'] as $nom => $option) {
 		if (!is_array($option) || !array_key_exists('exists', $option) || !is_bool($option['exists'])) {
-			return array('ok' => false, 'reason' => 'invalid_snapshot', 'option' => $nom);
+			return ['ok' => false, 'reason' => 'invalid_snapshot', 'option' => $nom];
 		}
 		if ($option['exists']) {
 			if (!array_key_exists('value', $option)) {
-				return array('ok' => false, 'reason' => 'invalid_snapshot', 'option' => $nom);
+				return ['ok' => false, 'reason' => 'invalid_snapshot', 'option' => $nom];
 			}
 			$normalisee = association_config_cli_normaliser($option['value'], $registre[$nom]);
 			if (!$normalisee['ok']) {
-				return array('ok' => false, 'reason' => 'invalid_snapshot_value', 'option' => $nom);
+				return ['ok' => false, 'reason' => 'invalid_snapshot_value', 'option' => $nom];
 			}
 		}
-		$etat[$nom] = array('exists' => $option['exists'], 'value' => $option['exists'] ? $option['value'] : null);
+		$etat[$nom] = ['exists' => $option['exists'], 'value' => $option['exists'] ? $option['value'] : null];
 	}
-	return array('ok' => true, 'state' => $etat);
+	return ['ok' => true, 'state' => $etat];
 }
 
 function association_config_cli_snapshot_v1_options($registre) {
-	$options = array();
+	$options = [];
 	foreach ($registre as $nom => $definition) {
 		if (strpos($nom, 'debug.') === 0 && !empty($definition['path'])) {
 			$options[] = $nom;
@@ -489,14 +489,14 @@ function association_config_cli_code_sortie($resultat) {
 	if (!empty($resultat['ok'])) {
 		return 0;
 	}
-	if (in_array(isset($resultat['reason']) ? $resultat['reason'] : '', array(
+	if (in_array($resultat['reason'] ?? '', [
 		'unknown_option',
 		'invalid_value',
 		'invalid_snapshot',
 		'invalid_snapshot_value',
 		'snapshot_options_mismatch',
 		'invalid_format',
-	), true)) {
+	], true)) {
 		return 2;
 	}
 	return 1;

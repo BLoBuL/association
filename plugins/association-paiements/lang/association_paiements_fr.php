@@ -4,7 +4,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-$GLOBALS[$GLOBALS['idx_lang']] = array(
+$traductions = [
 	'titre_transactions' => 'Paiements',
 	'activite_bouton_modifier_inscription' => 'Modifier l’inscription',
 	'activite_content_cotisation_abandon' => 'Annulé',
@@ -45,4 +45,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'transaction_manquante_explication' => 'Vous devez modifier cette inscription pour générer une transaction.',
 	'transaction_remboursee' => 'Transaction remboursée.',
 	'transaction_numero' => 'Transaction : #@numero@',
-);
+];
+
+// SPIP 4.0 ignore la valeur de retour des fichiers de langue.
+if (!function_exists('lire_fichier_langue')) {
+	$GLOBALS[$GLOBALS['idx_lang']] = $traductions;
+}
+return $traductions;

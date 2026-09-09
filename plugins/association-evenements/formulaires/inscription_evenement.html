@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(){
         var container = document.getElementById('ie_saisies_container');
         if (!container) { window.location = url; return; }
         var original = container.innerHTML;
-        container.innerHTML = '<p class="ie-loading">Chargement…</p>';
+        container.innerHTML = '<p class="ie-loading">' + [(#VAL{association_evenements:chargement}|_T|json_encode)] + '</p>';
         fetch(url, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(function(r){ if (!r.ok) throw new Error('Network error'); return r.text(); })
         .then(function(html){

@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('_ECRIRE_INC_VERSION')) {
-    return;
+	return;
 }
 
 include_spip('inc/bandeau');

@@ -2,13 +2,17 @@
 
 $racine = dirname(__DIR__);
 $fichiers = array(
-	'export_cotisations.csv.html',
-	'prive/objets/liste/item_inscription_adherent.html',
-	'prive/objets/liste/item_destinataire_email_collectif.html',
-	'prive/objets/liste/transactions.html',
+	'plugins/association-adhesions/export_cotisations.csv.html',
+	'plugins/association-evenements/prive/objets/liste/item_inscription_adherent.html',
+	'plugins/association-adhesions/prive/objets/liste/item_destinataire_email_collectif.html',
+	'plugins/association-paiements/prive/objets/liste/transactions.html',
 );
 $erreurs = array();
 foreach ($fichiers as $fichier) {
+	if (!is_file($racine . '/' . $fichier)) {
+		$erreurs[] = 'Squelette introuvable : ' . $fichier;
+		continue;
+	}
 	$contenu = file_get_contents($racine . '/' . $fichier);
 	if (preg_match('/ASSO_COMPTES[^\n]*(?:cotisation|id_transaction)/i', $contenu)) {
 		$erreurs[] = $fichier . ' interroge encore le journal pour une cotisation';

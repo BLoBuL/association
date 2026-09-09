@@ -101,7 +101,7 @@ $source_squelette = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesi
 $source_helper = file_get_contents(PLUGIN_ROOT . '/plugins/association-adhesions/inc/justificatifs_cotisation.php');
 test_assert(
     str_contains($source_helper, "autoriser('modifier', 'document', \$document_id)")
-		&& str_contains($source_helper, "objet_associer(array('document' => \$document_id), array('cotisation' => \$ids['id_cotisation']))"),
+		&& str_contains($source_helper, "objet_associer(['document' => \$document_id], ['cotisation' => \$ids['id_cotisation']])"),
     'un échec de suppression réassocie le document après le contrôle préalable'
 );
 test_assert(str_contains($source_squelette, 'justificatifs-entete') && str_contains($source_squelette, 'justificatifs-pied'), 'le bloc de contrôle possède une hiérarchie visuelle dédiée');

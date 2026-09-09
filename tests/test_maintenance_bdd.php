@@ -13,6 +13,7 @@ $GLOBALS['association_test_fail_update_tables'] = array();
 $GLOBALS['association_test_transaction_snapshot'] = null;
 
 function include_spip($path) { return true; }
+require_once PLUGIN_ROOT . '/inc/association_capacites.php';
 function pipeline($nom, $flux) {
     $handlers = array(
 		'association_maintenance_bdd_preparer' => array(

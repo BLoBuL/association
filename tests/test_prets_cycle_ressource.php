@@ -52,7 +52,7 @@ prets_cycle_assert(
 	'Les identifiants relationnels des prêts ne sont pas typés et indexés.'
 );
 prets_cycle_assert(
-	str_contains($administration, "'1.1.1' => array(array('association_prets_migrer_identifiants_relationnels'))")
+	str_contains($administration, "'1.1.1' => [['association_prets_migrer_identifiants_relationnels']]")
 		&& str_contains($administration, 'MODIFY id_ressource BIGINT NOT NULL')
 		&& str_contains($administration, 'MODIFY id_emprunteur BIGINT NOT NULL')
 		&& str_contains($administration, 'Identifiants de prêt invalides'),

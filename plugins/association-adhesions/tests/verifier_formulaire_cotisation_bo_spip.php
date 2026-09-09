@@ -14,7 +14,7 @@ if (!$id_compte) {
 }
 
 $saisies = formulaires_editer_asso_cotisation_saisies($id_compte);
-$champs = array();
+$champs = [];
 $parcourir = function ($liste) use (&$parcourir, &$champs) {
 	foreach ((array) $liste as $saisie) {
 		if (!empty($saisie['options']['nom'])) {
@@ -27,7 +27,7 @@ $parcourir = function ($liste) use (&$parcourir, &$champs) {
 };
 $parcourir($saisies);
 
-$attendus = array(
+$attendus = [
 	'id_auteur',
 	'id_compte',
 	'id_categorie',
@@ -38,15 +38,15 @@ $attendus = array(
 	'reinscription',
 	'justification',
 	'notifier',
-);
+];
 $manquants = array_values(array_diff($attendus, array_unique($champs)));
 if ($manquants) {
 	fwrite(STDERR, 'Champs BO manquants : ' . implode(', ', $manquants) . "\n");
 	exit(1);
 }
 
-echo json_encode(array(
+echo json_encode([
 	'ok' => true,
 	'champs_metier' => count($attendus),
 	'cotisation_migree' => true,
-), JSON_UNESCAPED_SLASHES) . "\n";
+], JSON_UNESCAPED_SLASHES) . "\n";

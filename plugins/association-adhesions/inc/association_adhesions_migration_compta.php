@@ -17,7 +17,7 @@ function association_adhesions_migration_compta_manuelle(array $imputations, $co
 	while ($compte = sql_fetch($res)) {
 		$cible = ($compte['statut_cotisation'] ?? '') === 'ok' ? $compte_paiement : $compte_creance;
 		if ($cible && $cible !== ($compte['imputation'] ?? '')) {
-			sql_updateq('spip_asso_comptes', array('imputation' => $cible), 'id_compte=' . (int) $compte['id_compte']);
+			sql_updateq('spip_asso_comptes', ['imputation' => $cible], 'id_compte=' . (int) $compte['id_compte']);
 			$nb++;
 		}
 	}
@@ -27,13 +27,13 @@ function association_adhesions_migration_compta_manuelle(array $imputations, $co
 function association_adhesions_migration_compta_automatique() {
 	$creance = $GLOBALS['association_metas']['pc_cotisations_creance'] ?? '101';
 	$paiement = $GLOBALS['association_metas']['pc_cotisations_paiement'] ?? '102';
-	sql_updateq('spip_asso_comptes', array('depense' => 0), "(objet='cotisation' OR id_categorie>0) AND depense>0");
+	sql_updateq('spip_asso_comptes', ['depense' => 0], "(objet='cotisation' OR id_categorie>0) AND depense>0");
 	$res = sql_select('id_compte,imputation,statut_cotisation,id_auteur', 'spip_asso_comptes', "objet='cotisation' OR id_categorie>0");
 	$nb = 0;
 	while ($compte = sql_fetch($res)) {
 		$id_compte = (int) $compte['id_compte'];
 		$cible = ($compte['statut_cotisation'] ?? '') === 'ok' ? $paiement : $creance;
-		$set = array('imputation' => $cible);
+		$set = ['imputation' => $cible];
 		$id_auteur = (int) ($compte['id_auteur'] ?? 0);
 		if ($id_auteur > 0) {
 			$set['justification'] = association_adhesions_migration_justification_cotisation($id_auteur);

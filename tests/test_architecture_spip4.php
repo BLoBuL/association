@@ -663,8 +663,9 @@ $verifier(
 	strpos($fonctions_socle, "include_spip('inc/actions')") === false
 		&& strpos($fonctions_socle, "include_spip('inc/editer')") === false
 		&& strpos($fonctions_socle, "include_spip('inc/autoriser')") === false
-		&& substr_count($fonctions_socle, 'function ') === 5,
-	'Le fichier de fonctions du socle doit rester limite aux cinq fonctions transversales.'
+		&& substr_count($fonctions_socle, 'function ') === 6
+		&& str_contains($fonctions_socle, 'function filtre_association_pdf_texte_dist('),
+	'Le fichier de fonctions du socle doit rester limité aux cinq fonctions transversales et au filtre de texte PDF mutualisé.'
 );
 $options_socle = file_get_contents($racine . '/association_options.php');
 $options_adhesions = file_get_contents($racine . '/plugins/association-adhesions/association_adhesions_options.php');

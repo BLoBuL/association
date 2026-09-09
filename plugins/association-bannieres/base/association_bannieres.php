@@ -1,8 +1,11 @@
 <?php
-if (!defined('_ECRIRE_INC_VERSION')) { return; }
+
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
 
 function association_bannieres_declarer_tables_objets_sql($tables) {
-	$tables['spip_asso_bannieres'] = array(
+	$tables['spip_asso_bannieres'] = [
 		'page' => 'banniere',
 		'texte_objets' => 'association_bannieres:bannieres',
 		'texte_objet' => 'association_bannieres:banniere',
@@ -14,8 +17,8 @@ function association_bannieres_declarer_tables_objets_sql($tables) {
 		'titre' => 'titre AS titre, "" AS lang',
 		'date' => 'date_debut',
 		'principale' => 'oui',
-		'champs_editables' => array('titre', 'descriptif', 'url', 'emplacement', 'ordre', 'date_debut', 'date_fin', 'statut'),
-		'field' => array(
+		'champs_editables' => ['titre', 'descriptif', 'url', 'emplacement', 'ordre', 'date_debut', 'date_fin', 'statut'],
+		'field' => [
 			'id_banniere' => 'BIGINT NOT NULL',
 			'titre' => "TEXT NOT NULL DEFAULT ''",
 			'descriptif' => "TEXT NOT NULL DEFAULT ''",
@@ -26,13 +29,13 @@ function association_bannieres_declarer_tables_objets_sql($tables) {
 			'date_fin' => "DATE NOT NULL DEFAULT '0000-00-00'",
 			'statut' => "VARCHAR(20) NOT NULL DEFAULT 'publie'",
 			'maj' => 'TIMESTAMP NOT NULL',
-		),
-		'key' => array('PRIMARY KEY' => 'id_banniere', 'KEY emplacement' => 'emplacement', 'KEY statut' => 'statut'),
-		'rechercher_champs' => array('titre' => 8, 'descriptif' => 4, 'emplacement' => 2),
-		'statut_textes_instituer' => array('publie' => 'texte_statut_publie', 'prepa' => 'texte_statut_en_cours_redaction', 'poubelle' => 'texte_statut_poubelle'),
-		'statut' => array(array('champ' => 'statut', 'publie' => 'publie', 'previsu' => 'publie,prepa', 'exception' => array('statut', 'tout'))),
+		],
+		'key' => ['PRIMARY KEY' => 'id_banniere', 'KEY emplacement' => 'emplacement', 'KEY statut' => 'statut'],
+		'rechercher_champs' => ['titre' => 8, 'descriptif' => 4, 'emplacement' => 2],
+		'statut_textes_instituer' => ['publie' => 'texte_statut_publie', 'prepa' => 'texte_statut_en_cours_redaction', 'poubelle' => 'texte_statut_poubelle'],
+		'statut' => [['champ' => 'statut', 'publie' => 'publie', 'previsu' => 'publie,prepa', 'exception' => ['statut', 'tout']]],
 		'logo' => 'oui',
-	);
+	];
 	return $tables;
 }
 

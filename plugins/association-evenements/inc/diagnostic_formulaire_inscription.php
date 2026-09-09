@@ -17,7 +17,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  *   ayant deja calcule les donnees metier.
  * @return array
  */
-function association_diagnostic_formulaire_inscription($id_evenement, $contexte = array(), $sources = null) {
+function association_diagnostic_formulaire_inscription($id_evenement, $contexte = [], $sources = null) {
 	$id_evenement = intval($id_evenement);
 	$contexte = association_diagnostic_inscription_normaliser_contexte($contexte);
 
@@ -25,16 +25,16 @@ function association_diagnostic_formulaire_inscription($id_evenement, $contexte 
 		$sources = association_diagnostic_inscription_collecter_sources($id_evenement);
 	}
 
-	$sources += array(
-		'ouverture_inscription' => array(),
-		'eligibilite_inscription' => array(),
-		'affichage_dans_activites' => array(),
-		'gestions_places' => array(),
-		'configuration' => array(),
-		'regles_effectives' => array(),
-	);
+	$sources += [
+		'ouverture_inscription' => [],
+		'eligibilite_inscription' => [],
+		'affichage_dans_activites' => [],
+		'gestions_places' => [],
+		'configuration' => [],
+		'regles_effectives' => [],
+	];
 
-	$diagnostic = array(
+	$diagnostic = [
 		'format' => 'IE1',
 		'id_evenement' => $id_evenement,
 		'contexte' => $contexte,
@@ -45,7 +45,7 @@ function association_diagnostic_formulaire_inscription($id_evenement, $contexte 
 		'gestions_places' => $sources['gestions_places'],
 		'configuration' => $sources['configuration'],
 		'regles_effectives' => $sources['regles_effectives'],
-	);
+	];
 
 	$diagnostic = association_diagnostic_inscription_nettoyer($diagnostic);
 	$diagnostic['code'] = association_diagnostic_inscription_code($diagnostic['scenario']);
@@ -60,10 +60,10 @@ function association_diagnostic_formulaire_inscription($id_evenement, $contexte 
  * Le resultat conserve les valeurs de l'evenement et leurs valeurs effectives
  * afin de rendre visible toute surcharge liee au profil de session.
  */
-function association_inscription_regles_effectives($mode, $affichage, $gestions_places, $session = array()) {
-	$affichage = is_array($affichage) ? $affichage : array();
-	$gestions_places = is_array($gestions_places) ? $gestions_places : array();
-	$session = is_array($session) ? $session : array();
+function association_inscription_regles_effectives($mode, $affichage, $gestions_places, $session = []) {
+	$affichage = is_array($affichage) ? $affichage : [];
+	$gestions_places = is_array($gestions_places) ? $gestions_places : [];
+	$session = is_array($session) ? $session : [];
 	$profil = strtolower((string) ($session['radio_type_adherent'] ?? ''));
 	$est_mode_public = (strpos((string) $mode, 'public') !== false);
 	$accompagnants_configures = association_diagnostic_inscription_booleen($affichage['accompagnants'] ?? null);
@@ -79,10 +79,10 @@ function association_inscription_regles_effectives($mode, $affichage, $gestions_
 		$profil_session_applique = true;
 	}
 
-	return array(
+	return [
 		'affichage' => $affichage,
 		'gestions_places' => $gestions_places,
-		'diagnostic' => array(
+		'diagnostic' => [
 			'profil_session' => $profil !== '' ? $profil : 'inconnu',
 			'profil_session_applique' => $profil_session_applique,
 			'accompagnants_configures' => $accompagnants_configures,
@@ -91,8 +91,8 @@ function association_inscription_regles_effectives($mode, $affichage, $gestions_
 			'limite_effective' => max(0, intval($gestions_places['places_limites'] ?? 0)),
 			'places_disponibles' => max(0, intval($gestions_places['places_disponibles'] ?? 0)),
 			'places_attente_disponibles' => max(0, intval($gestions_places['places_en_attentes_disponible'] ?? 0)),
-		),
-	);
+		],
+	];
 }
 
 /**
@@ -101,21 +101,21 @@ function association_inscription_regles_effectives($mode, $affichage, $gestions_
 function association_diagnostic_inscription_contexte_formulaire($mode, $id_activite, $saisies, $famille_active = null) {
 	$mode = (string) $mode;
 	$analyse_saisies = association_diagnostic_inscription_analyser_saisies($saisies);
-	return array(
-		'interface' => in_array($mode, array('prive', 'multi_prive'), true) ? 'bo' : 'fo',
+	return [
+		'interface' => in_array($mode, ['prive', 'multi_prive'], true) ? 'bo' : 'fo',
 		'parcours' => (strpos($mode, 'multi') !== false) ? 'multi' : 'simple',
 		'operation' => intval($id_activite) > 0 ? 'modification' : 'creation',
 		'famille_active' => association_diagnostic_inscription_booleen($famille_active),
 		'champs_generes' => $analyse_saisies['champs_generes'],
 		'conditions_affichage' => $analyse_saisies['conditions_affichage'],
-	);
+	];
 }
 
 /**
  * Extrait uniquement la structure des saisies, jamais leurs valeurs ou defauts.
  */
 function association_diagnostic_inscription_analyser_saisies($saisies) {
-	$resultat = array('champs_generes' => array(), 'conditions_affichage' => array());
+	$resultat = ['champs_generes' => [], 'conditions_affichage' => []];
 	if (!is_array($saisies)) {
 		return $resultat;
 	}
@@ -123,13 +123,13 @@ function association_diagnostic_inscription_analyser_saisies($saisies) {
 		if (!is_array($saisie)) {
 			continue;
 		}
-		$options = (isset($saisie['options']) && is_array($saisie['options'])) ? $saisie['options'] : array();
+		$options = (isset($saisie['options']) && is_array($saisie['options'])) ? $saisie['options'] : [];
 		$nom = isset($options['nom']) ? (string) $options['nom'] : '';
 		if ($nom !== '') {
-			$resultat['champs_generes'][$nom] = array(
+			$resultat['champs_generes'][$nom] = [
 				'saisie' => (string) ($saisie['saisie'] ?? ''),
 				'obligatoire' => association_diagnostic_inscription_booleen($options['obligatoire'] ?? false),
-			);
+			];
 			if (!empty($options['afficher_si'])) {
 				$resultat['conditions_affichage'][$nom] = (string) $options['afficher_si'];
 			}
@@ -146,7 +146,7 @@ function association_diagnostic_inscription_analyser_saisies($saisies) {
 }
 
 function association_diagnostic_inscription_webmestre() {
-	foreach (array('visiteur_session', 'auteur_session') as $globale) {
+	foreach (['visiteur_session', 'auteur_session'] as $globale) {
 		if (($GLOBALS[$globale]['webmestre'] ?? '') === 'oui') {
 			return true;
 		}
@@ -163,8 +163,8 @@ function association_diagnostic_inscription_collecter_sources($id_evenement) {
 	include_spip('inc/fonctions/ouverture_inscription_evenement');
 	include_spip('inc/fonctions/eligibilite_inscription_evenement');
 
-	$configuration = array();
-	$cles_configuration = array(
+	$configuration = [];
+	$cles_configuration = [
 		'meta_cfg_event_config_accompagnants',
 		'meta_cfg_event_form_info_supp',
 		'meta_cfg_event_accompagnants',
@@ -175,10 +175,10 @@ function association_diagnostic_inscription_collecter_sources($id_evenement) {
 		'meta_cfg_event_quota_inscription_adherent',
 		'nb_inscription_quota_adherent',
 		'nb_jour_quota_adherent',
-	);
+	];
 	$metas = (isset($GLOBALS['association_metas']) && is_array($GLOBALS['association_metas']))
 		? $GLOBALS['association_metas']
-		: array();
+		: [];
 	foreach ($cles_configuration as $cle) {
 		if (array_key_exists($cle, $metas)) {
 			$configuration[$cle] = $metas[$cle];
@@ -188,45 +188,45 @@ function association_diagnostic_inscription_collecter_sources($id_evenement) {
 	$affichage = affichage_dans_activites($id_evenement);
 	$gestions_places = gestions_places($id_evenement);
 	$mode = (string) (_request('ie_mode') ?? 'public');
-	$regles = association_inscription_regles_effectives($mode, $affichage, $gestions_places, $GLOBALS['visiteur_session'] ?? array());
+	$regles = association_inscription_regles_effectives($mode, $affichage, $gestions_places, $GLOBALS['visiteur_session'] ?? []);
 
-	return array(
+	return [
 		'ouverture_inscription' => ouverture_inscription_evenement($id_evenement),
 		'eligibilite_inscription' => eligibilite_inscription_evenement($id_evenement),
 		'affichage_dans_activites' => $affichage,
 		'gestions_places' => $gestions_places,
 		'configuration' => $configuration,
 		'regles_effectives' => $regles['diagnostic'],
-	);
+	];
 }
 
 function association_diagnostic_inscription_normaliser_contexte($contexte) {
-	$contexte = is_array($contexte) ? $contexte : array();
+	$contexte = is_array($contexte) ? $contexte : [];
 	$interface = strtolower((string) ($contexte['interface'] ?? 'fo'));
 	$parcours = strtolower((string) ($contexte['parcours'] ?? 'simple'));
 	$operation = strtolower((string) ($contexte['operation'] ?? 'creation'));
 
-	return array(
-		'interface' => in_array($interface, array('fo', 'bo'), true) ? $interface : 'inconnu',
-		'parcours' => in_array($parcours, array('simple', 'multi'), true) ? $parcours : 'inconnu',
-		'operation' => in_array($operation, array('creation', 'modification'), true) ? $operation : 'inconnue',
+	return [
+		'interface' => in_array($interface, ['fo', 'bo'], true) ? $interface : 'inconnu',
+		'parcours' => in_array($parcours, ['simple', 'multi'], true) ? $parcours : 'inconnu',
+		'operation' => in_array($operation, ['creation', 'modification'], true) ? $operation : 'inconnue',
 		'famille_active' => association_diagnostic_inscription_booleen($contexte['famille_active'] ?? null),
-		'champs_generes' => is_array($contexte['champs_generes'] ?? null) ? $contexte['champs_generes'] : array(),
-		'conditions_affichage' => is_array($contexte['conditions_affichage'] ?? null) ? $contexte['conditions_affichage'] : array(),
-	);
+		'champs_generes' => is_array($contexte['champs_generes'] ?? null) ? $contexte['champs_generes'] : [],
+		'conditions_affichage' => is_array($contexte['conditions_affichage'] ?? null) ? $contexte['conditions_affichage'] : [],
+	];
 }
 
 function association_diagnostic_inscription_scenario($contexte, $sources) {
-	$affichage = is_array($sources['affichage_dans_activites']) ? $sources['affichage_dans_activites'] : array();
-	$ouverture = is_array($sources['ouverture_inscription']) ? $sources['ouverture_inscription'] : array();
-	$eligibilite = is_array($sources['eligibilite_inscription']) ? $sources['eligibilite_inscription'] : array();
-	$configuration = is_array($sources['configuration']) ? $sources['configuration'] : array();
-	$regles = is_array($sources['regles_effectives']) ? $sources['regles_effectives'] : array();
-	$tarifs = (isset($affichage['montant']) && is_array($affichage['montant'])) ? $affichage['montant'] : array();
+	$affichage = is_array($sources['affichage_dans_activites']) ? $sources['affichage_dans_activites'] : [];
+	$ouverture = is_array($sources['ouverture_inscription']) ? $sources['ouverture_inscription'] : [];
+	$eligibilite = is_array($sources['eligibilite_inscription']) ? $sources['eligibilite_inscription'] : [];
+	$configuration = is_array($sources['configuration']) ? $sources['configuration'] : [];
+	$regles = is_array($sources['regles_effectives']) ? $sources['regles_effectives'] : [];
+	$tarifs = (isset($affichage['montant']) && is_array($affichage['montant'])) ? $affichage['montant'] : [];
 	// La configuration historique applique le quota souple quand la meta manque.
 	$type_quota = strtolower((string) ($configuration['meta_cfg_event_type_quota'] ?? 'souple'));
 
-	return array(
+	return [
 		'interface' => $contexte['interface'],
 		'operation' => $contexte['operation'],
 		'inscription_ouverte' => association_diagnostic_inscription_booleen($ouverture['inscription_ouverte'] ?? null),
@@ -236,7 +236,7 @@ function association_diagnostic_inscription_scenario($contexte, $sources) {
 		'payant' => association_diagnostic_inscription_booleen($affichage['payant'] ?? null),
 		'accompagnants' => association_diagnostic_inscription_booleen($affichage['accompagnants'] ?? null),
 		'type_inscrits' => strtolower((string) ($affichage['type_inscrits_evenement'] ?? '')),
-		'quota' => in_array($type_quota, array('strict', 'souple'), true) ? $type_quota : 'inconnu',
+		'quota' => in_array($type_quota, ['strict', 'souple'], true) ? $type_quota : 'inconnu',
 		'places' => association_diagnostic_inscription_booleen($affichage['places'] ?? null),
 		'attentes' => association_diagnostic_inscription_booleen($affichage['attentes'] ?? null),
 		'validation' => association_diagnostic_inscription_booleen($affichage['validation'] ?? null),
@@ -247,16 +247,16 @@ function association_diagnostic_inscription_scenario($contexte, $sources) {
 		'places_disponibles' => max(0, intval($regles['places_disponibles'] ?? 0)),
 		'places_attente_disponibles' => max(0, intval($regles['places_attente_disponibles'] ?? 0)),
 		'profil_session_applique' => association_diagnostic_inscription_booleen($regles['profil_session_applique'] ?? null),
-	);
+	];
 }
 
 function association_diagnostic_inscription_code($scenario) {
-	$type_inscrits = array('public' => 'P', 'prive' => 'R', 'strict' => 'S');
-	$quota = array('souple' => 'S', 'strict' => 'T');
+	$type_inscrits = ['public' => 'P', 'prive' => 'R', 'strict' => 'S'];
+	$quota = ['souple' => 'S', 'strict' => 'T'];
 	$interface = strtoupper($scenario['interface'] ?? 'X');
 	$operation = (($scenario['operation'] ?? '') === 'modification') ? 'MO' : ((($scenario['operation'] ?? '') === 'creation') ? 'CR' : 'OX');
 
-	return implode('-', array(
+	return implode('-', [
 		'IE1',
 		$interface,
 		$operation,
@@ -278,7 +278,7 @@ function association_diagnostic_inscription_code($scenario) {
 		'PD' . association_diagnostic_inscription_nombre_code($scenario['places_disponibles'] ?? 0, 3),
 		'AE' . association_diagnostic_inscription_nombre_code($scenario['places_attente_disponibles'] ?? 0, 3),
 		'PS' . association_diagnostic_inscription_bit($scenario['profil_session_applique'] ?? null),
-	));
+	]);
 }
 
 function association_diagnostic_inscription_nombre_code($valeur, $longueur) {
@@ -302,7 +302,7 @@ function association_diagnostic_inscription_bit($valeur) {
 
 function association_diagnostic_inscription_liste($valeur) {
 	if (!is_array($valeur)) {
-		return array();
+		return [];
 	}
 	$valeur = array_values(array_unique(array_filter(array_map('strval', $valeur), 'strlen')));
 	sort($valeur, SORT_STRING);
@@ -319,7 +319,7 @@ function association_diagnostic_inscription_nettoyer($valeur, $cle = '') {
 	if (!is_array($valeur)) {
 		return is_object($valeur) ? '[objet]' : $valeur;
 	}
-	$resultat = array();
+	$resultat = [];
 	foreach ($valeur as $sous_cle => $sous_valeur) {
 		$resultat[$sous_cle] = association_diagnostic_inscription_nettoyer($sous_valeur, $sous_cle);
 	}

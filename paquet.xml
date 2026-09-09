@@ -48,6 +48,7 @@
 	<pipeline nom="association_comptabiliser_operation" action="" />
 	<pipeline nom="association_enregistrer_vente" action="" />
 	<pipeline nom="association_notifier_metier" action="" />
+	<pipeline nom="association_programmer_campagne" action="" />
 
 	<necessite nom="saisies" compatibilite="[4.0.0;[" />
 

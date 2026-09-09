@@ -47,9 +47,9 @@
 		<div class="editer editer_type_op">
 			<label for="type_op"><strong><:association_compta:direction_plan:></strong></label>
 			<select name="type_op" id="type_op" class="formo">
-				<option value="multi" [(#ENV{direction}|=={multi}|?{selected="selected"})]>multi</option>
-				<option value="credit" [(#ENV{direction}|=={credit}|?{selected="selected"})]>credit</option>
-				<option value="debit" [(#ENV{direction}|=={debit}|?{selected="selected"})]>debit</option>
+				<option value="multi" [(#ENV{type_op}|=={multi}|?{selected="selected"})]><:association_compta:direction_multi:></option>
+				<option value="credit" [(#ENV{type_op}|=={credit}|?{selected="selected"})]><:association_compta:direction_credit:></option>
+				<option value="debit" [(#ENV{type_op}|=={debit}|?{selected="selected"})]><:association_compta:direction_debit:></option>
 			</select>
 		</div>
 	

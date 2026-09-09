@@ -1,5 +1,6 @@
 [(#AUTORISER{dons_menu}|sinon_interdire_acces)]
 <h1 class="grostitre"><:association_dons:tous_les_dons:></h1>
+<p><a href="[(#URL_ECRIRE{configurer_association,config=info})]"><:association_dons:recu_fiscal_emetteur:></a></p>
 #SET{annee,#ENV{annee,#VAL{Y}|date}}
 #SET{debut,#GET{annee}|concat{-01-01}}
 #SET{fin,#GET{annee}|plus{1}|concat{-01-01}}
@@ -25,6 +26,7 @@
 			<td>[(#ARGENT|number_format{2,',',' '})]&nbsp;&euro;</td><td>#COLIS</td><td>[(#VALEUR|number_format{2,',',' '})]&nbsp;&euro;</td>
 			<td>[(#CONTREPARTIE|propre)]</td><td class="action">
 				[(#AUTORISER{modifier,don,#ID_DON}|oui)<a href="[(#URL_ECRIRE{edit_don,id_don=#ID_DON})]" class="btn btn_mini"><:association_dons:mettre_a_jour_le_don:></a>]
+				[(#ID_ADHERENT|>{0}|oui)[(#AUTORISER{associer,dons}|oui)<a class="btn btn_mini" href="[(#URL_ACTION_AUTEUR{exporter_recu_fiscal_pdf,#VAL{specimen-}|concat{#ID_ADHERENT,-,#GET{annee}}})]"><:association_dons:recu_fiscal_apercu:></a>]]
 				[(#AUTORISER{supprimer,don,#ID_DON}|oui)[(#BOUTON_ACTION{<:association_dons:supprimer_le_don:>,#URL_ACTION_AUTEUR{supprimer_dons,#ID_DON,#SELF},btn_mini btn_danger,<:association_dons:confirmer_suppression:>})]]
 			</td>
 		</tr>

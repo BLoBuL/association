@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Association — helper de logs avec catégories métier et niveau configurable.
  *
@@ -34,15 +35,27 @@ function association_log_categories_ajouter($definitions, $categories) {
 }
 
 function association_log_categories_defaut() {
-	$definitions = array(
-		'autorisations' => array('ordre' => 10, 'label' => _T('association:log_cat_autorisations')),
-		'cron' => array('ordre' => 70, 'label' => _T('association:log_cat_cron')),
-		'migration' => array('ordre' => 110, 'label' => _T('association:log_cat_migration')),
-		'sync' => array('ordre' => 120, 'label' => _T('association:log_cat_sync')),
-	);
+	$definitions = [
+		'autorisations' => [
+			'ordre' => 10,
+			'label' => _T('association:log_cat_autorisations'),
+		],
+		'cron' => [
+			'ordre' => 70,
+			'label' => _T('association:log_cat_cron'),
+		],
+		'migration' => [
+			'ordre' => 110,
+			'label' => _T('association:log_cat_migration'),
+		],
+		'sync' => [
+			'ordre' => 120,
+			'label' => _T('association:log_cat_sync'),
+		],
+	];
 	$definitions = pipeline('association_log_categories', $definitions);
 	uasort($definitions, function ($a, $b) { return $a['ordre'] <=> $b['ordre']; });
-	$categories = array();
+	$categories = [];
 	foreach ($definitions as $cle => $definition) {
 		$categories[$cle] = $definition['label'];
 	}
@@ -67,7 +80,7 @@ function association_log_doit_logger($categorie, $level = 'debug') {
 
 	// Debug : piloté par la configuration
 	$cfg = lire_config('association/debug/categories/' . strtolower(trim($categorie)), 'off');
-	return ($cfg === 'on');
+	return $cfg === 'on';
 }
 
 /**
@@ -96,25 +109,25 @@ function association_log_suffixe($level) {
  */
 function association_log_caller($depth = 6) {
 	if (!function_exists('debug_backtrace')) {
-		return array('file' => '', 'line' => 0);
+		return ['file' => '', 'line' => 0];
 	}
 
 	$bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $depth);
-	$skip = array(basename(__FILE__), 'association_autoriser.php');
+	$skip = [basename(__FILE__), 'association_autoriser.php'];
 
 	foreach ($bt as $frame) {
 		$f = isset($frame['file']) ? basename($frame['file']) : '';
 		if ($f && !in_array($f, $skip)) {
-			return array('file' => $f, 'line' => isset($frame['line']) ? intval($frame['line']) : 0);
+			return ['file' => $f, 'line' => isset($frame['line']) ? intval($frame['line']) : 0];
 		}
 	}
 
 	// Fallback : premier frame disponible
-	$frame = isset($bt[0]) ? $bt[0] : array();
-	return array(
+	$frame = $bt[0] ?? [];
+	return [
 		'file' => isset($frame['file']) ? basename($frame['file']) : 'unknown',
 		'line' => isset($frame['line']) ? intval($frame['line']) : 0,
-	);
+	];
 }
 
 /**
@@ -126,7 +139,7 @@ function association_log_caller($depth = 6) {
  * @param array  $contexte   Données de contexte (ids, valeurs, etc.)
  * @param bool   $backtrace  Inclure fichier:ligne de l'appelant dans le message (défaut : true)
  */
-function association_log($categorie, $message, $level = 'debug', $contexte = array(), $backtrace = true) {
+function association_log($categorie, $message, $level = 'debug', $contexte = [], $backtrace = true) {
 	if (!association_log_doit_logger($categorie, $level)) {
 		return;
 	}
@@ -145,6 +158,5 @@ function association_log($categorie, $message, $level = 'debug', $contexte = arr
 		$ctx = ' ctx=' . json_encode($contexte, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 	}
 
-	spip_log($categorie .'-'.  $message . $ctx, 'association'  . association_log_suffixe($level));
+	spip_log($categorie . '-' . $message . $ctx, 'association' . association_log_suffixe($level));
 }
-

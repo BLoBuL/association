@@ -5,7 +5,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 function association_groupes_association_capacites($capacites) {
-	$capacites['groupes'] = array('plugin' => 'association_groupes');
+	$capacites['groupes'] = ['plugin' => 'association_groupes'];
 
 	return $capacites;
 }

@@ -22,6 +22,10 @@ $GLOBALS['test_statuts'] = array();
 $GLOBALS['test_select_rows'] = array();
 
 function include_spip($chemin) { return true; }
+function test_plugin_actif($prefixe) {
+    return in_array($prefixe, ['association_adhesions', 'association_compta', 'association_paiements', 'association_communication'], true);
+}
+require_once PLUGIN_ROOT . '/inc/association_capacites.php';
 function association_log($canal, $message, $niveau = 'info') { return true; }
 function lire_config($cle) { return $GLOBALS['test_config'][$cle] ?? null; }
 function charger_fonction($fonction, $repertoire) {

@@ -11,21 +11,21 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * conserve l'accès aux écritures historiques identifiées par id_journal.
  */
 function association_prets_compte_options() {
-	return array(
+	return [
 		'legacy_id_journal' => true,
 		'legacy_justification_prefix' => _T('association_prets:pret_nd'),
-	);
+	];
 }
 
 function association_prets_compte_lire($id_pret) {
 	if (!association_plugin_actif('association_compta')) {
-		return array();
+		return [];
 	}
 	include_spip('inc/association_compta_ecritures');
-	$ecritures = association_compta_ecritures_objet_lister('pret', $id_pret, association_prets_compte_options() + array(
+	$ecritures = association_compta_ecritures_objet_lister('pret', $id_pret, association_prets_compte_options() + [
 		'champs' => 'id_compte,journal,recette,id_auteur,id_objet,objet',
-	));
-	return $ecritures[0] ?? array();
+	]);
+	return $ecritures[0] ?? [];
 }
 
 function association_prets_compte_enregistrer($id_pret, array $donnees) {
@@ -64,14 +64,14 @@ function association_prets_synchroniser_statut_ressource($id_ressource) {
 	}
 	$actifs = sql_countsel(
 		'spip_asso_prets',
-		array(
+		[
 			'id_ressource=' . $id_ressource,
 			"(date_retour IS NULL OR date_retour='' OR date_retour='0000-00-00')",
-		)
+		]
 	);
 	return sql_updateq(
 		'spip_asso_ressources',
-		array('statut' => intval($actifs) > 0 ? 'reserve' : 'ok'),
+		['statut' => intval($actifs) > 0 ? 'reserve' : 'ok'],
 		'id_ressource=' . $id_ressource
 	) !== false;
 }

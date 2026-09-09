@@ -10,8 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AssociationConfigLire extends Command
 {
-	protected function configure()
-	{
+	protected function configure() {
 		$this->setName('association:config:lire')
 			->setDescription('Lit les options de configuration autorisees du plugin Association.')
 			->addArgument('option', InputArgument::OPTIONAL, 'Option autorisee, par exemple debug ou debug.inscriptions')
@@ -20,10 +19,9 @@ class AssociationConfigLire extends Command
 			->addOption('pretty', null, InputOption::VALUE_NONE, 'Indente la sortie JSON');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$format = strtolower((string) $input->getOption('format'));
-		if (!in_array($format, array('human', 'json'), true)) {
+		if (!in_array($format, ['human', 'json'], true)) {
 			$output->writeln('Format invalide : utiliser human ou json.');
 			return self::INVALID;
 		}
@@ -53,20 +51,19 @@ class AssociationConfigLire extends Command
 		return $code;
 	}
 
-	private function afficherResultat(OutputInterface $output, $format, $pretty, array $resultat)
-	{
-		$payload = array(
+	private function afficherResultat(OutputInterface $output, $format, $pretty, array $resultat) {
+		$payload = [
 			'status' => !empty($resultat['ok']) ? 'ok' : 'error',
 			'command' => 'association:config:lire',
-		);
+		];
 		if (!empty($resultat['ok'])) {
 			$payload['options'] = $resultat['options'];
 			if (isset($resultat['snapshot'])) {
 				$payload['snapshot'] = $resultat['snapshot'];
 			}
 		} else {
-			$payload['reason'] = isset($resultat['reason']) ? $resultat['reason'] : 'unknown_error';
-			$payload['option'] = isset($resultat['option']) ? $resultat['option'] : null;
+			$payload['reason'] = $resultat['reason'] ?? 'unknown_error';
+			$payload['option'] = $resultat['option'] ?? null;
 		}
 
 		if ($format === 'json') {
@@ -87,8 +84,7 @@ class AssociationConfigLire extends Command
 		}
 	}
 
-	private function formaterValeur($valeur)
-	{
+	private function formaterValeur($valeur) {
 		return is_array($valeur)
 			? json_encode($valeur, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
 			: (string) $valeur;

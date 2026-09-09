@@ -8,8 +8,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * Vérifie les listes d'adresses utilisées par les notifications de la suite.
  */
 function association_communication_configurer_verifier($config) {
-	$erreurs = array();
-	$champs = array(
+	$erreurs = [];
+	$champs = [
 		'email',
 		'config_destinataires_creation_cotisation_adh',
 		'config_destinataires_creation_cotisation_tresorier',
@@ -17,7 +17,7 @@ function association_communication_configurer_verifier($config) {
 		'notification_gis_config_email',
 		'config_envoi_recu_adhesion_cc',
 		'config_envoi_recu_participation_cc',
-	);
+	];
 
 	foreach ($champs as $champ) {
 		$valeur = trim((string) _request($champ));
