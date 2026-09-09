@@ -5,7 +5,7 @@
 <thead><tr><th><:info_numero_abbreviation:></th><th><:association_evenements:activite_libelle_nomcomplet:></th><th><:association_evenements:email:></th><th><:association_evenements:pdf_nombre:></th><th><:association_evenements:pdf_statut:></th></tr></thead>
 <tbody>
 <BOUCLE_inscriptions(DATA){source table,#ENV**{lignes}}>
-<tr><td>[(#VALEUR{id_activite}|intval)]</td><td>[(#VALEUR{prenom_inscrit}|association_pdf_texte)] [(#VALEUR{nom_inscrit}|association_pdf_texte)]</td><td>[(#VALEUR{email_inscrit}|association_pdf_texte)]</td><td>[(#VALEUR{nombre_inscrits}|intval)]</td><td>[(#VALEUR{statut}|association_pdf_texte)]</td></tr>
+<tr><td>[(#VALEUR**{id_activite}|intval)]</td><td>[(#VALEUR**{prenom_inscrit}|association_pdf_texte)] [(#VALEUR**{nom_inscrit}|association_pdf_texte)]</td><td>[(#VALEUR**{email_inscrit}|association_pdf_texte)]</td><td>[(#VALEUR**{nombre_inscrits}|intval)]</td><td>[(#VALEUR**{statut}|association_pdf_texte)]</td></tr>
 </BOUCLE_inscriptions>
 </tbody></table>
 </page>

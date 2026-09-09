@@ -10,10 +10,10 @@ th { background: #eee; }
 <h1>[(#ENV**{titre}|association_pdf_texte)]</h1>
 <B_lignes>
 <table>
-<thead><tr><BOUCLE_colonnes(DATA){source table,#ENV**{colonnes}}><th>[(#VALEUR|association_pdf_texte)]</th></BOUCLE_colonnes></tr></thead>
+<thead><tr><BOUCLE_colonnes(DATA){source table,#ENV**{colonnes}}><th>[(#VALEUR**|association_pdf_texte)]</th></BOUCLE_colonnes></tr></thead>
 <tbody>
 <BOUCLE_lignes(DATA){source table,#ENV**{lignes}}>
-<tr><BOUCLE_cellules(DATA){source table,#VALEUR}><td>[(#VALEUR|association_pdf_texte)]</td></BOUCLE_cellules></tr>
+<tr><BOUCLE_cellules(DATA){source table,#VALEUR**}><td>[(#VALEUR**|association_pdf_texte)]</td></BOUCLE_cellules></tr>
 </BOUCLE_lignes>
 </tbody></table>
 </B_lignes>
