@@ -1,6 +1,8 @@
 <?php
 
 define('_ECRIRE_INC_VERSION', 1);
+define('_LOG_AVERTISSEMENT', 4);
+function spip_log($message, $journal) {}
 function include_spip($fichier) {}
 function _T($chaine) { return $chaine; }
 function _request($nom) { return $GLOBALS['requete'][$nom] ?? null; }

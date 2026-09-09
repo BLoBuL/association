@@ -11,6 +11,7 @@ function action_exporter_adherents_pdf_dist() {
 	$securiser_action = charger_fonction('securiser_action', 'inc');
 	$securiser_action();
 	if (!autoriser('associer', 'adherents')) {
+		spip_log('Export PDF refusé : autorisation adhérents absente.', 'association_pdf' . _LOG_AVERTISSEMENT);
 		return false;
 	}
 	include_spip('inc/association_adhesions_export');
@@ -18,6 +19,7 @@ function action_exporter_adherents_pdf_dist() {
 	$colonnes = association_adhesions_export_colonnes($selection);
 	$brut = _request('id_auteur_boucle');
 	if (!$colonnes || !is_string($brut) || !preg_match('/^[1-9][0-9]*(,[1-9][0-9]*)*$/D', $brut)) {
+		spip_log('Export PDF refusé : colonnes=' . count($colonnes) . ', type_identifiants=' . gettype($brut), 'association_pdf' . _LOG_AVERTISSEMENT);
 		return false;
 	}
 	$ids = array_values(array_unique(array_map('intval', explode(',', $brut))));
