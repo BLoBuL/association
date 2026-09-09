@@ -167,8 +167,11 @@ L'action contrôle le jeton et les droits sur l'événement avant de lire les pa
 Le flux est servi sans fichier nominatif persistant et avec un cache HTTP privé désactivé.
 Le socle mutualise seulement l'adaptateur : il n'impose pas SpiPDF à son activation.
 Les exports Adhésions et Événements utilisent cet adaptateur. Dons propose
-uniquement un aperçu explicitement non valable fiscalement. L'installation
-sur le site de test et la qualification distante restent à établir.
+uniquement un aperçu explicitement non valable fiscalement. SpiPDF 2.2.1 est
+installé sur test-fiafe ; quatre PDF synthétiques ont été générés avec le vrai
+SPIP 4.4.23 et leurs douze pages inspectées le 9 septembre 2026. Cette preuve
+serveur ne remplace pas la recette des actions dans un navigateur BO authentifié,
+qui reste à effectuer.
 
 **Compléments facultatifs.** Adhésions, Comptabilité, Paiements et Communication.
 

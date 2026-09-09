@@ -28,6 +28,10 @@ Référence contrôlée : tag SPIP `v4.0.0`, commit `39ea7576e05e9d582d12e779340
 
 ## Qualité et preuves
 
+Cette section et la liste suivante décrivent le relevé initial du 8 septembre.
+Le complément du 9 septembre ci-dessous actualise les exports et le déploiement ;
+le nombre historique de diagnostics PHPStan n'a pas été remesuré.
+
 - Configuration ECS avec le jeu de règles SPIP officiel fourni par `spip-league/easy-coding-standard`. Normalisation initiale de 336 fichiers, puis second passage de convergence. Contrôle final : **0 erreur, 0 différence** sur son périmètre. Les dépendances, traductions, tests et documentation sont exclus de ce contrôle de style.
 - `composer test` lance chaque script dans un processus distinct. Une sortie PHP Warning, Fatal error, Parse error ou Deprecated constitue désormais un échec, même si le processus retourne zéro.
 - 153 scripts passent, dont les nouveaux tests des droits sur 13 actions, du contrat de campagne avec/sans fournisseur, des autorisations du plan et des 31 fichiers de langue avec les deux modes de chargement.
@@ -70,6 +74,38 @@ Référence contrôlée : tag SPIP `v4.0.0`, commit `39ea7576e05e9d582d12e779340
   sous PHP 8.4 demeure dans cet environnement, pas dans le code du plugin.
 - Ces preuves locales ne valent pas encore recette distante, qualification
   fiscale ni validation exhaustive des combinaisons de plugins.
+
+### Clôture technique du 9 septembre : déploiement et preuve serveur
+
+- Code exécuté sur test-fiafe : `f334fe07`, branche `codex/conformite-spip-bdc`
+  poussée. Les correctifs de confirmation d'événement déjà présents sur le site
+  (`bb472586`) ont été repris avant déploiement, sans écrasement de leur logique.
+- SpiPDF 2.2.1 (`b8c27e46c6ca8ca02efc952aca86a71766fe6776`) installé dans
+  `plugins/spipdf`. Environnement réel : SPIP 4.4.23, PHP 8.4.21, 94 plugins actifs.
+  Déploiements bornés par manifestes et empreintes, précédés de contrôles à blanc.
+  Le code antérieur est récupérable depuis Git ; aucune donnée métier supprimée.
+- Tests après intégration : 158 scripts sans échec ; contrôle de syntaxe de
+  551 fichiers PHP sans échec ; ECS sans erreur ni différence sur son périmètre.
+- Quatre documents synthétiques générés sur le serveur : adhérents (140 lignes,
+  7 pages), inscriptions (45 participants, 3 pages), sélection vide (1 page),
+  spécimen Dons (1 page). Les douze pages finales ont été rendues et inspectées.
+  Accents, dernières lignes et texte littéral contenant des chevrons vérifiés.
+  Sous SPIP 4.4, les valeurs DATA sont récupérées sans traitement implicite puis
+  explicitement échappées deux fois pour le nettoyage de SpiPDF.
+- Le formulaire de configuration de l'organisme a été rendu avec le vrai SPIP
+  en contexte administrateur côté serveur. Aucune identité réelle ni qualité
+  fiscale n'a été inventée ou enregistrée : ces informations restent à renseigner.
+- HTTP public 200 ; journal SPIP sans entrée d'erreur sur les vingt minutes
+  précédant le relevé de 09:06:52 (+02:00). Chrome affiche l'accueil public,
+  mais son rendu demeure très sommaire : ce constat n'est pas une validation
+  ergonomique. Le BO Chrome redirige vers la connexion ; aucune recette
+  navigateur authentifiée des actions PDF n'est revendiquée.
+- Les dix fichiers temporaires de transfert et de recette créés dans le `tmp`
+  du site ont été retirés après contrôle de leurs chemins exacts. Les sources
+  et artefacts synthétiques restent disponibles localement.
+- Réserves : émission fiscale définitive désactivée (spécimen uniquement),
+  PHPStan non qualifié, matrice complète des modules et migration DEV non
+  rejouées dans ce lot. Aucun email, paiement ou changement de données métier.
 
 Référence fiscale consultée pour les champs, sans certification juridique :
 [formulaire officiel 2041-RD](https://www.impots.gouv.fr/formulaire/2041-rd/recu-des-dons-et-versements-effectues-par-les-particuliers-au-titre-des-articles).
