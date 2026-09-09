@@ -107,6 +107,43 @@ le nombre historique de diagnostics PHPStan n'a pas été remesuré.
   PHPStan non qualifié, matrice complète des modules et migration DEV non
   rejouées dans ce lot. Aucun email, paiement ou changement de données métier.
 
+### Recette BO authentifiée du 9 septembre (suite)
+
+- Connexion Chrome avec le coffre, sans exposition du credential ; auteur 2,
+  compte `blobul_ai` administrateur/webmestre vérifié. Une session Chrome
+  éphémère alimentée en mémoire a résolu les échecs répétés de téléchargement
+  du profil persistant. Aucune réinitialisation de mot de passe.
+- Les dix champs d'organisme ont été renseignés avec des valeurs RECETTE,
+  enregistrés par le formulaire réel puis relus après rechargement. Les dix
+  valeurs initiales ont été restaurées par ce même formulaire et relues.
+- Régression reproduite : l'export PDF d'un seul adhérent répondait HTTP 204.
+  Le journal borné a établi que l'identifiant arrivait comme entier. Le contrôle
+  de type ne tolérait que les chaînes ; il accepte désormais un entier positif
+  tout en refusant tableaux, booléens, nombres décimaux et identifiants négatifs.
+  Le test couvre cette représentation réelle de la requête.
+- L'adaptateur termine explicitement sa réponse binaire avant le retour dans
+  l'aiguilleur SPIP. Les refus sont journalisés sans contenu de profil.
+- Le raccourci PDF de l'événement était absent : ajout d'un lien signé,
+  conditionné par `gererinscriptions`, avec libellé traduit et icône Font Awesome.
+- Trois téléchargements par les contrôles BO ont été obtenus et leurs trois
+  pages inspectées : adhérent synthétique 249 (seule colonne ID, sélection
+  filtrée), événement 241 (inscriptions 4 et 5), spécimen du don synthétique 1
+  (50 EUR, émetteur RECETTE). Les deux statuts de l'événement sont présents ;
+  l'export n'est pas limité aux seuls inscrits actifs.
+- Commits poussés et déployés : `a2d38143`, `a6884c55`, `e7a509b8`, puis
+  `3e5bde30`. Empreintes avant/après contrôlées et changements distants limités
+  aux quatre fichiers concernés. Retour arrière disponible depuis `ba137012`.
+- Tests finaux : `php tests/run.php --verbose`, 158 scripts sans échec.
+  Un premier lancement silencieux interrompu n'est pas compté comme preuve.
+- Public : les feuilles CSS répondent 200. La feuille `css/theme.css` résolue
+  est celle de Zcore 4.0.0, vide ; aucune balise viewport n'est présente. En
+  émulation mobile 390 px, la largeur du document atteint 1129 px. Le thème
+  et le responsive public restent donc non corrigés et non qualifiés.
+- Restent également les variantes négatives BO (droits insuffisants, sélection
+  vide/invalide), le contrôle clavier des cases d'export actuellement masquées
+  par CSS, la revue du traitement transversal des réglages de debug lors de
+  l'enregistrement d'une autre section, et la matrice/migration DEV complète.
+
 Référence fiscale consultée pour les champs, sans certification juridique :
 [formulaire officiel 2041-RD](https://www.impots.gouv.fr/formulaire/2041-rd/recu-des-dons-et-versements-effectues-par-les-particuliers-au-titre-des-articles).
 

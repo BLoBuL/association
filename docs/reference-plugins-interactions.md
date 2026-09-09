@@ -170,8 +170,10 @@ Les exports Adhésions et Événements utilisent cet adaptateur. Dons propose
 uniquement un aperçu explicitement non valable fiscalement. SpiPDF 2.2.1 est
 installé sur test-fiafe ; quatre PDF synthétiques ont été générés avec le vrai
 SPIP 4.4.23 et leurs douze pages inspectées le 9 septembre 2026. Cette preuve
-serveur ne remplace pas la recette des actions dans un navigateur BO authentifié,
-qui reste à effectuer.
+serveur a été complétée par trois téléchargements BO Chrome authentifiés le
+9 septembre (adhérent unique filtré, inscriptions d'un événement et spécimen
+Dons), avec inspection des fichiers. Les variantes de refus et la matrice
+complète des combinaisons restent à qualifier.
 
 **Compléments facultatifs.** Adhésions, Comptabilité, Paiements et Communication.
 
