@@ -18,6 +18,10 @@ function action_exporter_adherents_pdf_dist() {
 	$selection = _request('champs') ?? _request('csv');
 	$colonnes = association_adhesions_export_colonnes($selection);
 	$brut = _request('id_auteur_boucle');
+	// Le traitement de la requête peut convertir une sélection unique en entier.
+	if (is_int($brut)) {
+		$brut = (string) $brut;
+	}
 	if (!$colonnes || !is_string($brut) || !preg_match('/^[1-9][0-9]*(,[1-9][0-9]*)*$/D', $brut)) {
 		spip_log('Export PDF refusé : colonnes=' . count($colonnes) . ', type_identifiants=' . gettype($brut), 'association_pdf' . _LOG_AVERTISSEMENT);
 		return false;

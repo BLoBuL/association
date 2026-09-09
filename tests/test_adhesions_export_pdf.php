@@ -19,7 +19,7 @@ function saisies_lister_par_nom($saisies, $conteneurs) {
 	return ['prenom' => ['options' => ['label' => 'Prénom']], 'pass' => ['options' => ['label' => 'Secret']], 'absent' => ['options' => ['label' => 'Absent']]];
 }
 function sql_in($champ, $ids) {
-	if ($champ !== 'id_auteur' || $ids !== [12, 42]) { throw new RuntimeException('Identifiants non bornés'); }
+	if ($champ !== 'id_auteur' || !in_array($ids, [[12, 42], [12]], true)) { throw new RuntimeException('Identifiants non bornés'); }
 	return 'id_auteur IN (12,42)';
 }
 function sql_allfetsel($champs, $table, $where, $group, $order) {
@@ -40,7 +40,7 @@ $GLOBALS['droit'] = true;
 foreach (['pass', 'absent', 'email FROM spip_auteurs', 'alea_actuel'] as $champ) {
 	if (association_adhesions_export_colonnes([$champ => 'on']) !== []) { throw new RuntimeException('Champ interdit accepté'); }
 }
-foreach (['', '0', '12,-42', '12,42 OR 1=1', ['12']] as $ids) {
+foreach (['', '0', 0, -12, 12.5, true, '12,-42', '12,42 OR 1=1', ['12']] as $ids) {
 	$GLOBALS['requete']['id_auteur_boucle'] = $ids;
 	if (action_exporter_adherents_pdf_dist() !== false || $GLOBALS['lectures']) { throw new RuntimeException('Identifiant invalide accepté'); }
 }
@@ -51,4 +51,6 @@ if ($export['contexte']['lignes'] !== [['Élodie <test>', 'recette@example.test'
 $GLOBALS['vide'] = true;
 action_exporter_adherents_pdf_dist();
 if ($GLOBALS['exports'][1]['contexte']['lignes'] !== []) { throw new RuntimeException('Liste vide incorrecte'); }
+$GLOBALS['requete']['id_auteur_boucle'] = 12;
+if (!action_exporter_adherents_pdf_dist() || count($GLOBALS['exports']) !== 3) { throw new RuntimeException('Sélection unique entière refusée'); }
 echo "OK : PDF adhérents, droits, sélection, liste blanche, UTF8 et liste vide.\n";
