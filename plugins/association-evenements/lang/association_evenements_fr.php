@@ -12,6 +12,7 @@ $traductions = [
 	'inscription_visiteur_liste_attente' => 'Votre inscription à cet événement est enregistrée sur liste d’attente. Votre place n’est pas encore confirmée.',
 	'pdf_nombre' => 'Nombre de participants',
 	'pdf_statut' => 'Statut',
+	'activite_bouton_export_pdf' => 'Liste des inscrits (PDF)',
 	'chargement' => 'Chargement…',
 	'inscription_verifier_participants' => 'Choisissez les participants puis vérifiez les informations avant validation.',
 	'accompagnant_active' => 'Vous pouvez venir accompagné(e) à ce rendez-vous. ',

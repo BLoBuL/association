@@ -11,6 +11,10 @@ function sql_allfetsel($champs, $table, $where, $group, $order) {
 }
 function association_pdf_envoyer($fond, $contexte, $nom) { $GLOBALS['exports_test'][] = compact('fond', 'contexte', 'nom'); }
 require dirname(__DIR__) . '/plugins/association-evenements/action/exporter_activite_pdf.php';
+$raccourcis = file_get_contents(dirname(__DIR__) . '/plugins/association-evenements/prive/squelettes/contenu/inc-voir_activites/bloc_raccourcis.html');
+if (!str_contains($raccourcis, '#URL_ACTION_AUTEUR{exporter_activite_pdf,#ID_EVENEMENT}') || !str_contains($raccourcis, '#AUTORISER{gererinscriptions,evenement,#ID_EVENEMENT}')) {
+	throw new RuntimeException('Raccourci PDF signé et autorisé absent');
+}
 $GLOBALS['exports_test'] = [];
 $GLOBALS['id_test'] = 42;
 $GLOBALS['droit_test'] = false;
