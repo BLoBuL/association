@@ -1,5 +1,12 @@
 #CACHE{0}
 <page lib_pdf="mpdf8" format="A4-L">
+<style>
+body { font-family: dejavusans; font-size: 10pt; color: #222; }
+h1 { font-size: 18pt; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 6px; border: 1px solid #ccc; text-align: left; vertical-align: top; }
+th { background: #eee; }
+</style>
 <h1>[(#ENV**{titre}|association_pdf_texte)]</h1>
 <table>
 <thead><tr><th><:info_numero_abbreviation:></th><th><:association_evenements:activite_libelle_nomcomplet:></th><th><:association_evenements:email:></th><th><:association_evenements:pdf_nombre:></th><th><:association_evenements:pdf_statut:></th></tr></thead>
